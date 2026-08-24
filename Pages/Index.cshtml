@@ -1,10 +1,128 @@
 ﻿@page
-@model IndexModel
+@using CourseScheduleSystem.Web.Data
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Course Schedule & Academic Awareness System | UNILAK";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Main Landing Hero Section -->
+<section class="landing-hero">
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <span class="hero-badge">Official Academic Portal</span>
+            <h1>Course Schedule & Academic Awareness System</h1>
+            <p>
+                Streamlining academic timetable management, class tracking, and verified communications 
+                for Heads of Departments, Deans, Quality Directors, Class Representatives, and Students.
+            </p>
+            <div class="hero-actions">
+                <a href="#quick-schedules" class="btn-primary-gold">View Class Timetables</a>
+                <a href="/Alerts" class="btn-secondary-outline">WhatsApp Group Links</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Key Platform Pillars -->
+<section class="pillars-section">
+    <div class="pillar-card">
+        <div class="pillar-icon">🗓️</div>
+        <h3>Timetable Synchronization</h3>
+        <p>Real-time schedule awareness integrated with UNILAK Management Information System (MIS).</p>
+    </div>
+    <div class="pillar-card">
+        <div class="pillar-icon">💬</div>
+        <h3>Verified WhatsApp Groups</h3>
+        <p>Access official class group links with strict join deadlines set by Class Representatives & HODs.</p>
+    </div>
+    <div class="pillar-card">
+        <div class="pillar-icon">📊</div>
+        <h3>Academic Progress Tracking</h3>
+        <p>End-to-end monitoring for Deans and Quality Directors to track course coverage and attendance.</p>
+    </div>
+</section>
+
+<!-- Portal Access by Role -->
+<section class="roles-section">
+    <h2 class="section-title">Select Your Academic Portal</h2>
+    <div class="roles-grid">
+        <div class="role-card">
+            <div class="role-header">
+                <h4>Students & CPs</h4>
+            </div>
+            <p>Check schedules, room venues, lecturer updates, and join active course WhatsApp groups.</p>
+            <a href="/Schedule" class="btn-role">Access Student Portal →</a>
+        </div>
+        <div class="role-card">
+            <div class="role-header">
+                <h4>HODs & Lecturers</h4>
+            </div>
+            <p>Manage course allocations, publish schedule modifications, and verify Class Rep submissions.</p>
+            <a href="/Courses" class="btn-role">Department Login →</a>
+        </div>
+        <div class="role-card">
+            <div class="role-header">
+                <h4>Deans & Quality Directors</h4>
+            </div>
+            <p>Review faculty-wide timetable compliance, MIS sync metrics, and academic progress logs.</p>
+            <a href="/About" class="btn-role">Executive Analytics →</a>
+        </div>
+    </div>
+</section>
+
+<!-- Live Quick Schedule Preview -->
+<section id="quick-schedules" class="preview-section">
+    <div class="section-header-flex">
+        <div>
+            <h2 class="section-title mb-0">Active Course Timetables</h2>
+            <p class="section-subtitle">Upcoming classes and official communication deadline alerts</p>
+        </div>
+        <a href="/Schedule" class="btn-view-all">View Complete Timetable →</a>
+    </div>
+
+    <div class="table-container mt-3">
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Course Title</th>
+                    <th>Lecturer</th>
+                    <th>Time Slot</th>
+                    <th>Venue</th>
+                    <th>Group Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (CourseData.Courses != null && CourseData.Courses.Any())
+                {
+                    @foreach (var course in CourseData.Courses.Take(4))
+                    {
+                        var isExpired = course.JoinDeadline < DateTime.Now;
+                        <tr>
+                            <td><strong>@course.Code</strong></td>
+                            <td>@course.Title</td>
+                            <td>@course.Lecturer</td>
+                            <td>@course.ScheduleTime</td>
+                            <td><span class="venue-tag">@course.Venue</span></td>
+                            <td>
+                                @if (isExpired)
+                                {
+                                    <span class="badge-expired">Deadline Passed</span>
+                                }
+                                else
+                                {
+                                    <a href="@course.WhatsappGroupUrl" target="_blank" class="btn-whatsapp">Join Group</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" style="text-align:center;">No scheduled courses found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
