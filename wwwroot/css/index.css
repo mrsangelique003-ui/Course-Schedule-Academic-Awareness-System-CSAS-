@@ -1,390 +1,989 @@
-:root {
-    --unilak-navy: #0b1f3a;
-    --unilak-navy-light: #14335c;
-    --unilak-gold: #d4a339;
-    --unilak-gold-light: #f0c766;
-    --text-dark: #1c2434;
-    --text-muted: #64748b;
-    --bg-light: #f7f8fa;
-    --border-light: #e5e8ee;
-    --shadow-soft: 0 8px 24px rgba(11, 31, 58, 0.08);
-    --radius: 12px;
+/* =========================================================
+   CSAAS
+   COURSE SCHEDULE & ACADEMIC AWARENESS SYSTEM
+========================================================= */
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* ===== Hero ===== */
-.landing-hero {
-    background: linear-gradient(135deg, var(--unilak-navy) 0%, var(--unilak-navy-light) 100%);
-    padding: 110px 24px;
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #0f1a3a;
+    background: #ffffff;
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.cs-navbar {
+    width: 100%;
+    min-height: 78px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid #e5e7eb;
     position: relative;
-    overflow: hidden;
+    z-index: 1000;
 }
 
-    .landing-hero::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(circle, rgba(212, 163, 57, 0.12) 0%, transparent 70%);
-        border-radius: 50%;
+
+/* =========================================================
+   NAVBAR BRAND
+========================================================= */
+
+.cs-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #0f1a3a;
+}
+
+.cs-brand-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #1e3a8a;
+    color: white;
+    font-size: 19px;
+    box-shadow: 0 6px 15px rgba(30, 58, 138, 0.18);
+}
+
+.cs-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.cs-brand-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #0f1a3a;
+    letter-spacing: -0.3px;
+}
+
+.cs-brand-subtitle {
+    margin-top: 4px;
+    font-size: 10px;
+    color: #8b95a7;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   NAVIGATION LINKS
+========================================================= */
+
+.cs-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+    .cs-nav a {
+        position: relative;
+        text-decoration: none;
+        color: #4b5563;
+        font-size: 13px;
+        font-weight: 600;
+        transition: color 0.2s ease;
     }
 
-.hero-content {
-    max-width: 780px;
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-    z-index: 1;
+        .cs-nav a:not(.cs-nav-login)::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 0;
+            height: 2px;
+            background: #1e3a8a;
+            transition: width 0.2s ease;
+        }
+
+        .cs-nav a:not(.cs-nav-login):hover {
+            color: #1e3a8a;
+        }
+
+            .cs-nav a:not(.cs-nav-login):hover::after {
+                width: 100%;
+            }
+
+
+/* =========================================================
+   NAV LOGIN
+========================================================= */
+
+.cs-nav-login {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    background: #1e3a8a;
+    color: white !important;
+    box-shadow: 0 5px 14px rgba(30, 58, 138, 0.18);
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.hero-badge {
-    display: inline-block;
-    background: rgba(212, 163, 57, 0.15);
-    color: var(--unilak-gold-light);
-    border: 1px solid rgba(212, 163, 57, 0.4);
-    padding: 6px 18px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    .cs-nav-login:hover {
+        background: #1a56db;
+        color: white !important;
+        transform: translateY(-1px);
+    }
+
+    .cs-nav-login i {
+        font-size: 14px;
+    }
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.cs-hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient( circle at 85% 20%, rgba(26, 86, 219, 0.12), transparent 30% ), radial-gradient( circle at 10% 90%, rgba(16, 185, 129, 0.08), transparent 25% ), linear-gradient( 135deg, #f8fbff 0%, #ffffff 60% );
+    padding: 90px 6% 100px;
+}
+
+.cs-hero-container {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.cs-hero-content {
+    max-width: 680px;
+}
+
+.cs-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8f0fe;
+    color: #1e3a8a;
+    border: 1px solid #d6e4ff;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
     margin-bottom: 24px;
 }
 
-.landing-hero h1 {
-    color: #fff;
-    font-size: 2.6rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 18px;
-}
-
-.landing-hero p {
-    color: #cbd5e1;
-    font-size: 1.08rem;
-    line-height: 1.6;
-    margin-bottom: 36px;
-}
-
-.hero-actions {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn-primary-gold {
-    background: var(--unilak-gold);
-    color: var(--unilak-navy);
-    font-weight: 600;
-    padding: 13px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-    .btn-primary-gold:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(212, 163, 57, 0.35);
-        color: var(--unilak-navy);
+    .cs-badge i {
+        color: #10b981;
     }
 
-.btn-secondary-outline {
-    background: transparent;
-    color: #fff;
-    font-weight: 600;
-    padding: 13px 28px;
-    border: 1.5px solid rgba(255, 255, 255, 0.35);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: background 0.15s ease, border-color 0.15s ease;
+.cs-hero h1 {
+    font-size: clamp(2.7rem, 5vw, 4.4rem);
+    line-height: 1.05;
+    letter-spacing: -2px;
+    font-weight: 800;
+    color: #0f1a3a;
+    margin-bottom: 24px;
 }
 
-    .btn-secondary-outline:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.6);
-        color: #fff;
+    .cs-hero h1 span {
+        display: block;
+        color: #1e3a8a;
     }
 
-/* ===== Pillars ===== */
-.pillars-section {
-    max-width: 1140px;
-    margin: -60px auto 80px;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    position: relative;
-    z-index: 2;
+.cs-hero-description {
+    max-width: 630px;
+    font-size: 17px;
+    line-height: 1.75;
+    color: #6b7280;
+    margin-bottom: 34px;
 }
 
-.pillar-card {
-    background: #fff;
-    border-radius: var(--radius);
-    padding: 32px 28px;
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--border-light);
-    transition: transform 0.2s ease;
-}
 
-    .pillar-card:hover {
-        transform: translateY(-4px);
-    }
+/* =========================================================
+   HERO BUTTONS
+========================================================= */
 
-.pillar-icon {
-    font-size: 2rem;
-    margin-bottom: 14px;
-}
-
-.pillar-card h3 {
-    color: var(--unilak-navy);
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.pillar-card p {
-    color: var(--text-muted);
-    font-size: 0.94rem;
-    line-height: 1.55;
-}
-
-/* ===== Section Titles ===== */
-.section-title {
-    color: var(--unilak-navy);
-    font-size: 1.7rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 8px;
-}
-
-.section-subtitle {
-    color: var(--text-muted);
-    font-size: 0.98rem;
-    margin-bottom: 40px;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.mb-0 {
-    margin-bottom: 0;
-}
-
-/* ===== Roles ===== */
-.roles-section {
-    max-width: 1140px;
-    margin: 0 auto 80px;
-    padding: 0 24px;
-}
-
-.roles-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
-.role-card {
-    background: var(--bg-light);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius);
-    padding: 30px 26px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-    .role-card:hover {
-        border-color: var(--unilak-gold);
-        box-shadow: var(--shadow-soft);
-    }
-
-.role-header {
+.cs-hero-actions {
     display: flex;
     align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.cs-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
-    margin-bottom: 12px;
-}
-
-.role-icon {
-    font-size: 1.4rem;
-}
-
-.role-header h4 {
-    color: var(--unilak-navy);
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.role-card p {
-    color: var(--text-muted);
-    font-size: 0.92rem;
-    line-height: 1.55;
-    margin-bottom: 18px;
-    min-height: 66px;
-}
-
-.btn-role {
-    color: var(--unilak-navy);
-    font-weight: 600;
-    font-size: 0.92rem;
+    padding: 14px 23px;
+    background: #1e3a8a;
+    color: white;
     text-decoration: none;
-    border-bottom: 2px solid var(--unilak-gold);
-    padding-bottom: 2px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.2s ease;
+    box-shadow: 0 8px 22px rgba(30, 58, 138, 0.18);
 }
 
-    .btn-role:hover {
-        color: var(--unilak-navy-light);
+    .cs-btn-primary:hover {
+        background: #1a56db;
+        color: white;
+        transform: translateY(-2px);
     }
 
-/* ===== Schedule Preview ===== */
-.preview-section {
-    max-width: 1140px;
-    margin: 0 auto 90px;
-    padding: 0 24px;
+.cs-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 23px;
+    background: white;
+    color: #1e3a8a;
+    text-decoration: none;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.2s ease;
 }
 
-.section-header-flex {
+    .cs-btn-secondary:hover {
+        border-color: #1e3a8a;
+        background: #f8fbff;
+        transform: translateY(-2px);
+    }
+
+
+/* =========================================================
+   DASHBOARD PREVIEW
+========================================================= */
+
+.cs-dashboard {
+    position: relative;
+}
+
+.cs-dashboard-window {
+    background: white;
+    border: 1px solid #dbe3ef;
+    border-radius: 20px;
+    box-shadow: 0 30px 70px rgba(15, 26, 58, 0.13);
+    overflow: hidden;
+    transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
+}
+
+.cs-window-header {
+    height: 52px;
+    padding: 0 18px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 4px;
-    text-align: left;
+    border-bottom: 1px solid #edf0f4;
 }
 
-    .section-header-flex .section-title {
-        text-align: left;
+.cs-window-dots {
+    display: flex;
+    gap: 6px;
+}
+
+    .cs-window-dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #d1d5db;
+    }
+
+.cs-window-title {
+    font-size: 11px;
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.cs-dashboard-body {
+    padding: 22px;
+}
+
+.cs-dashboard-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+    .cs-dashboard-welcome h4 {
+        font-size: 15px;
         margin-bottom: 4px;
     }
 
-    .section-header-flex .section-subtitle {
-        margin-bottom: 0;
+    .cs-dashboard-welcome p {
+        color: #9ca3af;
+        font-size: 10px;
     }
 
-.btn-view-all {
-    color: var(--unilak-navy);
-    font-weight: 600;
-    font-size: 0.92rem;
-    text-decoration: none;
-    white-space: nowrap;
+.cs-profile {
+    width: 36px;
+    height: 36px;
+    background: #e8f0fe;
+    color: #1e3a8a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-    .btn-view-all:hover {
-        color: var(--unilak-gold);
-    }
 
-.mt-3 {
-    margin-top: 24px;
+/* =========================================================
+   DASHBOARD CARDS
+========================================================= */
+
+.cs-dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
-.table-container {
-    background: #fff;
-    border-radius: var(--radius);
-    border: 1px solid var(--border-light);
-    box-shadow: var(--shadow-soft);
+.cs-mini-card {
+    padding: 15px;
+    border: 1px solid #edf0f4;
+    border-radius: 12px;
+    background: #fbfcfe;
+}
+
+.cs-mini-card-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: #e8f0fe;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.cs-mini-card strong {
+    display: block;
+    font-size: 18px;
+    color: #0f1a3a;
+}
+
+.cs-mini-card span {
+    font-size: 9px;
+    color: #9ca3af;
+}
+
+
+/* =========================================================
+   SCHEDULE
+========================================================= */
+
+.cs-schedule {
+    border: 1px solid #edf0f4;
+    border-radius: 12px;
     overflow: hidden;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.cs-schedule-header {
+    padding: 12px 14px;
+    background: #f8fafc;
+    font-size: 11px;
+    font-weight: 700;
 }
 
-thead {
-    background: var(--unilak-navy);
+.cs-schedule-row {
+    display: grid;
+    grid-template-columns: 55px 1fr 70px;
+    padding: 12px 14px;
+    border-top: 1px solid #f1f5f9;
+    font-size: 9px;
+    align-items: center;
 }
 
-    thead th {
-        color: #fff;
-        font-size: 0.82rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        padding: 14px 20px;
-        text-align: left;
+.cs-time {
+    color: #1e3a8a;
+    font-weight: 700;
+}
+
+.cs-class {
+    color: #4b5563;
+}
+
+.cs-room {
+    text-align: right;
+    color: #9ca3af;
+}
+
+
+/* =========================================================
+   TRUST BAR
+========================================================= */
+
+.cs-trust {
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    background: white;
+}
+
+.cs-trust-inner {
+    max-width: 1100px;
+    margin: auto;
+    min-height: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 30px;
+    padding: 20px;
+}
+
+.cs-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cs-trust-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #f0f6ff;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cs-trust-item strong {
+    display: block;
+    font-size: 13px;
+}
+
+.cs-trust-item span {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+
+/* =========================================================
+   GENERAL SECTIONS
+========================================================= */
+
+.cs-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 95px 6%;
+}
+
+.cs-section-heading {
+    max-width: 680px;
+    margin-bottom: 48px;
+}
+
+.cs-section-label {
+    display: inline-block;
+    color: #10b981;
+    background: #ecfdf5;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+}
+
+.cs-section-heading h2 {
+    font-size: 34px;
+    line-height: 1.2;
+    color: #0f1a3a;
+    margin-bottom: 14px;
+}
+
+.cs-section-heading p {
+    color: #6b7280;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.cs-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.cs-feature {
+    padding: 30px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    transition: 0.25s ease;
+}
+
+    .cs-feature:hover {
+        transform: translateY(-5px);
+        border-color: #b9c9e9;
+        box-shadow: 0 18px 45px rgba(30, 58, 138, 0.08);
     }
 
-tbody tr {
-    border-bottom: 1px solid var(--border-light);
+.cs-feature-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: #eef4ff;
+    color: #1e3a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    margin-bottom: 20px;
 }
 
-    tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    tbody tr:hover {
-        background: var(--bg-light);
-    }
-
-tbody td {
-    padding: 16px 20px;
-    font-size: 0.92rem;
-    color: var(--text-dark);
+.cs-feature h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #0f1a3a;
 }
 
-.venue-tag {
-    background: #eef2ff;
-    color: var(--unilak-navy-light);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.82rem;
-    font-weight: 600;
+.cs-feature p {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.7;
 }
 
-.btn-whatsapp {
-    background: #25d366;
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-decoration: none;
+
+/* =========================================================
+   ROLES
+========================================================= */
+
+.cs-roles-section {
+    background: #f8fafc;
 }
 
-    .btn-whatsapp:hover {
-        background: #1eb857;
-        color: #fff;
-    }
-
-.badge-expired {
-    background: #fee2e2;
-    color: #b91c1c;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
+.cs-roles-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
 }
 
-/* ===== Trust Strip ===== */
-.trust-strip {
-    background: var(--unilak-navy);
-    padding: 22px 24px;
+.cs-role {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 13px;
+    padding: 22px 15px;
     text-align: center;
+    transition: 0.2s ease;
 }
 
-    .trust-strip p {
-        color: #94a3b8;
-        font-size: 0.88rem;
-        margin: 0;
-        letter-spacing: 0.02em;
+    .cs-role:hover {
+        border-color: #1e3a8a;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(30, 58, 138, 0.06);
     }
 
-/* ===== Responsive ===== */
-@media (max-width: 900px) {
-    .pillars-section,
-    .roles-grid {
+    .cs-role i {
+        display: block;
+        font-size: 24px;
+        color: #1e3a8a;
+        margin-bottom: 12px;
+    }
+
+    .cs-role strong {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .cs-role span {
+        font-size: 10px;
+        color: #9ca3af;
+    }
+
+
+/* =========================================================
+   WORKFLOW
+========================================================= */
+
+.cs-workflow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.cs-step {
+    text-align: center;
+    position: relative;
+}
+
+.cs-step-number {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 18px;
+    background: #1e3a8a;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.cs-step h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.cs-step p {
+    color: #6b7280;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cs-cta {
+    margin: 0 6% 80px;
+    border-radius: 20px;
+    padding: 65px 30px;
+    text-align: center;
+    background: radial-gradient( circle at 15% 20%, rgba(52, 211, 153, 0.12), transparent 25% ), radial-gradient( circle at 90% 80%, rgba(59, 130, 246, 0.15), transparent 30% ), #0f1a3a;
+    color: white;
+}
+
+.cs-cta-icon {
+    width: 55px;
+    height: 55px;
+    margin: 0 auto 18px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    color: #34d399;
+}
+
+.cs-cta h2 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.cs-cta p {
+    max-width: 580px;
+    margin: 0 auto 27px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.cs-cta .cs-btn-primary {
+    background: #10b981;
+}
+
+    .cs-cta .cs-btn-primary:hover {
+        background: #34d399;
+    }
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.cs-footer {
+    background: #091127;
+    color: white;
+    padding: 55px 6% 25px;
+}
+
+.cs-footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 40px;
+}
+
+.cs-footer-brand {
+    max-width: 350px;
+}
+
+    .cs-footer-brand h3 {
+        font-size: 17px;
+        margin-bottom: 12px;
+    }
+
+    .cs-footer-brand p {
+        color: #94a3b8;
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+.cs-footer-column h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 17px;
+}
+
+.cs-footer-column a {
+    display: block;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 12px;
+    margin-bottom: 11px;
+    transition: color 0.2s ease;
+}
+
+    .cs-footer-column a:hover {
+        color: white;
+    }
+
+.cs-footer-bottom {
+    max-width: 1200px;
+    margin: auto;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .cs-hero-container {
         grid-template-columns: 1fr;
     }
 
-    .landing-hero h1 {
-        font-size: 2rem;
+    .cs-hero-content {
+        max-width: 800px;
+        margin: auto;
+        text-align: center;
     }
 
-    .section-header-flex {
+    .cs-hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cs-hero-actions {
+        justify-content: center;
+    }
+
+    .cs-dashboard {
+        max-width: 650px;
+        width: 100%;
+        margin: auto;
+    }
+
+    .cs-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cs-roles-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .cs-workflow {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 40px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .cs-navbar {
+        min-height: 72px;
+        padding: 14px 20px;
+    }
+
+    .cs-nav {
+        gap: 12px;
+    }
+
+        .cs-nav a:not(.cs-nav-login) {
+            display: none;
+        }
+
+    .cs-nav-login {
+        padding: 10px 15px;
+    }
+
+    .cs-brand-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .cs-brand-title {
+        font-size: 16px;
+    }
+
+    .cs-brand-subtitle {
+        font-size: 9px;
+    }
+
+    .cs-hero {
+        padding: 65px 20px 75px;
+    }
+
+        .cs-hero h1 {
+            font-size: 2.6rem;
+            letter-spacing: -1.2px;
+        }
+
+    .cs-hero-description {
+        font-size: 15px;
+    }
+
+    .cs-trust-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .cs-section {
+        padding: 70px 20px;
+    }
+
+    .cs-features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-roles-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cs-footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 35px;
+    }
+
+    .cs-footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .cs-footer-bottom {
         flex-direction: column;
-        align-items: flex-start;
+        text-align: center;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    .cs-brand-subtitle {
+        display: none;
+    }
+
+    .cs-brand-title {
+        font-size: 15px;
+    }
+
+    .cs-nav-login {
+        padding: 9px 13px;
+        font-size: 12px;
+    }
+
+    .cs-hero h1 {
+        font-size: 2.15rem;
+    }
+
+    .cs-hero-actions {
+        flex-direction: column;
+    }
+
+    .cs-btn-primary,
+    .cs-btn-secondary {
+        width: 100%;
+    }
+
+    .cs-dashboard-window {
+        transform: none;
+    }
+
+    .cs-dashboard-body {
+        padding: 14px;
+    }
+
+    .cs-trust-item {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cs-section-heading h2 {
+        font-size: 27px;
+    }
+
+    .cs-roles-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cs-workflow {
+        grid-template-columns: 1fr;
+    }
+
+    .cs-cta {
+        margin: 0 20px 55px;
+        padding: 50px 20px;
+    }
+
+        .cs-cta h2 {
+            font-size: 25px;
+        }
+
+    .cs-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .cs-footer-container {
+        grid-template-columns: 1fr;
     }
 }

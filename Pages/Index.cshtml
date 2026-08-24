@@ -1,137 +1,934 @@
 ﻿@page
-@using CourseScheduleSystem.Web.Data
 @{
     ViewData["Title"] = "Course Schedule & Academic Awareness System | UNILAK";
+    ViewData["FullWidth"] = "true";
 }
 
-<!-- Hero Section -->
-<section class="landing-hero"> 
-    <div class="hero-overlay">
-        <div class="hero-content">
-            <span class="hero-badge">Official Academic Portal · UNILAK</span>
-            <h1>Course Schedule &amp; Academic Awareness System</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>CSAAS | UNILAK</title>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- CSAAS CSS -->
+    <link rel="stylesheet"
+          href="~/css/csaas.css" />
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="cs-navbar">
+
+        <a href="/" class="cs-brand">
+
+            <div class="cs-brand-icon">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+            <div class="cs-brand-text">
+
+                <span class="cs-brand-title">
+                    CSAAS
+                </span>
+
+                <span class="cs-brand-subtitle">
+                    UNILAK Academic Portal
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <div class="cs-nav">
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#roles">
+                Roles
+            </a>
+
+            <a href="#workflow">
+                How It Works
+            </a>
+
+            <a href="/Login" class="cs-nav-login">
+
+                <i class="bi bi-box-arrow-in-right"></i>
+
+                Login
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         HERO SECTION
+    ====================================================== -->
+
+    <section class="cs-hero">
+
+        <div class="cs-hero-container">
+
+            <!-- HERO CONTENT -->
+
+            <div class="cs-hero-content">
+
+                <div class="cs-badge">
+
+                    <i class="bi bi-patch-check-fill"></i>
+
+                    Official UNILAK Academic Platform
+
+                </div>
+
+
+                <h1>
+
+                    Smarter
+
+                    <span>
+                        Academic Scheduling
+                    </span>
+
+                    for Everyone.
+
+                </h1>
+
+
+                <p class="cs-hero-description">
+
+                    The Course Schedule & Academic Awareness System
+                    brings timetables, academic communication, verified
+                    class groups, and academic monitoring together in
+                    one secure platform.
+
+                </p>
+
+
+                <div class="cs-hero-actions">
+
+                    <a href="/Login"
+                       class="cs-btn-primary">
+
+                        Access Your Dashboard
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+
+                    <a href="#features"
+                       class="cs-btn-secondary">
+
+                        Explore Platform
+
+                        <i class="bi bi-chevron-down"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DASHBOARD PREVIEW
+            ================================================== -->
+
+            <div class="cs-dashboard">
+
+                <div class="cs-dashboard-window">
+
+                    <!-- Window Header -->
+
+                    <div class="cs-window-header">
+
+                        <div class="cs-window-dots">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                        <span class="cs-window-title">
+                            Academic Dashboard
+                        </span>
+
+                    </div>
+
+
+                    <!-- Dashboard Body -->
+
+                    <div class="cs-dashboard-body">
+
+
+                        <div class="cs-dashboard-welcome">
+
+                            <div>
+
+                                <h4>
+                                    Academic Overview
+                                </h4>
+
+                                <p>
+                                    Monday, August 24, 2026
+                                </p>
+
+                            </div>
+
+
+                            <div class="cs-profile">
+
+                                <i class="bi bi-person-fill"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Dashboard Statistics -->
+
+                        <div class="cs-dashboard-cards">
+
+
+                            <div class="cs-mini-card">
+
+                                <div class="cs-mini-card-icon">
+
+                                    <i class="bi bi-calendar3"></i>
+
+                                </div>
+
+                                <strong>
+                                    06
+                                </strong>
+
+                                <span>
+                                    Classes Today
+                                </span>
+
+                            </div>
+
+
+                            <div class="cs-mini-card">
+
+                                <div class="cs-mini-card-icon">
+
+                                    <i class="bi bi-people-fill"></i>
+
+                                </div>
+
+                                <strong>
+                                    04
+                                </strong>
+
+                                <span>
+                                    Active Groups
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- Schedule -->
+
+                        <div class="cs-schedule">
+
+                            <div class="cs-schedule-header">
+
+                                Today's Schedule
+
+                            </div>
+
+
+                            <div class="cs-schedule-row">
+
+                                <span class="cs-time">
+                                    08:00
+                                </span>
+
+                                <span class="cs-class">
+                                    Software Engineering
+                                </span>
+
+                                <span class="cs-room">
+                                    Room 204
+                                </span>
+
+                            </div>
+
+
+                            <div class="cs-schedule-row">
+
+                                <span class="cs-time">
+                                    10:00
+                                </span>
+
+                                <span class="cs-class">
+                                    Database Administration
+                                </span>
+
+                                <span class="cs-room">
+                                    Lab 02
+                                </span>
+
+                            </div>
+
+
+                            <div class="cs-schedule-row">
+
+                                <span class="cs-time">
+                                    14:00
+                                </span>
+
+                                <span class="cs-class">
+                                    Software Testing
+                                </span>
+
+                                <span class="cs-room">
+                                    Room 301
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TRUST / QUICK INFORMATION
+    ====================================================== -->
+
+    <section class="cs-trust">
+
+        <div class="cs-trust-inner">
+
+
+            <div class="cs-trust-item">
+
+                <div class="cs-trust-icon">
+
+                    <i class="bi bi-shield-lock-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Secure Access
+                    </strong>
+
+                    <span>
+                        Role-based permissions
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="cs-trust-item">
+
+                <div class="cs-trust-icon">
+
+                    <i class="bi bi-calendar-check-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Centralized Scheduling
+                    </strong>
+
+                    <span>
+                        One academic timetable
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="cs-trust-item">
+
+                <div class="cs-trust-icon">
+
+                    <i class="bi bi-patch-check-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Verified Information
+                    </strong>
+
+                    <span>
+                        Approved academic updates
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FEATURES
+    ====================================================== -->
+
+    <section class="cs-section"
+             id="features">
+
+        <div class="cs-section-heading">
+
+            <span class="cs-section-label">
+                Platform Features
+            </span>
+
+            <h2>
+                Everything needed for better academic coordination.
+            </h2>
+
             <p>
-                Streamlining academic timetable management, class tracking, and verified communications
-                for Heads of Departments, Deans, Quality Directors, Class Representatives, and Students.
+                CSAAS connects students, representatives and academic
+                management through a single source of reliable academic
+                information.
             </p>
-            <div class="hero-actions">
-                <a href="#quick-schedules" class="btn-primary-gold">View Class Timetables</a>
-                <a href="/Alerts" class="btn-secondary-outline">WhatsApp Group Links</a>
+
+        </div>
+
+
+        <div class="cs-features-grid">
+
+
+            <!-- Feature 1 -->
+
+            <div class="cs-feature">
+
+                <div class="cs-feature-icon">
+
+                    <i class="bi bi-calendar3"></i>
+
+                </div>
+
+                <h3>
+                    Timetable Synchronization
+                </h3>
+
+                <p>
+                    Keep course schedules organized and synchronized
+                    with the university's academic information systems.
+                </p>
+
             </div>
-        </div>
-    </div>
-</section>
 
-<!-- Key Platform Pillars -->
-<section class="pillars-section">
-    <div class="pillar-card">
-        <div class="pillar-icon">🗓️</div>
-        <h3>Timetable Synchronization</h3>
-        <p>Real-time schedule awareness integrated with UNILAK's Management Information System (MIS).</p>
-    </div>
-    <div class="pillar-card">
-        <div class="pillar-icon">💬</div>
-        <h3>Verified WhatsApp Groups</h3>
-        <p>Access official class group links with strict join deadlines set by Class Representatives &amp; HODs.</p>
-    </div>
-    <div class="pillar-card">
-        <div class="pillar-icon">📊</div>
-        <h3>Academic Progress Tracking</h3>
-        <p>End-to-end monitoring for Deans and Quality Directors to track course coverage and attendance.</p>
-    </div>
-</section>
 
-<!-- Portal Access by Role -->
-<section class="roles-section">
-    <h2 class="section-title">Select Your Academic Portal</h2>
-    <p class="section-subtitle text-center">Tailored access for every stakeholder in the academic process</p>
-    <div class="roles-grid">
-        <div class="role-card">
-            <div class="role-header">
-                <span class="role-icon">🎓</span>
-                <h4>Students &amp; Class Reps</h4>
+            <!-- Feature 2 -->
+
+            <div class="cs-feature">
+
+                <div class="cs-feature-icon">
+
+                    <i class="bi bi-whatsapp"></i>
+
+                </div>
+
+                <h3>
+                    Verified WhatsApp Groups
+                </h3>
+
+                <p>
+                    Give students access to official class communication
+                    groups while controlling verification and joining
+                    deadlines.
+                </p>
+
             </div>
-            <p>Check schedules, room venues, lecturer updates, and join active course WhatsApp groups.</p>
-            <a href="/Schedule" class="btn-role">Access Student Portal →</a>
-        </div>
-        <div class="role-card">
-            <div class="role-header">
-                <span class="role-icon">🧑‍🏫</span>
-                <h4>HODs &amp; Lecturers</h4>
+
+
+            <!-- Feature 3 -->
+
+            <div class="cs-feature">
+
+                <div class="cs-feature-icon">
+
+                    <i class="bi bi-bar-chart-fill"></i>
+
+                </div>
+
+                <h3>
+                    Academic Monitoring
+                </h3>
+
+                <p>
+                    Enable academic leaders to monitor course progress,
+                    attendance and other important academic indicators.
+                </p>
+
             </div>
-            <p>Manage course allocations, publish schedule modifications, and verify Class Rep submissions.</p>
-            <a href="/Courses" class="btn-role">Department Login →</a>
-        </div>
-        <div class="role-card">
-            <div class="role-header">
-                <span class="role-icon">🏛️</span>
-                <h4>Deans &amp; Quality Directors</h4>
+
+
+            <!-- Feature 4 -->
+
+            <div class="cs-feature">
+
+                <div class="cs-feature-icon">
+
+                    <i class="bi bi-person-lock"></i>
+
+                </div>
+
+                <h3>
+                    Role-Based Access
+                </h3>
+
+                <p>
+                    Each user receives access to the information and
+                    functionality appropriate to their academic role.
+                </p>
+
             </div>
-            <p>Review faculty-wide timetable compliance, MIS sync metrics, and academic progress logs.</p>
-            <a href="/About" class="btn-role">Executive Analytics →</a>
+
+
+            <!-- Feature 5 -->
+
+            <div class="cs-feature">
+
+                <div class="cs-feature-icon">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                </div>
+
+                <h3>
+                    Verified Submissions
+                </h3>
+
+                <p>
+                    Schedule changes and important academic information
+                    can be reviewed and approved before reaching students.
+                </p>
+
+            </div>
+
+
+            <!-- Feature 6 -->
+
+            <div class="cs-feature">
+
+                <div class="cs-feature-icon">
+
+                    <i class="bi bi-bell-fill"></i>
+
+                </div>
+
+                <h3>
+                    Academic Notifications
+                </h3>
+
+                <p>
+                    Keep students and staff informed about schedule changes,
+                    deadlines and important academic announcements.
+                </p>
+
+            </div>
+
+
         </div>
-    </div>
-</section>
 
-<!-- Live Quick Schedule Preview -->
-<section id="quick-schedules" class="preview-section">
-    <div class="section-header-flex">
-        <div>
-            <h2 class="section-title mb-0">Active Course Timetables</h2>
-            <p class="section-subtitle">Upcoming classes and official communication deadline alerts</p>
+    </section>
+
+
+    <!-- =====================================================
+         ROLES
+    ====================================================== -->
+
+    <section class="cs-roles-section"
+             id="roles">
+
+        <div class="cs-section">
+
+            <div class="cs-section-heading">
+
+                <span class="cs-section-label">
+                    Built for Every Academic Role
+                </span>
+
+                <h2>
+                    One platform. Different responsibilities.
+                </h2>
+
+                <p>
+                    CSAAS provides role-specific access so every member
+                    of the academic community can focus on the information
+                    relevant to their responsibilities.
+                </p>
+
+            </div>
+
+
+            <div class="cs-roles-grid">
+
+
+                <div class="cs-role">
+
+                    <i class="bi bi-mortarboard-fill"></i>
+
+                    <strong>
+                        Students
+                    </strong>
+
+                    <span>
+                        Schedules & academic updates
+                    </span>
+
+                </div>
+
+
+                <div class="cs-role">
+
+                    <i class="bi bi-person-badge-fill"></i>
+
+                    <strong>
+                        Class Representatives
+                    </strong>
+
+                    <span>
+                        Class communication
+                    </span>
+
+                </div>
+
+
+                <div class="cs-role">
+
+                    <i class="bi bi-building"></i>
+
+                    <strong>
+                        HODs
+                    </strong>
+
+                    <span>
+                        Department coordination
+                    </span>
+
+                </div>
+
+
+                <div class="cs-role">
+
+                    <i class="bi bi-briefcase-fill"></i>
+
+                    <strong>
+                        Deans
+                    </strong>
+
+                    <span>
+                        Faculty oversight
+                    </span>
+
+                </div>
+
+
+                <div class="cs-role">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                    <strong>
+                        Quality Directors
+                    </strong>
+
+                    <span>
+                        Academic monitoring
+                    </span>
+
+                </div>
+
+
+            </div>
+
         </div>
-        <a href="/Schedule" class="btn-view-all">View Complete Timetable →</a>
-    </div>
 
-    <div class="table-container mt-3">
-        <table>
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Course Title</th>
-                    <th>Lecturer</th>
-                    <th>Time Slot</th>
-                    <th>Venue</th>
-                    <th>Group Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (CourseData.Courses != null && CourseData.Courses.Any())
-                {
-                    @foreach (var course in CourseData.Courses.Take(4))
-                    {
-                        var isExpired = course.JoinDeadline < DateTime.Now;
-                        <tr>
-                            <td><strong>@course.Code</strong></td>
-                            <td>@course.Title</td>
-                            <td>@course.Lecturer</td>
-                            <td>@course.ScheduleTime</td>
-                            <td><span class="venue-tag">@course.Venue</span></td>
-                            <td>
-                                @if (isExpired)
-                                {
-                                    <span class="badge-expired">Deadline Passed</span>
-                                }
-                                else
-                                {
-                                    <a href="@course.WhatsappGroupUrl" target="_blank" class="btn-whatsapp">Join Group</a>
-                                }
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="6" style="text-align:center;">No scheduled courses found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</section>
+    </section>
 
-<!-- Footer Trust Strip -->
-<section class="trust-strip">
-    <p>Built for the University of Lay Adventists of Kigali · Trusted by Faculty and Students</p>
-</section>
+
+    <!-- =====================================================
+         WORKFLOW
+    ====================================================== -->
+
+    <section class="cs-section"
+             id="workflow">
+
+        <div class="cs-section-heading">
+
+            <span class="cs-section-label">
+                Simple Workflow
+            </span>
+
+            <h2>
+                From academic information to student awareness.
+            </h2>
+
+            <p>
+                A clear process ensures that important academic
+                information is submitted, verified and communicated
+                efficiently.
+            </p>
+
+        </div>
+
+
+        <div class="cs-workflow">
+
+
+            <div class="cs-step">
+
+                <div class="cs-step-number">
+                    01
+                </div>
+
+                <h3>
+                    Submit
+                </h3>
+
+                <p>
+                    Authorized staff submit schedules, updates or
+                    communication information.
+                </p>
+
+            </div>
+
+
+            <div class="cs-step">
+
+                <div class="cs-step-number">
+                    02
+                </div>
+
+                <h3>
+                    Verify
+                </h3>
+
+                <p>
+                    Academic authorities review submitted information
+                    before publication.
+                </p>
+
+            </div>
+
+
+            <div class="cs-step">
+
+                <div class="cs-step-number">
+                    03
+                </div>
+
+                <h3>
+                    Publish
+                </h3>
+
+                <p>
+                    Approved academic information becomes available
+                    to the appropriate users.
+                </p>
+
+            </div>
+
+
+            <div class="cs-step">
+
+                <div class="cs-step-number">
+                    04
+                </div>
+
+                <h3>
+                    Stay Informed
+                </h3>
+
+                <p>
+                    Students and staff receive reliable academic
+                    information through their dashboards.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA
+    ====================================================== -->
+
+    <section class="cs-cta">
+
+        <div class="cs-cta-icon">
+
+            <i class="bi bi-mortarboard-fill"></i>
+
+        </div>
+
+
+        <h2>
+            Ready to access your academic portal?
+        </h2>
+
+
+        <p>
+            Sign in with your UNILAK credentials to view your timetable,
+            academic information, verified communication channels and
+            role-specific dashboard.
+        </p>
+
+
+        <a href="/Login"
+           class="cs-btn-primary">
+
+            Login to CSAAS
+
+            <i class="bi bi-arrow-right"></i>
+
+        </a>
+
+    </section>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="cs-footer">
+
+        <div class="cs-footer-container">
+
+
+            <div class="cs-footer-brand">
+
+                <h3>
+                    Course Schedule & Academic Awareness System
+                </h3>
+
+                <p>
+                    A centralized academic coordination platform designed
+                    to improve timetable awareness, communication and
+                    academic information management at UNILAK.
+                </p>
+
+            </div>
+
+
+            <div class="cs-footer-column">
+
+                <h4>
+                    Platform
+                </h4>
+
+                <a href="#features">
+                    Features
+                </a>
+
+                <a href="#roles">
+                    Academic Roles
+                </a>
+
+                <a href="#workflow">
+                    How It Works
+                </a>
+
+            </div>
+
+
+            <div class="cs-footer-column">
+
+                <h4>
+                    Access
+                </h4>
+
+                <a href="/Login">
+                    Student Login
+                </a>
+
+                <a href="/Login">
+                    Staff Login
+                </a>
+
+                <a href="#">
+                    Academic Support
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="cs-footer-bottom">
+
+            <span>
+                © @DateTime.Now.Year UNILAK. All rights reserved.
+            </span>
+
+            <span>
+                Course Schedule & Academic Awareness System
+            </span>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>
