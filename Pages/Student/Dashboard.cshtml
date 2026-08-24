@@ -1,0 +1,85 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Student Course Schedule";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold mb-1">Weekly Class Schedule</h3>
+        <p class="text-muted mb-0">Track upcoming lectures, assigned venues, and attendance awareness status.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i> Export PDF</button>
+    </div>
+</div>
+
+<!-- Quick Awareness Metrics -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="stat-label">Total Scheduled Hours</div>
+            <div class="stat-value">36 hrs</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="stat-label">Verified Delivered Hours</div>
+            <div class="stat-value text-success">28 hrs</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="stat-label">Attendance Rate</div>
+            <div class="stat-value">88.5%</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="stat-label">Pending Verifications</div>
+            <div class="stat-value text-warning">2 Sessions</div>
+        </div>
+    </div>
+</div>
+
+<!-- Interactive Weekly Schedule Table -->
+<div class="dashboard-card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Day / Time</th>
+                    <th>Course Code & Name</th>
+                    <th>Lecturer</th>
+                    <th>Venue</th>
+                    <th>Delivered Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong class="d-block">Monday</strong><small class="text-muted">08:00 - 11:00 AM</small></td>
+                    <td>
+                        <div class="fw-semibold">BIT 3102</div>
+                        <small class="text-muted">Web Development Technologies</small>
+                    </td>
+                    <td>Dr. Kamali Eric</td>
+                    <td><span class="badge bg-light text-dark border">Lab 3</span></td>
+                    <td><span class="status-badge status-verified"><i class="bi bi-check-circle-fill me-1"></i> Verified</span></td>
+                    <td><button class="btn btn-sm btn-light border" title="View details"><i class="bi bi-eye"></i></button></td>
+                </tr>
+                <tr>
+                    <td><strong class="d-block">Tuesday</strong><small class="text-muted">01:00 - 04:00 PM</small></td>
+                    <td>
+                        <div class="fw-semibold">BIT 3105</div>
+                        <small class="text-muted">Database Management Systems</small>
+                    </td>
+                    <td>Prof. Mukamana J.</td>
+                    <td><span class="badge bg-light text-dark border">Room 102</span></td>
+                    <td><span class="status-badge status-pending"><i class="bi bi-clock-history me-1"></i> Pending CP Sign-off</span></td>
+                    <td><button class="btn btn-sm btn-light border"><i class="bi bi-eye"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
