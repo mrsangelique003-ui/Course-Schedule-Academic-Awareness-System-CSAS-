@@ -1,0 +1,194 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Quality.DashboardModel
+@{
+    ViewData["Title"] = "Director of Quality Dashboard";
+    Layout = "~/Pages/Shared/_DashboardLayout.cshtml";
+    ViewData["ActiveNav"] = "home";
+    ViewData["Role"] = "DirectorOfQuality";
+    ViewData["UserName"] = User.Identity?.Name ?? "Director";
+}
+
+<div class="dash-welcome">
+    <div>
+        <h2 class="dash-heading">Director of Quality Dashboard</h2>
+        <p class="dash-subheading">@DateTime.Now.ToString("dddd, dd MMMM yyyy") · Academic Quality Oversight</p>
+    </div>
+    <div class="dash-welcome-badge" style="background:rgba(5,150,105,.12);color:#059669;">
+        <i class="bi bi-patch-check-fill"></i> Director of Quality
+    </div>
+</div>
+
+<!-- STATS -->
+<div class="dash-stats">
+    <div class="stat-card stat-blue">
+        <div class="stat-icon"><i class="bi bi-calendar-check-fill"></i></div>
+        <div class="stat-info"><span class="stat-val">94%</span><span class="stat-label">Timetable Compliance</span></div>
+    </div>
+    <div class="stat-card stat-orange">
+        <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
+        <div class="stat-info"><span class="stat-val">4</span><span class="stat-label">Pending Endorsements</span></div>
+    </div>
+    <div class="stat-card stat-red">
+        <div class="stat-icon"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <div class="stat-info"><span class="stat-val">2</span><span class="stat-label">Capacity Breaches</span></div>
+    </div>
+    <div class="stat-card stat-green">
+        <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
+        <div class="stat-info"><span class="stat-val">87%</span><span class="stat-label">Attendance Rate</span></div>
+    </div>
+</div>
+
+<!-- TIMETABLE COMPLIANCE + CAPACITY -->
+<div class="dash-grid">
+
+    <!-- Timetable Compliance Audit -->
+    <div class="dash-panel">
+        <div class="panel-header">
+            <span><i class="bi bi-clipboard-data-fill me-2"></i>Timetable Compliance Audit</span>
+            <select class="panel-select">
+                <option>Week of 25 Aug 2026</option>
+                <option>Week of 18 Aug 2026</option>
+            </select>
+        </div>
+        <div class="table-responsive">
+            <table class="dash-table">
+                <thead>
+                    <tr><th>Course</th><th>Scheduled</th><th>Delivered</th><th>Rate</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>CSE301</strong> Software Eng.</td>
+                        <td>8 sessions</td><td>8 sessions</td>
+                        <td><span class="compliance-bar"><span style="width:100%;background:#22c55e"></span></span> 100%</td>
+                        <td><span class="sched-badge badge-ongoing">Compliant</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSE305</strong> Database Sys.</td>
+                        <td>8 sessions</td><td>7 sessions</td>
+                        <td><span class="compliance-bar"><span style="width:87.5%;background:#f59e0b"></span></span> 88%</td>
+                        <td><span class="sched-badge badge-upcoming">Warning</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSE310</strong> HCI</td>
+                        <td>8 sessions</td><td>8 sessions</td>
+                        <td><span class="compliance-bar"><span style="width:100%;background:#22c55e"></span></span> 100%</td>
+                        <td><span class="sched-badge badge-ongoing">Compliant</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>CSE402</strong> Soft. Arch.</td>
+                        <td>8 sessions</td><td>6 sessions</td>
+                        <td><span class="compliance-bar"><span style="width:75%;background:#ef4444"></span></span> 75%</td>
+                        <td><span class="sched-badge" style="background:#fee2e2;color:#dc2626;">Non-Compliant</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room Capacity vs Enrollment -->
+    <div class="dash-panel">
+        <div class="panel-header">
+            <span><i class="bi bi-building me-2"></i>Room Capacity vs Enrollment</span>
+        </div>
+        <div class="capacity-list">
+            <div class="capacity-item">
+                <div class="capacity-header">
+                    <span><strong>A204</strong> — Software Engineering</span>
+                    <span class="cap-badge cap-ok">60 / 45</span>
+                </div>
+                <div class="cap-bar-wrap"><div class="cap-fill" style="width:75%;background:#22c55e"></div></div>
+                <div class="cap-meta">Capacity: 60 &nbsp;|&nbsp; Enrolled: 45 &nbsp;|&nbsp; Free: 15</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-header">
+                    <span><strong>B101</strong> — Database Systems</span>
+                    <span class="cap-badge cap-warn">80 / 76</span>
+                </div>
+                <div class="cap-bar-wrap"><div class="cap-fill" style="width:95%;background:#f59e0b"></div></div>
+                <div class="cap-meta">Capacity: 80 &nbsp;|&nbsp; Enrolled: 76 &nbsp;|&nbsp; Free: 4</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-header">
+                    <span><strong>A108</strong> — HCI</span>
+                    <span class="cap-badge cap-danger">40 / 44</span>
+                </div>
+                <div class="cap-bar-wrap"><div class="cap-fill" style="width:110%;background:#ef4444;max-width:100%"></div></div>
+                <div class="cap-meta text-danger">⚠ Over capacity! 4 students above limit.</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-header">
+                    <span><strong>C302</strong> — Software Architecture</span>
+                    <span class="cap-badge cap-ok">50 / 38</span>
+                </div>
+                <div class="cap-bar-wrap"><div class="cap-fill" style="width:76%;background:#22c55e"></div></div>
+                <div class="cap-meta">Capacity: 50 &nbsp;|&nbsp; Enrolled: 38 &nbsp;|&nbsp; Free: 12</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ATTENDANCE LOG -->
+<div class="dash-panel mt-4">
+    <div class="panel-header">
+        <span><i class="bi bi-person-lines-fill me-2"></i>Lecturer Attendance Log</span>
+        <div class="d-flex gap-2">
+            <select class="panel-select"><option>All Lecturers</option><option>Dr. J. Mugisha</option><option>Mrs. A. Byukusenge</option><option>Mr. E. Niyonsenga</option><option>Dr. P. Habimana</option></select>
+            <input type="date" class="panel-select" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="dash-table">
+            <thead><tr><th>Date</th><th>Lecturer</th><th>Course</th><th>Session</th><th>Status</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td>28 Aug 2026</td><td>Dr. J. Mugisha</td><td>CSE301</td><td>Mon 08:00</td><td><span class="att-badge att-present">Present</span></td><td>—</td></tr>
+                <tr><td>27 Aug 2026</td><td>Mrs. A. Byukusenge</td><td>CSE305</td><td>Tue 10:00</td><td><span class="att-badge att-absent">Absent</span></td><td>Official travel</td></tr>
+                <tr><td>27 Aug 2026</td><td>Mr. E. Niyonsenga</td><td>CSE310</td><td>Wed 13:00</td><td><span class="att-badge att-late">Late</span></td><td>30 min delay</td></tr>
+                <tr><td>26 Aug 2026</td><td>Dr. P. Habimana</td><td>CSE402</td><td>Thu 08:00</td><td><span class="att-badge att-present">Present</span></td><td>—</td></tr>
+                <tr><td>25 Aug 2026</td><td>Dr. J. Mugisha</td><td>CSE301</td><td>Mon 08:00</td><td><span class="att-badge att-absent">Absent</span></td><td>Make-up scheduled 30 Aug</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- PENDING ENDORSEMENTS -->
+<div class="dash-panel mt-4">
+    <div class="panel-header">
+        <span><i class="bi bi-check2-square me-2"></i>Pending Schedule Change Endorsements</span>
+        <span class="panel-badge">4 awaiting</span>
+    </div>
+    <div class="endorsement-list">
+        <div class="endorse-item">
+            <div class="endorse-body">
+                <div class="endorse-title">Room Swap — CSE301 · Mon 08:00</div>
+                <div class="endorse-sub">Requested by CP: Bob N. &nbsp;|&nbsp; A204 → Lab 01 &nbsp;|&nbsp; Reason: projector broken</div>
+                <div class="endorse-date">Submitted: 28 Aug 2026</div>
+            </div>
+            <div class="endorse-actions">
+                <button class="btn-endorse-approve"><i class="bi bi-check-lg"></i> Endorse</button>
+                <button class="btn-endorse-reject"><i class="bi bi-x-lg"></i> Reject</button>
+            </div>
+        </div>
+        <div class="endorse-item">
+            <div class="endorse-body">
+                <div class="endorse-title">Make-Up Session — CSE305 · Sat 10:00</div>
+                <div class="endorse-sub">Requested by: Mrs. A. Byukusenge &nbsp;|&nbsp; Make-up for 27 Aug absence</div>
+                <div class="endorse-date">Submitted: 27 Aug 2026</div>
+            </div>
+            <div class="endorse-actions">
+                <button class="btn-endorse-approve"><i class="bi bi-check-lg"></i> Endorse</button>
+                <button class="btn-endorse-reject"><i class="bi bi-x-lg"></i> Reject</button>
+            </div>
+        </div>
+        <div class="endorse-item">
+            <div class="endorse-body">
+                <div class="endorse-title">Room Swap — CSE310 · Wed 13:00</div>
+                <div class="endorse-sub">Requested by CP: John K. &nbsp;|&nbsp; A108 → C302 &nbsp;|&nbsp; Reason: overcapacity</div>
+                <div class="endorse-date">Submitted: 26 Aug 2026</div>
+            </div>
+            <div class="endorse-actions">
+                <button class="btn-endorse-approve"><i class="bi bi-check-lg"></i> Endorse</button>
+                <button class="btn-endorse-reject"><i class="bi bi-x-lg"></i> Reject</button>
+            </div>
+        </div>
+    </div>
+</div>

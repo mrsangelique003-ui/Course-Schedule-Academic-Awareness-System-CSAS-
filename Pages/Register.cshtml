@@ -1,0 +1,210 @@
+@page
+@model CourseScheduleSystem.Web.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Create Account | CSAS";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(135deg, rgba(15,32,67,.91) 0%, rgba(21,86,200,.83) 100%),
+                url('https://site.unilak.ac.rw/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-20-at-9.39.54-PM-1024x818.jpeg')
+                no-repeat center center / cover fixed;
+            padding: 2rem 1rem 5rem;
+        }
+        .reg-card {
+            background: rgba(255,255,255,.97);
+            border-radius: 18px;
+            box-shadow: 0 25px 60px rgba(0,0,0,.35);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 480px;
+        }
+        .reg-logo { text-align: center; margin-bottom: 1.5rem; }
+        .reg-logo img { height: 50px; margin-bottom: .5rem; }
+        .reg-logo .brand { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; color: #153f83; }
+        .reg-logo .sub { font-size: 12px; color: #6c8097; }
+        .form-label { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+        .form-control, .form-select {
+            border: 1.5px solid #e2e8f0; border-radius: 9px;
+            padding: .65rem 1rem; font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #1556c8;
+            box-shadow: 0 0 0 3px rgba(21,86,200,.12);
+            outline: none;
+        }
+        .input-wrap { position: relative; }
+        .input-wrap .form-control { padding-left: 2.6rem; }
+        .input-wrap .fi { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 15px; }
+        .pw-toggle { position: absolute; right: .85rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 15px; padding: 0; }
+        .session-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .6rem; }
+        .session-opt input { display: none; }
+        .session-opt label {
+            display: block; text-align: center; padding: .6rem .5rem;
+            border: 1.5px solid #e2e8f0; border-radius: 9px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: .2s; color: #374151;
+        }
+        .session-opt input:checked + label {
+            border-color: #1556c8; background: #eff6ff; color: #1556c8;
+        }
+        .btn-register {
+            background: #142d4d; color: #fff; border: none;
+            border-radius: 10px; padding: .8rem; width: 100%;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            transition: background .2s, transform .15s; margin-top: .25rem;
+        }
+        .btn-register:hover { background: #1556c8; transform: translateY(-1px); }
+        .login-link { text-align: center; font-size: 13px; margin-top: .9rem; color: #6b7280; }
+        .login-link a { color: #1556c8; text-decoration: none; font-weight: 600; }
+        .alert-reg { font-size: 13px; border-radius: 8px; padding: .6rem .9rem; }
+        .stats-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(10,22,48,.85); backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,.08);
+            display: flex; justify-content: center; gap: 4rem;
+            padding: .8rem 2rem;
+        }
+        .stats-item { text-align: center; }
+        .stats-item strong { display: block; font-size: 12px; color: #fff; font-weight: 700; }
+        .stats-item span { font-size: 11px; color: rgba(255,255,255,.5); }
+        @@media (max-width: 600px) {
+            .session-grid { grid-template-columns: 1fr 1fr; }
+            .stats-bar { gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="reg-card">
+    <div class="reg-logo">
+        <img src="https://site.unilak.ac.rw/wp-content/uploads/2022/02/UNILAK-Logo.png"
+             alt="UNILAK" onerror="this.style.display='none'" />
+        <div class="brand">CSAS — UNILAK</div>
+        <div class="sub">CIT Faculty · CIS Department · New Student Registration</div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-reg mb-3">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i>@Model.ErrorMessage
+        </div>
+    }
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
+
+        <div class="mb-3">
+            <label class="form-label">Registration Number (Reg No.)</label>
+            <div class="input-wrap">
+                <i class="bi bi-person-badge fi"></i>
+                <input asp-for="RegNo" class="form-control" placeholder="e.g. 2024/BIT/001" />
+            </div>
+            <span asp-validation-for="RegNo" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <div class="input-wrap">
+                <i class="bi bi-person fi"></i>
+                <input asp-for="FullName" class="form-control" placeholder="e.g. Alice Uwimana" />
+            </div>
+            <span asp-validation-for="FullName" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Department</label>
+            <div class="input-wrap">
+                <i class="bi bi-building fi"></i>
+                <input type="text" class="form-control" value="CIS — Computer Information Systems" readonly style="background:#f8fafc;" />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Study Session</label>
+            <div class="session-grid">
+                <div class="session-opt">
+                    <input type="radio" asp-for="StudySession" id="sessDay" value="Day" checked />
+                    <label for="sessDay"><i class="bi bi-sun me-1"></i>Day</label>
+                </div>
+                <div class="session-opt">
+                    <input type="radio" asp-for="StudySession" id="sessEve" value="Evening" />
+                    <label for="sessEve"><i class="bi bi-moon me-1"></i>Evening</label>
+                </div>
+                <div class="session-opt">
+                    <input type="radio" asp-for="StudySession" id="sessWknd" value="Weekend" />
+                    <label for="sessWknd"><i class="bi bi-calendar2-week me-1"></i>Weekend</label>
+                </div>
+            </div>
+            <span asp-validation-for="StudySession" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <div class="input-wrap">
+                <i class="bi bi-lock-fill fi"></i>
+                <input asp-for="Password" type="password" id="pw1" class="form-control" placeholder="At least 6 characters" />
+                <button type="button" class="pw-toggle" onclick="toggle('pw1','eye1')">
+                    <i class="bi bi-eye" id="eye1"></i>
+                </button>
+            </div>
+            <span asp-validation-for="Password" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <div class="input-wrap">
+                <i class="bi bi-lock fi"></i>
+                <input asp-for="ConfirmPassword" type="password" id="pw2" class="form-control" placeholder="Repeat your password" />
+                <button type="button" class="pw-toggle" onclick="toggle('pw2','eye2')">
+                    <i class="bi bi-eye" id="eye2"></i>
+                </button>
+            </div>
+            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+        </div>
+
+        <button type="submit" class="btn-register">
+            <i class="bi bi-person-plus-fill me-2"></i>Create Account
+        </button>
+    </form>
+
+    <div class="login-link">
+        Already have an account? <a href="/Login">Sign in →</a>
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stats-item"><strong>Secure</strong><span>MIS-backed registration</span></div>
+    <div class="stats-item"><strong>Role-aware</strong><span>Auto-assigned as Student</span></div>
+    <div class="stats-item"><strong>Session-filtered</strong><span>Day / Evening / Weekend</span></div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function toggle(fieldId, iconId) {
+        var f = document.getElementById(fieldId);
+        var i = document.getElementById(iconId);
+        if (f.type === 'password') { f.type = 'text'; i.className = 'bi bi-eye-slash'; }
+        else { f.type = 'password'; i.className = 'bi bi-eye'; }
+    }
+</script>
+</body>
+</html>

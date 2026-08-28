@@ -1,85 +1,186 @@
 ﻿@page
-@model IndexModel
+@model CourseScheduleSystem.Web.Pages.Student.DashboardModel
 @{
-    ViewData["Title"] = "Student Course Schedule";
+    ViewData["Title"] = "Student Dashboard";
+    Layout = "~/Pages/Shared/_DashboardLayout.cshtml";
+    ViewData["ActiveNav"] = "home";
+    ViewData["Role"] = "Student";
+    ViewData["UserName"] = User.Identity?.Name ?? "Student";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- ── WELCOME BAR ──────────────────────────────────────────────────── -->
+<div class="dash-welcome">
     <div>
-        <h3 class="fw-bold mb-1">Weekly Class Schedule</h3>
-        <p class="text-muted mb-0">Track upcoming lectures, assigned venues, and attendance awareness status.</p>
+        <h2 class="dash-heading">Good morning, @ViewData["UserName"] 👋</h2>
+        <p class="dash-subheading">Here's your academic overview for today — @DateTime.Now.ToString("dddd, dd MMMM yyyy")</p>
     </div>
-    <div class="d-flex gap-2">
-        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i> Export PDF</button>
-    </div>
-</div>
-
-<!-- Quick Awareness Metrics -->
-<div class="row g-3 mb-4">
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="stat-label">Total Scheduled Hours</div>
-            <div class="stat-value">36 hrs</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="stat-label">Verified Delivered Hours</div>
-            <div class="stat-value text-success">28 hrs</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="stat-label">Attendance Rate</div>
-            <div class="stat-value">88.5%</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="stat-label">Pending Verifications</div>
-            <div class="stat-value text-warning">2 Sessions</div>
-        </div>
+    <div class="dash-welcome-badge">
+        <i class="bi bi-mortarboard-fill"></i> Student · CIS Department
     </div>
 </div>
 
-<!-- Interactive Weekly Schedule Table -->
-<div class="dashboard-card">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th>Day / Time</th>
-                    <th>Course Code & Name</th>
-                    <th>Lecturer</th>
-                    <th>Venue</th>
-                    <th>Delivered Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong class="d-block">Monday</strong><small class="text-muted">08:00 - 11:00 AM</small></td>
-                    <td>
-                        <div class="fw-semibold">BIT 3102</div>
-                        <small class="text-muted">Web Development Technologies</small>
-                    </td>
-                    <td>Dr. Kamali Eric</td>
-                    <td><span class="badge bg-light text-dark border">Lab 3</span></td>
-                    <td><span class="status-badge status-verified"><i class="bi bi-check-circle-fill me-1"></i> Verified</span></td>
-                    <td><button class="btn btn-sm btn-light border" title="View details"><i class="bi bi-eye"></i></button></td>
-                </tr>
-                <tr>
-                    <td><strong class="d-block">Tuesday</strong><small class="text-muted">01:00 - 04:00 PM</small></td>
-                    <td>
-                        <div class="fw-semibold">BIT 3105</div>
-                        <small class="text-muted">Database Management Systems</small>
-                    </td>
-                    <td>Prof. Mukamana J.</td>
-                    <td><span class="badge bg-light text-dark border">Room 102</span></td>
-                    <td><span class="status-badge status-pending"><i class="bi bi-clock-history me-1"></i> Pending CP Sign-off</span></td>
-                    <td><button class="btn btn-sm btn-light border"><i class="bi bi-eye"></i></button></td>
-                </tr>
-            </tbody>
-        </table>
+<!-- ── STAT CARDS ───────────────────────────────────────────────────── -->
+<div class="dash-stats">
+    <div class="stat-card stat-blue">
+        <div class="stat-icon"><i class="bi bi-calendar3"></i></div>
+        <div class="stat-info"><span class="stat-val">4</span><span class="stat-label">Classes Today</span></div>
+    </div>
+    <div class="stat-card stat-green">
+        <div class="stat-icon"><i class="bi bi-book-fill"></i></div>
+        <div class="stat-info"><span class="stat-val">6</span><span class="stat-label">Enrolled Courses</span></div>
+    </div>
+    <div class="stat-card stat-orange">
+        <div class="stat-icon"><i class="bi bi-alarm-fill"></i></div>
+        <div class="stat-info"><span class="stat-val">2</span><span class="stat-label">Deadlines Soon</span></div>
+    </div>
+    <div class="stat-card stat-red">
+        <div class="stat-icon"><i class="bi bi-bell-fill"></i></div>
+        <div class="stat-info"><span class="stat-val">5</span><span class="stat-label">Unread Notifications</span></div>
+    </div>
+</div>
+
+<!-- ── MAIN GRID ─────────────────────────────────────────────────────── -->
+<div class="dash-grid">
+
+    <!-- TODAY'S SCHEDULE -->
+    <div class="dash-panel">
+        <div class="panel-header">
+            <span><i class="bi bi-calendar-week-fill me-2"></i>Today's Schedule</span>
+            <span class="panel-badge">Monday</span>
+        </div>
+        <div class="schedule-list">
+            <div class="schedule-item">
+                <div class="sched-time"><span>08:00</span><span class="sched-end">10:00</span></div>
+                <div class="sched-bar bar-blue"></div>
+                <div class="sched-info">
+                    <div class="sched-course">Software Engineering</div>
+                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block A — Room A204 &nbsp;|&nbsp; <i class="bi bi-person"></i> Dr. J. Mugisha</div>
+                </div>
+                <span class="sched-badge badge-ongoing">Ongoing</span>
+            </div>
+            <div class="schedule-item">
+                <div class="sched-time"><span>10:00</span><span class="sched-end">12:00</span></div>
+                <div class="sched-bar bar-purple"></div>
+                <div class="sched-info">
+                    <div class="sched-course">Database Systems</div>
+                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block B — Room B101 &nbsp;|&nbsp; <i class="bi bi-person"></i> Mrs. A. Byukusenge</div>
+                </div>
+                <span class="sched-badge badge-upcoming">Upcoming</span>
+            </div>
+            <div class="schedule-item">
+                <div class="sched-time"><span>13:00</span><span class="sched-end">15:00</span></div>
+                <div class="sched-bar bar-green"></div>
+                <div class="sched-info">
+                    <div class="sched-course">Human-Computer Interaction</div>
+                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block A — Room A108 &nbsp;|&nbsp; <i class="bi bi-person"></i> Mr. E. Niyonsenga</div>
+                </div>
+                <span class="sched-badge badge-upcoming">Upcoming</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="dash-panel">
+        <div class="panel-header">
+            <span><i class="bi bi-bell-fill me-2"></i>Notifications</span>
+            <a href="#" class="panel-link">Mark all read</a>
+        </div>
+        <div class="notif-list">
+            <div class="notif-item notif-unread">
+                <div class="notif-icon notif-orange"><i class="bi bi-geo-alt-fill"></i></div>
+                <div class="notif-body">
+                    <div class="notif-title">Room Shift — CSE301</div>
+                    <div class="notif-text">Software Engineering moved from A204 → Lab 01 today.</div>
+                    <div class="notif-time">5 minutes ago</div>
+                </div>
+            </div>
+            <div class="notif-item notif-unread">
+                <div class="notif-icon notif-red"><i class="bi bi-alarm-fill"></i></div>
+                <div class="notif-body">
+                    <div class="notif-title">Registration Deadline</div>
+                    <div class="notif-text">CSE402 — Software Architecture closes in 2 days.</div>
+                    <div class="notif-time">2 hours ago</div>
+                </div>
+            </div>
+            <div class="notif-item">
+                <div class="notif-icon notif-blue"><i class="bi bi-megaphone-fill"></i></div>
+                <div class="notif-body">
+                    <div class="notif-title">CP Announcement — CSE305</div>
+                    <div class="notif-text">Tomorrow's class starts 30 min early. Bring your laptops.</div>
+                    <div class="notif-time">Yesterday</div>
+                </div>
+            </div>
+            <div class="notif-item">
+                <div class="notif-icon notif-green"><i class="bi bi-check-circle-fill"></i></div>
+                <div class="notif-body">
+                    <div class="notif-title">Enrollment Confirmed</div>
+                    <div class="notif-text">You are successfully enrolled in CSE310 HCI.</div>
+                    <div class="notif-time">3 days ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── ENROLLED COURSES ───────────────────────────────────────────── -->
+<div class="dash-panel mt-4">
+    <div class="panel-header">
+        <span><i class="bi bi-collection-fill me-2"></i>Enrolled Courses</span>
+        <span class="panel-badge">Semester 1 · 2026</span>
+    </div>
+    <div class="courses-grid">
+        <div class="course-card">
+            <div class="course-code">CSE301</div>
+            <div class="course-name">Software Engineering</div>
+            <div class="course-meta"><i class="bi bi-person-fill"></i> Dr. J. Mugisha</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Mon 08:00–10:00 · A204</div>
+            <div class="course-footer">
+                <span class="course-status status-open">Open</span>
+                <div class="course-actions">
+                    <a href="https://chat.whatsapp.com/example1" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: Bob N. — <a href="#">Contact</a></div>
+        </div>
+        <div class="course-card">
+            <div class="course-code">CSE305</div>
+            <div class="course-name">Database Systems</div>
+            <div class="course-meta"><i class="bi bi-person-fill"></i> Mrs. A. Byukusenge</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Tue 10:00–12:00 · B101</div>
+            <div class="course-footer">
+                <span class="course-status status-open">Open</span>
+                <div class="course-actions">
+                    <a href="https://chat.whatsapp.com/example2" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: Alice U. — <a href="#">Contact</a></div>
+        </div>
+        <div class="course-card">
+            <div class="course-code">CSE310</div>
+            <div class="course-name">Human-Computer Interaction</div>
+            <div class="course-meta"><i class="bi bi-person-fill"></i> Mr. E. Niyonsenga</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Wed 13:00–15:00 · A108</div>
+            <div class="course-footer">
+                <span class="course-status status-open">Open</span>
+                <div class="course-actions">
+                    <a href="https://chat.whatsapp.com/example3" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: John K. — <a href="#">Contact</a></div>
+        </div>
+        <div class="course-card course-card-deadline">
+            <div class="course-code">CSE402</div>
+            <div class="course-name">Software Architecture</div>
+            <div class="course-meta"><i class="bi bi-person-fill"></i> Dr. P. Habimana</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Thu 08:00–10:00 · C302</div>
+            <div class="course-footer">
+                <span class="course-status status-closing">Closing Soon</span>
+                <div class="course-actions">
+                    <a href="https://chat.whatsapp.com/example4" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+            <div class="cp-info"><i class="bi bi-alarm-fill text-warning"></i> Registration closes Sept 04</div>
+        </div>
     </div>
 </div>

@@ -1,11 +1,9 @@
 @page
-@using Course_Schedule_Academic_Awareness_System_CSAAS.Pages
-@model LoginModel
+@model CourseScheduleSystem.Web.Pages.LoginModel
 @{
-    ViewData["Title"] = "Login | CSAAS";
+    ViewData["Title"] = "Sign In | CSAS";
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,161 +11,296 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
     <style>
-        .auth-page {
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
             display: flex;
-            background: linear-gradient(135deg, rgba(15, 32, 67, 0.88), rgba(27, 85, 155, 0.82)),
-                        url('https://site.unilak.ac.rw/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-20-at-9.39.54-PM-1024x818.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                linear-gradient(135deg, rgba(15,32,67,.90) 0%, rgba(21,86,200,.82) 100%),
+                url('https://site.unilak.ac.rw/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-20-at-9.39.54-PM-1024x818.jpeg')
+                no-repeat center center / cover fixed;
         }
 
-        .auth-panel-brand {
-            flex: 1;
+        /* ── LEFT PANEL ───────────────────────────────────── */
+        .intro-col {
+            flex: 1.1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3rem;
-            color: #ffffff;
+            padding: 3rem 4rem;
+            color: #fff;
         }
-
-        .auth-brand-content {
-            max-width: 520px;
+        .intro-inner { max-width: 480px; }
+        .intro-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,.15); backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,.25);
+            padding: 6px 14px; border-radius: 30px;
+            font-size: 12px; font-weight: 600; letter-spacing: .04em;
+            text-transform: uppercase; margin-bottom: 1.5rem;
         }
-
-        .auth-brand-badge {
-            display: inline-block;
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .live-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34,197,94,.3);
+            animation: pulse 2s infinite;
         }
+        @@keyframes pulse { 0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,.3)} 50%{box-shadow:0 0 0 6px rgba(34,197,94,.1)} }
+        .intro-eyebrow { font-size: 13px; color: rgba(255,255,255,.7); margin-bottom: .75rem; display: flex; align-items: center; gap: 6px; }
+        .intro-inner h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem,3.5vw,2.8rem); line-height: 1.1; margin-bottom: 1.25rem; }
+        .intro-inner h1 span { color: #60a5fa; display: block; }
+        .intro-lead { font-size: 15px; color: rgba(255,255,255,.75); line-height: 1.75; margin-bottom: 2rem; }
 
-        .auth-panel-form {
-            flex: 1;
+        /* Deadline card */
+        .deadline-card {
+            background: rgba(255,255,255,.1); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,.2); border-radius: 14px;
+            padding: 1.25rem; margin-bottom: 1.5rem;
+        }
+        .deadline-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+        .deadline-card-header strong { font-size: 13px; display: flex; align-items: center; gap: 6px; }
+        .badge-closing { background: rgba(251,146,60,.2); color: #fdba74; border-radius: 20px; font-size: 11px; font-weight: 600; padding: 3px 10px; }
+        .deadline-course { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+        .deadline-sub { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: .75rem; }
+        .deadline-count { font-size: 22px; font-weight: 700; color: #fbbf24; margin-bottom: .5rem; }
+        .progress-bar-wrap { background: rgba(255,255,255,.15); border-radius: 8px; height: 6px; margin-bottom: .6rem; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg,#f97316,#ef4444); border-radius: 8px; width: 77%; }
+        .deadline-footer { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,.6); }
+        .deadline-footer a { color: #93c5fd; text-decoration: none; }
+
+        /* Feature row */
+        .feature-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .feature-pill {
+            flex: 1; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+            border-radius: 10px; padding: .65rem .9rem; font-size: 12px; font-weight: 500;
+        }
+        .feature-pill strong { display: block; font-size: 12px; margin-bottom: 2px; }
+        .feature-pill span { color: rgba(255,255,255,.6); font-size: 11px; }
+
+        /* Avatar stack */
+        .campus-note { display: flex; align-items: center; gap: 12px; font-size: 12px; color: rgba(255,255,255,.7); }
+        .avatar-stack { display: flex; }
+        .avatar-stack span {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: #1e40af; border: 2px solid rgba(255,255,255,.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 700; margin-left: -8px;
+        }
+        .avatar-stack span:first-child { margin-left: 0; }
+
+        /* ── RIGHT PANEL (LOGIN CARD) ────────────────────── */
+        .login-col {
+            flex: 0.9;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 2rem;
         }
-
-        .auth-form-card {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(10px);
+        .login-card {
+            background: rgba(255,255,255,.97);
+            border-radius: 18px;
+            box-shadow: 0 25px 60px rgba(0,0,0,.35);
             padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
             width: 100%;
-            max-width: 450px;
+            max-width: 420px;
         }
-
-        .btn-auth-submit {
-            background-color: #0f2043;
-            color: #ffffff;
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            margin-top: 1rem;
-            transition: background-color 0.2s ease;
+        .login-logo { text-align: center; margin-bottom: 1.5rem; }
+        .login-logo img { height: 56px; margin-bottom: .6rem; }
+        .login-logo .mis-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #153f83; }
+        .login-logo .mis-sub { font-size: 12px; color: #6c8097; }
+        .login-logo .mis-campus { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+        .form-label { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+        .form-control {
+            border: 1.5px solid #e2e8f0; border-radius: 9px;
+            padding: .65rem 1rem; font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
         }
-
-        .btn-auth-submit:hover {
-            background-color: #1b559b;
-            color: #ffffff;
+        .form-control:focus { border-color: #1556c8; box-shadow: 0 0 0 3px rgba(21,86,200,.12); outline: none; }
+        .input-icon-wrap { position: relative; }
+        .input-icon-wrap .form-control { padding-left: 2.6rem; }
+        .input-icon-wrap .field-icon { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 15px; }
+        .pw-toggle { position: absolute; right: .85rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 15px; padding: 0; }
+        .btn-login {
+            background: #142d4d; color: #fff; border: none;
+            border-radius: 10px; padding: .8rem; width: 100%;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            transition: background .2s, transform .15s;
+            margin-top: .5rem;
         }
+        .btn-login:hover { background: #1556c8; transform: translateY(-1px); }
+        .login-links { display: flex; justify-content: space-between; font-size: 12.5px; margin-top: .9rem; }
+        .login-links a { color: #1556c8; text-decoration: none; }
+        .login-links a:hover { text-decoration: underline; }
+        .status-bar { text-align: center; margin-top: 1.1rem; font-size: 11.5px; color: rgba(255,255,255,.65); display: flex; justify-content: center; gap: 1.5rem; }
+        .status-bar .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; vertical-align: middle; margin-right: 4px; }
+        .status-bar a { color: rgba(255,255,255,.75); text-decoration: none; }
 
-        @media (max-width: 991px) {
-            .auth-page {
-                flex-direction: column;
-            }
-            .auth-panel-brand {
-                padding: 2rem 1.5rem 1rem;
-            }
+        /* ── STATS BAR ───────────────────────────────────── */
+        .stats-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(10,22,48,.85); backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,.08);
+            display: grid; grid-template-columns: repeat(3,1fr);
+            padding: .9rem 3rem; z-index: 10;
+        }
+        .stats-item { text-align: center; }
+        .stats-item strong { display: block; font-size: 13px; color: #fff; font-weight: 700; }
+        .stats-item span { font-size: 11px; color: rgba(255,255,255,.5); }
+
+        /* alert */
+        .alert-login { font-size: 13px; border-radius: 8px; padding: .6rem .9rem; }
+
+        @@media (max-width: 900px) {
+            body { flex-direction: column; }
+            .intro-col { padding: 2rem 1.5rem 1rem; }
+            .stats-bar { position: static; grid-template-columns: 1fr; text-align: center; gap: .5rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="auth-page">
-    <div class="auth-panel-brand">
-        <div class="auth-brand-content">
-            <span class="auth-brand-badge">UNILAK Academic Portal</span>
-            <h2>Welcome back to the Course Schedule &amp; Academic Awareness System</h2>
-            <p class="mt-3">
-                Sign in to access your timetable, verified WhatsApp groups, and academic
-                communications tailored to your role.
-            </p>
-            <ul class="auth-feature-list list-unstyled mt-4">
-                <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Real-time timetable synchronization</li>
-                <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Role-based dashboard access</li>
-                <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i> Verified official communication channels</li>
-            </ul>
+<!-- ── LEFT: INTRO ────────────────────────────────────────────────── -->
+<div class="intro-col">
+    <div class="intro-inner">
+        <div class="intro-badge">
+            <span class="live-dot"></span>
+            CIT Faculty · CIS Department
         </div>
-    </div>
+        <div class="intro-eyebrow">
+            <i class="bi bi-stars"></i> Your academic day, made visible
+        </div>
+        <h1>Stay ahead of your <span>academic journey.</span></h1>
+        <p class="intro-lead">
+            A single, reliable view of your timetable, room shifts, course deadlines,
+            and the people who keep your class moving.
+        </p>
 
-    <div class="auth-panel-form">
-        <div class="auth-form-card">
-            <h1 class="h3 mb-2">Sign In</h1>
-            <p class="auth-subtitle text-muted mb-3">Enter your credentials to access your account</p>
-
-            <div class="auth-demo-note alert alert-info py-2 px-3 mb-3 fs-7">
-                <i class="bi bi-info-circle-fill me-1"></i>
-                <span>UI preview only — this form is not yet connected to a backend.</span>
+        <!-- Deadline awareness card -->
+        <div class="deadline-card">
+            <div class="deadline-card-header">
+                <strong><i class="bi bi-bell-fill"></i> Registration alert</strong>
+                <span class="badge-closing">Closing soon</span>
             </div>
+            <div class="deadline-course">Advanced Programming</div>
+            <div class="deadline-sub">AP · Registration closes in 2 days</div>
+            <div class="deadline-count">02 days left</div>
+            <div class="progress-bar-wrap"><div class="progress-fill"></div></div>
+            <div class="deadline-footer">
+                <span>01 Sept — 04 Sept</span>
+                <a href="#">View course →</a>
+            </div>
+        </div>
 
-            <form method="post">
-                <div class="auth-form-group mb-3">
-                    <label for="email" class="form-label">Email or Registration Number</label>
-                    <input type="text" id="email" asp-for="Email" class="form-control" placeholder="e.g. jane.doe@unilak.ac.rw" required />
-                </div>
+        <!-- Feature pills -->
+        <div class="feature-row">
+            <div class="feature-pill">
+                <strong><i class="bi bi-shield-lock-fill me-1"></i> MIS Security</strong>
+                <span>Protected access</span>
+            </div>
+            <div class="feature-pill">
+                <strong><i class="bi bi-geo-alt-fill me-1"></i> Live room tracking</strong>
+                <span>Instant shift alerts</span>
+            </div>
+        </div>
 
-                <div class="auth-form-group mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" asp-for="Password" class="form-control" placeholder="Enter your password" required />
-                </div>
-
-                <div class="auth-form-group mb-3">
-                    <label for="role" class="form-label">Login As</label>
-                    <select id="role" asp-for="Role" class="form-select">
-                        <option value="student">Student</option>
-                        <option value="cp">Class Representative</option>
-                        <option value="hod">HOD / Lecturer</option>
-                        <option value="dean">Dean</option>
-                        <option value="quality">Quality Director</option>
-                    </select>
-                </div>
-
-                <div class="auth-options-row d-flex justify-content-between align-items-center mb-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="remember" />
-                        <label class="form-check-label" for="remember">Remember me</label>
-                    </div>
-                    <a href="#" class="text-decoration-none">Forgot password?</a>
-                </div>
-
-                <button type="submit" class="btn-auth-submit">Sign In</button>
-            </form>
-
-            <div class="auth-divider text-center my-3 text-muted">OR</div>
-
-            <p class="auth-switch-text text-center mb-0">
-                New to CSAAS? <a href="/Register" class="text-decoration-none fw-bold">Create an account</a>
-            </p>
+        <!-- Campus note -->
+        <div class="campus-note">
+            <div class="avatar-stack">
+                <span>U</span><span>C</span><span>Q</span>
+            </div>
+            <span>Built for your faculty. Trusted by students, CPs, and academic leaders.</span>
         </div>
     </div>
 </div>
 
+<!-- ── RIGHT: LOGIN ───────────────────────────────────────────────── -->
+<div class="login-col">
+    <div class="login-card">
+        <div class="login-logo">
+            <img src="https://site.unilak.ac.rw/wp-content/uploads/2022/02/UNILAK-Logo.png"
+                 alt="UNILAK"
+                 onerror="this.style.display='none'" />
+            <div class="mis-title">UNILAK MIS</div>
+            <div class="mis-sub">Management Information System</div>
+            <div class="mis-campus">University of Lay Adventists of Kigali</div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger alert-login mb-3">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>@Model.ErrorMessage
+            </div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
+
+            <div class="mb-3">
+                <label class="form-label">Username / Reg No.</label>
+                <div class="input-icon-wrap">
+                    <i class="bi bi-person field-icon"></i>
+                    <input asp-for="RegNo" class="form-control" placeholder="e.g. STU001" />
+                </div>
+                <span asp-validation-for="RegNo" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-icon-wrap">
+                    <i class="bi bi-lock-fill field-icon"></i>
+                    <input asp-for="Password" type="password" id="pwField" class="form-control" placeholder="Your MIS password" />
+                    <button type="button" class="pw-toggle" onclick="togglePw()">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn-login">Sign in to CSAS →</button>
+        </form>
+
+        <div class="login-links">
+            <a href="/ForgotPassword">Forgot password?</a>
+            <a href="/Register">New Student? Create Account</a>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <span><span class="dot"></span>System status: all services operational</span>
+        <a href="#">Need help?</a>
+    </div>
+</div>
+
+<!-- ── STATS BAR ─────────────────────────────────────────────────── -->
+<div class="stats-bar">
+    <div class="stats-item">
+        <strong>One clear view</strong>
+        <span>Schedules, courses &amp; deadlines</span>
+    </div>
+    <div class="stats-item">
+        <strong>Always informed</strong>
+        <span>Room and class notifications</span>
+    </div>
+    <div class="stats-item">
+        <strong>Role-aware access</strong>
+        <span>Tools for every academic role</span>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function togglePw() {
+        var f = document.getElementById('pwField');
+        var i = document.getElementById('eyeIcon');
+        if (f.type === 'password') { f.type = 'text'; i.className = 'bi bi-eye-slash'; }
+        else { f.type = 'password'; i.className = 'bi bi-eye'; }
+    }
+</script>
 </body>
 </html>
