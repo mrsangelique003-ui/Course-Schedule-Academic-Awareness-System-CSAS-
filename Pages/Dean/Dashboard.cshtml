@@ -433,8 +433,199 @@
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════
+     EMERGENCY ANNOUNCEMENT PANEL
+════════════════════════════════════════════════════ -->
+<div class="dash-panel mt-4" id="emergencyPanel">
+
+    <!-- Header with red alert strip -->
+    <div style="background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff;
+                padding:1rem 1.25rem;border-radius:13px 13px 0 0;
+                display:flex;align-items:center;justify-content:space-between;">
+        <span style="display:flex;align-items:center;gap:12px;">
+            <span style="width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;
+                         display:flex;align-items:center;justify-content:center;font-size:20px;">
+                <i class="bi bi-broadcast-pin"></i>
+            </span>
+            <div>
+                <div style="font-size:15px;font-weight:800;">Emergency Announcement</div>
+                <div style="font-size:11px;opacity:.75;">Broadcast instantly to all users — Dean / HOD only</div>
+            </div>
+        </span>
+        <span style="background:rgba(255,255,255,.2);border-radius:20px;
+                     font-size:11px;font-weight:700;padding:4px 12px;
+                     display:flex;align-items:center;gap:5px;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#4ade80;
+                         display:inline-block;box-shadow:0 0 0 3px rgba(74,222,128,.3);"></span>
+            Live broadcast enabled
+        </span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:1.25rem;padding:1.25rem;">
+
+        <!-- Compose form -->
+        <div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold" style="font-size:13px;">Announcement Type</label>
+                <div style="display:flex;gap:.6rem;">
+                    <label style="flex:1;cursor:pointer;">
+                        <input type="radio" name="emgTypeRadio" value="Emergency"
+                               onchange="document.getElementById('emgType').value=this.value;updateEmgStyle(this.value)"
+                               style="display:none;" checked />
+                        <div class="emg-type-pill" id="pill-Emergency"
+                             style="text-align:center;padding:.5rem .75rem;border-radius:9px;
+                                    font-size:12px;font-weight:700;cursor:pointer;border:2px solid #dc2626;
+                                    background:#fef2f2;color:#dc2626;">
+                            🚨 Emergency
+                        </div>
+                    </label>
+                    <label style="flex:1;cursor:pointer;">
+                        <input type="radio" name="emgTypeRadio" value="Urgent"
+                               onchange="document.getElementById('emgType').value=this.value;updateEmgStyle(this.value)"
+                               style="display:none;" />
+                        <div class="emg-type-pill" id="pill-Urgent"
+                             style="text-align:center;padding:.5rem .75rem;border-radius:9px;
+                                    font-size:12px;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;
+                                    background:#f8fafc;color:#6c8097;">
+                            ⚠️ Urgent
+                        </div>
+                    </label>
+                    <label style="flex:1;cursor:pointer;">
+                        <input type="radio" name="emgTypeRadio" value="Notice"
+                               onchange="document.getElementById('emgType').value=this.value;updateEmgStyle(this.value)"
+                               style="display:none;" />
+                        <div class="emg-type-pill" id="pill-Notice"
+                             style="text-align:center;padding:.5rem .75rem;border-radius:9px;
+                                    font-size:12px;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;
+                                    background:#f8fafc;color:#6c8097;">
+                            📢 Notice
+                        </div>
+                    </label>
+                </div>
+                <input type="hidden" id="emgType" value="Emergency" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold" style="font-size:13px;">Broadcast To</label>
+                <select id="emgTarget" class="form-select" style="font-size:13px;">
+                    <option value="All Users">🌐 All Users (Students + Staff)</option>
+                    <option value="All Students">🎓 All Students</option>
+                    <option value="Day Session Students">☀️ Day Session Students</option>
+                    <option value="Evening Session Students">🌙 Evening Session Students</option>
+                    <option value="Weekend Session Students">📅 Weekend Session Students</option>
+                    <option value="Finalist Students (Year 4)">🏁 Finalist Students (Year 4)</option>
+                    <option value="Class Representatives">📋 Class Representatives (CPs)</option>
+                    <option value="All Lecturers">👨‍🏫 All Lecturers</option>
+                    <option value="CIS Department">🏢 CIS Department</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold" style="font-size:13px;">Announcement Title</label>
+                <input type="text" id="emgTitle" class="form-control"
+                       placeholder="e.g. Urgent: Class Cancellation — All Sessions Today"
+                       style="font-size:13px;border:1.5px solid #fca5a5;" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold" style="font-size:13px;">Message</label>
+                <textarea id="emgMessage" class="form-control" rows="4"
+                          placeholder="Write your emergency announcement here. Be clear and specific about what action students/staff need to take…"
+                          style="font-size:13px;border:1.5px solid #fca5a5;resize:none;"></textarea>
+                <div style="font-size:11px;color:#6c8097;margin-top:4px;">
+                    <i class="bi bi-info-circle me-1"></i>
+                    This message will appear as a notification on every recipient's dashboard immediately.
+                </div>
+            </div>
+
+            <div style="display:flex;gap:.75rem;align-items:center;">
+                <button id="emgSendBtn" onclick="sendEmergencyAnnouncement()"
+                        style="flex:1;background:linear-gradient(135deg,#b91c1c,#dc2626);
+                               color:#fff;border:none;border-radius:10px;padding:.75rem;
+                               font-size:14px;font-weight:800;cursor:pointer;
+                               display:flex;align-items:center;justify-content:center;gap:8px;
+                               box-shadow:0 6px 20px rgba(220,38,38,.35);transition:.2s;">
+                    <i class="bi bi-broadcast me-1"></i>Broadcast Now
+                </button>
+                <div style="font-size:11px;color:#6c8097;max-width:120px;line-height:1.5;">
+                    <i class="bi bi-shield-lock me-1"></i>Dean / HOD authorization required
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent sent log -->
+        <div>
+            <div style="font-size:13px;font-weight:800;color:#142d4d;margin-bottom:.75rem;
+                        display:flex;align-items:center;gap:7px;">
+                <i class="bi bi-clock-history" style="color:#dc2626;"></i>
+                Recent Broadcasts
+            </div>
+            <div class="table-responsive">
+                <table class="dash-table" style="font-size:12px;">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Title</th>
+                            <th>To</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="emgSentLog">
+                        <tr>
+                            <td>28 Aug 09:15</td>
+                            <td><strong>Room change — CSE301</strong></td>
+                            <td>All Students</td>
+                            <td><span style="background:#fff7ed;color:#ea580c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">Urgent</span></td>
+                            <td><span class="sched-badge badge-ongoing">Delivered</span></td>
+                        </tr>
+                        <tr>
+                            <td>25 Aug 14:00</td>
+                            <td><strong>Library closed tomorrow</strong></td>
+                            <td>All Users</td>
+                            <td><span style="background:#eff6ff;color:#1556c8;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">Notice</span></td>
+                            <td><span class="sched-badge badge-ongoing">Delivered</span></td>
+                        </tr>
+                        <tr>
+                            <td>20 Aug 08:00</td>
+                            <td><strong>Power outage — No evening classes</strong></td>
+                            <td>Evening Students</td>
+                            <td><span style="background:#fef2f2;color:#dc2626;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">Emergency</span></td>
+                            <td><span class="sched-badge badge-ongoing">Delivered</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 <script>
+    function updateEmgStyle(selected) {
+        ['Emergency','Urgent','Notice'].forEach(function(t) {
+            var pill = document.getElementById('pill-' + t);
+            var colors = { Emergency: '#dc2626', Urgent: '#ea580c', Notice: '#1556c8' };
+            if (t === selected) {
+                pill.style.borderColor = colors[t];
+                pill.style.background  = colors[t] + '18';
+                pill.style.color       = colors[t];
+            } else {
+                pill.style.borderColor = '#e2e8f0';
+                pill.style.background  = '#f8fafc';
+                pill.style.color       = '#6c8097';
+            }
+        });
+        // Update send button color
+        var btn = document.getElementById('emgSendBtn');
+        var gradients = {
+            Emergency: 'linear-gradient(135deg,#b91c1c,#dc2626)',
+            Urgent:    'linear-gradient(135deg,#c2410c,#ea580c)',
+            Notice:    'linear-gradient(135deg,#1e3a8a,#1556c8)'
+        };
+        btn.style.background  = gradients[selected];
+    }
+
     function showTab(name, btn) {
         document.querySelectorAll('.dean-tab-content').forEach(t => t.style.display = 'none');
         document.querySelectorAll('.dean-tab').forEach(t => t.classList.remove('active'));
@@ -453,5 +644,53 @@
             if (e.target === m) m.style.display = 'none';
         });
     });
+
+    // ── Emergency Announcement ──────────────────────────────────────
+    function sendEmergencyAnnouncement() {
+        var title   = document.getElementById('emgTitle').value.trim();
+        var message = document.getElementById('emgMessage').value.trim();
+        var target  = document.getElementById('emgTarget').value;
+        var type    = document.getElementById('emgType').value;
+
+        if (!title || !message) {
+            alert('Please fill in both the title and message fields.');
+            return;
+        }
+
+        var btn = document.getElementById('emgSendBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Sending…';
+
+        // Simulate broadcast (in production this would call an API endpoint)
+        setTimeout(function () {
+            // Add to sent log
+            var log = document.getElementById('emgSentLog');
+            var now = new Date().toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+            var badgeColor = type === 'Emergency' ? '#dc2626' : type === 'Urgent' ? '#ea580c' : '#1556c8';
+            var row = '<tr>' +
+                '<td>' + now + '</td>' +
+                '<td><strong>' + title + '</strong></td>' +
+                '<td>' + target + '</td>' +
+                '<td><span style="background:' + badgeColor + '20;color:' + badgeColor + ';font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;">' + type + '</span></td>' +
+                '<td><span class="sched-badge badge-ongoing">Delivered</span></td>' +
+                '</tr>';
+            log.insertAdjacentHTML('afterbegin', row);
+
+            // Reset form
+            document.getElementById('emgTitle').value   = '';
+            document.getElementById('emgMessage').value = '';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-broadcast me-1"></i>Broadcast Now';
+
+            // Show toast
+            var toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:6rem;right:2rem;background:#dc2626;color:#fff;' +
+                'padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;z-index:9999;' +
+                'box-shadow:0 8px 25px rgba(220,38,38,.4);display:flex;align-items:center;gap:8px;';
+            toast.innerHTML = '<i class="bi bi-broadcast-pin"></i> Emergency announcement sent to: <strong>' + target + '</strong>';
+            document.body.appendChild(toast);
+            setTimeout(function () { toast.remove(); }, 4000);
+        }, 1500);
+    }
 </script>
 }
