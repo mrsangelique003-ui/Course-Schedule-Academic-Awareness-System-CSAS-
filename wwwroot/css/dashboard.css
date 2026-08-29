@@ -587,3 +587,9 @@ body.dash-body {
     .courses-grid { grid-template-columns: 1fr; }
     .endorse-item { flex-direction: column; align-items: flex-start; }
 }
+
+/* ── Support widget slide-up animation ───────────────── */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+}

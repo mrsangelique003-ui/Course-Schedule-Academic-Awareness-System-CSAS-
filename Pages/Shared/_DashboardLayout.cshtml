@@ -171,18 +171,196 @@
     <!-- FOOTER -->
     <footer class="dash-footer">
         <span>© @DateTime.Now.Year Course Schedules Awareness System · University of Lay Adventists of Kigali</span>
-        <span>CIS Department · CIT Faculty</span>
+        <span>CIS Department · CIT Faculty &nbsp;|&nbsp;
+            <a href="https://umurongosmart.com" target="_blank" style="color:#1556c8;text-decoration:none;font-weight:600;">
+                <i class="bi bi-headset me-1"></i>UmurongoSmart Support
+            </a>
+        </span>
     </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     UMURONGOSMART SUPPORT WIDGET (floating button + slide-up panel)
+════════════════════════════════════════════════════ -->
+
+<!-- Floating trigger button -->
+<button id="supportBtn" onclick="toggleSupport()" title="Academic Support — UmurongoSmart"
+    style="position:fixed;bottom:2rem;right:2rem;z-index:1000;
+           width:56px;height:56px;border-radius:50%;border:none;
+           background:linear-gradient(135deg,#1556c8,#153f83);
+           color:#fff;font-size:22px;cursor:pointer;
+           box-shadow:0 8px 25px rgba(21,86,200,.45);
+           display:flex;align-items:center;justify-content:center;
+           transition:transform .2s,box-shadow .2s;">
+    <i class="bi bi-headset" id="supportBtnIcon"></i>
+    <span id="supportDot" style="position:absolute;top:6px;right:6px;
+          width:10px;height:10px;border-radius:50%;background:#22c55e;
+          border:2px solid #fff;"></span>
+</button>
+
+<!-- Support slide-up panel -->
+<div id="supportPanel"
+    style="display:none;position:fixed;bottom:6.5rem;right:2rem;z-index:999;
+           width:360px;background:#fff;border-radius:18px;
+           box-shadow:0 20px 60px rgba(0,0,0,.22);overflow:hidden;
+           animation:slideUp .25s ease;">
+    
+    <!-- Panel header -->
+    <div style="background:linear-gradient(135deg,#1556c8,#153f83);padding:1rem 1.25rem;
+                display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;color:#fff;">
+            <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);
+                        display:flex;align-items:center;justify-content:center;font-size:18px;">
+                <i class="bi bi-headset"></i>
+            </div>
+            <div>
+                <div style="font-weight:700;font-size:14px;">CSAS Academic Support</div>
+                <div style="font-size:11px;opacity:.8;">Powered by UmurongoSmart.com</div>
+            </div>
+        </div>
+        <button onclick="toggleSupport()" style="background:none;border:none;color:rgba(255,255,255,.7);
+                font-size:20px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid #e2e8f0;">
+        <button onclick="showSupportTab('query')" id="tabQuery"
+            style="flex:1;padding:.65rem;border:none;background:#fff;
+                   font-size:12px;font-weight:700;color:#1556c8;
+                   border-bottom:2px solid #1556c8;cursor:pointer;">
+            <i class="bi bi-chat-dots-fill me-1"></i>Send Query
+        </button>
+        <button onclick="showSupportTab('faq')" id="tabFaq"
+            style="flex:1;padding:.65rem;border:none;background:#f8fafc;
+                   font-size:12px;font-weight:600;color:#6c8097;
+                   border-bottom:2px solid transparent;cursor:pointer;">
+            <i class="bi bi-question-circle-fill me-1"></i>Quick Help
+        </button>
+        <button onclick="showSupportTab('portal')" id="tabPortal"
+            style="flex:1;padding:.65rem;border:none;background:#f8fafc;
+                   font-size:12px;font-weight:600;color:#6c8097;
+                   border-bottom:2px solid transparent;cursor:pointer;">
+            <i class="bi bi-box-arrow-up-right me-1"></i>Portal
+        </button>
+    </div>
+
+    <!-- TAB: Send Query -->
+    <div id="supportTabQuery" style="padding:1.1rem;">
+        <p style="font-size:12px;color:#6c8097;margin-bottom:.85rem;">
+            Submit your question to the CSAS support team. We'll get back to you within 24 hours.
+        </p>
+        <div style="margin-bottom:.75rem;">
+            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Your Name</label>
+            <input type="text" id="sqName" placeholder="e.g. Alice Uwimana"
+                style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;
+                       padding:.5rem .75rem;font-size:13px;outline:none;"/>
+        </div>
+        <div style="margin-bottom:.75rem;">
+            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Category</label>
+            <select id="sqCategory"
+                style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;
+                       padding:.5rem .75rem;font-size:13px;outline:none;background:#fff;">
+                <option>Timetable / Schedule issue</option>
+                <option>Room shift complaint</option>
+                <option>Lecturer attendance issue</option>
+                <option>Course registration problem</option>
+                <option>WhatsApp group access</option>
+                <option>Login / Account issue</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <div style="margin-bottom:.75rem;">
+            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Message</label>
+            <textarea id="sqMessage" rows="3" placeholder="Describe your issue or question…"
+                style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;
+                       padding:.5rem .75rem;font-size:13px;outline:none;resize:none;"></textarea>
+        </div>
+        <div style="display:flex;gap:.6rem;">
+            <button onclick="submitQuery()"
+                style="flex:1;background:#1556c8;color:#fff;border:none;border-radius:9px;
+                       padding:.6rem;font-size:13px;font-weight:700;cursor:pointer;">
+                <i class="bi bi-send-fill me-1"></i>Send Query
+            </button>
+            <a href="https://umurongosmart.com" target="_blank"
+                style="flex:1;background:#f8fafc;color:#1556c8;border:1.5px solid #dbeafe;
+                       border-radius:9px;padding:.6rem;font-size:13px;font-weight:700;
+                       cursor:pointer;text-align:center;text-decoration:none;display:flex;
+                       align-items:center;justify-content:center;gap:5px;">
+                <i class="bi bi-box-arrow-up-right"></i>Full Portal
+            </a>
+        </div>
+        <div id="sqSuccess" style="display:none;margin-top:.75rem;background:#ecfdf5;
+             border:1px solid #bbf7d0;border-radius:8px;padding:.6rem .9rem;
+             font-size:12px;font-weight:700;color:#15803d;">
+            <i class="bi bi-check-circle-fill me-1"></i>Query sent! Redirecting to UmurongoSmart…
+        </div>
+    </div>
+
+    <!-- TAB: Quick Help FAQ -->
+    <div id="supportTabFaq" style="display:none;padding:1.1rem;">
+        <div style="display:flex;flex-direction:column;gap:.5rem;">
+            <details style="border:1px solid #e2e8f0;border-radius:9px;overflow:hidden;">
+                <summary style="padding:.65rem .9rem;font-size:13px;font-weight:700;cursor:pointer;background:#f8fafc;">
+                    How do I view my timetable?
+                </summary>
+                <p style="padding:.65rem .9rem;font-size:12px;color:#6c8097;margin:0;">
+                    Log in with your Reg No. and password. Your timetable is on the Student Dashboard under "Today's Schedule". Filter by your Study Session (Day/Evening/Weekend).
+                </p>
+            </details>
+            <details style="border:1px solid #e2e8f0;border-radius:9px;overflow:hidden;">
+                <summary style="padding:.65rem .9rem;font-size:13px;font-weight:700;cursor:pointer;background:#f8fafc;">
+                    How do I join a class WhatsApp group?
+                </summary>
+                <p style="padding:.65rem .9rem;font-size:12px;color:#6c8097;margin:0;">
+                    Go to your Enrolled Courses section on the Student Dashboard and click the green WhatsApp button next to the course. Links are published by your Class Representative.
+                </p>
+            </details>
+            <details style="border:1px solid #e2e8f0;border-radius:9px;overflow:hidden;">
+                <summary style="padding:.65rem .9rem;font-size:13px;font-weight:700;cursor:pointer;background:#f8fafc;">
+                    How do I report a room shift?
+                </summary>
+                <p style="padding:.65rem .9rem;font-size:12px;color:#6c8097;margin:0;">
+                    Room shifts are automatically notified. If you notice an unannounced shift, ask your Class Representative (CP) to submit a flag via their dashboard.
+                </p>
+            </details>
+            <details style="border:1px solid #e2e8f0;border-radius:9px;overflow:hidden;">
+                <summary style="padding:.65rem .9rem;font-size:13px;font-weight:700;cursor:pointer;background:#f8fafc;">
+                    I forgot my password. What do I do?
+                </summary>
+                <p style="padding:.65rem .9rem;font-size:12px;color:#6c8097;margin:0;">
+                    Go to the Login page and click "Forgot password?" or contact the CIS Department administrator directly.
+                </p>
+            </details>
+        </div>
+    </div>
+
+    <!-- TAB: Portal iframe -->
+    <div id="supportTabPortal" style="display:none;">
+        <div style="padding:.75rem 1rem;background:#f8fafc;border-bottom:1px solid #e2e8f0;
+                    display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:12px;font-weight:700;color:#374151;">
+                <i class="bi bi-globe me-1"></i>umurongosmart.com
+            </span>
+            <a href="https://umurongosmart.com" target="_blank"
+               style="font-size:11px;color:#1556c8;text-decoration:none;font-weight:600;">
+                Open in new tab <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+        </div>
+        <iframe src="https://umurongosmart.com" style="width:100%;height:320px;border:none;"
+                title="UmurongoSmart Academic Support Portal"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups">
+        </iframe>
+    </div>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // ── Sidebar toggle ────────────────────────────────────
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('collapsed');
         document.getElementById('dashMain').classList.toggle('expanded');
     }
-    // Mobile: close sidebar on outside click
     document.addEventListener('click', function (e) {
         var sb = document.getElementById('sidebar');
         var toggle = document.getElementById('sidebarToggle');
@@ -193,10 +371,50 @@
     });
     document.getElementById('sidebarToggle').addEventListener('click', function (e) {
         e.stopPropagation();
-        if (window.innerWidth < 900) {
+        if (window.innerWidth < 900)
             document.getElementById('sidebar').classList.toggle('open');
-        }
     });
+
+    // ── Support widget ─────────────────────────────────────
+    function toggleSupport() {
+        var panel = document.getElementById('supportPanel');
+        var icon  = document.getElementById('supportBtnIcon');
+        var isOpen = panel.style.display !== 'none';
+        panel.style.display = isOpen ? 'none' : 'block';
+        icon.className = isOpen ? 'bi bi-headset' : 'bi bi-x-lg';
+    }
+
+    function showSupportTab(tab) {
+        ['query','faq','portal'].forEach(function(t) {
+            document.getElementById('supportTab' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = 'none';
+            document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).style.borderBottomColor = 'transparent';
+            document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).style.background = '#f8fafc';
+            document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).style.color = '#6c8097';
+        });
+        document.getElementById('supportTab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.display = 'block';
+        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.borderBottomColor = '#1556c8';
+        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.background = '#fff';
+        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.color = '#1556c8';
+    }
+
+    function submitQuery() {
+        var name    = document.getElementById('sqName').value.trim();
+        var cat     = document.getElementById('sqCategory').value;
+        var message = document.getElementById('sqMessage').value.trim();
+        if (!name || !message) {
+            alert('Please fill in your name and message.');
+            return;
+        }
+        document.getElementById('sqSuccess').style.display = 'block';
+        // Build UmurongoSmart query URL with pre-filled data
+        var url = 'https://umurongosmart.com/?name=' + encodeURIComponent(name)
+                + '&category=' + encodeURIComponent(cat)
+                + '&message=' + encodeURIComponent(message)
+                + '&source=CSAS-UNILAK';
+        setTimeout(function() { window.open(url, '_blank'); }, 1500);
+        document.getElementById('sqName').value    = '';
+        document.getElementById('sqMessage').value = '';
+    }
 </script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
