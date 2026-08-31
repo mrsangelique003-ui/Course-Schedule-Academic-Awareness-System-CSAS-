@@ -6,6 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- Exclude the nested duplicate project subfolders from compilation -->
+  <ItemGroup>
+    <Compile Remove="Course-Schedule-Academic-Awareness-System-CSAS-\**" />
+    <Compile Remove="Course-Schedule-Academic-Awareness-System-CSAAS-\**" />
+    <Content Remove="Course-Schedule-Academic-Awareness-System-CSAS-\**" />
+    <Content Remove="Course-Schedule-Academic-Awareness-System-CSAAS-\**" />
+    <None Remove="Course-Schedule-Academic-Awareness-System-CSAS-\**" />
+    <None Remove="Course-Schedule-Academic-Awareness-System-CSAAS-\**" />
+    <EmbeddedResource Remove="Course-Schedule-Academic-Awareness-System-CSAS-\**" />
+    <EmbeddedResource Remove="Course-Schedule-Academic-Awareness-System-CSAAS-\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <!-- EF Core + SQL Server -->
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
@@ -22,7 +34,7 @@
     <!-- ASP.NET Core Identity + EF Store -->
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
 
-    <!-- Cookie authentication (already included via Identity, but explicit for clarity) -->
+    <!-- Cookie authentication -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
   </ItemGroup>
 
