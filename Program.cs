@@ -73,4 +73,13 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+// ── Logout ─────────────────────────────────────────────────────────────────────
+app.MapPost("/Logout", async (HttpContext ctx) =>
+{
+    var signInManager = ctx.RequestServices
+        .GetRequiredService<Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser>>();
+    await signInManager.SignOutAsync();
+    ctx.Response.Redirect("/Login");
+}).RequireAuthorization();
+
 app.Run();

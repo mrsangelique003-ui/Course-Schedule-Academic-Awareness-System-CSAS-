@@ -68,6 +68,61 @@
             transition: background .2s;
         }
         .cs-nav-login:hover { background: #1556c8; }
+
+        /* ── HERO BACKGROUND SLIDESHOW ── */
+        .cs-hero {
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-slides {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        .hero-slide.active { opacity: 1; }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(12,31,94,.88) 0%, rgba(26,58,138,.82) 50%, rgba(21,86,200,.75) 100%);
+            z-index: 1;
+        }
+        .cs-hero-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* slide indicators */
+        .hero-indicators {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        .hero-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.4);
+            cursor: pointer;
+            transition: background .3s, transform .3s;
+            border: none;
+            padding: 0;
+        }
+        .hero-dot.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
     </style>
 </head>
 
@@ -105,6 +160,33 @@
          HERO SECTION
     ====================================================== -->
     <section class="cs-hero">
+
+        <!-- ── BACKGROUND SLIDESHOW ── -->
+        <div class="hero-slides" id="heroSlides">
+            <!-- UNILAK campus photos from public sources -->
+            <div class="hero-slide active"
+                 style="background-image:url('https://elearn.unilak.ac.rw/pluginfile.php?file=%2F1%2Fcore_admin%2Flogocompact%2F300x300%2F1768218512%2FPNG%20LOGO-%20UNILAK.png')">
+            </div>
+            <div class="hero-slide"
+                 style="background-image:url('https://site.unilak.ac.rw/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-20-at-9.39.54-PM-1024x818.jpeg')">
+            </div>
+            <div class="hero-slide"
+                 style="background-image:url('https://site.unilak.ac.rw/wp-content/uploads/2022/08/UNILAK-Campus.jpg')">
+            </div>
+            <div class="hero-slide"
+                 style="background-image:url('https://site.unilak.ac.rw/wp-content/uploads/2022/02/about-unilak.jpg')">
+            </div>
+        </div>
+        <!-- Dark overlay over slides -->
+        <div class="hero-overlay"></div>
+
+        <!-- Slide indicators -->
+        <div class="hero-indicators" id="heroIndicators">
+            <button class="hero-dot active" onclick="goToSlide(0)"></button>
+            <button class="hero-dot" onclick="goToSlide(1)"></button>
+            <button class="hero-dot" onclick="goToSlide(2)"></button>
+            <button class="hero-dot" onclick="goToSlide(3)"></button>
+        </div>
         <div class="cs-hero-container">
 
             <!-- HERO CONTENT -->
@@ -495,7 +577,39 @@
 
     </footer>
 
+<script>
+    // ── Hero background slideshow ─────────────────────────────
+    var currentSlide = 0;
+    var slides       = document.querySelectorAll('.hero-slide');
+    var dots         = document.querySelectorAll('.hero-dot');
+    var slideTimer;
+
+    function goToSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+        currentSlide = (n + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+        resetTimer();
+    }
+
+    function nextSlide() { goToSlide(currentSlide + 1); }
+
+    function resetTimer() {
+        clearInterval(slideTimer);
+        slideTimer = setInterval(nextSlide, 5000);
+    }
+
+    // start auto-play
+    slideTimer = setInterval(nextSlide, 5000);
+
+    // pause on hover
+    var hero = document.querySelector('.cs-hero');
+    if (hero) {
+        hero.addEventListener('mouseenter', function() { clearInterval(slideTimer); });
+        hero.addEventListener('mouseleave', function() { resetTimer(); });
+    }
+</script>
 </body>
 </html>
-
 

@@ -1,0 +1,14 @@
+/* =============================================================
+   CSAS — AUTH PAGES CSS  (auth.css)
+   Used by Login, Register, ForgotPassword pages
+============================================================= */
+
+/* placeholder — Login/Register pages use inline <style> blocks
+   This file exists to prevent 404 errors from _Layout.cshtml */
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
