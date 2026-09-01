@@ -434,6 +434,163 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════
+     COURSE ENROLLMENT MANAGEMENT — HOD via UmurongoSmart
+════════════════════════════════════════════════════ -->
+<div class="dash-panel mt-4" id="enrollmentPanel">
+    <div class="panel-header" style="background:linear-gradient(135deg,#059669,#047857);color:#fff;border-radius:13px 13px 0 0;">
+        <span style="display:flex;align-items:center;gap:10px;">
+            <span style="width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:50%;
+                         display:flex;align-items:center;justify-content:center;font-size:18px;">
+                <i class="bi bi-journal-plus"></i>
+            </span>
+            <div>
+                <div style="font-size:14px;font-weight:800;">Course Enrollment Management</div>
+                <div style="font-size:11px;opacity:.75;">HOD approves all student course enrollments via UmurongoSmart</div>
+            </div>
+        </span>
+        <a href="https://umurongosmart.com" target="_blank"
+           style="display:inline-flex;align-items:center;gap:7px;
+                  background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);
+                  color:#fff;text-decoration:none;border-radius:9px;
+                  padding:.5rem 1.1rem;font-size:13px;font-weight:700;">
+            <i class="bi bi-box-arrow-up-right"></i> Open UmurongoSmart Portal
+        </a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;padding:1.25rem 1.25rem .75rem;">
+
+        <!-- Pending Requests -->
+        <div style="background:#fef9c3;border:1px solid #fde68a;border-radius:12px;padding:1rem;text-align:center;">
+            <div style="font-size:28px;font-weight:800;color:#a16207;">12</div>
+            <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:.5rem;">Pending Requests</div>
+            <div style="font-size:11px;color:#78350f;">Awaiting HOD approval on UmurongoSmart</div>
+            <a href="https://umurongosmart.com" target="_blank"
+               style="display:inline-flex;align-items:center;gap:5px;margin-top:.6rem;
+                      background:#a16207;color:#fff;text-decoration:none;
+                      border-radius:7px;padding:4px 12px;font-size:11px;font-weight:700;">
+                Review <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Approved -->
+        <div style="background:#ecfdf5;border:1px solid #bbf7d0;border-radius:12px;padding:1rem;text-align:center;">
+            <div style="font-size:28px;font-weight:800;color:#059669;">284</div>
+            <div style="font-size:12px;font-weight:700;color:#065f46;margin-bottom:.5rem;">Approved Enrollments</div>
+            <div style="font-size:11px;color:#047857;">Students confirmed for Semester 1</div>
+            <a href="https://umurongosmart.com" target="_blank"
+               style="display:inline-flex;align-items:center;gap:5px;margin-top:.6rem;
+                      background:#059669;color:#fff;text-decoration:none;
+                      border-radius:7px;padding:4px 12px;font-size:11px;font-weight:700;">
+                View All <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Rejected -->
+        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:1rem;text-align:center;">
+            <div style="font-size:28px;font-weight:800;color:#dc2626;">3</div>
+            <div style="font-size:12px;font-weight:700;color:#991b1b;margin-bottom:.5rem;">Rejected / Issues</div>
+            <div style="font-size:11px;color:#7f1d1d;">Requests that need follow-up</div>
+            <a href="https://umurongosmart.com" target="_blank"
+               style="display:inline-flex;align-items:center;gap:5px;margin-top:.6rem;
+                      background:#dc2626;color:#fff;text-decoration:none;
+                      border-radius:7px;padding:4px 12px;font-size:11px;font-weight:700;">
+                Follow Up <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Enrollment Requests Table -->
+    <div style="padding:0 1.25rem 1.25rem;">
+        <div style="font-size:13px;font-weight:800;color:#142d4d;margin-bottom:.75rem;
+                    display:flex;align-items:center;justify-content:space-between;">
+            <span><i class="bi bi-list-check me-2 text-success"></i>Recent Enrollment Requests</span>
+            <a href="https://umurongosmart.com" target="_blank"
+               style="font-size:12px;color:#059669;font-weight:700;text-decoration:none;">
+                Manage all on UmurongoSmart <i class="bi bi-arrow-up-right"></i>
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="dash-table">
+                <thead>
+                    <tr><th>Reg No.</th><th>Student</th><th>Course</th><th>Session</th><th>Requested</th><th>Status</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>STU001</td><td>Alice Uwimana</td>
+                        <td><strong>CSE315</strong> — Operating Systems</td>
+                        <td><span class="session-badge">Day</span></td>
+                        <td style="font-size:11px;color:#6c8097;">28 Aug 2026</td>
+                        <td><span style="background:#fef9c3;color:#a16207;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;">Pending</span></td>
+                        <td style="display:flex;gap:6px;">
+                            <a href="https://umurongosmart.com" target="_blank" class="btn-endorse-approve" style="font-size:11px;padding:4px 10px;">
+                                <i class="bi bi-check-lg"></i> Approve
+                            </a>
+                            <a href="https://umurongosmart.com" target="_blank" class="btn-endorse-reject" style="font-size:11px;padding:4px 10px;">
+                                <i class="bi bi-x-lg"></i> Reject
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>STU003</td><td>Grace Ineza</td>
+                        <td><strong>CSE205</strong> — OOP</td>
+                        <td><span class="session-badge">Day</span></td>
+                        <td style="font-size:11px;color:#6c8097;">28 Aug 2026</td>
+                        <td><span style="background:#fef9c3;color:#a16207;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;">Pending</span></td>
+                        <td style="display:flex;gap:6px;">
+                            <a href="https://umurongosmart.com" target="_blank" class="btn-endorse-approve" style="font-size:11px;padding:4px 10px;">
+                                <i class="bi bi-check-lg"></i> Approve
+                            </a>
+                            <a href="https://umurongosmart.com" target="_blank" class="btn-endorse-reject" style="font-size:11px;padding:4px 10px;">
+                                <i class="bi bi-x-lg"></i> Reject
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>STU007</td><td>Jean Habimana</td>
+                        <td><strong>CSE401</strong> — Final Year Project I</td>
+                        <td><span class="session-badge">Evening</span></td>
+                        <td style="font-size:11px;color:#6c8097;">27 Aug 2026</td>
+                        <td><span style="background:#dcfce7;color:#15803d;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;">Approved</span></td>
+                        <td>
+                            <span style="font-size:11px;color:#15803d;font-weight:600;">
+                                <i class="bi bi-check-circle-fill me-1"></i>Done
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>STU012</td><td>Marie Uwase</td>
+                        <td><strong>CSE410</strong> — Information Security</td>
+                        <td><span class="session-badge">Weekend</span></td>
+                        <td style="font-size:11px;color:#6c8097;">27 Aug 2026</td>
+                        <td><span style="background:#fef2f2;color:#dc2626;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;">Rejected</span></td>
+                        <td>
+                            <a href="https://umurongosmart.com" target="_blank"
+                               style="font-size:11px;color:#dc2626;font-weight:700;text-decoration:none;">
+                                <i class="bi bi-arrow-up-right me-1"></i>Follow up
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top:1rem;padding:.85rem 1rem;background:#f0fdf4;
+                    border:1px solid #bbf7d0;border-radius:10px;
+                    display:flex;align-items:center;gap:12px;font-size:13px;color:#065f46;">
+            <i class="bi bi-shield-check-fill" style="font-size:20px;color:#059669;flex-shrink:0;"></i>
+            <div>
+                <strong>All enrollment approvals are recorded on UmurongoSmart.</strong>
+                Full enrollment history, student records and course capacity reports
+                are available on the UmurongoSmart portal.
+                <a href="https://umurongosmart.com" target="_blank" style="color:#059669;font-weight:700;">
+                    Open portal →
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
      EMERGENCY ANNOUNCEMENT PANEL
 ════════════════════════════════════════════════════ -->
 <div class="dash-panel mt-4" id="emergencyPanel">

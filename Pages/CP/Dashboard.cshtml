@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model CourseScheduleSystem.Web.Pages.CP.DashboardModel
 @{
     ViewData["Title"] = "Class Representative Dashboard";
@@ -149,140 +149,90 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════
-     CLASS GROUP LINK MANAGEMENT
+     ENROLLMENT INFO — HOD manages this via UmurongoSmart
 ════════════════════════════════════════════════════ -->
 <div class="dash-panel mt-4">
-    <div class="panel-header">
-        <span><i class="bi bi-whatsapp me-2" style="color:#25d366;"></i>Class Group Link Manager</span>
-        <span class="panel-badge">CP Only</span>
+    <div class="panel-header" style="background:linear-gradient(135deg,#1e3a8a,#1556c8);color:#fff;border-radius:13px 13px 0 0;">
+        <span style="display:flex;align-items:center;gap:10px;">
+            <span style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;
+                         display:flex;align-items:center;justify-content:center;font-size:17px;">
+                <i class="bi bi-info-circle-fill"></i>
+            </span>
+            <div>
+                <div style="font-size:14px;font-weight:800;">Course Enrollment — Managed by HOD</div>
+                <div style="font-size:11px;opacity:.75;">Student enrollments are handled by the HOD through UmurongoSmart</div>
+            </div>
+        </span>
     </div>
-    <div class="flag-form">
-        <p class="text-muted small mb-3">
-            As Class Representative, you can create and publish the official WhatsApp group link
-            for each of your courses. Students will see this link on their dashboard.
-        </p>
+    <div style="padding:1.5rem 1.25rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
 
-        <!-- Create / Update Link Form -->
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
-            <h6 class="fw-bold mb-3"><i class="bi bi-plus-circle-fill me-2 text-success"></i>Create / Update Group Link</h6>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Course</label>
-                    <select class="form-select" id="groupCourse">
-                        <option value="">— Select course —</option>
-                        <option value="CSE301">CSE301 — Software Engineering</option>
-                        <option value="CSE305">CSE305 — Database Systems</option>
-                        <option value="CSE310">CSE310 — Human-Computer Interaction</option>
-                        <option value="CSE402">CSE402 — Software Architecture</option>
-                    </select>
-                </div>
-                <div class="col-md-5">
-                    <label class="form-label fw-semibold">WhatsApp Group Link</label>
-                    <div class="input-group">
-                        <span class="input-group-text" style="background:#ecfdf5;border-color:#bbf7d0;">
-                            <i class="bi bi-whatsapp" style="color:#25d366;"></i>
-                        </span>
-                        <input type="url" class="form-control" id="groupLink"
-                               placeholder="https://chat.whatsapp.com/…" />
+            <!-- Info card -->
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1.25rem;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem;">
+                    <span style="width:40px;height:40px;background:#1556c8;border-radius:10px;
+                                 display:flex;align-items:center;justify-content:center;
+                                 font-size:18px;color:#fff;flex-shrink:0;">
+                        <i class="bi bi-person-workspace"></i>
+                    </span>
+                    <div>
+                        <div style="font-size:13px;font-weight:800;color:#142d4d;">HOD Responsibility</div>
+                        <div style="font-size:11px;color:#6c8097;">Enrollment is not a CP function</div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">Group Name</label>
-                    <input type="text" class="form-control" id="groupName"
-                           placeholder="e.g. CSE301 Day 2026" />
-                </div>
+                <p style="font-size:13px;color:#1e3a8a;line-height:1.7;margin:0;">
+                    Course enrollment for all students in your class is managed exclusively by the
+                    <strong>Head of Department (HOD)</strong> through the UmurongoSmart portal.
+                    Students submit enrollment requests and the HOD approves them.
+                </p>
             </div>
-            <div class="row g-3 mt-1">
-                <div class="col-md-4">
-                    <label class="form-label fw-semibold">Study Session</label>
-                    <select class="form-select" id="groupSession">
-                        <option>Day</option>
-                        <option>Evening</option>
-                        <option>Weekend</option>
-                    </select>
+
+            <!-- What CP can do -->
+            <div style="background:#ecfdf5;border:1px solid #bbf7d0;border-radius:12px;padding:1.25rem;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem;">
+                    <span style="width:40px;height:40px;background:#059669;border-radius:10px;
+                                 display:flex;align-items:center;justify-content:center;
+                                 font-size:18px;color:#fff;flex-shrink:0;">
+                        <i class="bi bi-person-badge-fill"></i>
+                    </span>
+                    <div>
+                        <div style="font-size:13px;font-weight:800;color:#142d4d;">What You Can Do as CP</div>
+                        <div style="font-size:11px;color:#6c8097;">Your actual responsibilities</div>
+                    </div>
                 </div>
-                <div class="col-md-5">
-                    <label class="form-label fw-semibold">Join Deadline</label>
-                    <input type="date" class="form-control" id="groupDeadline" />
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="button" class="btn-dash-primary w-100" onclick="publishGroupLink()">
-                        <i class="bi bi-send-fill me-1"></i> Publish Link
-                    </button>
-                </div>
+                <ul style="font-size:13px;color:#065f46;line-height:2;margin:0;padding-left:1.25rem;">
+                    <li>Flag lecturer attendance issues</li>
+                    <li>Request room swaps for your class</li>
+                    <li>Post announcements to classmates</li>
+                    <li>Escalate student concerns to HOD</li>
+                    <li>Share the WhatsApp group link given by HOD</li>
+                </ul>
             </div>
         </div>
 
-        <!-- Published Links Table -->
-        <h6 class="fw-bold mb-2"><i class="bi bi-list-check me-2"></i>Published Group Links</h6>
-        <div class="table-responsive">
-            <table class="dash-table" id="groupLinksTable">
-                <thead>
-                    <tr>
-                        <th>Course</th>
-                        <th>Group Name</th>
-                        <th>Session</th>
-                        <th>Join Deadline</th>
-                        <th>Link</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="groupLinksBody">
-                    <tr>
-                        <td><strong>CSE301</strong></td>
-                        <td>Software Eng. Day 2026</td>
-                        <td><span class="session-badge">Day</span></td>
-                        <td>04 Sep 2026</td>
-                        <td>
-                            <a href="https://chat.whatsapp.com/example1" target="_blank" class="btn-wa">
-                                <i class="bi bi-whatsapp"></i> Join
-                            </a>
-                        </td>
-                        <td><span class="sched-badge badge-ongoing">Active</span></td>
-                        <td class="action-btns">
-                            <button class="btn-icon btn-edit" title="Edit link"><i class="bi bi-pencil-fill"></i></button>
-                            <button class="btn-icon btn-del" title="Remove link"><i class="bi bi-trash-fill"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>CSE305</strong></td>
-                        <td>Database Sys. Day 2026</td>
-                        <td><span class="session-badge">Day</span></td>
-                        <td>04 Sep 2026</td>
-                        <td>
-                            <a href="https://chat.whatsapp.com/example2" target="_blank" class="btn-wa">
-                                <i class="bi bi-whatsapp"></i> Join
-                            </a>
-                        </td>
-                        <td><span class="sched-badge badge-ongoing">Active</span></td>
-                        <td class="action-btns">
-                            <button class="btn-icon btn-edit"><i class="bi bi-pencil-fill"></i></button>
-                            <button class="btn-icon btn-del"><i class="bi bi-trash-fill"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>CSE310</strong></td>
-                        <td>HCI Day 2026</td>
-                        <td><span class="session-badge">Day</span></td>
-                        <td>04 Sep 2026</td>
-                        <td>
-                            <a href="https://chat.whatsapp.com/example3" target="_blank" class="btn-wa">
-                                <i class="bi bi-whatsapp"></i> Join
-                            </a>
-                        </td>
-                        <td><span class="sched-badge badge-upcoming">Pending</span></td>
-                        <td class="action-btns">
-                            <button class="btn-icon btn-edit"><i class="bi bi-pencil-fill"></i></button>
-                            <button class="btn-icon btn-del"><i class="bi bi-trash-fill"></i></button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Escalate to HOD via UmurongoSmart -->
+        <div style="margin-top:1.25rem;padding:1rem 1.25rem;background:#fef9c3;border:1px solid #fde68a;
+                    border-radius:12px;display:flex;align-items:center;justify-content:space-between;
+                    flex-wrap:wrap;gap:1rem;">
+            <div>
+                <div style="font-size:13px;font-weight:800;color:#92400e;margin-bottom:.25rem;">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Need to escalate an enrollment issue?
+                </div>
+                <div style="font-size:12px;color:#78350f;">
+                    If a student in your class has an enrollment problem, direct them to contact
+                    the HOD through UmurongoSmart or come to the department office.
+                </div>
+            </div>
+            <a href="https://umurongosmart.com" target="_blank"
+               style="display:inline-flex;align-items:center;gap:8px;
+                      background:#142d4d;color:#fff;text-decoration:none;
+                      border-radius:9px;padding:.65rem 1.25rem;
+                      font-size:13px;font-weight:700;white-space:nowrap;">
+                <i class="bi bi-box-arrow-up-right"></i> Open UmurongoSmart
+            </a>
         </div>
     </div>
 </div>
-
 <!-- SCHEDULE (same as student) -->
 <div class="dash-panel mt-4">
     <div class="panel-header">

@@ -341,7 +341,7 @@
     }
 
     function doEnroll(code, name) {
-        if (!confirm('Enroll in ' + code + ' — ' + name + '?\n\nThis will register your interest. Your CP will be notified.')) return;
+        if (!confirm('Enroll in ' + code + ' — ' + name + '?\n\nThis sends your enrollment request to the HOD for approval via UmurongoSmart. You will be notified once confirmed.')) return;
         var row = document.querySelector('tr[data-code="' + code + '"]');
         if (row) {
             row.setAttribute('data-st', 'enrolled');
@@ -354,7 +354,7 @@
         t.style.cssText = 'position:fixed;bottom:6rem;right:2rem;background:#16a34a;color:#fff;' +
             'padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;' +
             'z-index:9999;box-shadow:0 8px 25px rgba(22,163,74,.4);display:flex;align-items:center;gap:8px;';
-        t.innerHTML = '<i class="bi bi-check-circle-fill"></i> Enrolled in <strong>' + code + '</strong>!';
+        t.innerHTML = '<i class="bi bi-check-circle-fill"></i> Enrollment request sent for <strong>' + code + '</strong>! HOD will confirm via UmurongoSmart.';
         document.body.appendChild(t);
         setTimeout(function() { t.remove(); }, 3500);
     }
