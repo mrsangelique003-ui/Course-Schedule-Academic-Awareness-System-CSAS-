@@ -8,18 +8,18 @@
     ViewData["UserName"] = User.Identity?.Name ?? "Student";
 }
 
-<!-- ── WELCOME BAR ──────────────────────────────────────────────────── -->
+<!-- -- WELCOME BAR ---------------------------------------------------- -->
 <div class="dash-welcome">
     <div>
-        <h2 class="dash-heading">Good morning, @ViewData["UserName"] 👋</h2>
-        <p class="dash-subheading">Here's your academic overview for today — @DateTime.Now.ToString("dddd, dd MMMM yyyy")</p>
+        <h2 class="dash-heading">Good morning, @ViewData["UserName"] ??</h2>
+        <p class="dash-subheading">Here's your academic overview for today � @DateTime.Now.ToString("dddd, dd MMMM yyyy")</p>
     </div>
     <div class="dash-welcome-badge">
-        <i class="bi bi-mortarboard-fill"></i> Student · CIS Department
+        <i class="bi bi-mortarboard-fill"></i> Student � CIS Department
     </div>
 </div>
 
-<!-- ── STAT CARDS ───────────────────────────────────────────────────── -->
+<!-- -- STAT CARDS ----------------------------------------------------- -->
 <div class="dash-stats">
     <div class="stat-card stat-blue">
         <div class="stat-icon"><i class="bi bi-calendar3"></i></div>
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<!-- ── MAIN GRID ─────────────────────────────────────────────────────── -->
+<!-- -- MAIN GRID ------------------------------------------------------- -->
 <div class="dash-grid">
 
     <!-- TODAY'S SCHEDULE -->
@@ -54,7 +54,7 @@
                 <div class="sched-bar bar-blue"></div>
                 <div class="sched-info">
                     <div class="sched-course">Software Engineering</div>
-                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block A — Room A204 &nbsp;|&nbsp; <i class="bi bi-person"></i> Dr. J. Mugisha</div>
+                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block A � Room A204 &nbsp;|&nbsp; <i class="bi bi-person"></i> Dr. J. Mugisha</div>
                 </div>
                 <span class="sched-badge badge-ongoing">Ongoing</span>
             </div>
@@ -63,7 +63,7 @@
                 <div class="sched-bar bar-purple"></div>
                 <div class="sched-info">
                     <div class="sched-course">Database Systems</div>
-                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block B — Room B101 &nbsp;|&nbsp; <i class="bi bi-person"></i> Mrs. A. Byukusenge</div>
+                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block B � Room B101 &nbsp;|&nbsp; <i class="bi bi-person"></i> Mrs. A. Byukusenge</div>
                 </div>
                 <span class="sched-badge badge-upcoming">Upcoming</span>
             </div>
@@ -72,7 +72,7 @@
                 <div class="sched-bar bar-green"></div>
                 <div class="sched-info">
                     <div class="sched-course">Human-Computer Interaction</div>
-                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block A — Room A108 &nbsp;|&nbsp; <i class="bi bi-person"></i> Mr. E. Niyonsenga</div>
+                    <div class="sched-meta"><i class="bi bi-geo-alt"></i> Block A � Room A108 &nbsp;|&nbsp; <i class="bi bi-person"></i> Mr. E. Niyonsenga</div>
                 </div>
                 <span class="sched-badge badge-upcoming">Upcoming</span>
             </div>
@@ -89,8 +89,8 @@
             <div class="notif-item notif-unread">
                 <div class="notif-icon notif-orange"><i class="bi bi-geo-alt-fill"></i></div>
                 <div class="notif-body">
-                    <div class="notif-title">Room Shift — CSE301</div>
-                    <div class="notif-text">Software Engineering moved from A204 → Lab 01 today.</div>
+                    <div class="notif-title">Room Shift � CSE301</div>
+                    <div class="notif-text">Software Engineering moved from A204 ? Lab 01 today.</div>
                     <div class="notif-time">5 minutes ago</div>
                 </div>
             </div>
@@ -98,14 +98,14 @@
                 <div class="notif-icon notif-red"><i class="bi bi-alarm-fill"></i></div>
                 <div class="notif-body">
                     <div class="notif-title">Registration Deadline</div>
-                    <div class="notif-text">CSE402 — Software Architecture closes in 2 days.</div>
+                    <div class="notif-text">CSE402 � Software Architecture closes in 2 days.</div>
                     <div class="notif-time">2 hours ago</div>
                 </div>
             </div>
             <div class="notif-item">
                 <div class="notif-icon notif-blue"><i class="bi bi-megaphone-fill"></i></div>
                 <div class="notif-body">
-                    <div class="notif-title">CP Announcement — CSE305</div>
+                    <div class="notif-title">CP Announcement � CSE305</div>
                     <div class="notif-text">Tomorrow's class starts 30 min early. Bring your laptops.</div>
                     <div class="notif-time">Yesterday</div>
                 </div>
@@ -123,57 +123,57 @@
 
 </div>
 
-<!-- ── ENROLLED COURSES ───────────────────────────────────────────── -->
+<!-- -- ENROLLED COURSES --------------------------------------------- -->
 <div class="dash-panel mt-4">
     <div class="panel-header">
         <span><i class="bi bi-collection-fill me-2"></i>Enrolled Courses</span>
-        <span class="panel-badge">Semester 1 · 2026</span>
+        <span class="panel-badge">Semester 1 � 2026</span>
     </div>
     <div class="courses-grid">
         <div class="course-card">
             <div class="course-code">CSE301</div>
             <div class="course-name">Software Engineering</div>
             <div class="course-meta"><i class="bi bi-person-fill"></i> Dr. J. Mugisha</div>
-            <div class="course-meta"><i class="bi bi-calendar3"></i> Mon 08:00–10:00 · A204</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Mon 08:00�10:00 � A204</div>
             <div class="course-footer">
                 <span class="course-status status-open">Open</span>
                 <div class="course-actions">
                     <a href="https://chat.whatsapp.com/example1" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
                 </div>
             </div>
-            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: Bob N. — <a href="#">Contact</a></div>
+            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: Bob N. � <a href="#">Contact</a></div>
         </div>
         <div class="course-card">
             <div class="course-code">CSE305</div>
             <div class="course-name">Database Systems</div>
             <div class="course-meta"><i class="bi bi-person-fill"></i> Mrs. A. Byukusenge</div>
-            <div class="course-meta"><i class="bi bi-calendar3"></i> Tue 10:00–12:00 · B101</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Tue 10:00�12:00 � B101</div>
             <div class="course-footer">
                 <span class="course-status status-open">Open</span>
                 <div class="course-actions">
                     <a href="https://chat.whatsapp.com/example2" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
                 </div>
             </div>
-            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: Alice U. — <a href="#">Contact</a></div>
+            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: Alice U. � <a href="#">Contact</a></div>
         </div>
         <div class="course-card">
             <div class="course-code">CSE310</div>
             <div class="course-name">Human-Computer Interaction</div>
             <div class="course-meta"><i class="bi bi-person-fill"></i> Mr. E. Niyonsenga</div>
-            <div class="course-meta"><i class="bi bi-calendar3"></i> Wed 13:00–15:00 · A108</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Wed 13:00�15:00 � A108</div>
             <div class="course-footer">
                 <span class="course-status status-open">Open</span>
                 <div class="course-actions">
                     <a href="https://chat.whatsapp.com/example3" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
                 </div>
             </div>
-            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: John K. — <a href="#">Contact</a></div>
+            <div class="cp-info"><i class="bi bi-person-badge-fill"></i> CP: John K. � <a href="#">Contact</a></div>
         </div>
         <div class="course-card course-card-deadline">
             <div class="course-code">CSE402</div>
             <div class="course-name">Software Architecture</div>
             <div class="course-meta"><i class="bi bi-person-fill"></i> Dr. P. Habimana</div>
-            <div class="course-meta"><i class="bi bi-calendar3"></i> Thu 08:00–10:00 · C302</div>
+            <div class="course-meta"><i class="bi bi-calendar3"></i> Thu 08:00�10:00 � C302</div>
             <div class="course-footer">
                 <span class="course-status status-closing">Closing Soon</span>
                 <div class="course-actions">
@@ -185,18 +185,200 @@
     </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     DEFENSE & GRADUATION SECTION — Finalist Students (Year 4)
-══════════════════════════════════════════════════════════════════════ -->
+<!-- -------------------------------------------------------------------
+     DEFENSE & GRADUATION SECTION � Finalist Students (Year 4)
+---------------------------------------------------------------------- -->
+
+<!-- ===========================================================
+     ALL AVAILABLE COURSES — see every running/open course
+     Students can spot courses they haven't taken yet and enroll
+============================================================ -->
+<div class="dash-panel mt-4" id="allCoursesSection">
+
+    <div class="panel-header" style="background:linear-gradient(135deg,#1e3a8a,#1556c8);
+                                      color:#fff;border-radius:13px 13px 0 0;">
+        <span style="display:flex;align-items:center;gap:10px;">
+            <span style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;
+                         display:flex;align-items:center;justify-content:center;font-size:17px;">
+                <i class="bi bi-journals"></i>
+            </span>
+            <div>
+                <div style="font-size:14px;font-weight:800;">All CIS Department Courses</div>
+                <div style="font-size:11px;opacity:.75;">Find courses you have not taken — see what is currently running and register before it closes</div>
+            </div>
+        </span>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+            <input type="text" id="courseSearch" placeholder="Search course..." oninput="filterCourses()"
+                   style="border:1px solid rgba(255,255,255,.3);border-radius:8px;
+                          background:rgba(255,255,255,.12);color:#fff;
+                          padding:5px 12px;font-size:12px;outline:none;width:160px;" />
+            <select id="courseFilter" onchange="filterCourses()"
+                    style="border:1px solid rgba(255,255,255,.3);border-radius:8px;
+                           background:rgba(255,255,255,.12);color:#fff;
+                           padding:5px 10px;font-size:12px;outline:none;">
+                <option value="">All Status</option>
+                <option value="running">Currently Running</option>
+                <option value="open">Registration Open</option>
+                <option value="closing">Closing Soon</option>
+                <option value="upcoming">Not Started Yet</option>
+                <option value="enrolled">Already Enrolled</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Legend -->
+    <div style="display:flex;flex-wrap:wrap;gap:.75rem;padding:.75rem 1.25rem .4rem;
+                border-bottom:1px solid #e2e8f0;font-size:11.5px;color:#6c8097;">
+        <span><span style="width:9px;height:9px;border-radius:50%;background:#22c55e;display:inline-block;margin-right:4px;vertical-align:middle;"></span>Running</span>
+        <span><span style="width:9px;height:9px;border-radius:50%;background:#3b82f6;display:inline-block;margin-right:4px;vertical-align:middle;"></span>Reg. Open</span>
+        <span><span style="width:9px;height:9px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:4px;vertical-align:middle;"></span>Closing Soon</span>
+        <span><span style="width:9px;height:9px;border-radius:50%;background:#9ca3af;display:inline-block;margin-right:4px;vertical-align:middle;"></span>Not Started</span>
+        <span><span style="width:9px;height:9px;border-radius:2px;background:#e0e7ff;border:1px solid #6366f1;display:inline-block;margin-right:4px;vertical-align:middle;"></span>Enrolled</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="dash-table" id="allCoursesTable">
+            <thead>
+                <tr>
+                    <th>Code</th><th>Course Name</th><th>Lecturer</th>
+                    <th>Schedule</th><th>Room</th><th>Reg. Deadline</th>
+                    <th>Status</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <!-- YEAR 1 -->
+                <tr class="yr-hdr"><td colspan="8" style="background:#f1f5f9;font-weight:800;font-size:11px;color:#153f83;letter-spacing:.07em;text-transform:uppercase;padding:.5rem 1rem;"><i class="bi bi-bookmark-fill me-2"></i>Year 1 — Foundation Courses</td></tr>
+                <tr data-code="CSC101" data-st="running" data-enrolled="0"><td><strong>CSC101</strong></td><td>Introduction to Computer Science</td><td>Dr. J. Mugisha</td><td>Mon 08:00–10:00</td><td><span class="room-badge">A204</span></td><td style="font-size:11px;color:#6c8097;">01–10 Sep</td><td><span class="cdot" style="background:#22c55e;"></span><b style="color:#15803d;font-size:12px;">Running</b></td><td><button class="btn-ce" onclick="doEnroll('CSC101','Introduction to Computer Science')"><i class="bi bi-plus-circle-fill me-1"></i>Enroll</button></td></tr>
+                <tr data-code="MTH101" data-st="running" data-enrolled="0"><td><strong>MTH101</strong></td><td>Calculus &amp; Linear Algebra</td><td>Mrs. A. Byukusenge</td><td>Tue 10:00–12:00</td><td><span class="room-badge">B101</span></td><td style="font-size:11px;color:#6c8097;">01–10 Sep</td><td><span class="cdot" style="background:#22c55e;"></span><b style="color:#15803d;font-size:12px;">Running</b></td><td><button class="btn-ce" onclick="doEnroll('MTH101','Calculus and Linear Algebra')"><i class="bi bi-plus-circle-fill me-1"></i>Enroll</button></td></tr>
+                <tr data-code="ENG101" data-st="open" data-enrolled="0"><td><strong>ENG101</strong></td><td>Communication Skills</td><td>Mr. E. Niyonsenga</td><td>Wed 13:00–15:00</td><td><span class="room-badge">A108</span></td><td style="font-size:11px;color:#2563eb;">Open until Sep 10</td><td><span class="cdot" style="background:#3b82f6;"></span><b style="color:#1d4ed8;font-size:12px;">Reg. Open</b></td><td><button class="btn-ce" onclick="doEnroll('ENG101','Communication Skills')"><i class="bi bi-plus-circle-fill me-1"></i>Enroll</button></td></tr>
+
+                <!-- YEAR 2 -->
+                <tr class="yr-hdr"><td colspan="8" style="background:#f1f5f9;font-weight:800;font-size:11px;color:#153f83;letter-spacing:.07em;text-transform:uppercase;padding:.5rem 1rem;"><i class="bi bi-bookmark-fill me-2"></i>Year 2 — Core Courses</td></tr>
+                <tr data-code="CSE201" data-st="running" data-enrolled="0"><td><strong>CSE201</strong></td><td>Data Structures &amp; Algorithms</td><td>Dr. P. Habimana</td><td>Mon 10:00–12:00</td><td><span class="room-badge">C302</span></td><td style="font-size:11px;color:#6c8097;">01–10 Sep</td><td><span class="cdot" style="background:#22c55e;"></span><b style="color:#15803d;font-size:12px;">Running</b></td><td><button class="btn-ce" onclick="doEnroll('CSE201','Data Structures and Algorithms')"><i class="bi bi-plus-circle-fill me-1"></i>Enroll</button></td></tr>
+                <tr data-code="CSE205" data-st="closing" data-enrolled="0"><td><strong>CSE205</strong></td><td>Object-Oriented Programming</td><td>Mrs. A. Byukusenge</td><td>Thu 08:00–10:00</td><td><span class="room-badge">LAB01</span></td><td style="font-size:11px;color:#d97706;">Closes Sep 04 ⚠</td><td><span class="cdot" style="background:#f59e0b;"></span><b style="color:#d97706;font-size:12px;">Closing Soon</b></td><td><button class="btn-ce btn-ce-urgent" onclick="doEnroll('CSE205','Object-Oriented Programming')"><i class="bi bi-alarm-fill me-1"></i>Enroll Now!</button></td></tr>
+                <tr data-code="NET201" data-st="upcoming" data-enrolled="0"><td><strong>NET201</strong></td><td>Computer Networks</td><td>Dr. J. Mugisha</td><td>Fri 10:00–12:00</td><td><span class="room-badge">B101</span></td><td style="font-size:11px;color:#9ca3af;">Oct 01–10</td><td><span class="cdot" style="background:#9ca3af;"></span><b style="color:#9ca3af;font-size:12px;">Not Started</b></td><td><button class="btn-ce btn-ce-soon" onclick="notifyMe('NET201')"><i class="bi bi-bell me-1"></i>Notify Me</button></td></tr>
+                <tr data-code="CSE210" data-st="open" data-enrolled="0"><td><strong>CSE210</strong></td><td>Web Development</td><td>Mr. E. Niyonsenga</td><td>Tue 14:00–16:00</td><td><span class="room-badge">LAB01</span></td><td style="font-size:11px;color:#2563eb;">Open until Sep 08</td><td><span class="cdot" style="background:#3b82f6;"></span><b style="color:#1d4ed8;font-size:12px;">Reg. Open</b></td><td><button class="btn-ce" onclick="doEnroll('CSE210','Web Development')"><i class="bi bi-plus-circle-fill me-1"></i>Enroll</button></td></tr>
+
+                <!-- YEAR 3 -->
+                <tr class="yr-hdr"><td colspan="8" style="background:#f1f5f9;font-weight:800;font-size:11px;color:#153f83;letter-spacing:.07em;text-transform:uppercase;padding:.5rem 1rem;"><i class="bi bi-bookmark-fill me-2"></i>Year 3 — Advanced Courses</td></tr>
+                <tr data-code="CSE301" data-st="enrolled" data-enrolled="1" style="background:#f5f3ff;"><td><strong>CSE301</strong></td><td>Software Engineering</td><td>Dr. J. Mugisha</td><td>Mon 08:00–10:00</td><td><span class="room-badge">A204</span></td><td style="font-size:11px;color:#6c8097;">01–04 Sep</td><td><span class="cdot" style="background:#6366f1;"></span><b style="color:#4f46e5;font-size:12px;">Enrolled ✓</b></td><td><span style="font-size:11px;color:#4f46e5;font-weight:700;background:#e0e7ff;padding:4px 10px;border-radius:7px;"><i class="bi bi-check-circle-fill me-1"></i>Done</span></td></tr>
+                <tr data-code="CSE305" data-st="enrolled" data-enrolled="1" style="background:#f5f3ff;"><td><strong>CSE305</strong></td><td>Database Systems</td><td>Mrs. A. Byukusenge</td><td>Tue 10:00–12:00</td><td><span class="room-badge">B101</span></td><td style="font-size:11px;color:#6c8097;">01–04 Sep</td><td><span class="cdot" style="background:#6366f1;"></span><b style="color:#4f46e5;font-size:12px;">Enrolled ✓</b></td><td><span style="font-size:11px;color:#4f46e5;font-weight:700;background:#e0e7ff;padding:4px 10px;border-radius:7px;"><i class="bi bi-check-circle-fill me-1"></i>Done</span></td></tr>
+                <tr data-code="CSE310" data-st="enrolled" data-enrolled="1" style="background:#f5f3ff;"><td><strong>CSE310</strong></td><td>Human-Computer Interaction</td><td>Mr. E. Niyonsenga</td><td>Wed 13:00–15:00</td><td><span class="room-badge">A108</span></td><td style="font-size:11px;color:#6c8097;">01–04 Sep</td><td><span class="cdot" style="background:#6366f1;"></span><b style="color:#4f46e5;font-size:12px;">Enrolled ✓</b></td><td><span style="font-size:11px;color:#4f46e5;font-weight:700;background:#e0e7ff;padding:4px 10px;border-radius:7px;"><i class="bi bi-check-circle-fill me-1"></i>Done</span></td></tr>
+                <tr data-code="CSE315" data-st="closing" data-enrolled="0"><td><strong>CSE315</strong></td><td>Operating Systems</td><td>Dr. P. Habimana</td><td>Fri 08:00–10:00</td><td><span class="room-badge">LAB01</span></td><td style="font-size:11px;color:#d97706;">Closes Sep 04 ⚠</td><td><span class="cdot" style="background:#f59e0b;"></span><b style="color:#d97706;font-size:12px;">Closing Soon</b></td><td><button class="btn-ce btn-ce-urgent" onclick="doEnroll('CSE315','Operating Systems')"><i class="bi bi-alarm-fill me-1"></i>Enroll Now!</button></td></tr>
+                <tr data-code="CSE320" data-st="upcoming" data-enrolled="0"><td><strong>CSE320</strong></td><td>Mobile App Development</td><td>Mr. E. Niyonsenga</td><td>Mon/Wed 15:00–17:00</td><td><span class="room-badge">LAB01</span></td><td style="font-size:11px;color:#9ca3af;">Oct 05–15</td><td><span class="cdot" style="background:#9ca3af;"></span><b style="color:#9ca3af;font-size:12px;">Not Started</b></td><td><button class="btn-ce btn-ce-soon" onclick="notifyMe('CSE320')"><i class="bi bi-bell me-1"></i>Notify Me</button></td></tr>
+
+                <!-- YEAR 4 -->
+                <tr class="yr-hdr"><td colspan="8" style="background:#fef9c3;font-weight:800;font-size:11px;color:#92400e;letter-spacing:.07em;text-transform:uppercase;padding:.5rem 1rem;"><i class="bi bi-mortarboard-fill me-2"></i>Year 4 — Final Year Courses 🎓</td></tr>
+                <tr data-code="CSE401" data-st="running" data-enrolled="0"><td><strong>CSE401</strong></td><td>Final Year Project I</td><td>Dr. J. Mugisha</td><td>Mon/Wed 14:00–16:00</td><td><span class="room-badge">LAB01</span></td><td style="font-size:11px;color:#6c8097;">01–10 Sep</td><td><span class="cdot" style="background:#22c55e;"></span><b style="color:#15803d;font-size:12px;">Running</b></td><td><button class="btn-ce" onclick="doEnroll('CSE401','Final Year Project I')"><i class="bi bi-plus-circle-fill me-1"></i>Enroll</button></td></tr>
+                <tr data-code="CSE402" data-st="enrolled" data-enrolled="1" style="background:#f5f3ff;"><td><strong>CSE402</strong></td><td>Software Architecture</td><td>Dr. P. Habimana</td><td>Thu 08:00–10:00</td><td><span class="room-badge">C302</span></td><td style="font-size:11px;color:#d97706;">Closes Sep 04</td><td><span class="cdot" style="background:#6366f1;"></span><b style="color:#4f46e5;font-size:12px;">Enrolled ✓</b></td><td><span style="font-size:11px;color:#4f46e5;font-weight:700;background:#e0e7ff;padding:4px 10px;border-radius:7px;"><i class="bi bi-check-circle-fill me-1"></i>Done</span></td></tr>
+                <tr data-code="CSE410" data-st="upcoming" data-enrolled="0"><td><strong>CSE410</strong></td><td>Information Security</td><td>Mrs. A. Byukusenge</td><td>Tue/Thu 15:00–17:00</td><td><span class="room-badge">C302</span></td><td style="font-size:11px;color:#9ca3af;">Oct 15–25</td><td><span class="cdot" style="background:#9ca3af;"></span><b style="color:#9ca3af;font-size:12px;">Not Started</b></td><td><button class="btn-ce btn-ce-soon" onclick="notifyMe('CSE410')"><i class="bi bi-bell me-1"></i>Notify Me</button></td></tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div id="noCourses" style="display:none;text-align:center;padding:2rem;color:#6c8097;">
+        <i class="bi bi-search" style="font-size:2rem;display:block;margin-bottom:.5rem;"></i>
+        No courses match your search.
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;
+                padding:.75rem 1.25rem;border-top:1px solid #e2e8f0;
+                background:#f8fafc;border-radius:0 0 13px 13px;font-size:12px;color:#6c8097;">
+        <span><i class="bi bi-info-circle me-1"></i>All CIS Department courses · Semester 1, 2026/2027</span>
+        <span>Contact your CP or HOD to request a missing course.</span>
+    </div>
+</div>
+
+<style>
+    .cdot { width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle; }
+    .btn-ce {
+        display:inline-flex;align-items:center;gap:4px;
+        background:#1556c8;color:#fff;border:none;
+        border-radius:7px;padding:5px 12px;
+        font-size:12px;font-weight:700;cursor:pointer;transition:background .2s;
+    }
+    .btn-ce:hover { background:#153f83; }
+    .btn-ce-urgent { background:#dc2626 !important; animation: urgentPulse 1.5s infinite; }
+    .btn-ce-urgent:hover { background:#b91c1c !important; }
+    .btn-ce-soon { background:#6b7280 !important; }
+    .btn-ce-soon:hover { background:#374151 !important; }
+    @@keyframes urgentPulse {
+        0%,100% { box-shadow:0 0 0 0 rgba(220,38,38,.4); }
+        50%      { box-shadow:0 0 0 7px rgba(220,38,38,0); }
+    }
+    .yr-hdr td { padding:.5rem 1rem !important; }
+</style>
+
+@section Scripts {
+<script>
+    function filterCourses() {
+        var q  = document.getElementById('courseSearch').value.toLowerCase();
+        var st = document.getElementById('courseFilter').value;
+        var rows = document.querySelectorAll('#allCoursesTable tbody tr:not(.yr-hdr)');
+        var vis  = 0;
+
+        rows.forEach(function(r) {
+            var matchQ  = !q  || r.innerText.toLowerCase().includes(q);
+            var matchSt = !st || r.getAttribute('data-st') === st;
+            r.style.display = (matchQ && matchSt) ? '' : 'none';
+            if (matchQ && matchSt) vis++;
+        });
+
+        // Hide year headers with no visible children
+        document.querySelectorAll('.yr-hdr').forEach(function(h) {
+            var sib = h.nextElementSibling;
+            var show = false;
+            while (sib && !sib.classList.contains('yr-hdr')) {
+                if (sib.style.display !== 'none') { show = true; break; }
+                sib = sib.nextElementSibling;
+            }
+            h.style.display = show ? '' : 'none';
+        });
+
+        document.getElementById('noCourses').style.display = vis ? 'none' : 'block';
+    }
+
+    function doEnroll(code, name) {
+        if (!confirm('Enroll in ' + code + ' — ' + name + '?\n\nThis will register your interest. Your CP will be notified.')) return;
+        var row = document.querySelector('tr[data-code="' + code + '"]');
+        if (row) {
+            row.setAttribute('data-st', 'enrolled');
+            row.setAttribute('data-enrolled', '1');
+            row.style.background = '#f5f3ff';
+            row.cells[6].innerHTML = '<span class="cdot" style="background:#6366f1;"></span><b style="color:#4f46e5;font-size:12px;">Enrolled</b>';
+            row.cells[7].innerHTML = '<span style="font-size:11px;color:#4f46e5;font-weight:700;background:#e0e7ff;padding:4px 10px;border-radius:7px;"><i class="bi bi-check-circle-fill me-1"></i>Done</span>';
+        }
+        var t = document.createElement('div');
+        t.style.cssText = 'position:fixed;bottom:6rem;right:2rem;background:#16a34a;color:#fff;' +
+            'padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;' +
+            'z-index:9999;box-shadow:0 8px 25px rgba(22,163,74,.4);display:flex;align-items:center;gap:8px;';
+        t.innerHTML = '<i class="bi bi-check-circle-fill"></i> Enrolled in <strong>' + code + '</strong>!';
+        document.body.appendChild(t);
+        setTimeout(function() { t.remove(); }, 3500);
+    }
+
+    function notifyMe(code) {
+        alert('You will be notified when registration opens for ' + code + '.');
+        var row = document.querySelector('tr[data-code="' + code + '"]');
+        if (row) {
+            row.cells[7].innerHTML = '<span style="font-size:11px;color:#7c3aed;font-weight:700;' +
+                'background:#f5f3ff;padding:4px 10px;border-radius:7px;">' +
+                '<i class="bi bi-bell-fill me-1"></i>Notified</span>';
+        }
+    }
+</script>
+}
 <div class="dash-panel mt-4" id="finalistSection">
     <div class="panel-header" style="background:linear-gradient(135deg,#153f83,#1556c8);color:#fff;border-radius:13px 13px 0 0;">
         <span style="display:flex;align-items:center;gap:10px;">
             <span style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;
                          display:flex;align-items:center;justify-content:center;font-size:18px;">
-                🎓
+                ??
             </span>
             <div>
-                <div style="font-size:14px;font-weight:800;">Finalist Corner — Year 4</div>
+                <div style="font-size:14px;font-weight:800;">Finalist Corner � Year 4</div>
                 <div style="font-size:11px;opacity:.75;font-weight:400;">Defense schedules, graduation requirements &amp; final year info</div>
             </div>
         </span>
@@ -208,22 +390,22 @@
     <!-- Quick Info Cards -->
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:1.25rem 1.25rem .5rem;">
         <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem;text-align:center;">
-            <div style="font-size:22px;margin-bottom:6px;">📋</div>
+            <div style="font-size:22px;margin-bottom:6px;">??</div>
             <div style="font-size:20px;font-weight:800;color:#1556c8;">Oct 15</div>
             <div style="font-size:11px;color:#6c8097;">Project Submission</div>
         </div>
         <div style="background:#ecfdf5;border:1px solid #bbf7d0;border-radius:12px;padding:1rem;text-align:center;">
-            <div style="font-size:22px;margin-bottom:6px;">🗣️</div>
+            <div style="font-size:22px;margin-bottom:6px;">???</div>
             <div style="font-size:20px;font-weight:800;color:#059669;">Nov 10</div>
             <div style="font-size:11px;color:#6c8097;">Defense Period Starts</div>
         </div>
         <div style="background:#fef9c3;border:1px solid #fde68a;border-radius:12px;padding:1rem;text-align:center;">
-            <div style="font-size:22px;margin-bottom:6px;">🎖️</div>
+            <div style="font-size:22px;margin-bottom:6px;">???</div>
             <div style="font-size:20px;font-weight:800;color:#a16207;">Dec 5</div>
             <div style="font-size:11px;color:#6c8097;">Results Released</div>
         </div>
         <div style="background:#fdf4ff;border:1px solid #e9d5ff;border-radius:12px;padding:1rem;text-align:center;">
-            <div style="font-size:22px;margin-bottom:6px;">🎓</div>
+            <div style="font-size:22px;margin-bottom:6px;">??</div>
             <div style="font-size:20px;font-weight:800;color:#7c3aed;">Jan 2027</div>
             <div style="font-size:11px;color:#6c8097;">Graduation Ceremony</div>
         </div>
@@ -245,13 +427,13 @@
                 <div style="padding:.75rem 1rem;display:grid;grid-template-columns:1fr 1fr 1fr;
                             font-size:13px;border-top:1px solid #e2e8f0;align-items:center;">
                     <span style="font-weight:700;color:#142d4d;">Nov 12, 2026</span>
-                    <span style="color:#1556c8;font-weight:600;">09:00 – 10:00</span>
+                    <span style="color:#1556c8;font-weight:600;">09:00 � 10:00</span>
                     <span><span class="room-badge">Lab 01</span></span>
                 </div>
                 <div style="padding:.75rem 1rem;font-size:12px;color:#6c8097;
                             border-top:1px solid #e2e8f0;background:#fafafa;">
                     <i class="bi bi-people-fill me-1"></i>
-                    <strong>Panel:</strong> Dr. J. Mugisha (Chair) · Mrs. A. Byukusenge · Mr. E. Niyonsenga
+                    <strong>Panel:</strong> Dr. J. Mugisha (Chair) � Mrs. A. Byukusenge � Mr. E. Niyonsenga
                 </div>
             </div>
             <div style="margin-top:.75rem;padding:.65rem .9rem;background:#fef9c3;
@@ -271,7 +453,7 @@
                 <div style="display:flex;align-items:center;gap:10px;padding:.6rem .85rem;
                             background:#ecfdf5;border:1px solid #bbf7d0;border-radius:9px;">
                     <i class="bi bi-check-circle-fill" style="color:#15803d;font-size:15px;"></i>
-                    <span style="font-size:13px;font-weight:600;color:#14532d;">All courses passed (CGS ≥ 50%)</span>
+                    <span style="font-size:13px;font-weight:600;color:#14532d;">All courses passed (CGS = 50%)</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;padding:.6rem .85rem;
                             background:#ecfdf5;border:1px solid #bbf7d0;border-radius:9px;">
@@ -281,17 +463,17 @@
                 <div style="display:flex;align-items:center;gap:10px;padding:.6rem .85rem;
                             background:#fef9c3;border:1px solid #fde68a;border-radius:9px;">
                     <i class="bi bi-hourglass-split" style="color:#a16207;font-size:15px;"></i>
-                    <span style="font-size:13px;font-weight:600;color:#a16207;">Project defense — Pending</span>
+                    <span style="font-size:13px;font-weight:600;color:#a16207;">Project defense � Pending</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;padding:.6rem .85rem;
                             background:#fef2f2;border:1px solid #fecaca;border-radius:9px;">
                     <i class="bi bi-x-circle-fill" style="color:#dc2626;font-size:15px;"></i>
-                    <span style="font-size:13px;font-weight:600;color:#dc2626;">Clearance form — Not submitted</span>
+                    <span style="font-size:13px;font-weight:600;color:#dc2626;">Clearance form � Not submitted</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;padding:.6rem .85rem;
                             background:#fef2f2;border:1px solid #fecaca;border-radius:9px;">
                     <i class="bi bi-x-circle-fill" style="color:#dc2626;font-size:15px;"></i>
-                    <span style="font-size:13px;font-weight:600;color:#dc2626;">Library clearance — Not done</span>
+                    <span style="font-size:13px;font-weight:600;color:#dc2626;">Library clearance � Not done</span>
                 </div>
                 <a href="https://umurongosmart.com" target="_blank"
                    style="display:flex;align-items:center;justify-content:center;gap:7px;
@@ -332,3 +514,4 @@
         </a>
     </div>
 </div>
+
