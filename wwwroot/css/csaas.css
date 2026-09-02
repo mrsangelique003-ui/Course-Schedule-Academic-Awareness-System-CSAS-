@@ -151,9 +151,40 @@ body {
     text-align: center;
 }
 
-.cs-hero-content { color: #fff; max-width: 720px; }
-.cs-hero-description { max-width: 580px; margin-left: auto; margin-right: auto; }
+.cs-hero-content {
+    color: #fff;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.cs-hero-content h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    color: #fff;
+    text-align: center;
+}
+
+.cs-hero-content h1 span {
+    color: #60a5fa;
+    display: block;
+}
+
+.cs-hero-description {
+    font-size: 16px;
+    color: rgba(255,255,255,.82);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+    max-width: 580px;
+    text-align: center;
+}
+
 .cs-hero-actions { justify-content: center; }
+.cs-badge { align-self: center; margin-bottom: 1.5rem; }
 
 .cs-badge {
     display: inline-flex;
