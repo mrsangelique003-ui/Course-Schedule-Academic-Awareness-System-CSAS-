@@ -143,15 +143,17 @@ body {
 }
 
 .cs-hero-container {
-    max-width: 1200px;
+    max-width: 800px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
-.cs-hero-content { color: #fff; }
+.cs-hero-content { color: #fff; max-width: 720px; }
+.cs-hero-description { max-width: 580px; margin-left: auto; margin-right: auto; }
+.cs-hero-actions { justify-content: center; }
 
 .cs-badge {
     display: inline-flex;
@@ -625,8 +627,7 @@ body {
 
 @media (max-width: 900px) {
     .cs-navbar { padding: 0 1.5rem; }
-    .cs-hero-container { grid-template-columns: 1fr; }
-    .cs-dashboard { display: none; }
+    .cs-hero-container { text-align: center; align-items: center; }
     .cs-hero { padding: 4rem 1.5rem; }
     .cs-footer-container { grid-template-columns: 1fr; gap: 2rem; }
 }

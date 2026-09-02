@@ -1,4 +1,4 @@
-@page
+﻿@page
 @{
     ViewData["Title"] = "CSAS | UNILAK";
     ViewData["FullWidth"] = "true";
@@ -103,7 +103,13 @@
         .cs-hero-container {
             position: relative;
             z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
         }
+        .cs-hero-content { color: #fff; }
+        .cs-hero-description { max-width: 600px; margin-left: auto; margin-right: auto; }
+        .cs-hero-actions { justify-content: center; }
 
         /* slide indicators */
         .hero-indicators {
@@ -228,70 +234,7 @@
 
             </div>
 
-            <!-- DASHBOARD PREVIEW -->
-            <div class="cs-dashboard">
-                <div class="cs-dashboard-window">
-
-                    <div class="cs-window-header">
-                        <div class="cs-window-dots">
-                            <span></span><span></span><span></span>
-                        </div>
-                        <span class="cs-window-title">Academic Dashboard</span>
-                    </div>
-
-                    <div class="cs-dashboard-body">
-
-                        <div class="cs-dashboard-welcome">
-                            <div>
-                                <h4>Academic Overview</h4>
-                                <p>Monday, August 24, 2026</p>
-                            </div>
-                            <div class="cs-profile">
-                                <i class="bi bi-person-fill"></i>
-                            </div>
-                        </div>
-
-                        <div class="cs-dashboard-cards">
-                            <div class="cs-mini-card">
-                                <div class="cs-mini-card-icon">
-                                    <i class="bi bi-calendar3"></i>
-                                </div>
-                                <strong>06</strong>
-                                <span>Classes Today</span>
-                            </div>
-                            <div class="cs-mini-card">
-                                <div class="cs-mini-card-icon">
-                                    <i class="bi bi-people-fill"></i>
-                                </div>
-                                <strong>04</strong>
-                                <span>Active Groups</span>
-                            </div>
-                        </div>
-
-                        <div class="cs-schedule">
-                            <div class="cs-schedule-header">Today's Schedule</div>
-                            <div class="cs-schedule-row">
-                                <span class="cs-time">08:00</span>
-                                <span class="cs-class">Software Engineering</span>
-                                <span class="cs-room">Room 204</span>
-                            </div>
-                            <div class="cs-schedule-row">
-                                <span class="cs-time">10:00</span>
-                                <span class="cs-class">Database Administration</span>
-                                <span class="cs-room">Lab 02</span>
-                            </div>
-                            <div class="cs-schedule-row">
-                                <span class="cs-time">14:00</span>
-                                <span class="cs-class">Software Testing</span>
-                                <span class="cs-room">Room 301</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
+            
     </section>
 
     <!-- =====================================================
