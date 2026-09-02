@@ -666,9 +666,409 @@
     }
 </style>
 
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SECTION 5: CP ↔ HOD PRIVATE CHAT ROOM
+     Only CP, HOD, and Dean can see this panel.
+════════════════════════════════════════════════════════════════════ -->
+<div class="dash-panel mt-4" id="cpHodChat">
+    <div class="panel-header" style="background:linear-gradient(135deg,#142d4d,#1e3a8a);
+                                      color:#fff;border-radius:13px 13px 0 0;">
+        <span style="display:flex;align-items:center;gap:10px;">
+            <span style="width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:50%;
+                         display:flex;align-items:center;justify-content:center;font-size:18px;">
+                <i class="bi bi-chat-dots-fill"></i>
+            </span>
+            <div>
+                <div style="font-size:14px;font-weight:800;">
+                    Private Chat — CP &amp; HOD
+                </div>
+                <div style="font-size:11px;opacity:.75;">
+                    This chat is private between the Class Representative and HOD only.
+                    Messages are saved and visible to Dean if needed.
+                </div>
+            </div>
+        </span>
+        <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:9px;height:9px;border-radius:50%;background:#22c55e;
+                         box-shadow:0 0 0 3px rgba(34,197,94,.3);animation:chatPulse 2s infinite;
+                         display:inline-block;"></span>
+            <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.8);">HOD Online</span>
+        </div>
+    </div>
+
+    <!-- Chat participants bar -->
+    <div style="display:flex;align-items:center;gap:.75rem;padding:.65rem 1.25rem;
+                border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+        <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:32px;height:32px;border-radius:50%;background:#7c3aed;
+                        display:flex;align-items:center;justify-content:center;
+                        font-size:12px;font-weight:800;color:#fff;">B</div>
+            <div>
+                <div style="font-size:12px;font-weight:700;color:#142d4d;">Bob Nkurunziza</div>
+                <div style="font-size:10px;color:#22c55e;font-weight:600;">● You (CP)</div>
+            </div>
+        </div>
+        <div style="color:#d1d5db;font-size:18px;">↔</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:32px;height:32px;border-radius:50%;background:#1556c8;
+                        display:flex;align-items:center;justify-content:center;
+                        font-size:12px;font-weight:800;color:#fff;">E</div>
+            <div>
+                <div style="font-size:12px;font-weight:700;color:#142d4d;">Prof. Eric Mugisha</div>
+                <div style="font-size:10px;color:#22c55e;font-weight:600;">● HOD — Online</div>
+            </div>
+        </div>
+        <div style="margin-left:auto;font-size:11px;color:#9ca3af;">
+            <i class="bi bi-lock-fill me-1"></i>Private · End-to-end encrypted
+        </div>
+    </div>
+
+    <!-- Messages window -->
+    <div id="chatMessages" style="height:360px;overflow-y:auto;padding:1.25rem;
+                                   display:flex;flex-direction:column;gap:.85rem;
+                                   background:#fafbfc;">
+
+        <!-- HOD message -->
+        <div class="chat-msg chat-msg-in">
+            <div class="chat-avatar" style="background:#1556c8;">E</div>
+            <div class="chat-bubble chat-bubble-in">
+                <div class="chat-sender">Prof. Eric Mugisha (HOD)</div>
+                <div class="chat-text">
+                    Hello Bob, how are things going with your class this semester?
+                    Are there any issues I should be aware of?
+                </div>
+                <div class="chat-time">Yesterday 14:22</div>
+            </div>
+        </div>
+
+        <!-- CP reply -->
+        <div class="chat-msg chat-msg-out">
+            <div class="chat-bubble chat-bubble-out">
+                <div class="chat-sender" style="color:rgba(255,255,255,.7);">You (CP)</div>
+                <div class="chat-text">
+                    Good afternoon Professor. Most things are fine, but I wanted to report that
+                    Mrs. Byukusenge was absent on Tuesday (CSE305) without prior notice.
+                    Students waited for the full session.
+                </div>
+                <div class="chat-time" style="color:rgba(255,255,255,.65);">Yesterday 14:35</div>
+            </div>
+            <div class="chat-avatar" style="background:#7c3aed;">B</div>
+        </div>
+
+        <!-- HOD reply -->
+        <div class="chat-msg chat-msg-in">
+            <div class="chat-avatar" style="background:#1556c8;">E</div>
+            <div class="chat-bubble chat-bubble-in">
+                <div class="chat-sender">Prof. Eric Mugisha (HOD)</div>
+                <div class="chat-text">
+                    Thank you for reporting this. I will follow up with her directly.
+                    Please make sure to submit a formal attendance flag through the dashboard as well.
+                    I have noted this for the monthly report.
+                </div>
+                <div class="chat-time">Yesterday 15:01</div>
+            </div>
+        </div>
+
+        <!-- CP reply -->
+        <div class="chat-msg chat-msg-out">
+            <div class="chat-bubble chat-bubble-out">
+                <div class="chat-sender" style="color:rgba(255,255,255,.7);">You (CP)</div>
+                <div class="chat-text">
+                    Understood. I already submitted the flag. Also, can we discuss the room for
+                    CSE310 on Wednesday? Room A108 is over capacity — 44 students for a 40-seat room.
+                </div>
+                <div class="chat-time" style="color:rgba(255,255,255,.65);">Yesterday 15:04</div>
+            </div>
+            <div class="chat-avatar" style="background:#7c3aed;">B</div>
+        </div>
+
+        <!-- HOD reply -->
+        <div class="chat-msg chat-msg-in">
+            <div class="chat-avatar" style="background:#1556c8;">E</div>
+            <div class="chat-bubble chat-bubble-in">
+                <div class="chat-sender">Prof. Eric Mugisha (HOD)</div>
+                <div class="chat-text">
+                    I will arrange for room C302 (50 seats) starting next week.
+                    Submit a room swap request and I will approve it today.
+                </div>
+                <div class="chat-time">Today 08:15</div>
+            </div>
+        </div>
+
+        <!-- Typing indicator (hidden by default) -->
+        <div id="typingIndicator" style="display:none;" class="chat-msg chat-msg-in">
+            <div class="chat-avatar" style="background:#1556c8;">E</div>
+            <div class="chat-bubble chat-bubble-in" style="padding:.5rem .9rem;">
+                <div style="display:flex;gap:4px;align-items:center;height:20px;">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot" style="animation-delay:.2s;"></span>
+                    <span class="typing-dot" style="animation-delay:.4s;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick replies -->
+    <div style="padding:.5rem 1.25rem;border-top:1px solid #f1f5f9;
+                display:flex;flex-wrap:wrap;gap:.4rem;background:#f8fafc;">
+        <span style="font-size:10px;color:#9ca3af;align-self:center;margin-right:.25rem;">Quick:</span>
+        <button onclick="quickReply('I have submitted the flag as requested.')" class="btn-quick-reply">
+            Flag submitted ✓
+        </button>
+        <button onclick="quickReply('Can we schedule a meeting to discuss this further?')" class="btn-quick-reply">
+            Request meeting
+        </button>
+        <button onclick="quickReply('The room swap request has been submitted.')" class="btn-quick-reply">
+            Swap requested
+        </button>
+        <button onclick="quickReply('Thank you Professor, understood.')" class="btn-quick-reply">
+            Acknowledged
+        </button>
+    </div>
+
+    <!-- Message input -->
+    <div style="padding:1rem 1.25rem;border-top:1px solid #e2e8f0;
+                display:flex;gap:.75rem;align-items:flex-end;background:#fff;
+                border-radius:0 0 13px 13px;">
+        <div style="flex:1;position:relative;">
+            <textarea id="chatInput"
+                      placeholder="Type a message to HOD… (Enter to send, Shift+Enter for new line)"
+                      rows="2"
+                      style="width:100%;border:1.5px solid #e2e8f0;border-radius:12px;
+                             padding:.65rem 3rem .65rem .9rem;font-size:13px;
+                             resize:none;outline:none;font-family:inherit;
+                             transition:border-color .2s;"
+                      onfocus="this.style.borderColor='#1556c8'"
+                      onblur="this.style.borderColor='#e2e8f0'"
+                      onkeydown="chatKeyDown(event)"></textarea>
+            <!-- Emoji button -->
+            <button onclick="toggleEmoji()" title="Emoji"
+                    style="position:absolute;right:.6rem;bottom:.6rem;
+                           background:none;border:none;cursor:pointer;
+                           font-size:18px;line-height:1;color:#9ca3af;">😊</button>
+        </div>
+
+        <!-- Attach -->
+        <button title="Attach file"
+                style="width:42px;height:42px;background:#f1f5f9;border:1.5px solid #e2e8f0;
+                       border-radius:10px;cursor:pointer;display:flex;align-items:center;
+                       justify-content:center;font-size:17px;color:#6c8097;
+                       flex-shrink:0;transition:.2s;"
+                onmouseenter="this.style.background='#e2e8f0'"
+                onmouseleave="this.style.background='#f1f5f9'">
+            <i class="bi bi-paperclip"></i>
+        </button>
+
+        <!-- Send -->
+        <button onclick="sendChatMessage()"
+                style="width:42px;height:42px;background:#1556c8;border:none;
+                       border-radius:10px;cursor:pointer;display:flex;align-items:center;
+                       justify-content:center;font-size:17px;color:#fff;
+                       flex-shrink:0;transition:.2s;box-shadow:0 4px 12px rgba(21,86,200,.3);"
+                onmouseenter="this.style.background='#153f83'"
+                onmouseleave="this.style.background='#1556c8'">
+            <i class="bi bi-send-fill"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Emoji picker (simple) -->
+<div id="emojiPicker" style="display:none;position:fixed;bottom:12rem;right:4rem;
+     background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem;
+     box-shadow:0 10px 30px rgba(0,0,0,.15);z-index:500;
+     display:none;flex-wrap:wrap;gap:4px;width:220px;">
+    <span style="font-size:10px;font-weight:700;color:#9ca3af;width:100%;margin-bottom:4px;">Quick Emoji</span>
+    @foreach (var em in new[] {"👍","✅","❌","⚠️","📋","📢","🔔","🏛️","📚","🕐","🙏","✍️"})
+    {
+        <button onclick="insertEmoji('@em')"
+                style="font-size:20px;background:none;border:none;cursor:pointer;
+                       padding:3px;border-radius:6px;transition:.1s;"
+                onmouseenter="this.style.background='#f1f5f9'"
+                onmouseleave="this.style.background='none'">@em</button>
+    }
+</div>
+
+<style>
+    /* ── Chat styles ────────────────────────────────── */
+    .chat-msg {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        max-width: 80%;
+    }
+    .chat-msg-out {
+        align-self: flex-end;
+        flex-direction: row;
+    }
+    .chat-msg-in {
+        align-self: flex-start;
+    }
+    .chat-avatar {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 800; color: #fff;
+        flex-shrink: 0;
+    }
+    .chat-bubble {
+        border-radius: 16px;
+        padding: .65rem .9rem;
+        max-width: 100%;
+        word-break: break-word;
+    }
+    .chat-bubble-in {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-bottom-left-radius: 4px;
+    }
+    .chat-bubble-out {
+        background: linear-gradient(135deg, #1556c8, #153f83);
+        color: #fff;
+        border-bottom-right-radius: 4px;
+    }
+    .chat-sender {
+        font-size: 10px;
+        font-weight: 800;
+        color: #6c8097;
+        margin-bottom: 3px;
+        letter-spacing: .03em;
+    }
+    .chat-text { font-size: 13px; line-height: 1.55; }
+    .chat-time { font-size: 10px; color: #9ca3af; margin-top: 4px; text-align: right; }
+
+    .btn-quick-reply {
+        background: #f1f5f9; border: 1px solid #e2e8f0;
+        border-radius: 20px; padding: 4px 10px;
+        font-size: 11px; font-weight: 600; color: #374151;
+        cursor: pointer; transition: .15s;
+        white-space: nowrap;
+    }
+    .btn-quick-reply:hover { background: #dbeafe; border-color: #93c5fd; color: #1556c8; }
+
+    .typing-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: #9ca3af; display: inline-block;
+        animation: typingBounce .8s infinite;
+    }
+    @@keyframes typingBounce {
+        0%,60%,100% { transform: translateY(0); }
+        30%          { transform: translateY(-6px); }
+    }
+    @@keyframes chatPulse {
+        0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,.3); }
+        50%      { box-shadow: 0 0 0 6px rgba(34,197,94,.05); }
+    }
+</style>
 @section Scripts {
 <script>
-    // ── CP Profile edit ────────────────────────────────────────────
+    // ── Chat functions ─────────────────────────────────────────────
+    var cpName    = 'Bob Nkurunziza';
+    var cpInitial = 'B';
+    var hodName   = 'Prof. Eric Mugisha (HOD)';
+    var hodInitial = 'E';
+
+    function sendChatMessage() {
+        var input = document.getElementById('chatInput');
+        var text  = input.value.trim();
+        if (!text) return;
+
+        appendMessage(text, 'out');
+        input.value = '';
+        input.style.height = 'auto';
+
+        // Simulate HOD typing then replying
+        setTimeout(function() {
+            document.getElementById('typingIndicator').style.display = 'flex';
+            scrollChat();
+        }, 400);
+
+        setTimeout(function() {
+            document.getElementById('typingIndicator').style.display = 'none';
+            var replies = [
+                'Thank you for the update. I will look into this.',
+                'Noted. Please submit the required form as well.',
+                'I will discuss this with the lecturer directly.',
+                'Good work keeping me informed. Keep up the flags.',
+                'This has been recorded. We will address it in the next meeting.'
+            ];
+            var reply = replies[Math.floor(Math.random() * replies.length)];
+            appendMessage(reply, 'in');
+        }, 2200);
+    }
+
+    function appendMessage(text, dir) {
+        var box   = document.getElementById('chatMessages');
+        var now   = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+        var wrap  = document.createElement('div');
+        wrap.className = 'chat-msg chat-msg-' + dir;
+
+        if (dir === 'out') {
+            wrap.innerHTML =
+                '<div class="chat-bubble chat-bubble-out">' +
+                  '<div class="chat-sender" style="color:rgba(255,255,255,.7);">You (CP)</div>' +
+                  '<div class="chat-text">' + escHtml(text) + '</div>' +
+                  '<div class="chat-time" style="color:rgba(255,255,255,.65);">' + now + '</div>' +
+                '</div>' +
+                '<div class="chat-avatar" style="background:#7c3aed;">' + cpInitial + '</div>';
+        } else {
+            wrap.innerHTML =
+                '<div class="chat-avatar" style="background:#1556c8;">' + hodInitial + '</div>' +
+                '<div class="chat-bubble chat-bubble-in">' +
+                  '<div class="chat-sender">' + hodName + '</div>' +
+                  '<div class="chat-text">' + escHtml(text) + '</div>' +
+                  '<div class="chat-time">' + now + '</div>' +
+                '</div>';
+        }
+        box.insertBefore(wrap, document.getElementById('typingIndicator'));
+        scrollChat();
+    }
+
+    function scrollChat() {
+        var box = document.getElementById('chatMessages');
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function chatKeyDown(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChatMessage();
+        }
+    }
+
+    function quickReply(msg) {
+        document.getElementById('chatInput').value = msg;
+        sendChatMessage();
+    }
+
+    function toggleEmoji() {
+        var p = document.getElementById('emojiPicker');
+        p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function insertEmoji(em) {
+        var input = document.getElementById('chatInput');
+        input.value += em;
+        input.focus();
+        document.getElementById('emojiPicker').style.display = 'none';
+    }
+
+    function escHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                  .replace(/\n/g,'<br>');
+    }
+
+    // Close emoji picker on outside click
+    document.addEventListener('click', function(e) {
+        var picker = document.getElementById('emojiPicker');
+        if (picker && !picker.contains(e.target) &&
+            !e.target.closest('[onclick="toggleEmoji()"]')) {
+            picker.style.display = 'none';
+        }
+    });
+
+    // Scroll chat to bottom on load
+    scrollChat();
     function toggleEditProfile() {
         var v = document.getElementById('profileView');
         var e = document.getElementById('profileEdit');

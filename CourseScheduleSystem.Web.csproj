@@ -36,6 +36,9 @@
 
     <!-- Cookie authentication -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+
+    <!-- Response compression (Brotli + Gzip) -->
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
