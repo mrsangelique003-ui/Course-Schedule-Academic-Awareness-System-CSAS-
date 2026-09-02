@@ -6,18 +6,43 @@
     ViewData["ActiveNav"] = "home";
     ViewData["Role"] = "CP";
     ViewData["UserName"] = User.Identity?.Name ?? "CP";
+
+    // Director of Quality, Dean, HOD get read-only view
+    bool isReadOnly = User.IsInRole("DirectorOfQuality") || User.IsInRole("Dean") || User.IsInRole("HOD");
+    string viewerRole = isReadOnly
+        ? (User.IsInRole("DirectorOfQuality") ? "Director of Quality" : "Dean / HOD")
+        : "Class Representative";
 }
 
+@* ── READ-ONLY BANNER (visible to Director of Quality / HOD / Dean) ── *@
+@if (isReadOnly)
+{
+    <div style="background:linear-gradient(135deg,#059669,#047857);color:#fff;
+                border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.5rem;
+                display:flex;align-items:center;gap:12px;">
+        <i class="bi bi-eye-fill" style="font-size:22px;flex-shrink:0;"></i>
+        <div>
+            <div style="font-weight:800;font-size:14px;">Read-Only View — @viewerRole</div>
+            <div style="font-size:12px;opacity:.85;">
+                You are viewing the Class Representative dashboard in read-only mode.
+                All flags, notes, and actions submitted by the CP are visible here.
+            </div>
+        </div>
+    </div>
+}
+
+<!-- ── WELCOME ─────────────────────────────────────────────────────── -->
 <div class="dash-welcome">
     <div>
         <h2 class="dash-heading">Class Representative Dashboard</h2>
         <p class="dash-subheading">@DateTime.Now.ToString("dddd, dd MMMM yyyy") · CIS Department</p>
     </div>
     <div class="dash-welcome-badge" style="background:rgba(124,58,237,.15);color:#7c3aed;">
-        <i class="bi bi-person-badge-fill"></i> Class Representative
+        <i class="bi bi-person-badge-fill"></i> @viewerRole
     </div>
 </div>
 
+<!-- ── STAT CARDS ───────────────────────────────────────────────────── -->
 <div class="dash-stats">
     <div class="stat-card stat-blue">
         <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
@@ -37,17 +62,145 @@
     </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════════════════
+     SECTION 1: CP PROFILE DETAILS
+════════════════════════════════════════════════════════════════════ -->
+<div class="dash-panel mb-4">
+    <div class="panel-header" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border-radius:13px 13px 0 0;">
+        <span style="display:flex;align-items:center;gap:10px;">
+            <span style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;
+                         display:flex;align-items:center;justify-content:center;font-size:18px;">
+                <i class="bi bi-person-vcard-fill"></i>
+            </span>
+            <div>
+                <div style="font-size:14px;font-weight:800;">Class Representative Profile</div>
+                <div style="font-size:11px;opacity:.75;">Official CP details visible to HOD, Director of Quality and Dean</div>
+            </div>
+        </span>
+        @if (!isReadOnly)
+        {
+            <button onclick="toggleEditProfile()"
+                    style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);
+                           color:#fff;border-radius:8px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;">
+                <i class="bi bi-pencil-fill me-1"></i> Edit Profile
+            </button>
+        }
+    </div>
+
+    <div style="padding:1.25rem;">
+        <!-- VIEW mode -->
+        <div id="profileView" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Full Name</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-name">Bob Nkurunziza</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Phone Number</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-phone">+250 788 123 456</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Nationality</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-nationality">Rwandan</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Department</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-dept">Computer Information Systems (CIS)</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Intake / Cohort</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-intake">2023 — Semester 1</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Academic Year</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-year">Year 3</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Study Session</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-session">Day</div>
+            </div>
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Reg. Number</div>
+                <div style="font-size:14px;font-weight:700;color:#142d4d;" id="pv-regno">CP001</div>
+            </div>
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:.85rem 1rem;">
+                <div style="font-size:10px;font-weight:800;color:#1556c8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Role</div>
+                <div style="font-size:14px;font-weight:700;color:#1556c8;">
+                    <i class="bi bi-person-badge-fill me-1"></i>Class Representative
+                </div>
+            </div>
+        </div>
+
+        <!-- EDIT mode (CP only) -->
+        @if (!isReadOnly)
+        {
+            <div id="profileEdit" style="display:none;margin-top:1rem;">
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+                    <div>
+                        <label class="form-label fw-semibold" style="font-size:12px;">Full Name</label>
+                        <input type="text" id="pe-name" class="form-control" value="Bob Nkurunziza" />
+                    </div>
+                    <div>
+                        <label class="form-label fw-semibold" style="font-size:12px;">Phone Number</label>
+                        <input type="tel" id="pe-phone" class="form-control" value="+250 788 123 456" />
+                    </div>
+                    <div>
+                        <label class="form-label fw-semibold" style="font-size:12px;">Nationality</label>
+                        <input type="text" id="pe-nationality" class="form-control" value="Rwandan" />
+                    </div>
+                    <div>
+                        <label class="form-label fw-semibold" style="font-size:12px;">Department</label>
+                        <input type="text" id="pe-dept" class="form-control" value="Computer Information Systems (CIS)" />
+                    </div>
+                    <div>
+                        <label class="form-label fw-semibold" style="font-size:12px;">Intake / Cohort</label>
+                        <input type="text" id="pe-intake" class="form-control" value="2023 — Semester 1" />
+                    </div>
+                    <div>
+                        <label class="form-label fw-semibold" style="font-size:12px;">Academic Year</label>
+                        <select id="pe-year" class="form-select">
+                            <option>Year 1</option><option>Year 2</option>
+                            <option selected>Year 3</option><option>Year 4</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label fw-semibold" style="font-size:12px;">Study Session</label>
+                        <select id="pe-session" class="form-select">
+                            <option selected>Day</option>
+                            <option>Evening</option><option>Weekend</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:flex;gap:.75rem;margin-top:1rem;">
+                    <button onclick="saveProfile()" class="btn-dash-primary">
+                        <i class="bi bi-check-lg me-1"></i>Save Profile
+                    </button>
+                    <button onclick="toggleEditProfile()" class="btn-dash-cancel">Cancel</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SECTION 2: ATTENDANCE FLAGS + ROOM SWAP + ANNOUNCEMENTS
+════════════════════════════════════════════════════════════════════ -->
 <div class="dash-grid">
 
     <!-- ATTENDANCE FLAGGING -->
     <div class="dash-panel">
         <div class="panel-header">
             <span><i class="bi bi-flag-fill me-2 text-danger"></i>Flag Attendance Issue</span>
+            @if (isReadOnly)
+            {
+                <span class="panel-badge" style="background:#ecfdf5;color:#059669;border:1px solid #bbf7d0;">
+                    <i class="bi bi-eye-fill me-1"></i>Read-Only
+                </span>
+            }
         </div>
-        <form class="flag-form">
+        <form class="flag-form" id="flagForm" onsubmit="submitFlag(event)">
             <div class="mb-3">
                 <label class="form-label fw-semibold">Course / Session</label>
-                <select class="form-select">
+                <select class="form-select" id="flagCourse" @(isReadOnly ? "disabled" : "")>
                     <option>CSE301 — Software Engineering · Mon 08:00</option>
                     <option>CSE305 — Database Systems · Tue 10:00</option>
                     <option>CSE310 — HCI · Wed 13:00</option>
@@ -58,59 +211,101 @@
                 <label class="form-label fw-semibold">Issue Type</label>
                 <div class="d-flex gap-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="issue" id="absent" value="Absent" checked />
+                        <input class="form-check-input" type="radio" name="issue" id="absent" value="Absent" checked @(isReadOnly ? "disabled" : "") />
                         <label class="form-check-label" for="absent">Lecturer Absent</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="issue" id="late" value="Late" />
+                        <input class="form-check-input" type="radio" name="issue" id="late" value="Late" @(isReadOnly ? "disabled" : "") />
                         <label class="form-check-label" for="late">Class Delayed</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="issue" id="cancelled" value="Cancelled" />
+                        <input class="form-check-input" type="radio" name="issue" id="cancelled" value="Cancelled" @(isReadOnly ? "disabled" : "") />
                         <label class="form-check-label" for="cancelled">Cancelled</label>
                     </div>
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Notes (optional)</label>
-                <textarea class="form-control" rows="2" placeholder="Add context or details…"></textarea>
+                <label class="form-label fw-semibold">
+                    Notes / Context
+                    <span style="font-size:10px;color:#6c8097;font-weight:400;margin-left:6px;">
+                        (saved and visible to HOD &amp; Director of Quality)
+                    </span>
+                </label>
+                <textarea class="form-control" id="flagNotes" rows="3"
+                          placeholder="Describe what happened in detail — time, number of students present, lecturer reason if known…"
+                          @(isReadOnly ? "readonly" : "")></textarea>
+                <div style="font-size:11px;color:#6c8097;margin-top:4px;">
+                    <i class="bi bi-shield-check me-1 text-success"></i>
+                    These notes are saved and visible to HOD and Director of Quality for review.
+                </div>
             </div>
-            <button type="submit" class="btn-dash-primary"><i class="bi bi-flag-fill me-2"></i>Submit Flag</button>
+            @if (!isReadOnly)
+            {
+                <button type="submit" class="btn-dash-primary">
+                    <i class="bi bi-flag-fill me-2"></i>Submit &amp; Save Flag
+                </button>
+            }
         </form>
 
-        <!-- Existing flags -->
-        <div class="mt-3">
-            <div class="flag-item">
+        <!-- Saved Flags Log (visible to all) -->
+        <div class="mt-3" id="flagsLog">
+            <div style="font-size:11px;font-weight:800;color:#6c8097;text-transform:uppercase;
+                        letter-spacing:.07em;padding:.5rem 0 .35rem;">
+                <i class="bi bi-journal-text me-1"></i>Saved Flags — Visible to HOD &amp; Director of Quality
+            </div>
+
+            <div class="flag-item" data-course="CSE305" data-type="Absent"
+                 data-notes="Lecturer did not show up at all. 38 students waited for 1 hour. No prior notice was given."
+                 data-date="28 Aug 2026" data-status="pending">
                 <span class="flag-badge badge-absent">Absent</span>
-                <div class="flag-detail">CSE305 — Tue 10:00 · <span class="text-muted">28 Aug 2026</span></div>
+                <div class="flag-detail" style="flex:1;">
+                    <div>CSE305 — Tue 10:00 · <span class="text-muted" style="font-size:11px;">28 Aug 2026</span></div>
+                    <div style="font-size:11px;color:#374151;margin-top:3px;font-style:italic;">
+                        "Lecturer did not show up at all. 38 students waited for 1 hour. No prior notice was given."
+                    </div>
+                </div>
                 <span class="flag-status pending">Pending</span>
             </div>
-            <div class="flag-item">
+
+            <div class="flag-item" data-course="CSE301" data-type="Delayed"
+                 data-notes="Class started 30 minutes late. Lecturer arrived at 08:32. Reason given: traffic."
+                 data-date="25 Aug 2026" data-status="reviewed">
                 <span class="flag-badge badge-late">Delayed</span>
-                <div class="flag-detail">CSE301 — Mon 08:00 · <span class="text-muted">25 Aug 2026</span></div>
+                <div class="flag-detail" style="flex:1;">
+                    <div>CSE301 — Mon 08:00 · <span class="text-muted" style="font-size:11px;">25 Aug 2026</span></div>
+                    <div style="font-size:11px;color:#374151;margin-top:3px;font-style:italic;">
+                        "Class started 30 minutes late. Lecturer arrived at 08:32. Reason given: traffic."
+                    </div>
+                </div>
                 <span class="flag-status reviewed">Reviewed</span>
             </div>
         </div>
     </div>
 
-    <!-- ROOM SWAP REQUEST + ANNOUNCEMENTS -->
+    <!-- ROOM SWAP + ANNOUNCEMENTS -->
     <div>
         <!-- Room swap -->
         <div class="dash-panel mb-4">
             <div class="panel-header">
                 <span><i class="bi bi-arrow-left-right me-2"></i>Request Room Swap</span>
+                @if (isReadOnly)
+                {
+                    <span class="panel-badge" style="background:#ecfdf5;color:#059669;border:1px solid #bbf7d0;">
+                        <i class="bi bi-eye-fill me-1"></i>Read-Only
+                    </span>
+                }
             </div>
             <form class="flag-form">
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Affected Session</label>
-                    <select class="form-select">
+                    <select class="form-select" @(isReadOnly ? "disabled" : "")>
                         <option>CSE301 — Mon 08:00 · Room A204</option>
                         <option>CSE305 — Tue 10:00 · Room B101</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Preferred Room</label>
-                    <select class="form-select">
+                    <select class="form-select" @(isReadOnly ? "disabled" : "")>
                         <option>Lab 01 — Block D (Cap: 30)</option>
                         <option>Room C302 — Block C (Cap: 50)</option>
                         <option>Room A108 — Block A (Cap: 40)</option>
@@ -118,9 +313,16 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Reason</label>
-                    <textarea class="form-control" rows="2" placeholder="Why is the swap needed?"></textarea>
+                    <textarea class="form-control" rows="2"
+                              placeholder="Why is the swap needed?"
+                              @(isReadOnly ? "readonly" : "")></textarea>
                 </div>
-                <button type="submit" class="btn-dash-secondary"><i class="bi bi-arrow-left-right me-2"></i>Submit Request</button>
+                @if (!isReadOnly)
+                {
+                    <button type="submit" class="btn-dash-secondary">
+                        <i class="bi bi-arrow-left-right me-2"></i>Submit Request
+                    </button>
+                }
             </form>
         </div>
 
@@ -128,11 +330,17 @@
         <div class="dash-panel">
             <div class="panel-header">
                 <span><i class="bi bi-megaphone-fill me-2"></i>Post Announcement</span>
+                @if (isReadOnly)
+                {
+                    <span class="panel-badge" style="background:#ecfdf5;color:#059669;border:1px solid #bbf7d0;">
+                        <i class="bi bi-eye-fill me-1"></i>Read-Only
+                    </span>
+                }
             </div>
             <form class="flag-form">
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Class / Course</label>
-                    <select class="form-select">
+                    <select class="form-select" @(isReadOnly ? "disabled" : "")>
                         <option>All my classes</option>
                         <option>CSE301 — Software Engineering</option>
                         <option>CSE305 — Database Systems</option>
@@ -140,17 +348,24 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Announcement</label>
-                    <textarea class="form-control" rows="3" placeholder="Write your announcement…"></textarea>
+                    <textarea class="form-control" rows="3"
+                              placeholder="Write your announcement…"
+                              @(isReadOnly ? "readonly" : "")></textarea>
                 </div>
-                <button type="submit" class="btn-dash-primary"><i class="bi bi-send-fill me-2"></i>Post Announcement</button>
+                @if (!isReadOnly)
+                {
+                    <button type="submit" class="btn-dash-primary">
+                        <i class="bi bi-send-fill me-2"></i>Post Announcement
+                    </button>
+                }
             </form>
         </div>
     </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     ENROLLMENT INFO — HOD manages this via UmurongoSmart
-════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════
+     SECTION 3: HOD ENROLLMENT INFO
+════════════════════════════════════════════════════════════════════ -->
 <div class="dash-panel mt-4">
     <div class="panel-header" style="background:linear-gradient(135deg,#1e3a8a,#1556c8);color:#fff;border-radius:13px 13px 0 0;">
         <span style="display:flex;align-items:center;gap:10px;">
@@ -166,13 +381,9 @@
     </div>
     <div style="padding:1.5rem 1.25rem;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
-
-            <!-- Info card -->
             <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1.25rem;">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem;">
-                    <span style="width:40px;height:40px;background:#1556c8;border-radius:10px;
-                                 display:flex;align-items:center;justify-content:center;
-                                 font-size:18px;color:#fff;flex-shrink:0;">
+                    <span style="width:40px;height:40px;background:#1556c8;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0;">
                         <i class="bi bi-person-workspace"></i>
                     </span>
                     <div>
@@ -181,18 +392,13 @@
                     </div>
                 </div>
                 <p style="font-size:13px;color:#1e3a8a;line-height:1.7;margin:0;">
-                    Course enrollment for all students in your class is managed exclusively by the
-                    <strong>Head of Department (HOD)</strong> through the UmurongoSmart portal.
-                    Students submit enrollment requests and the HOD approves them.
+                    Course enrollment for all students is managed exclusively by the
+                    <strong>HOD</strong> through the UmurongoSmart portal.
                 </p>
             </div>
-
-            <!-- What CP can do -->
             <div style="background:#ecfdf5;border:1px solid #bbf7d0;border-radius:12px;padding:1.25rem;">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:.75rem;">
-                    <span style="width:40px;height:40px;background:#059669;border-radius:10px;
-                                 display:flex;align-items:center;justify-content:center;
-                                 font-size:18px;color:#fff;flex-shrink:0;">
+                    <span style="width:40px;height:40px;background:#059669;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0;">
                         <i class="bi bi-person-badge-fill"></i>
                     </span>
                     <div>
@@ -205,99 +411,395 @@
                     <li>Request room swaps for your class</li>
                     <li>Post announcements to classmates</li>
                     <li>Escalate student concerns to HOD</li>
-                    <li>Share the WhatsApp group link given by HOD</li>
                 </ul>
             </div>
         </div>
-
-        <!-- Escalate to HOD via UmurongoSmart -->
-        <div style="margin-top:1.25rem;padding:1rem 1.25rem;background:#fef9c3;border:1px solid #fde68a;
-                    border-radius:12px;display:flex;align-items:center;justify-content:space-between;
-                    flex-wrap:wrap;gap:1rem;">
+        <div style="margin-top:1.25rem;padding:1rem 1.25rem;background:#fef9c3;border:1px solid #fde68a;border-radius:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
             <div>
                 <div style="font-size:13px;font-weight:800;color:#92400e;margin-bottom:.25rem;">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>Need to escalate an enrollment issue?
                 </div>
                 <div style="font-size:12px;color:#78350f;">
-                    If a student in your class has an enrollment problem, direct them to contact
-                    the HOD through UmurongoSmart or come to the department office.
+                    Direct students with enrollment problems to contact the HOD through UmurongoSmart.
                 </div>
             </div>
             <a href="https://umurongosmart.com" target="_blank"
-               style="display:inline-flex;align-items:center;gap:8px;
-                      background:#142d4d;color:#fff;text-decoration:none;
-                      border-radius:9px;padding:.65rem 1.25rem;
-                      font-size:13px;font-weight:700;white-space:nowrap;">
+               style="display:inline-flex;align-items:center;gap:8px;background:#142d4d;color:#fff;text-decoration:none;border-radius:9px;padding:.65rem 1.25rem;font-size:13px;font-weight:700;white-space:nowrap;">
                 <i class="bi bi-box-arrow-up-right"></i> Open UmurongoSmart
             </a>
         </div>
     </div>
 </div>
-<!-- SCHEDULE (same as student) -->
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SECTION 4: CLASS SCHEDULE + COURSE COMPLETION SIGNATURE
+     Signature button appears only when a course's scheduled days are done
+════════════════════════════════════════════════════════════════════ -->
 <div class="dash-panel mt-4">
     <div class="panel-header">
-        <span><i class="bi bi-calendar-week-fill me-2"></i>My Class Schedule</span>
+        <span><i class="bi bi-calendar-week-fill me-2"></i>My Class Schedule &amp; Course Completion</span>
+        <span class="panel-badge">Semester 1 · 2026</span>
     </div>
+
+    <div style="padding:.6rem 1.25rem .3rem;font-size:12px;color:#6c8097;">
+        <i class="bi bi-info-circle me-1"></i>
+        The <strong style="color:#059669;">Sign Completion</strong> button appears automatically
+        when a course's scheduled sessions are finished.
+        Your signature confirms to the lecturer that the course was delivered.
+    </div>
+
     <div class="table-responsive">
-        <table class="dash-table">
-            <thead><tr><th>Day</th><th>Time</th><th>Course</th><th>Room</th><th>Lecturer</th><th>Status</th></tr></thead>
+        <table class="dash-table" id="scheduleTable">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Course</th>
+                    <th>Room</th>
+                    <th>Lecturer</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>CP Signature</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr><td>Monday</td><td>08:00–10:00</td><td>Software Engineering</td><td><span class="room-badge">A204</span></td><td>Dr. J. Mugisha</td><td><span class="sched-badge badge-ongoing">Ongoing</span></td></tr>
-                <tr><td>Tuesday</td><td>10:00–12:00</td><td>Database Systems</td><td><span class="room-badge">B101</span></td><td>Mrs. A. Byukusenge</td><td><span class="sched-badge badge-upcoming">Upcoming</span></td></tr>
-                <tr><td>Wednesday</td><td>13:00–15:00</td><td>Human-Computer Interaction</td><td><span class="room-badge">A108</span></td><td>Mr. E. Niyonsenga</td><td><span class="sched-badge badge-upcoming">Upcoming</span></td></tr>
-                <tr><td>Thursday</td><td>08:00–10:00</td><td>Software Architecture</td><td><span class="room-badge">C302</span></td><td>Dr. P. Habimana</td><td><span class="sched-badge badge-upcoming">Upcoming</span></td></tr>
+                <!-- Course data: data-total=total sessions, data-done=completed sessions, data-enddate=end date -->
+                <tr data-course="CSE301" data-total="16" data-done="16"
+                    data-enddate="2026-08-28" data-signed="false">
+                    <td>Monday</td>
+                    <td>08:00–10:00</td>
+                    <td><strong>CSE301</strong> Software Engineering</td>
+                    <td><span class="room-badge">A204</span></td>
+                    <td>Dr. J. Mugisha</td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:7px;">
+                            <div style="flex:1;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:60px;">
+                                <div style="width:100%;height:100%;background:#22c55e;border-radius:4px;"></div>
+                            </div>
+                            <span style="font-size:11px;font-weight:700;color:#15803d;">16/16</span>
+                        </div>
+                    </td>
+                    <td><span class="sched-badge" style="background:#dcfce7;color:#15803d;">Completed</span></td>
+                    <td class="sig-cell">
+                        <!-- Visible because data-done == data-total -->
+                        <button class="btn-sign" onclick="signCourse('CSE301','Software Engineering','Dr. J. Mugisha', this)">
+                            <i class="bi bi-pen-fill me-1"></i>Sign Completion
+                        </button>
+                    </td>
+                </tr>
+                <tr data-course="CSE305" data-total="16" data-done="11"
+                    data-enddate="2026-12-15" data-signed="false">
+                    <td>Tuesday</td>
+                    <td>10:00–12:00</td>
+                    <td><strong>CSE305</strong> Database Systems</td>
+                    <td><span class="room-badge">B101</span></td>
+                    <td>Mrs. A. Byukusenge</td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:7px;">
+                            <div style="flex:1;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:60px;">
+                                <div style="width:68.75%;height:100%;background:#3b82f6;border-radius:4px;"></div>
+                            </div>
+                            <span style="font-size:11px;font-weight:700;color:#1d4ed8;">11/16</span>
+                        </div>
+                    </td>
+                    <td><span class="sched-badge badge-ongoing">Ongoing</span></td>
+                    <td class="sig-cell">
+                        <!-- Hidden because course not finished -->
+                        <span style="font-size:11px;color:#9ca3af;font-style:italic;">
+                            <i class="bi bi-hourglass-split me-1"></i>5 sessions left
+                        </span>
+                    </td>
+                </tr>
+                <tr data-course="CSE310" data-total="16" data-done="9"
+                    data-enddate="2026-12-15" data-signed="false">
+                    <td>Wednesday</td>
+                    <td>13:00–15:00</td>
+                    <td><strong>CSE310</strong> Human-Computer Interaction</td>
+                    <td><span class="room-badge">A108</span></td>
+                    <td>Mr. E. Niyonsenga</td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:7px;">
+                            <div style="flex:1;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:60px;">
+                                <div style="width:56.25%;height:100%;background:#3b82f6;border-radius:4px;"></div>
+                            </div>
+                            <span style="font-size:11px;font-weight:700;color:#1d4ed8;">9/16</span>
+                        </div>
+                    </td>
+                    <td><span class="sched-badge badge-ongoing">Ongoing</span></td>
+                    <td class="sig-cell">
+                        <span style="font-size:11px;color:#9ca3af;font-style:italic;">
+                            <i class="bi bi-hourglass-split me-1"></i>7 sessions left
+                        </span>
+                    </td>
+                </tr>
+                <tr data-course="CSE402" data-total="16" data-done="16"
+                    data-enddate="2026-08-25" data-signed="true">
+                    <td>Thursday</td>
+                    <td>08:00–10:00</td>
+                    <td><strong>CSE402</strong> Software Architecture</td>
+                    <td><span class="room-badge">C302</span></td>
+                    <td>Dr. P. Habimana</td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:7px;">
+                            <div style="flex:1;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:60px;">
+                                <div style="width:100%;height:100%;background:#22c55e;border-radius:4px;"></div>
+                            </div>
+                            <span style="font-size:11px;font-weight:700;color:#15803d;">16/16</span>
+                        </div>
+                    </td>
+                    <td><span class="sched-badge" style="background:#dcfce7;color:#15803d;">Completed</span></td>
+                    <td class="sig-cell">
+                        <!-- Already signed -->
+                        <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;
+                                     font-weight:700;color:#059669;background:#ecfdf5;
+                                     border:1px solid #bbf7d0;border-radius:8px;padding:4px 10px;">
+                            <i class="bi bi-patch-check-fill"></i> Signed by CP
+                            <span style="font-size:10px;color:#6c8097;font-weight:400;">25 Aug 2026</span>
+                        </span>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
+
+    <!-- Signature records log -->
+    <div id="signatureLog" style="padding:.5rem 1.25rem 1.25rem;">
+        <div style="font-size:11px;font-weight:800;color:#6c8097;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;">
+            <i class="bi bi-pen me-1"></i>Signature Records
+        </div>
+        <div style="background:#ecfdf5;border:1px solid #bbf7d0;border-radius:10px;padding:.75rem 1rem;
+                    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+            <div>
+                <div style="font-size:13px;font-weight:700;color:#065f46;">
+                    <i class="bi bi-patch-check-fill me-2 text-success"></i>
+                    CSE402 — Software Architecture
+                </div>
+                <div style="font-size:11px;color:#6c8097;margin-top:2px;">
+                    Signed by CP: Bob Nkurunziza · 25 Aug 2026 · Lecturer: Dr. P. Habimana
+                </div>
+            </div>
+            <span style="font-size:11px;font-weight:700;color:#059669;background:#fff;
+                         border:1px solid #bbf7d0;border-radius:7px;padding:3px 10px;">
+                Verified ✓
+            </span>
+        </div>
+    </div>
 </div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SIGNATURE MODAL
+════════════════════════════════════════════════════════════════════ -->
+<div id="signModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
+     z-index:9999;display:none;align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:#fff;border-radius:18px;padding:2rem;max-width:480px;width:100%;
+                box-shadow:0 25px 60px rgba(0,0,0,.3);">
+        <div style="text-align:center;margin-bottom:1.5rem;">
+            <div style="width:60px;height:60px;background:#ecfdf5;border-radius:50%;
+                        display:flex;align-items:center;justify-content:center;
+                        font-size:26px;color:#059669;margin:0 auto .75rem;">
+                <i class="bi bi-pen-fill"></i>
+            </div>
+            <h5 style="font-weight:800;color:#142d4d;margin-bottom:.3rem;" id="signModalTitle">
+                Sign Course Completion
+            </h5>
+            <p style="font-size:13px;color:#6c8097;" id="signModalSubtitle"></p>
+        </div>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:1rem;margin-bottom:1.25rem;">
+            <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:.5rem;">
+                By signing, you confirm that:
+            </div>
+            <ul style="font-size:12px;color:#6c8097;line-height:1.9;margin:0;padding-left:1.25rem;">
+                <li>All scheduled sessions for this course were delivered</li>
+                <li>The lecturer fulfilled their teaching obligations</li>
+                <li>You represent the class in confirming this</li>
+                <li>This signature is recorded and sent to the HOD</li>
+            </ul>
+        </div>
+
+        <div style="margin-bottom:1.25rem;">
+            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:5px;">
+                Your Full Name (as signature)
+            </label>
+            <input type="text" id="signName" class="form-control"
+                   value="Bob Nkurunziza"
+                   style="font-style:italic;font-size:16px;font-weight:600;" />
+        </div>
+        <div style="margin-bottom:1.5rem;">
+            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:5px;">
+                Additional Comments (optional)
+            </label>
+            <textarea id="signComments" class="form-control" rows="2"
+                      placeholder="Any remarks about the course delivery…"></textarea>
+        </div>
+
+        <div style="display:flex;gap:.75rem;">
+            <button onclick="confirmSign()"
+                    style="flex:1;background:linear-gradient(135deg,#059669,#047857);
+                           color:#fff;border:none;border-radius:10px;padding:.8rem;
+                           font-size:14px;font-weight:800;cursor:pointer;">
+                <i class="bi bi-pen-fill me-2"></i>Confirm &amp; Sign
+            </button>
+            <button onclick="closeSignModal()"
+                    style="flex:1;background:#f1f5f9;color:#374151;border:none;
+                           border-radius:10px;padding:.8rem;font-size:14px;
+                           font-weight:600;cursor:pointer;">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-sign {
+        display: inline-flex; align-items: center; gap: 5px;
+        background: linear-gradient(135deg,#059669,#047857);
+        color: #fff; border: none; border-radius: 8px;
+        padding: 6px 14px; font-size: 12px; font-weight: 700;
+        cursor: pointer; transition: .2s;
+        animation: signPulse 2s infinite;
+    }
+    .btn-sign:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(5,150,105,.35); }
+    @@keyframes signPulse {
+        0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,.4); }
+        50%      { box-shadow: 0 0 0 6px rgba(5,150,105,0); }
+    }
+</style>
 
 @section Scripts {
 <script>
-    function publishGroupLink() {
-        var course   = document.getElementById('groupCourse').value;
-        var link     = document.getElementById('groupLink').value;
-        var name     = document.getElementById('groupName').value;
-        var session  = document.getElementById('groupSession').value;
-        var deadline = document.getElementById('groupDeadline').value;
+    // ── CP Profile edit ────────────────────────────────────────────
+    function toggleEditProfile() {
+        var v = document.getElementById('profileView');
+        var e = document.getElementById('profileEdit');
+        v.style.display = v.style.display === 'none' ? 'grid' : 'none';
+        e.style.display = e.style.display === 'none' ? 'block' : 'none';
+    }
 
-        if (!course || !link || !name) {
-            alert('Please fill in the Course, Group Name, and WhatsApp Link fields.');
-            return;
-        }
-        if (!link.startsWith('https://chat.whatsapp.com/')) {
-            alert('Please enter a valid WhatsApp group link (must start with https://chat.whatsapp.com/)');
-            return;
-        }
+    function saveProfile() {
+        var fields = {
+            'pv-name':        'pe-name',
+            'pv-phone':       'pe-phone',
+            'pv-nationality': 'pe-nationality',
+            'pv-dept':        'pe-dept',
+            'pv-intake':      'pe-intake',
+            'pv-year':        'pe-year',
+            'pv-session':     'pe-session'
+        };
+        Object.keys(fields).forEach(function(view) {
+            var input = document.getElementById(fields[view]);
+            if (input) document.getElementById(view).textContent = input.value;
+        });
+        toggleEditProfile();
+        showToast('Profile saved successfully!', '#059669');
+    }
 
-        // Add new row to the table
-        var tbody = document.getElementById('groupLinksBody');
-        var dl = deadline ? new Date(deadline).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : 'No deadline';
-        var row = '<tr>' +
-            '<td><strong>' + course + '</strong></td>' +
-            '<td>' + name + '</td>' +
-            '<td><span class="session-badge">' + session + '</span></td>' +
-            '<td>' + dl + '</td>' +
-            '<td><a href="' + link + '" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> Join</a></td>' +
-            '<td><span class="sched-badge badge-ongoing">Active</span></td>' +
-            '<td class="action-btns">' +
-              '<button class="btn-icon btn-edit"><i class="bi bi-pencil-fill"></i></button>' +
-              '<button class="btn-icon btn-del" onclick="this.closest(\'tr\').remove()"><i class="bi bi-trash-fill"></i></button>' +
-            '</td></tr>';
-        tbody.insertAdjacentHTML('afterbegin', row);
+    // ── Flag form with saved notes ─────────────────────────────────
+    function submitFlag(e) {
+        e.preventDefault();
+        var course = document.getElementById('flagCourse').value;
+        var type   = document.querySelector('input[name="issue"]:checked').value;
+        var notes  = document.getElementById('flagNotes').value.trim();
+        if (!notes) { alert('Please add notes describing what happened. These are important for HOD review.'); return; }
 
-        // Clear form
-        document.getElementById('groupCourse').value  = '';
-        document.getElementById('groupLink').value    = '';
-        document.getElementById('groupName').value    = '';
-        document.getElementById('groupDeadline').value= '';
+        var today  = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+        var badgeClass = type === 'Absent' ? 'badge-absent' : type === 'Late' ? 'badge-late' : 'badge-absent';
+        var label  = type === 'Absent' ? 'Absent' : type === 'Late' ? 'Delayed' : 'Cancelled';
 
-        // Show success toast
-        var toast = document.createElement('div');
-        toast.style.cssText = 'position:fixed;bottom:2rem;right:2rem;background:#16a34a;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;z-index:9999;box-shadow:0 8px 25px rgba(0,0,0,.2);';
-        toast.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Group link published successfully!';
-        document.body.appendChild(toast);
-        setTimeout(function(){ toast.remove(); }, 3000);
+        var item = document.createElement('div');
+        item.className = 'flag-item';
+        item.innerHTML =
+            '<span class="flag-badge ' + badgeClass + '">' + label + '</span>' +
+            '<div class="flag-detail" style="flex:1;">' +
+              '<div>' + course.split(' — ')[0] + ' · <span class="text-muted" style="font-size:11px;">' + today + '</span></div>' +
+              '<div style="font-size:11px;color:#374151;margin-top:3px;font-style:italic;">"' + notes + '"</div>' +
+            '</div>' +
+            '<span class="flag-status pending">Pending</span>';
+
+        document.getElementById('flagsLog').appendChild(item);
+        document.getElementById('flagNotes').value = '';
+        showToast('Flag saved — visible to HOD & Director of Quality', '#1556c8');
+    }
+
+    // ── Course completion signature ────────────────────────────────
+    var _signRow = null;
+    var _signCode = '';
+    var _signName2 = '';
+    var _signLecturer = '';
+
+    function signCourse(code, name, lecturer, btn) {
+        _signCode     = code;
+        _signName2    = name;
+        _signLecturer = lecturer;
+        _signRow      = btn.closest('tr');
+        document.getElementById('signModalTitle').textContent = 'Sign Completion — ' + code;
+        document.getElementById('signModalSubtitle').textContent = name + ' · ' + lecturer;
+        var m = document.getElementById('signModal');
+        m.style.display = 'flex';
+    }
+
+    function closeSignModal() {
+        document.getElementById('signModal').style.display = 'none';
+    }
+
+    function confirmSign() {
+        var sigName    = document.getElementById('signName').value.trim();
+        var comments   = document.getElementById('signComments').value.trim();
+        var today      = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+        if (!sigName) { alert('Please enter your name as signature.'); return; }
+
+        // Update the row
+        var sigCell = _signRow.querySelector('.sig-cell');
+        sigCell.innerHTML =
+            '<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;' +
+            'font-weight:700;color:#059669;background:#ecfdf5;border:1px solid #bbf7d0;' +
+            'border-radius:8px;padding:4px 10px;">' +
+            '<i class="bi bi-patch-check-fill"></i> Signed by CP ' +
+            '<span style="font-size:10px;color:#6c8097;font-weight:400;">' + today + '</span></span>';
+
+        _signRow.cells[6].innerHTML =
+            '<span class="sched-badge" style="background:#dcfce7;color:#15803d;">Completed</span>';
+
+        // Add to signature log
+        var log = document.getElementById('signatureLog');
+        var entry = document.createElement('div');
+        entry.style.cssText = 'background:#ecfdf5;border:1px solid #bbf7d0;border-radius:10px;' +
+            'padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;' +
+            'flex-wrap:wrap;gap:.5rem;margin-top:.5rem;';
+        entry.innerHTML =
+            '<div>' +
+              '<div style="font-size:13px;font-weight:700;color:#065f46;">' +
+                '<i class="bi bi-patch-check-fill me-2 text-success"></i>' +
+                _signCode + ' — ' + _signName2 +
+              '</div>' +
+              '<div style="font-size:11px;color:#6c8097;margin-top:2px;">' +
+                'Signed by CP: ' + sigName + ' · ' + today + ' · Lecturer: ' + _signLecturer +
+                (comments ? ' · Note: ' + comments : '') +
+              '</div>' +
+            '</div>' +
+            '<span style="font-size:11px;font-weight:700;color:#059669;background:#fff;' +
+              'border:1px solid #bbf7d0;border-radius:7px;padding:3px 10px;">Verified ✓</span>';
+        log.appendChild(entry);
+
+        closeSignModal();
+        showToast('Course completion signed! HOD has been notified.', '#059669');
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('signModal').addEventListener('click', function(e) {
+        if (e.target === this) closeSignModal();
+    });
+
+    // ── Toast helper ───────────────────────────────────────────────
+    function showToast(msg, color) {
+        var t = document.createElement('div');
+        t.style.cssText = 'position:fixed;bottom:6rem;right:2rem;background:' + color + ';color:#fff;' +
+            'padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;' +
+            'z-index:99999;box-shadow:0 8px 25px rgba(0,0,0,.25);' +
+            'display:flex;align-items:center;gap:8px;';
+        t.innerHTML = '<i class="bi bi-check-circle-fill"></i> ' + msg;
+        document.body.appendChild(t);
+        setTimeout(function() { t.remove(); }, 3500);
     }
 </script>
 }
-
