@@ -1,0 +1,49 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Quality.ComplianceModel
+@{ ViewData["Title"]="Timetable Compliance"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="DirectorOfQuality"; ViewData["ActiveNav"]="compliance"; ViewData["UserName"]=User.Identity?.Name??"Director"; }
+
+<div class="dash-welcome">
+    <div><h2 class="dash-heading">Timetable Compliance</h2><p class="dash-subheading">Audit course delivery against the published timetable</p></div>
+    <div class="dash-welcome-badge" style="background:rgba(5,150,105,.1);color:#059669;"><i class="bi bi-clipboard-data-fill"></i> Week of 25 Aug 2026</div>
+</div>
+
+<div class="dash-stats">
+    <div class="stat-card stat-green"><div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div><div class="stat-info"><span class="stat-val">94%</span><span class="stat-label">Overall Compliance</span></div></div>
+    <div class="stat-card stat-blue"><div class="stat-icon"><i class="bi bi-calendar-check-fill"></i></div><div class="stat-info"><span class="stat-val">32</span><span class="stat-label">Sessions Delivered</span></div></div>
+    <div class="stat-card stat-orange"><div class="stat-icon"><i class="bi bi-exclamation-triangle-fill"></i></div><div class="stat-info"><span class="stat-val">2</span><span class="stat-label">Non-Compliant</span></div></div>
+    <div class="stat-card stat-red"><div class="stat-icon"><i class="bi bi-x-circle-fill"></i></div><div class="stat-info"><span class="stat-val">2</span><span class="stat-label">Missed Sessions</span></div></div>
+</div>
+
+<div class="dash-panel mt-4">
+    <div class="panel-header">
+        <span><i class="bi bi-clipboard-data-fill me-2"></i>Compliance Audit — All Courses</span>
+        <select class="panel-select"><option>Week of 25 Aug 2026</option><option>Week of 18 Aug 2026</option><option>Week of 11 Aug 2026</option></select>
+    </div>
+    <div class="table-responsive">
+        <table class="dash-table">
+            <thead><tr><th>Course</th><th>Lecturer</th><th>Scheduled</th><th>Delivered</th><th>Rate</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>CSE301</strong> Software Engineering</td><td>Dr. J. Mugisha</td><td>8</td><td>8</td>
+                    <td><div style="display:flex;align-items:center;gap:6px;"><div style="width:80px;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#22c55e;border-radius:4px;"></div></div><span style="font-size:12px;font-weight:700;color:#15803d;">100%</span></div></td>
+                    <td><span class="sched-badge badge-ongoing">Compliant</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CSE305</strong> Database Systems</td><td>Mrs. A. Byukusenge</td><td>8</td><td>7</td>
+                    <td><div style="display:flex;align-items:center;gap:6px;"><div style="width:80px;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:87.5%;height:100%;background:#f59e0b;border-radius:4px;"></div></div><span style="font-size:12px;font-weight:700;color:#d97706;">88%</span></div></td>
+                    <td><span class="sched-badge badge-upcoming">Warning</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CSE310</strong> HCI</td><td>Mr. E. Niyonsenga</td><td>8</td><td>8</td>
+                    <td><div style="display:flex;align-items:center;gap:6px;"><div style="width:80px;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#22c55e;border-radius:4px;"></div></div><span style="font-size:12px;font-weight:700;color:#15803d;">100%</span></div></td>
+                    <td><span class="sched-badge badge-ongoing">Compliant</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CSE402</strong> Software Architecture</td><td>Dr. P. Habimana</td><td>8</td><td>6</td>
+                    <td><div style="display:flex;align-items:center;gap:6px;"><div style="width:80px;height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:75%;height:100%;background:#ef4444;border-radius:4px;"></div></div><span style="font-size:12px;font-weight:700;color:#dc2626;">75%</span></div></td>
+                    <td><span class="sched-badge" style="background:#fee2e2;color:#dc2626;">Non-Compliant</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

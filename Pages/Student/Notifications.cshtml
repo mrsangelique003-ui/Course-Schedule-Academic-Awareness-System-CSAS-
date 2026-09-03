@@ -1,0 +1,85 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.NotificationsModel
+@{ ViewData["Title"]="Notifications"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="Student"; ViewData["ActiveNav"]="notif"; ViewData["UserName"]=User.Identity?.Name??"Student"; }
+
+<div class="dash-welcome">
+    <div><h2 class="dash-heading">Notifications</h2><p class="dash-subheading">All your academic alerts and announcements</p></div>
+    <button class="btn-dash-secondary" style="font-size:12px;" onclick="markAllRead()"><i class="bi bi-check-all me-1"></i>Mark All Read</button>
+</div>
+
+<div class="dash-panel">
+    <div class="panel-header"><span><i class="bi bi-bell-fill me-2"></i>All Notifications</span><span class="panel-badge" id="unreadCount">5 unread</span></div>
+    <div id="notifList" style="padding:.75rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;">
+        <div class="notif-item notif-unread" style="cursor:pointer;">
+            <div class="notif-icon notif-orange"><i class="bi bi-geo-alt-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Room Shift — CSE301</div>
+                <div class="notif-text">Software Engineering moved from A204 → Lab 01 today.</div>
+                <div class="notif-time">5 minutes ago</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#1556c8;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread" style="cursor:pointer;">
+            <div class="notif-icon notif-red"><i class="bi bi-alarm-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Registration Deadline — CSE402</div>
+                <div class="notif-text">Software Architecture registration closes in 3 days (04 Sep 2026).</div>
+                <div class="notif-time">2 hours ago</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#1556c8;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread" style="cursor:pointer;">
+            <div class="notif-icon notif-blue"><i class="bi bi-megaphone-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">CP Announcement — CSE305</div>
+                <div class="notif-text">Tomorrow's class starts 30 minutes early. Bring your laptops.</div>
+                <div class="notif-time">Yesterday 15:30</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#1556c8;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread" style="cursor:pointer;">
+            <div class="notif-icon notif-red"><i class="bi bi-flag-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Attendance Flag — CSE305</div>
+                <div class="notif-text">Your CP flagged Mrs. Byukusenge absent on Tue 10:00. HOD has been notified.</div>
+                <div class="notif-time">Yesterday 11:00</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#1556c8;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread" style="cursor:pointer;">
+            <div class="notif-icon notif-green"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Enrollment Confirmed — CSE310</div>
+                <div class="notif-text">You are successfully enrolled in Human-Computer Interaction.</div>
+                <div class="notif-time">3 days ago</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#1556c8;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item" style="cursor:pointer;">
+            <div class="notif-icon notif-blue"><i class="bi bi-calendar3"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Semester 1 Timetable Published</div>
+                <div class="notif-text">Your timetable for Semester 1, 2026 is now available.</div>
+                <div class="notif-time">1 week ago</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function markAllRead() {
+    document.querySelectorAll('.notif-unread').forEach(function(n) {
+        n.classList.remove('notif-unread');
+        var dot = n.querySelector('span[style*="border-radius:50%"]');
+        if(dot) dot.remove();
+    });
+    document.getElementById('unreadCount').textContent = '0 unread';
+    var t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:6rem;right:2rem;background:#059669;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;z-index:99999;';
+    t.innerHTML = '<i class="bi bi-check-all me-2"></i>All notifications marked as read';
+    document.body.appendChild(t);
+    setTimeout(function(){t.remove();}, 3000);
+}
+</script>
+}

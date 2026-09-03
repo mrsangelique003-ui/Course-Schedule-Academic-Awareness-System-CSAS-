@@ -1,0 +1,31 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Quality.ProfileModel
+@{ ViewData["Title"]="My Profile"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="DirectorOfQuality"; ViewData["ActiveNav"]="profile"; ViewData["UserName"]=User.Identity?.Name??"Director"; string uname=User.Identity?.Name??"Director"; }
+
+<div class="dash-welcome"><div><h2 class="dash-heading">My Profile</h2><p class="dash-subheading">Director of Quality · CIS Department</p></div></div>
+
+<div style="display:grid;grid-template-columns:300px 1fr;gap:1.5rem;align-items:start;">
+    <div class="dash-panel">
+        <div style="padding:2rem 1.5rem;text-align:center;">
+            <div style="width:80px;height:80px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff;margin:0 auto 1rem;">@(uname.Length>0?uname[0].ToString().ToUpper():"D")</div>
+            <div style="font-size:17px;font-weight:800;color:#142d4d;">@uname</div>
+            <div style="font-size:12px;color:#6c8097;margin-top:3px;">Director of Quality · UNILAK</div>
+            <div style="margin-top:1rem;padding:.5rem;background:#ecfdf5;border-radius:8px;font-size:12px;font-weight:700;color:#059669;"><i class="bi bi-patch-check-fill me-1"></i>Director of Quality</div>
+        </div>
+    </div>
+    <div class="dash-panel">
+        <div class="panel-header"><span><i class="bi bi-person-circle me-2"></i>Profile Details</span>
+            <button class="btn-dash-primary" style="font-size:11px;padding:4px 12px;" onclick="savePro()"><i class="bi bi-check-lg me-1"></i>Save Changes</button>
+        </div>
+        <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div><label class="form-label fw-semibold" style="font-size:12px;">Full Name</label><input type="text" class="form-control" value="@uname" /></div>
+            <div><label class="form-label fw-semibold" style="font-size:12px;">Staff ID</label><input type="text" class="form-control" value="DIR001" readonly style="background:#f8fafc;" /></div>
+            <div><label class="form-label fw-semibold" style="font-size:12px;">Email</label><input type="email" class="form-control" value="claire@unilak.ac.rw" /></div>
+            <div><label class="form-label fw-semibold" style="font-size:12px;">Phone</label><input type="tel" class="form-control" placeholder="+250 7XX XXX XXX" /></div>
+            <div><label class="form-label fw-semibold" style="font-size:12px;">Department</label><input type="text" class="form-control" value="CIS" readonly style="background:#f8fafc;" /></div>
+            <div><label class="form-label fw-semibold" style="font-size:12px;">Role</label><input type="text" class="form-control" value="Director of Quality" readonly style="background:#f8fafc;" /></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {<script>function savePro(){var t=document.createElement('div');t.style.cssText='position:fixed;bottom:6rem;right:2rem;background:#059669;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;z-index:99999;';t.innerHTML='<i class="bi bi-check-circle-fill me-2"></i>Profile saved!';document.body.appendChild(t);setTimeout(function(){t.remove();},3000);}</script>}

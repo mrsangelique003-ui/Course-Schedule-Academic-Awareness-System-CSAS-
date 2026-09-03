@@ -72,65 +72,73 @@
 
     <!-- Nav links -->
     <nav class="sidebar-nav">
+
+        <!-- ── DASHBOARD (all roles) ─────────────────────── -->
         <a href="@dashLink" class="sidebar-link @(activeNav=="home"?"active":"")">
             <i class="bi bi-speedometer2"></i> Dashboard
         </a>
 
-        @if (isStudent || isCP)
+        @if (isStudent)
         {
-            <a href="#" class="sidebar-link @(activeNav=="schedule"?"active":"")">
-                <i class="bi bi-calendar-week-fill"></i> My Schedule
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="courses"?"active":"")">
-                <i class="bi bi-collection-fill"></i> Courses
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="deadlines"?"active":"")">
-                <i class="bi bi-alarm-fill"></i> Deadlines
-            </a>
+            <div class="sidebar-section-label">Student</div>
+            <a href="/Student/MySchedule"   class="sidebar-link @(activeNav=="schedule"?"active":"")"><i class="bi bi-calendar-week-fill"></i> My Schedule</a>
+            <a href="/Student/Courses"      class="sidebar-link @(activeNav=="courses"?"active":"")"><i class="bi bi-collection-fill"></i> Courses</a>
+            <a href="/Student/Deadlines"    class="sidebar-link @(activeNav=="deadlines"?"active":"")"><i class="bi bi-alarm-fill"></i> Deadlines</a>
         }
 
         @if (isCP)
         {
-            <div class="sidebar-section-label">CP Tools</div>
-            <a href="#" class="sidebar-link @(activeNav=="flags"?"active":"")">
-                <i class="bi bi-flag-fill"></i> Attendance Flags
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="swaps"?"active":"")">
-                <i class="bi bi-arrow-left-right"></i> Room Swaps
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="announce"?"active":"")">
-                <i class="bi bi-megaphone-fill"></i> Announcements
-            </a>
+            <div class="sidebar-section-label">Class Rep</div>
+            <a href="/CP/Dashboard?tab=schedule"   class="sidebar-link @(activeNav=="schedule"?"active":"")"><i class="bi bi-calendar-week-fill"></i> My Schedule</a>
+            <a href="/CP/Dashboard?tab=flags"      class="sidebar-link @(activeNav=="flags"?"active":"")"><i class="bi bi-flag-fill"></i> Attendance Flags</a>
+            <a href="/CP/Dashboard?tab=roomswap"   class="sidebar-link @(activeNav=="swaps"?"active":"")"><i class="bi bi-arrow-left-right"></i> Room Swaps</a>
+            <a href="/CP/Dashboard?tab=announce"   class="sidebar-link @(activeNav=="announce"?"active":"")"><i class="bi bi-megaphone-fill"></i> Announcements</a>
+            <a href="/CP/Dashboard?tab=allcps"     class="sidebar-link @(activeNav=="allcps"?"active":"")"><i class="bi bi-people-fill"></i> All CIS Reps</a>
+            <a href="/CP/Dashboard?tab=chat"       class="sidebar-link @(activeNav=="chat"?"active":"")"><i class="bi bi-chat-dots-fill"></i> Chat with HOD</a>
         }
 
         @if (isQuality)
         {
             <div class="sidebar-section-label">Quality Tools</div>
-            <a href="#" class="sidebar-link"><i class="bi bi-clipboard-data-fill"></i> Compliance</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-building"></i> Capacity</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-person-lines-fill"></i> Attendance Log</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-check2-square"></i> Endorsements</a>
+            <a href="/Quality/Compliance"    class="sidebar-link @(activeNav=="compliance"?"active":"")"><i class="bi bi-clipboard-data-fill"></i> Compliance</a>
+            <a href="/Quality/Capacity"      class="sidebar-link @(activeNav=="capacity"?"active":"")"><i class="bi bi-building"></i> Capacity</a>
+            <a href="/Quality/AttendanceLog" class="sidebar-link @(activeNav=="attlog"?"active":"")"><i class="bi bi-person-lines-fill"></i> Attendance Log</a>
+            <a href="/Quality/Endorsements"  class="sidebar-link @(activeNav=="endorse"?"active":"")"><i class="bi bi-check2-square"></i> Endorsements</a>
         }
 
         @if (isDean)
         {
             <div class="sidebar-section-label">Administration</div>
-            <a href="#" class="sidebar-link"><i class="bi bi-calendar3"></i> Timetables</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-book"></i> Courses</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-building"></i> Rooms</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-person-workspace"></i> Lecturers</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-people"></i> Users</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-journal-text"></i> Audit Log</a>
+            <a href="/Dean/Dashboard?tab=timetable" class="sidebar-link @(activeNav=="timetables"?"active":"")"><i class="bi bi-calendar3"></i> Timetables</a>
+            <a href="/Dean/Dashboard?tab=courses"   class="sidebar-link @(activeNav=="courses"?"active":"")"><i class="bi bi-book"></i> Courses</a>
+            <a href="/Dean/Dashboard?tab=rooms"     class="sidebar-link @(activeNav=="rooms"?"active":"")"><i class="bi bi-building"></i> Rooms</a>
+            <a href="/Dean/Dashboard?tab=lecturers" class="sidebar-link @(activeNav=="lecturers"?"active":"")"><i class="bi bi-person-workspace"></i> Lecturers</a>
+            <a href="/Dean/Dashboard?tab=users"     class="sidebar-link @(activeNav=="users"?"active":"")"><i class="bi bi-people"></i> Users</a>
+            <a href="/Dean/AuditLog"                class="sidebar-link @(activeNav=="auditlog"?"active":"")"><i class="bi bi-journal-text"></i> Audit Log</a>
         }
 
         <div class="sidebar-section-label">Account</div>
-        <a href="#" class="sidebar-link @(activeNav=="profile"?"active":"")">
-            <i class="bi bi-person-circle"></i> Profile
-        </a>
-        <a href="#" class="sidebar-link @(activeNav=="notif"?"active":"")">
-            <i class="bi bi-bell-fill"></i> Notifications
-            <span class="sidebar-badge">5</span>
-        </a>
+        @if (isStudent)
+        {
+            <a href="/Student/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/Student/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">5</span></a>
+        }
+        @if (isCP)
+        {
+            <a href="/CP/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/CP/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">3</span></a>
+        }
+        @if (isQuality)
+        {
+            <a href="/Quality/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/Quality/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">2</span></a>
+        }
+        @if (isDean)
+        {
+            <a href="/Dean/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/Dean/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">4</span></a>
+        }
+
     </nav>
 
     <!-- Logout -->
@@ -419,7 +427,25 @@
         document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.color = '#1556c8';
     }
 
-    function submitQuery() {
+    // ── Auto-switch tab from URL ?tab= param ─────────────
+    (function() {
+        var params = new URLSearchParams(window.location.search);
+        var tab = params.get('tab');
+        if (!tab) return;
+        // CP tabs
+        var cpFn = window.showCPTab;
+        if (cpFn) {
+            var btn = document.querySelector('.cp-tab[onclick*="' + tab + '"]');
+            cpFn(tab, btn);
+            return;
+        }
+        // Dean tabs
+        var deanFn = window.showTab;
+        if (deanFn) {
+            var dBtn = document.querySelector('.dean-tab[onclick*="' + tab + '"]');
+            deanFn(tab, dBtn);
+        }
+    })();
         var name    = document.getElementById('sqName').value.trim();
         var cat     = document.getElementById('sqCategory').value;
         var message = document.getElementById('sqMessage').value.trim();
