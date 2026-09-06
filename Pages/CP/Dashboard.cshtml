@@ -407,57 +407,125 @@
 </div>
 
 <!-- ═══════════════ TAB: CHAT WITH HOD ═══════════════ -->
+@{
+    // CP identity for private chat — keyed by Reg No so each CP sees only their own thread
+    string cpRegNo   = User.Identity?.Name ?? "CP";
+    string cpInitial = cpRegNo.Length > 0 ? cpRegNo[0].ToString().ToUpper() : "C";
+    // Map known CPs to display names (in production this comes from DB via UserManager)
+    var cpNames = new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase) {
+        {"CP001","Bob Nkurunziza"}, {"CP002","Alice Uwimana"},
+        {"CP003","Jean Habimana"}, {"CP004","Marie Uwase"}, {"CP005","Patrick Nzeyimana"}
+    };
+    string cpDisplayName = cpNames.ContainsKey(cpRegNo) ? cpNames[cpRegNo] : cpRegNo;
+    cpInitial = cpDisplayName.Length > 0 ? cpDisplayName[0].ToString().ToUpper() : "C";
+    // Storage key: unique per CP — other CPs cannot see this conversation
+    string chatStorageKey = "csas_hod_chat_" + cpRegNo.ToLower().Replace("/","-");
+}
+<!-- ═══════════════ TAB: CHAT WITH HOD ═══════════════ -->
 <div id="cptab-chat" class="cptab-content" style="display:none;">
     <div class="dash-panel">
+
+        <!-- Header -->
         <div class="panel-header" style="background:linear-gradient(135deg,#142d4d,#1e3a8a);color:#fff;border-radius:13px 13px 0 0;">
             <span style="display:flex;align-items:center;gap:10px;">
-                <span style="width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;"><i class="bi bi-chat-dots-fill"></i></span>
+                <span style="width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:50%;
+                             display:flex;align-items:center;justify-content:center;font-size:18px;">
+                    <i class="bi bi-chat-dots-fill"></i>
+                </span>
                 <div>
-                    <div style="font-size:14px;font-weight:800;">Private Chat — CP &amp; HOD Only</div>
-                    <div style="font-size:11px;opacity:.75;">Messages are private. Dean may view if needed.</div>
+                    <div style="font-size:14px;font-weight:800;">Private Chat — @cpDisplayName &amp; HOD</div>
+                    <div style="font-size:11px;opacity:.75;">
+                        This conversation is <strong>only visible to you and the HOD</strong>.
+                        Other CPs cannot see your messages.
+                    </div>
                 </div>
             </span>
             <div style="display:flex;align-items:center;gap:7px;">
-                <span style="width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.3);display:inline-block;"></span>
+                <span style="width:9px;height:9px;border-radius:50%;background:#22c55e;
+                             box-shadow:0 0 0 3px rgba(34,197,94,.3);display:inline-block;"></span>
                 <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.8);">HOD Online</span>
             </div>
         </div>
-        <!-- Participants -->
-        <div style="display:flex;align-items:center;gap:.75rem;padding:.65rem 1.25rem;border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+
+        <!-- Participants bar — shows actual logged-in CP name -->
+        <div style="display:flex;align-items:center;gap:.75rem;padding:.65rem 1.25rem;
+                    border-bottom:1px solid #e2e8f0;background:#f8fafc;">
             <div style="display:flex;align-items:center;gap:6px;">
-                <div style="width:34px;height:34px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;">B</div>
-                <div><div style="font-size:12px;font-weight:700;color:#142d4d;">Bob Nkurunziza</div><div style="font-size:10px;color:#22c55e;font-weight:600;">● You (CP)</div></div>
+                <div style="width:34px;height:34px;border-radius:50%;background:#7c3aed;
+                            display:flex;align-items:center;justify-content:center;
+                            font-size:13px;font-weight:800;color:#fff;">@cpInitial</div>
+                <div>
+                    <div style="font-size:12px;font-weight:700;color:#142d4d;">@cpDisplayName</div>
+                    <div style="font-size:10px;color:#22c55e;font-weight:600;">● You (CP · @cpRegNo)</div>
+                </div>
             </div>
             <i class="bi bi-arrow-left-right" style="color:#d1d5db;"></i>
             <div style="display:flex;align-items:center;gap:6px;">
-                <div style="width:34px;height:34px;border-radius:50%;background:#1556c8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;">E</div>
-                <div><div style="font-size:12px;font-weight:700;color:#142d4d;">Prof. Eric Mugisha</div><div style="font-size:10px;color:#22c55e;font-weight:600;">● HOD — Online</div></div>
+                <div style="width:34px;height:34px;border-radius:50%;background:#1556c8;
+                            display:flex;align-items:center;justify-content:center;
+                            font-size:13px;font-weight:800;color:#fff;">E</div>
+                <div>
+                    <div style="font-size:12px;font-weight:700;color:#142d4d;">Prof. Eric Mugisha</div>
+                    <div style="font-size:10px;color:#22c55e;font-weight:600;">● HOD — Online</div>
+                </div>
             </div>
-            <div style="margin-left:auto;font-size:11px;color:#9ca3af;"><i class="bi bi-lock-fill me-1"></i>Private</div>
+            <div style="margin-left:auto;font-size:11px;color:#9ca3af;">
+                <i class="bi bi-lock-fill me-1"></i>Private
+            </div>
         </div>
-        <!-- Messages -->
-        <div id="chatMessages" style="height:380px;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:.85rem;background:#fafbfc;">
-            <div class="cmsg cin"><div class="cav" style="background:#1556c8;">E</div><div class="cbbl cbbl-in"><div class="cfrom">Prof. Eric Mugisha (HOD)</div><div class="ctxt">Hello Bob, how are things going this semester? Any issues to report?</div><div class="cts">Yesterday 14:22</div></div></div>
-            <div class="cmsg cout"><div class="cbbl cbbl-out"><div class="cfrom" style="color:rgba(255,255,255,.7);">You (CP)</div><div class="ctxt">Mrs. Byukusenge was absent Tuesday — CSE305. 38 students waited for the full session.</div><div class="cts" style="color:rgba(255,255,255,.65);">Yesterday 14:35</div></div><div class="cav" style="background:#7c3aed;">B</div></div>
-            <div class="cmsg cin"><div class="cav" style="background:#1556c8;">E</div><div class="cbbl cbbl-in"><div class="cfrom">Prof. Eric Mugisha (HOD)</div><div class="ctxt">Thank you. I will follow up with her. Please also submit a formal attendance flag on the dashboard.</div><div class="cts">Yesterday 15:01</div></div></div>
-            <div class="cmsg cout"><div class="cbbl cbbl-out"><div class="cfrom" style="color:rgba(255,255,255,.7);">You (CP)</div><div class="ctxt">Done — flag submitted. Also, room A108 is over capacity for CSE310. Can we use C302?</div><div class="cts" style="color:rgba(255,255,255,.65);">Yesterday 15:04</div></div><div class="cav" style="background:#7c3aed;">B</div></div>
-            <div class="cmsg cin"><div class="cav" style="background:#1556c8;">E</div><div class="cbbl cbbl-in"><div class="cfrom">Prof. Eric Mugisha (HOD)</div><div class="ctxt">I will arrange C302 starting next week. Submit a room swap request and I will approve it today.</div><div class="cts">Today 08:15</div></div></div>
-            <div id="chatTyping" style="display:none;" class="cmsg cin"><div class="cav" style="background:#1556c8;">E</div><div class="cbbl cbbl-in" style="padding:.5rem .9rem;"><span class="tdot"></span><span class="tdot" style="animation-delay:.2s;"></span><span class="tdot" style="animation-delay:.4s;"></span></div></div>
+
+        <!-- Privacy notice banner -->
+        <div style="padding:.5rem 1.25rem;background:#eff6ff;border-bottom:1px solid #dbeafe;
+                    font-size:11.5px;color:#1556c8;display:flex;align-items:center;gap:6px;">
+            <i class="bi bi-shield-lock-fill"></i>
+            <span>
+                <strong>Private thread for @cpDisplayName only.</strong>
+                Only you and the HOD can read these messages.
+                Other Class Representatives have separate private threads.
+            </span>
         </div>
+
+        <!-- Messages area — loaded from localStorage keyed by CP Reg No -->
+        <div id="chatMessages"
+             style="height:360px;overflow-y:auto;padding:1.25rem;
+                    display:flex;flex-direction:column;gap:.85rem;background:#fafbfc;">
+            <!-- Messages loaded dynamically by JS from localStorage key: @chatStorageKey -->
+            <div id="chatTyping" style="display:none;" class="cmsg cin">
+                <div class="cav" style="background:#1556c8;">E</div>
+                <div class="cbbl cbbl-in" style="padding:.5rem .9rem;">
+                    <span class="tdot"></span>
+                    <span class="tdot" style="animation-delay:.2s;"></span>
+                    <span class="tdot" style="animation-delay:.4s;"></span>
+                </div>
+            </div>
+        </div>
+
         <!-- Quick replies -->
-        <div style="padding:.5rem 1.25rem;border-top:1px solid #f1f5f9;background:#f8fafc;display:flex;flex-wrap:wrap;gap:.4rem;">
+        <div style="padding:.5rem 1.25rem;border-top:1px solid #f1f5f9;background:#f8fafc;
+                    display:flex;flex-wrap:wrap;gap:.4rem;">
             <span style="font-size:10px;color:#9ca3af;align-self:center;">Quick:</span>
             <button class="cqr" onclick="quickReply('Flag submitted ✓')">Flag submitted ✓</button>
             <button class="cqr" onclick="quickReply('Can we schedule a meeting?')">Request meeting</button>
             <button class="cqr" onclick="quickReply('Room swap request submitted.')">Swap submitted</button>
             <button class="cqr" onclick="quickReply('Thank you Professor, understood.')">Acknowledged 🙏</button>
         </div>
+
         <!-- Input -->
-        <div style="padding:1rem 1.25rem;border-top:1px solid #e2e8f0;display:flex;gap:.65rem;align-items:flex-end;background:#fff;border-radius:0 0 13px 13px;">
-            <textarea id="chatInput" rows="2" placeholder="Type a message to HOD… (Enter = send)" onkeydown="chatKey(event)"
-                      style="flex:1;border:1.5px solid #e2e8f0;border-radius:12px;padding:.65rem .9rem;font-size:13px;resize:none;outline:none;font-family:inherit;"
-                      onfocus="this.style.borderColor='#1556c8'" onblur="this.style.borderColor='#e2e8f0'"></textarea>
-            <button onclick="sendChat()" style="width:44px;height:44px;background:#1556c8;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(21,86,200,.3);">
+        <div style="padding:1rem 1.25rem;border-top:1px solid #e2e8f0;display:flex;
+                    gap:.65rem;align-items:flex-end;background:#fff;border-radius:0 0 13px 13px;">
+            <textarea id="chatInput" rows="2"
+                      placeholder="Type a private message to HOD… (Enter = send, Shift+Enter = new line)"
+                      onkeydown="chatKey(event)"
+                      style="flex:1;border:1.5px solid #e2e8f0;border-radius:12px;
+                             padding:.65rem .9rem;font-size:13px;resize:none;
+                             outline:none;font-family:inherit;"
+                      onfocus="this.style.borderColor='#1556c8'"
+                      onblur="this.style.borderColor='#e2e8f0'"></textarea>
+            <button onclick="sendChat()"
+                    style="width:44px;height:44px;background:#1556c8;border:none;
+                           border-radius:10px;cursor:pointer;flex-shrink:0;
+                           display:flex;align-items:center;justify-content:center;
+                           font-size:18px;color:#fff;box-shadow:0 4px 12px rgba(21,86,200,.3);">
                 <i class="bi bi-send-fill"></i>
             </button>
         </div>
@@ -715,48 +783,101 @@ function removeCP(btn) {
     toast('CP removed.', '#6b7280');
 }
 
-// ── Chat ─────────────────────────────────────────────
+// ── Chat — PRIVATE per CP (keyed by Reg No in localStorage) ──────────
+// Each CP's conversation is stored under their own unique key.
+// CP001 sees only CP001's thread. CP002 sees only CP002's thread. Never mixed.
+var _cpRegNo = '@cpRegNo'.trim();
+var _cpNm    = '@cpDisplayName'.trim();
+var _cpIni   = '@cpInitial'.trim();
+var _chatKey = '@chatStorageKey'.trim();
+
 var hodReplies = [
     'Thank you for the update. I will look into this.',
-    'Noted. Please also submit the required form.',
+    'Noted. Please also submit the required form on the dashboard.',
     'I will discuss this with the lecturer directly.',
     'Good work keeping me informed.',
     'This has been recorded for the monthly report.',
     'Understood. I will take action immediately.',
-    'Please also send me the written report by end of day.'
+    'Please also send me a written report by end of day.'
 ];
-function sendChat() {
-    var input = document.getElementById('chatInput');
-    var txt = input.value.trim();
-    if(!txt) return;
-    addMsg(txt,'out');
-    input.value = '';
-    setTimeout(function(){
-        document.getElementById('chatTyping').style.display='flex';
-        scrollChat();
-    }, 300);
-    setTimeout(function(){
-        document.getElementById('chatTyping').style.display='none';
-        addMsg(hodReplies[Math.floor(Math.random()*hodReplies.length)],'in');
-    }, 2000);
+
+// Load this CP's private messages from their isolated localStorage key
+function loadChat() {
+    var stored = localStorage.getItem(_chatKey);
+    var msgs   = stored ? JSON.parse(stored) : defaultMsgs();
+    var box    = document.getElementById('chatMessages');
+    var typing = document.getElementById('chatTyping');
+    // Clear existing messages (keep typing indicator)
+    var kids = Array.from(box.children);
+    kids.forEach(function(k){ if(k.id !== 'chatTyping') box.removeChild(k); });
+    // Render messages before typing indicator
+    msgs.forEach(function(m){
+        box.insertBefore(buildMsg(m.dir, m.txt, m.ts), typing);
+    });
+    box.scrollTop = box.scrollHeight;
 }
-function addMsg(txt, dir) {
-    var box = document.getElementById('chatMessages');
-    var now = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+
+function defaultMsgs() {
+    // Starter message personalised to this CP — only shown in their own thread
+    return [{ dir:'in', txt:'Hello ' + _cpNm.split(' ')[0] + ', how are things going this semester? Any issues I should know about?', ts:'Yesterday 14:22' }];
+}
+
+function buildMsg(dir, txt, ts) {
     var w = document.createElement('div');
     w.className = 'cmsg c' + dir;
-    if(dir==='out'){
-        w.innerHTML = '<div class="cbbl cbbl-out"><div class="cfrom" style="color:rgba(255,255,255,.7);">You (CP)</div><div class="ctxt">'+esc(txt)+'</div><div class="cts" style="color:rgba(255,255,255,.65);">'+now+'</div></div><div class="cav" style="background:#7c3aed;">B</div>';
+    if (dir === 'out') {
+        w.innerHTML =
+            '<div class="cbbl cbbl-out">' +
+              '<div class="cfrom" style="color:rgba(255,255,255,.7);">You (' + _cpNm + ')</div>' +
+              '<div class="ctxt">' + esc(txt) + '</div>' +
+              '<div class="cts" style="color:rgba(255,255,255,.65);">' + ts + '</div>' +
+            '</div>' +
+            '<div class="cav" style="background:#7c3aed;">' + _cpIni + '</div>';
     } else {
-        w.innerHTML = '<div class="cav" style="background:#1556c8;">E</div><div class="cbbl cbbl-in"><div class="cfrom">Prof. Eric Mugisha (HOD)</div><div class="ctxt">'+esc(txt)+'</div><div class="cts">'+now+'</div></div>';
+        w.innerHTML =
+            '<div class="cav" style="background:#1556c8;">E</div>' +
+            '<div class="cbbl cbbl-in">' +
+              '<div class="cfrom">Prof. Eric Mugisha (HOD)</div>' +
+              '<div class="ctxt">' + esc(txt) + '</div>' +
+              '<div class="cts">' + ts + '</div>' +
+            '</div>';
     }
-    box.insertBefore(w, document.getElementById('chatTyping'));
-    scrollChat();
+    return w;
 }
-function scrollChat(){ var b=document.getElementById('chatMessages'); if(b) b.scrollTop=b.scrollHeight; }
+
+function getMsgs()      { var s=localStorage.getItem(_chatKey); return s?JSON.parse(s):defaultMsgs(); }
+function saveMsgs(msgs) { localStorage.setItem(_chatKey, JSON.stringify(msgs)); }
+
+function sendChat() {
+    var input = document.getElementById('chatInput');
+    var txt   = input.value.trim();
+    if (!txt) return;
+    var now  = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    var msgs = getMsgs();
+    msgs.push({ dir:'out', txt:txt, ts:now });
+    saveMsgs(msgs);
+    input.value = '';
+    loadChat();
+    // HOD types then replies
+    setTimeout(function(){
+        document.getElementById('chatTyping').style.display='flex';
+        document.getElementById('chatMessages').scrollTop = 99999;
+    }, 400);
+    setTimeout(function(){
+        document.getElementById('chatTyping').style.display='none';
+        var reply   = hodReplies[Math.floor(Math.random()*hodReplies.length)];
+        var replyTs = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+        var m2 = getMsgs(); m2.push({ dir:'in', txt:reply, ts:replyTs }); saveMsgs(m2);
+        loadChat();
+    }, 2200);
+}
+
 function chatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
 function quickReply(m){ document.getElementById('chatInput').value=m; sendChat(); }
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+// Load this CP's private chat on page load
+document.addEventListener('DOMContentLoaded', function(){ loadChat(); });
 
 // ── Room swap ─────────────────────────────────────────
 function submitSwap(e){
