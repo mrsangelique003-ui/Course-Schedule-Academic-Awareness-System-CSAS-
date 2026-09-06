@@ -428,25 +428,23 @@
         document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.color = '#1556c8';
     }
 
-    // ── Auto-switch tab from URL ?tab= param ─────────────
-    (function() {
+    // ── Auto-switch tab from URL ?tab= param (runs after page scripts load) ──
+    window.addEventListener('load', function() {
         var params = new URLSearchParams(window.location.search);
         var tab = params.get('tab');
         if (!tab) return;
         // CP tabs
-        var cpFn = window.showCPTab;
-        if (cpFn) {
+        if (typeof window.showCPTab === 'function') {
             var btn = document.querySelector('.cp-tab[onclick*="' + tab + '"]');
-            cpFn(tab, btn);
+            window.showCPTab(tab, btn);
             return;
         }
         // Dean tabs
-        var deanFn = window.showTab;
-        if (deanFn) {
+        if (typeof window.showTab === 'function') {
             var dBtn = document.querySelector('.dean-tab[onclick*="' + tab + '"]');
-            deanFn(tab, dBtn);
+            window.showTab(tab, dBtn);
         }
-    })();
+    });
         var name    = document.getElementById('sqName').value.trim();
         var cat     = document.getElementById('sqCategory').value;
         var message = document.getElementById('sqMessage').value.trim();
