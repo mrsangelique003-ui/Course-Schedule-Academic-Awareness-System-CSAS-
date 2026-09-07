@@ -638,9 +638,12 @@
 function showCPTab(name, btn) {
     document.querySelectorAll('.cptab-content').forEach(function(t){ t.style.display='none'; });
     document.querySelectorAll('.cp-tab').forEach(function(b){ b.classList.remove('active'); });
-    document.getElementById('cptab-'+name).style.display='block';
-    if(btn) btn.classList.add('active');
-    if(name==='chat') scrollChat();
+    var panel = document.getElementById('cptab-' + name);
+    if (panel) panel.style.display = 'block';
+    if (btn)   btn.classList.add('active');
+    // Update URL hash without scrolling
+    if (history.replaceState) history.replaceState(null, '', '#' + name);
+    if (name === 'chat') { loadChat(); }
 }
 
 // ── Attendance flag ───────────────────────────────────

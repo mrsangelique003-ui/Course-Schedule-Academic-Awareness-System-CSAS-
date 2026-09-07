@@ -774,10 +774,13 @@
     }
 
     function showTab(name, btn) {
-        document.querySelectorAll('.dean-tab-content').forEach(t => t.style.display = 'none');
-        document.querySelectorAll('.dean-tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab-' + name).style.display = 'block';
-        btn.classList.add('active');
+        document.querySelectorAll('.dean-tab-content').forEach(function(t) { t.style.display = 'none'; });
+        document.querySelectorAll('.dean-tab').forEach(function(t) { t.classList.remove('active'); });
+        var panel = document.getElementById('tab-' + name);
+        if (panel) panel.style.display = 'block';
+        if (btn) btn.classList.add('active');
+        // Update URL hash without scrolling
+        if (history.replaceState) history.replaceState(null, '', '#' + name);
     }
     function openModal(id) {
         document.getElementById(id).style.display = 'flex';
