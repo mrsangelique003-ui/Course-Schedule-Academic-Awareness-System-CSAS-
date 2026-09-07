@@ -263,17 +263,30 @@
 
 @section Scripts {
 <script>
-// ── Private message store (keyed by CP id, visible only in that session) ──
-var _convos = {
+// ── HOD Messaging — localStorage per CP (same keys used by CP dashboard) ──
+// HOD key = "csas_hod_chat_<cpid>"  (matches CP's _chatKey exactly)
+// When HOD sends to Bob → stored in "csas_hod_chat_cp001"
+// When Bob opens chat tab → reads from same "csas_hod_chat_cp001"
+// Conversations are ISOLATED: bob's thread never appears in alice's
+
+var CP_KEYS = {
+    'bob':     'csas_hod_chat_cp001',
+    'alice':   'csas_hod_chat_cp002',
+    'jean':    'csas_hod_chat_cp003',
+    'marie':   'csas_hod_chat_cp004',
+    'patrick': 'csas_hod_chat_cp005'
+};
+
+var CP_DEFAULTS = {
     'bob': [
-        { dir:'in',  txt:'Professor, Mrs. Byukusenge was absent on Tuesday. 38 students waited for the full session.',  ts:'Yesterday 14:35' },
-        { dir:'out', txt:'Thank you Bob. I will follow up. Please submit an attendance flag on the dashboard.',          ts:'Yesterday 15:01' },
-        { dir:'in',  txt:'Done — flag submitted. Also, room A108 is over capacity for CSE310. Can we use C302?',       ts:'Yesterday 15:04' },
-        { dir:'out', txt:'I will arrange C302 starting next week. Submit a swap request and I will approve today.',     ts:'Today 08:15' }
+        { dir:'in',  txt:'Professor, Mrs. Byukusenge was absent on Tuesday. 38 students waited for the full session.', ts:'Yesterday 14:35' },
+        { dir:'out', txt:'Thank you Bob. I will follow up. Please also submit a formal attendance flag.', ts:'Yesterday 15:01' },
+        { dir:'in',  txt:'Done — flag submitted. Also, room A108 is over capacity for CSE310. Can we use C302?', ts:'Yesterday 15:04' },
+        { dir:'out', txt:'I will arrange C302 starting next week. Submit a swap request and I will approve today.', ts:'Today 08:15' }
     ],
     'alice': [
         { dir:'in',  txt:'Good afternoon Professor. I wanted to introduce myself as CP for Year 1 Day session.', ts:'2 days ago' },
-        { dir:'out', txt:'Welcome Alice. Please make sure to keep me updated on any attendance issues.',          ts:'2 days ago' }
+        { dir:'out', txt:'Welcome Alice. Please keep me updated on any attendance issues.',  ts:'2 days ago' }
     ],
     'jean':    [],
     'marie':   [],
@@ -285,13 +298,29 @@ var _cpColor  = '#1556c8';
 var _cpInit   = 'CP';
 var _cpName   = '';
 
-function openChat(cpId, name, year, intake, session, initial, color) {
-    _activeCp  = cpId;
-    _cpColor   = color;
-    _cpInit    = initial;
-    _cpName    = name;
+// ── Load/save helpers ───────────────────────────────────────────────
+function _getMsgs(cpId) {
+    var key = CP_KEYS[cpId];
+    var s   = key ? localStorage.getItem(key) : null;
+    if (s) return JSON.parse(s);
+    // Seed defaults on first load
+    var def = CP_DEFAULTS[cpId] || [];
+    if (def.length > 0 && key) localStorage.setItem(key, JSON.stringify(def));
+    return def;
+}
+function _saveMsgs(cpId, msgs) {
+    var key = CP_KEYS[cpId];
+    if (key) localStorage.setItem(key, JSON.stringify(msgs));
+}
 
-    // Highlight selected row
+// ── Open chat for selected CP ───────────────────────────────────────
+function openChat(cpId, name, year, intake, session, initial, color) {
+    _activeCp = cpId;
+    _cpColor  = color;
+    _cpInit   = initial;
+    _cpName   = name;
+
+    // Highlight row
     document.querySelectorAll('.cp-row').forEach(function(r) { r.classList.remove('active'); });
     var row = document.querySelector('[data-cp="' + cpId + '"]');
     if (row) row.classList.add('active');
@@ -307,35 +336,36 @@ function openChat(cpId, name, year, intake, session, initial, color) {
     document.getElementById('chatMeta').textContent = year + ' · ' + intake + ' · ' + session + ' Session';
     document.getElementById('privacyName').textContent = name;
 
-    // Show chat area
+    // Show chat
     document.getElementById('chatEmpty').style.display = 'none';
     document.getElementById('chatArea').style.display  = 'flex';
 
-    // Render messages
     renderMessages(cpId);
     document.getElementById('msgInput').focus();
 }
 
+// ── Render messages for selected CP ────────────────────────────────
 function renderMessages(cpId) {
     var box  = document.getElementById('chatMessages');
     box.innerHTML = '';
+    var msgs = _getMsgs(cpId);
 
-    var msgs = _convos[cpId] || [];
     if (msgs.length === 0) {
-        box.innerHTML = '<div style="text-align:center;color:#9ca3af;font-size:13px;padding:2rem;">' +
+        box.innerHTML =
+            '<div style="text-align:center;color:#9ca3af;font-size:13px;padding:2rem;">' +
             '<i class="bi bi-chat" style="font-size:30px;display:block;margin-bottom:.5rem;opacity:.3;"></i>' +
-            'No messages yet. Start the conversation below.</div>';
+            'No messages yet with ' + _cpName + '. Start the conversation below.</div>';
         return;
     }
 
     msgs.forEach(function(m) {
         var w = document.createElement('div');
         w.className = 'cmsg c' + m.dir;
-
-        var hodAv  = '<div class="cav" style="background:#b45309;">H</div>';
-        var cpAv   = '<div class="cav" style="background:' + _cpColor + ';">' + _cpInit + '</div>';
+        var hodAv = '<div class="cav" style="background:#b45309;">H</div>';
+        var cpAv  = '<div class="cav" style="background:' + _cpColor + ';">' + _cpInit + '</div>';
 
         if (m.dir === 'out') {
+            // HOD sent this
             w.innerHTML =
                 '<div class="cbbl cbbl-out">' +
                   '<div class="cfrom" style="color:rgba(255,255,255,.7);">You (HOD)</div>' +
@@ -343,54 +373,53 @@ function renderMessages(cpId) {
                   '<div class="cts" style="color:rgba(255,255,255,.65);">' + m.ts + '</div>' +
                 '</div>' + hodAv;
         } else {
+            // CP sent this
             w.innerHTML = cpAv +
                 '<div class="cbbl cbbl-in">' +
-                  '<div class="cfrom">' + _cpName + '</div>' +
+                  '<div class="cfrom">' + _cpName + ' (CP)</div>' +
                   '<div class="ctxt">' + esc(m.txt) + '</div>' +
                   '<div class="cts">' + m.ts + '</div>' +
                 '</div>';
         }
         box.appendChild(w);
     });
-
     box.scrollTop = box.scrollHeight;
 }
 
+// ── HOD sends a message ─────────────────────────────────────────────
 function sendMsg() {
     if (!_activeCp) return;
     var input = document.getElementById('msgInput');
     var txt   = input.value.trim();
     if (!txt) return;
 
-    var now = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    _convos[_activeCp].push({ dir:'out', txt:txt, ts:now });
+    var now  = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    var msgs = _getMsgs(_activeCp);
+    msgs.push({ dir:'out', txt:txt, ts:now });
+    _saveMsgs(_activeCp, msgs);
     input.value = '';
     renderMessages(_activeCp);
 
-    // Simulate CP reply after 2s
+    // Simulate CP reply after 2s (in real app, CP would see the HOD's message and reply via their chat tab)
     setTimeout(function() {
         var replies = [
             'Understood Professor, I will take care of it.',
             'Thank you for letting me know. I will inform the class.',
-            'Yes Professor, I will submit the form today.',
-            'Noted. I will handle it and report back.',
+            'Yes Professor, I will submit the required form today.',
+            'Noted. I will handle it and report back to you.',
             'Thank you Professor, we appreciate your support.'
         ];
-        var reply = replies[Math.floor(Math.random() * replies.length)];
+        var reply   = replies[Math.floor(Math.random() * replies.length)];
         var replyTs = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-        _convos[_activeCp].push({ dir:'in', txt:reply, ts:replyTs });
+        var m2 = _getMsgs(_activeCp);
+        m2.push({ dir:'in', txt:reply, ts:replyTs });
+        _saveMsgs(_activeCp, m2);
         renderMessages(_activeCp);
     }, 2000);
 }
 
-function quickSend(msg) {
-    document.getElementById('msgInput').value = msg;
-    sendMsg();
-}
-
-function msgKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-}
+function quickSend(msg) { document.getElementById('msgInput').value = msg; sendMsg(); }
+function msgKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } }
 
 // ── Filter CP list ─────────────────────────────────────
 function filterCPList() {
