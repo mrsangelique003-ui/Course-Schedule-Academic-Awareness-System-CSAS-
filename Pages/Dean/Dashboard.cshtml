@@ -39,6 +39,19 @@
 </div>
 
 <!-- Use sidebar links to navigate between sections. Tabs below are for in-page content only. -->
+<!-- ── DEAN TAB NAVIGATION ─────────────────────────────────────────── -->
+<div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.25rem;
+             padding:.6rem .85rem;background:#fff;border:1px solid #e2e8f0;
+             border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.04);">
+    <button class="dean-tab active" id="dtab-timetable" onclick="showTab('timetable',this)"><i class="bi bi-calendar3 me-1"></i>Timetables</button>
+    <button class="dean-tab"        id="dtab-courses"   onclick="showTab('courses',this)"><i class="bi bi-book me-1"></i>Courses</button>
+    <button class="dean-tab"        id="dtab-rooms"     onclick="showTab('rooms',this)"><i class="bi bi-building me-1"></i>Rooms</button>
+    <button class="dean-tab"        id="dtab-lecturers" onclick="showTab('lecturers',this)"><i class="bi bi-person-workspace me-1"></i>Lecturers</button>
+    <button class="dean-tab"        id="dtab-swaps"     onclick="showTab('swaps',this)"><i class="bi bi-arrow-left-right me-1"></i>Swap Approvals</button>
+    <button class="dean-tab"        id="dtab-users"     onclick="showTab('users',this)"><i class="bi bi-people me-1"></i>Users</button>
+    <button class="dean-tab"        id="dtab-audit"     onclick="showTab('audit',this)"><i class="bi bi-journal-text me-1"></i>Audit Log</button>
+</div>
+
 <!-- ═══════════════════════════════════════════════════
      TAB: TIMETABLES
 ════════════════════════════════════════════════════ -->
@@ -778,10 +791,20 @@
         document.querySelectorAll('.dean-tab').forEach(function(t) { t.classList.remove('active'); });
         var panel = document.getElementById('tab-' + name);
         if (panel) panel.style.display = 'block';
-        if (btn) btn.classList.add('active');
-        // Update URL hash without scrolling
-        if (history.replaceState) history.replaceState(null, '', '#' + name);
+        // Activate correct button
+        var activBtn = btn || document.getElementById('dtab-' + name);
+        if (activBtn) activBtn.classList.add('active');
+        // Update URL hash
+        if (history.replaceState) history.replaceState(null, '', window.location.pathname + '#' + name);
     }
+    // Hash-based navigation — works from sidebar links
+    function activateDeanHash() {
+        var hash  = (window.location.hash || '#timetable').replace('#','');
+        var valid = ['timetable','courses','rooms','lecturers','swaps','users','audit'];
+        showTab(valid.indexOf(hash) >= 0 ? hash : 'timetable', null);
+    }
+    window.addEventListener('load',       activateDeanHash);
+    window.addEventListener('hashchange', activateDeanHash);
     function openModal(id) {
         document.getElementById(id).style.display = 'flex';
     }

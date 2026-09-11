@@ -429,24 +429,8 @@
         document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.color = '#1556c8';
     }
 
-    // ── Auto-switch tab from URL hash (#flags, #schedule, etc.) ─────────
-    function activateHashTab() {
-        var hash = window.location.hash.replace('#', '');
-        if (!hash) return;
-        // CP tabs
-        if (typeof window.showCPTab === 'function') {
-            window.showCPTab(hash, null);
-            return;
-        }
-        // Dean tabs
-        if (typeof window.showTab === 'function') {
-            var btn = document.querySelector('.dean-tab[onclick*="' + hash + '"]');
-            window.showTab(hash, btn);
-        }
-    }
-    // Run on load and on hash change
-    window.addEventListener('load',       function() { activateHashTab(); });
-    window.addEventListener('hashchange', function() { activateHashTab(); });
+    // ── Tab activation handled by each page via window.load + hashchange ──
+    // CP Dashboard: activateCPHash()  |  Dean Dashboard: activateDeanHash()
         var name    = document.getElementById('sqName').value.trim();
         var cat     = document.getElementById('sqCategory').value;
         var message = document.getElementById('sqMessage').value.trim();
