@@ -116,7 +116,11 @@
             <a href="/Dean/Dashboard#lecturers" class="sidebar-link @(activeNav=="lecturers"?"active":"")"><i class="bi bi-person-workspace"></i> Lecturers</a>
             <a href="/Dean/Dashboard#users"     class="sidebar-link @(activeNav=="users"?"active":"")"><i class="bi bi-people"></i> Users</a>
             <a href="/Dean/Messages"            class="sidebar-link @(activeNav=="messages"?"active":"")"><i class="bi bi-chat-dots-fill"></i> Messages to CPs <span class="sidebar-badge" style="background:#dc2626;">2</span></a>
-            <a href="/Dean/AuditLog"            class="sidebar-link @(activeNav=="auditlog"?"active":"")"><i class="bi bi-journal-text"></i> Audit Log</a>
+            @* Audit Log is visible to Dean only, not HOD *@
+            @if (User.IsInRole("Dean"))
+            {
+                <a href="/Dean/AuditLog" class="sidebar-link @(activeNav=="auditlog"?"active":"")"><i class="bi bi-journal-text"></i> Audit Log</a>
+            }
         }
 
         <div class="sidebar-section-label">Account</div>
