@@ -1,0 +1,46 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Quality.CapacityModel
+@{ ViewData["Title"]="Room Capacity"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="DirectorOfQuality"; ViewData["ActiveNav"]="capacity"; ViewData["UserName"]=User.Identity?.Name??"Director"; }
+
+<div class="dash-welcome">
+    <div><h2 class="dash-heading">Room Capacity vs Enrollment</h2><p class="dash-subheading">Review room utilisation and over-capacity alerts</p></div>
+    <div class="dash-welcome-badge" style="background:rgba(239,68,68,.1);color:#dc2626;"><i class="bi bi-exclamation-triangle-fill"></i> 1 Over Capacity</div>
+</div>
+
+<div class="dash-panel">
+    <div class="panel-header"><span><i class="bi bi-building me-2"></i>Room Utilisation — CIS Courses</span></div>
+    <div style="padding:.75rem 1.25rem;display:flex;flex-direction:column;gap:.85rem;">
+        <div style="border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;background:#f8fafc;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+                <span style="font-size:13px;font-weight:700;color:#142d4d;"><strong>A204</strong> — Software Engineering (CSE301)</span>
+                <span style="background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;">60 / 45 enrolled</span>
+            </div>
+            <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:75%;height:100%;background:#22c55e;border-radius:4px;"></div></div>
+            <div style="font-size:11px;color:#6c8097;margin-top:4px;">75% capacity · 15 seats free</div>
+        </div>
+        <div style="border:1px solid #fecaca;border-radius:10px;padding:.85rem 1rem;background:#fef2f2;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+                <span style="font-size:13px;font-weight:700;color:#142d4d;"><strong>A108</strong> — Human-Computer Interaction (CSE310)</span>
+                <span style="background:#fef2f2;color:#dc2626;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;">⚠ 40 / 44 enrolled</span>
+            </div>
+            <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#ef4444;border-radius:4px;"></div></div>
+            <div style="font-size:11px;color:#dc2626;margin-top:4px;font-weight:700;">OVER CAPACITY — 4 students above limit. Room swap recommended.</div>
+        </div>
+        <div style="border:1px solid #fde68a;border-radius:10px;padding:.85rem 1rem;background:#fef9c3;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+                <span style="font-size:13px;font-weight:700;color:#142d4d;"><strong>B101</strong> — Database Systems (CSE305)</span>
+                <span style="background:#fef9c3;color:#a16207;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;">80 / 76 enrolled</span>
+            </div>
+            <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:95%;height:100%;background:#f59e0b;border-radius:4px;"></div></div>
+            <div style="font-size:11px;color:#a16207;margin-top:4px;">95% capacity — nearly full, monitor closely</div>
+        </div>
+        <div style="border:1px solid #e2e8f0;border-radius:10px;padding:.85rem 1rem;background:#f8fafc;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+                <span style="font-size:13px;font-weight:700;color:#142d4d;"><strong>C302</strong> — Software Architecture (CSE402)</span>
+                <span style="background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;">50 / 38 enrolled</span>
+            </div>
+            <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;"><div style="width:76%;height:100%;background:#22c55e;border-radius:4px;"></div></div>
+            <div style="font-size:11px;color:#6c8097;margin-top:4px;">76% capacity · 12 seats free</div>
+        </div>
+    </div>
+</div>

@@ -1,16 +1,19 @@
-using CourseScheduleSystem.Web.Data;
+﻿using CourseScheduleSystem.Web.Data;
 using CourseScheduleSystem.Web.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Database ───────────────────────────────────────────────────────────────────
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sql => sql.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+    )
+);
 
-// ── ASP.NET Core Identity ──────────────────────────────────────────────────────
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     options.Password.RequireDigit           = false;
@@ -23,7 +26,6 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// ── Cookie settings (Identity configures this internally; override paths here) ─
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath         = "/Login";
@@ -33,7 +35,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-// ── Authorization policies ─────────────────────────────────────────────────────
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("StudentOnly",  p => p.RequireRole("Student"));
@@ -43,34 +44,68 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AnyRole",      p => p.RequireRole("Student", "CP", "DirectorOfQuality", "Dean", "HOD"));
 });
 
-// ── Razor Pages ────────────────────────────────────────────────────────────────
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.EnableForHttps = true;
+    opts.Providers.Add<BrotliCompressionProvider>();
+    opts.Providers.Add<GzipCompressionProvider>();
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+    {
+        "text/html", "text/css", "application/javascript",
+        "application/json", "image/svg+xml", "font/woff2"
+    });
+});
+builder.Services.Configure<BrotliCompressionProviderOptions>(o => o.Level = CompressionLevel.Fastest);
+builder.Services.Configure<GzipCompressionProviderOptions>(o => o.Level   = CompressionLevel.Fastest);
+
+builder.Services.AddResponseCaching();
+
+builder.Services.AddMemoryCache();
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// ── Seed the database ──────────────────────────────────────────────────────────
 using (var scope = app.Services.CreateScope())
 {
     await DbInitializer.SeedAsync(scope.ServiceProvider);
 }
 
-// ── Middleware pipeline ────────────────────────────────────────────────────────
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
-// Only redirect to HTTPS in production — avoid certificate warnings in dev
+app.UseResponseCompression();
+
 if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 
-app.UseStaticFiles();
-app.UseRouting();
+// Static files with aggressive caching headers
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
 
+        var headers = ctx.Context.Response.Headers;
+        headers["Cache-Control"] = "public, max-age=31536000, immutable";
+        headers["Vary"]           = "Accept-Encoding";
+    }
+});
+
+app.UseResponseCaching();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapRazorPages();
+
+app.MapPost("/Logout", async (HttpContext ctx) =>
+{
+    var signInManager = ctx.RequestServices
+        .GetRequiredService<SignInManager<ApplicationUser>>();
+    await signInManager.SignOutAsync();
+    ctx.Response.Redirect("/Login");
+}).RequireAuthorization();
 
 app.Run();

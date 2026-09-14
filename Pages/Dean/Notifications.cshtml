@@ -1,0 +1,84 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Dean.NotificationsModel
+@{ ViewData["Title"]="Notifications"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="Dean"; ViewData["ActiveNav"]="notif"; ViewData["UserName"]=User.Identity?.Name??"Dean"; }
+
+<div class="dash-welcome">
+    <div><h2 class="dash-heading">Notifications</h2><p class="dash-subheading">Administrative alerts, swap approvals and system updates</p></div>
+    <button class="btn-dash-secondary" style="font-size:12px;" onclick="markAll()"><i class="bi bi-check-all me-1"></i>Mark All Read</button>
+</div>
+
+<div class="dash-panel">
+    <div class="panel-header"><span><i class="bi bi-bell-fill me-2"></i>All Notifications</span><span class="panel-badge" id="uc">4 unread</span></div>
+    <div id="nList" style="padding:.75rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;">
+        <div class="notif-item notif-unread">
+            <div class="notif-icon notif-orange"><i class="bi bi-arrow-left-right"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Room Swap Awaiting Approval — CSE301</div>
+                <div class="notif-text">CP Bob requested A204 → Lab 01. Director of Quality has endorsed it.</div>
+                <div class="notif-time">28 Aug 2026</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#b45309;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread">
+            <div class="notif-icon notif-red"><i class="bi bi-exclamation-triangle-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Non-Compliance Alert — CSE402</div>
+                <div class="notif-text">Software Architecture is at 75% compliance this week. 2 sessions missed by Dr. P. Habimana.</div>
+                <div class="notif-time">27 Aug 2026</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#b45309;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread">
+            <div class="notif-icon notif-red"><i class="bi bi-building"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Capacity Breach — Room A108</div>
+                <div class="notif-text">CSE310 HCI has 44 students in a 40-seat room. Director of Quality has flagged this.</div>
+                <div class="notif-time">27 Aug 2026</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#b45309;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread">
+            <div class="notif-icon notif-blue"><i class="bi bi-person-plus-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">New Enrollment Request — 12 Pending</div>
+                <div class="notif-text">12 students have submitted enrollment requests awaiting your approval on UmurongoSmart.</div>
+                <div class="notif-time">26 Aug 2026</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#b45309;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item">
+            <div class="notif-icon notif-green"><i class="bi bi-pen-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Course Signed — CSE402</div>
+                <div class="notif-text">CP Bob Nkurunziza signed completion for Software Architecture. Session confirmed.</div>
+                <div class="notif-time">25 Aug 2026</div>
+            </div>
+        </div>
+        <div class="notif-item">
+            <div class="notif-icon notif-blue"><i class="bi bi-journal-text"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Weekly Audit Report Ready</div>
+                <div class="notif-text">System audit log for week of 18–25 Aug 2026 is available for download.</div>
+                <div class="notif-time">25 Aug 2026</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function markAll(){
+    document.querySelectorAll('.notif-unread').forEach(function(n){
+        n.classList.remove('notif-unread');
+        var d=n.querySelector('span[style*="border-radius:50%"]');
+        if(d) d.remove();
+    });
+    document.getElementById('uc').textContent='0 unread';
+    var t=document.createElement('div');
+    t.style.cssText='position:fixed;bottom:6rem;right:2rem;background:#059669;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;z-index:99999;';
+    t.innerHTML='<i class="bi bi-check-all me-2"></i>All notifications marked as read';
+    document.body.appendChild(t);
+    setTimeout(function(){t.remove();},3000);
+}
+</script>
+}

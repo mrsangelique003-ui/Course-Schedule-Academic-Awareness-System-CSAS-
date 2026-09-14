@@ -1,16 +1,36 @@
+
+using System.ComponentModel.DataAnnotations;
+
 namespace CourseScheduleSystem.Web.Models;
 
 public class Lecturer
 {
-    public int     Id          { get; set; }
-    public string  StaffId     { get; set; } = string.Empty;
-    public string  FullName    { get; set; } = string.Empty;
-    public string  Email       { get; set; } = string.Empty;
-    public string? PhoneNumber { get; set; }
-    public string  Department  { get; set; } = "CIS";
-    public DateTime CreatedAt  { get; set; } = DateTime.UtcNow;
+    public int Id { get; set; }
 
-    // Navigation
-    public ICollection<Course>              Courses              { get; set; } = new List<Course>();
-    public ICollection<LecturerAttendance>  LecturerAttendances  { get; set; } = new List<LecturerAttendance>();
+    [Required]
+    [StringLength(50)]
+    public string StaffId { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(200)]
+    public string FullName { get; set; } = string.Empty;
+
+    [EmailAddress]
+    [StringLength(256)]
+    public string? Email { get; set; }
+
+    [Phone]
+    [StringLength(20)]
+    public string? PhoneNumber { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    public string Department { get; set; } = string.Empty;
+
+    public ICollection<Course> Courses { get; set; } =
+        new List<Course>();
+
+    public ICollection<LecturerAttendance> Attendances { get; set; } =
+        new List<LecturerAttendance>();
 }
+

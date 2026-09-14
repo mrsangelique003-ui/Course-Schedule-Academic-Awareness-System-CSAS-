@@ -1,4 +1,4 @@
-@{
+﻿@{
     var role     = ViewData["Role"]     as string ?? "Student";
     var userName = ViewData["UserName"] as string ?? User.Identity?.Name ?? "User";
     var activeNav = ViewData["ActiveNav"] as string ?? "home";
@@ -35,6 +35,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] — Course Schedules Awareness System</title>
+
+    
+    <link rel="icon" href="https://site.unilak.ac.rw/wp-content/uploads/2021/07/cropped-unnamed-32x32.jpg" sizes="32x32" />
+    <link rel="icon" href="https://site.unilak.ac.rw/wp-content/uploads/2021/07/cropped-unnamed-192x192.jpg" sizes="192x192" />
+    <link rel="apple-touch-icon" href="https://site.unilak.ac.rw/wp-content/uploads/2021/07/cropped-unnamed-180x180.jpg" />
+    <meta name="msapplication-TileImage" content="https://site.unilak.ac.rw/wp-content/uploads/2021/07/cropped-unnamed-270x270.jpg" />
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
@@ -42,12 +49,11 @@
 </head>
 <body class="dash-body">
 
-<!-- ── SIDEBAR ──────────────────────────────────────────────────── -->
 <aside class="dash-sidebar" id="sidebar">
 
-    <!-- Brand -->
+    
     <div class="sidebar-brand">
-        <img src="~/images/unilak-logo.svg"
+        <img src="~/images/unilak-logo.png"
              alt="UNILAK"
              class="sidebar-logo"
              onerror="this.style.display='none'"
@@ -58,75 +64,89 @@
         </div>
     </div>
 
-    <!-- Role badge -->
+    
     <div class="sidebar-role" style="--rc:@roleColor;">
         <i class="bi @roleIcon"></i> @roleLabel
     </div>
 
-    <!-- Nav links -->
+    
     <nav class="sidebar-nav">
+
+        
         <a href="@dashLink" class="sidebar-link @(activeNav=="home"?"active":"")">
             <i class="bi bi-speedometer2"></i> Dashboard
         </a>
 
-        @if (isStudent || isCP)
+        @if (isStudent)
         {
-            <a href="#" class="sidebar-link @(activeNav=="schedule"?"active":"")">
-                <i class="bi bi-calendar-week-fill"></i> My Schedule
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="courses"?"active":"")">
-                <i class="bi bi-collection-fill"></i> Courses
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="deadlines"?"active":"")">
-                <i class="bi bi-alarm-fill"></i> Deadlines
-            </a>
+            <div class="sidebar-section-label">Student</div>
+            <a href="/Student/MySchedule"   class="sidebar-link @(activeNav=="schedule"?"active":"")"><i class="bi bi-calendar-week-fill"></i> My Schedule</a>
+            <a href="/Student/Courses"      class="sidebar-link @(activeNav=="courses"?"active":"")"><i class="bi bi-collection-fill"></i> Courses</a>
+            <a href="/Student/Deadlines"    class="sidebar-link @(activeNav=="deadlines"?"active":"")"><i class="bi bi-alarm-fill"></i> Deadlines</a>
         }
 
         @if (isCP)
         {
-            <div class="sidebar-section-label">CP Tools</div>
-            <a href="#" class="sidebar-link @(activeNav=="flags"?"active":"")">
-                <i class="bi bi-flag-fill"></i> Attendance Flags
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="swaps"?"active":"")">
-                <i class="bi bi-arrow-left-right"></i> Room Swaps
-            </a>
-            <a href="#" class="sidebar-link @(activeNav=="announce"?"active":"")">
-                <i class="bi bi-megaphone-fill"></i> Announcements
-            </a>
+            <div class="sidebar-section-label">Class Rep</div>
+            <a href="/CP/Dashboard#overview"  class="sidebar-link @(activeNav=="home"?"active":"")"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="/CP/Dashboard#schedule"  class="sidebar-link @(activeNav=="schedule"?"active":"")"><i class="bi bi-calendar-week-fill"></i> My Schedule</a>
+            <a href="/CP/Dashboard#flags"     class="sidebar-link @(activeNav=="flags"?"active":"")"><i class="bi bi-flag-fill"></i> Attendance Flags</a>
+            <a href="/CP/Dashboard#roomswap"  class="sidebar-link @(activeNav=="swaps"?"active":"")"><i class="bi bi-arrow-left-right"></i> Room Swaps</a>
+            <a href="/CP/Dashboard#announce"  class="sidebar-link @(activeNav=="announce"?"active":"")"><i class="bi bi-megaphone-fill"></i> Announcements</a>
+            <a href="/CP/Dashboard#allcps"    class="sidebar-link @(activeNav=="allcps"?"active":"")"><i class="bi bi-people-fill"></i> All CIS Reps</a>
+            <a href="/CP/Dashboard#chat"      class="sidebar-link @(activeNav=="chat"?"active":"")"><i class="bi bi-chat-dots-fill"></i> Chat with HOD <span class="sidebar-badge" style="background:#dc2626;">2</span></a>
         }
 
         @if (isQuality)
         {
             <div class="sidebar-section-label">Quality Tools</div>
-            <a href="#" class="sidebar-link"><i class="bi bi-clipboard-data-fill"></i> Compliance</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-building"></i> Capacity</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-person-lines-fill"></i> Attendance Log</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-check2-square"></i> Endorsements</a>
+            <a href="/Quality/Compliance"    class="sidebar-link @(activeNav=="compliance"?"active":"")"><i class="bi bi-clipboard-data-fill"></i> Compliance</a>
+            <a href="/Quality/Capacity"      class="sidebar-link @(activeNav=="capacity"?"active":"")"><i class="bi bi-building"></i> Capacity</a>
+            <a href="/Quality/AttendanceLog" class="sidebar-link @(activeNav=="attlog"?"active":"")"><i class="bi bi-person-lines-fill"></i> Attendance Log</a>
+            <a href="/Quality/Endorsements"  class="sidebar-link @(activeNav=="endorse"?"active":"")"><i class="bi bi-check2-square"></i> Endorsements</a>
         }
 
         @if (isDean)
         {
             <div class="sidebar-section-label">Administration</div>
-            <a href="#" class="sidebar-link"><i class="bi bi-calendar3"></i> Timetables</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-book"></i> Courses</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-building"></i> Rooms</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-person-workspace"></i> Lecturers</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-people"></i> Users</a>
-            <a href="#" class="sidebar-link"><i class="bi bi-journal-text"></i> Audit Log</a>
+            <a href="/Dean/Dashboard#timetable" class="sidebar-link @(activeNav=="timetables"?"active":"")"><i class="bi bi-calendar3"></i> Timetables</a>
+            <a href="/Dean/Dashboard#courses"   class="sidebar-link @(activeNav=="courses"?"active":"")"><i class="bi bi-book"></i> Courses</a>
+            <a href="/Dean/Dashboard#rooms"     class="sidebar-link @(activeNav=="rooms"?"active":"")"><i class="bi bi-building"></i> Rooms</a>
+            <a href="/Dean/Dashboard#lecturers" class="sidebar-link @(activeNav=="lecturers"?"active":"")"><i class="bi bi-person-workspace"></i> Lecturers</a>
+            <a href="/Dean/Dashboard#users"     class="sidebar-link @(activeNav=="users"?"active":"")"><i class="bi bi-people"></i> Users</a>
+            <a href="/Dean/Messages"            class="sidebar-link @(activeNav=="messages"?"active":"")"><i class="bi bi-chat-dots-fill"></i> Messages to CPs <span class="sidebar-badge" style="background:#dc2626;">2</span></a>
+            
+            @if (User.IsInRole("Dean"))
+            {
+                <a href="/Dean/AuditLog" class="sidebar-link @(activeNav=="auditlog"?"active":"")"><i class="bi bi-journal-text"></i> Audit Log</a>
+            }
         }
 
         <div class="sidebar-section-label">Account</div>
-        <a href="#" class="sidebar-link @(activeNav=="profile"?"active":"")">
-            <i class="bi bi-person-circle"></i> Profile
-        </a>
-        <a href="#" class="sidebar-link @(activeNav=="notif"?"active":"")">
-            <i class="bi bi-bell-fill"></i> Notifications
-            <span class="sidebar-badge">5</span>
-        </a>
+        @if (isStudent)
+        {
+            <a href="/Student/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/Student/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">5</span></a>
+        }
+        @if (isCP)
+        {
+            <a href="/CP/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/CP/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">3</span></a>
+        }
+        @if (isQuality)
+        {
+            <a href="/Quality/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/Quality/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">2</span></a>
+        }
+        @if (isDean)
+        {
+            <a href="/Dean/Profile"       class="sidebar-link @(activeNav=="profile"?"active":"")"><i class="bi bi-person-circle"></i> Profile</a>
+            <a href="/Dean/Notifications" class="sidebar-link @(activeNav=="notif"?"active":"")"><i class="bi bi-bell-fill"></i> Notifications <span class="sidebar-badge">4</span></a>
+        }
+
     </nav>
 
-    <!-- Logout -->
+    
     <form method="post" action="/Logout" class="sidebar-logout">
         <button type="submit">
             <i class="bi bi-box-arrow-left"></i> Sign Out
@@ -135,10 +155,9 @@
 
 </aside>
 
-<!-- ── MAIN CONTENT ──────────────────────────────────────────────── -->
 <div class="dash-main" id="dashMain">
 
-    <!-- TOPBAR -->
+    
     <header class="dash-topbar">
         <button class="topbar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
             <i class="bi bi-list"></i>
@@ -166,12 +185,12 @@
         </div>
     </header>
 
-    <!-- PAGE BODY -->
+    
     <main class="dash-content">
         @RenderBody()
     </main>
 
-    <!-- FOOTER -->
+    
     <footer class="dash-footer">
         <span>© @DateTime.Now.Year Course Schedules Awareness System · University of Lay Adventists of Kigali</span>
         <span>CIS Department · CIT Faculty &nbsp;|&nbsp;
@@ -182,11 +201,6 @@
     </footer>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     UMURONGOSMART SUPPORT WIDGET (floating button + slide-up panel)
-════════════════════════════════════════════════════ -->
-
-<!-- Floating trigger button -->
 <button id="supportBtn" onclick="toggleSupport()" title="Academic Support — UmurongoSmart"
     style="position:fixed;bottom:2rem;right:2rem;z-index:1000;
            width:56px;height:56px;border-radius:50%;border:none;
@@ -201,14 +215,13 @@
           border:2px solid #fff;"></span>
 </button>
 
-<!-- Support slide-up panel -->
 <div id="supportPanel"
     style="display:none;position:fixed;bottom:6.5rem;right:2rem;z-index:999;
            width:360px;background:#fff;border-radius:18px;
            box-shadow:0 20px 60px rgba(0,0,0,.22);overflow:hidden;
            animation:slideUp .25s ease;">
     
-    <!-- Panel header -->
+    
     <div style="background:linear-gradient(135deg,#1556c8,#153f83);padding:1rem 1.25rem;
                 display:flex;align-items:center;justify-content:space-between;">
         <div style="display:flex;align-items:center;gap:10px;color:#fff;">
@@ -225,7 +238,7 @@
                 font-size:20px;cursor:pointer;line-height:1;">&times;</button>
     </div>
 
-    <!-- Tabs -->
+    
     <div style="display:flex;border-bottom:1px solid #e2e8f0;">
         <button onclick="showSupportTab('query')" id="tabQuery"
             style="flex:1;padding:.65rem;border:none;background:#fff;
@@ -247,7 +260,7 @@
         </button>
     </div>
 
-    <!-- TAB: Send Query -->
+    
     <div id="supportTabQuery" style="padding:1.1rem;">
         <p style="font-size:12px;color:#6c8097;margin-bottom:.85rem;">
             Submit your question to the CSAS support team. We'll get back to you within 24 hours.
@@ -299,7 +312,7 @@
         </div>
     </div>
 
-    <!-- TAB: Quick Help FAQ -->
+    
     <div id="supportTabFaq" style="display:none;padding:1.1rem;">
         <div style="display:flex;flex-direction:column;gap:.5rem;">
             <details style="border:1px solid #e2e8f0;border-radius:9px;overflow:hidden;">
@@ -337,7 +350,7 @@
         </div>
     </div>
 
-    <!-- TAB: Portal link (UmurongoSmart — UNILAK Support System) -->
+    
     <div id="supportTabPortal" style="display:none;padding:1.25rem;">
         <div style="text-align:center;padding:1rem 0;">
             <div style="width:60px;height:60px;border-radius:50%;
@@ -371,7 +384,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // ── Sidebar toggle ────────────────────────────────────
+
     function toggleSidebar() {
         document.getElementById('sidebar').classList.toggle('collapsed');
         document.getElementById('dashMain').classList.toggle('expanded');
@@ -390,7 +403,6 @@
             document.getElementById('sidebar').classList.toggle('open');
     });
 
-    // ── Support widget ─────────────────────────────────────
     function toggleSupport() {
         var panel = document.getElementById('supportPanel');
         var icon  = document.getElementById('supportBtnIcon');
@@ -412,7 +424,7 @@
         document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.color = '#1556c8';
     }
 
-    function submitQuery() {
+    // CP Dashboard: activateCPHash()  |  Dean Dashboard: activateDeanHash()
         var name    = document.getElementById('sqName').value.trim();
         var cat     = document.getElementById('sqCategory').value;
         var message = document.getElementById('sqMessage').value.trim();

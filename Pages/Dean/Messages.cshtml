@@ -1,0 +1,440 @@
+﻿@page
+@model CourseScheduleSystem.Web.Pages.Dean.MessagesModel
+@{
+    ViewData["Title"] = "Messages — CP Inbox";
+    Layout = "~/Pages/Shared/_DashboardLayout.cshtml";
+    ViewData["Role"] = "Dean";
+    ViewData["ActiveNav"] = "messages";
+    ViewData["UserName"] = User.Identity?.Name ?? "HOD";
+}
+
+<div class="dash-welcome">
+    <div>
+        <h2 class="dash-heading">Messages to Class Representatives</h2>
+        <p class="dash-subheading">Select a CP from the list — conversations are private between you and each CP only</p>
+    </div>
+    <div class="dash-welcome-badge" style="background:rgba(21,86,200,.1);color:#1556c8;">
+        <i class="bi bi-chat-dots-fill"></i> HOD Inbox
+    </div>
+</div>
+
+<div style="display:grid;grid-template-columns:340px 1fr;gap:1.25rem;height:calc(100vh - 210px);min-height:520px;">
+
+    
+    <div class="dash-panel" style="display:flex;flex-direction:column;overflow:hidden;">
+
+        <div style="padding:.85rem 1rem;border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+            <div style="font-size:11px;font-weight:800;color:#6c8097;text-transform:uppercase;
+                        letter-spacing:.07em;margin-bottom:.6rem;">
+                <i class="bi bi-people-fill me-1"></i> Class Representatives — CIS Department
+            </div>
+            
+            <div style="position:relative;margin-bottom:.5rem;">
+                <i class="bi bi-search" style="position:absolute;left:.7rem;top:50%;
+                   transform:translateY(-50%);color:#9ca3af;font-size:12px;"></i>
+                <input type="text" id="cpSearch" placeholder="Search by name, intake or year…"
+                       oninput="filterCPs()"
+                       style="width:100%;border:1.5px solid #e2e8f0;border-radius:9px;
+                              padding:.45rem .7rem .45rem 2rem;font-size:12px;outline:none;" />
+            </div>
+            
+            <div style="display:flex;gap:.4rem;">
+                <select id="filterIntake" onchange="filterCPs()"
+                        style="flex:1;border:1.5px solid #e2e8f0;border-radius:8px;
+                               padding:.35rem .5rem;font-size:11px;outline:none;background:#fff;">
+                    <option value="">All Intakes</option>
+                    <option value="Jan 2022">Jan 2022</option>
+                    <option value="Sep 2022">Sep 2022</option>
+                    <option value="Jan 2023">Jan 2023</option>
+                    <option value="Sep 2023">Sep 2023</option>
+                    <option value="Jan 2024">Jan 2024</option>
+                    <option value="Sep 2024">Sep 2024</option>
+                    <option value="Jan 2025">Jan 2025</option>
+                </select>
+                <select id="filterYear" onchange="filterCPs()"
+                        style="flex:1;border:1.5px solid #e2e8f0;border-radius:8px;
+                               padding:.35rem .5rem;font-size:11px;outline:none;background:#fff;">
+                    <option value="">All Years</option>
+                    <option>Year 1</option>
+                    <option>Year 2</option>
+                    <option>Year 3</option>
+                    <option>Year 4</option>
+                </select>
+            </div>
+        </div>
+
+        
+        <div id="cpListBox" style="flex:1;overflow-y:auto;">
+
+            <div class="cp-row" data-cpid="cp001" data-name="Bob Nkurunziza"
+                 data-intake="Jan 2023" data-year="Year 3" data-session="Day"
+                 data-init="B" data-color="#7c3aed"
+                 onclick="openConversation(this)">
+                <div class="cp-av" style="background:#7c3aed;">B</div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:700;color:#142d4d;">Bob Nkurunziza</div>
+                    <div style="font-size:11px;color:#6c8097;">Year 3 · Jan 2023 · Day</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+                    <span class="unread-badge" style="background:#dc2626;color:#fff;font-size:9px;
+                          font-weight:800;padding:1px 6px;border-radius:10px;">2</span>
+                    <span style="font-size:10px;color:#9ca3af;">Today</span>
+                </div>
+            </div>
+
+            <div class="cp-row" data-cpid="cp002" data-name="Alice Uwimana"
+                 data-intake="Jan 2025" data-year="Year 1" data-session="Day"
+                 data-init="A" data-color="#1556c8"
+                 onclick="openConversation(this)">
+                <div class="cp-av" style="background:#1556c8;">A</div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:700;color:#142d4d;">Alice Uwimana</div>
+                    <div style="font-size:11px;color:#6c8097;">Year 1 · Jan 2025 · Day</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+                    <span class="unread-badge" style="display:none;"></span>
+                    <span style="font-size:10px;color:#9ca3af;">Yesterday</span>
+                </div>
+            </div>
+
+            <div class="cp-row" data-cpid="cp003" data-name="Jean Habimana"
+                 data-intake="Sep 2024" data-year="Year 2" data-session="Evening"
+                 data-init="J" data-color="#059669"
+                 onclick="openConversation(this)">
+                <div class="cp-av" style="background:#059669;">J</div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:700;color:#142d4d;">Jean Habimana</div>
+                    <div style="font-size:11px;color:#6c8097;">Year 2 · Sep 2024 · Evening</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+                    <span class="unread-badge" style="display:none;"></span>
+                    <span style="font-size:10px;color:#9ca3af;">25 Aug</span>
+                </div>
+            </div>
+
+            <div class="cp-row" data-cpid="cp004" data-name="Marie Uwase"
+                 data-intake="Sep 2022" data-year="Year 4" data-session="Day"
+                 data-init="M" data-color="#dc2626"
+                 onclick="openConversation(this)">
+                <div class="cp-av" style="background:#dc2626;">M</div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:700;color:#142d4d;">Marie Uwase</div>
+                    <div style="font-size:11px;color:#6c8097;">Year 4 · Sep 2022 · Day</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+                    <span class="unread-badge" style="display:none;"></span>
+                    <span style="font-size:10px;color:#9ca3af;">24 Aug</span>
+                </div>
+            </div>
+
+            <div class="cp-row" data-cpid="cp005" data-name="Patrick Nzeyimana"
+                 data-intake="Sep 2023" data-year="Year 3" data-session="Weekend"
+                 data-init="P" data-color="#ea580c"
+                 onclick="openConversation(this)">
+                <div class="cp-av" style="background:#ea580c;">P</div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:700;color:#142d4d;">Patrick Nzeyimana</div>
+                    <div style="font-size:11px;color:#6c8097;">Year 3 · Sep 2023 · Weekend</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+                    <span class="unread-badge" style="display:none;"></span>
+                    <span style="font-size:10px;color:#9ca3af;">20 Aug</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="padding:.45rem 1rem;border-top:1px solid #e2e8f0;font-size:11px;
+                    color:#9ca3af;background:#f8fafc;">
+            <span id="cpCountLbl">5 Class Representatives</span>
+        </div>
+    </div>
+
+    
+    <div class="dash-panel" id="chatPanel" style="display:flex;flex-direction:column;overflow:hidden;">
+
+        
+        <div id="chatEmpty" style="flex:1;display:flex;flex-direction:column;align-items:center;
+                                    justify-content:center;padding:2rem;text-align:center;color:#9ca3af;">
+            <i class="bi bi-chat-dots" style="font-size:52px;opacity:.25;display:block;margin-bottom:1.25rem;"></i>
+            <div style="font-size:15px;font-weight:700;color:#374151;margin-bottom:.5rem;">
+                Select a Class Representative
+            </div>
+            <div style="font-size:13px;max-width:340px;line-height:1.65;">
+                Choose a CP from the list on the left.
+                Each conversation is <strong>private</strong> — only you and the selected CP can see these messages.
+            </div>
+        </div>
+
+        
+        <div id="chatActive" style="display:none;flex-direction:column;height:100%;">
+
+            
+            <div id="chatHead" style="padding:.85rem 1.25rem;border-bottom:1px solid #e2e8f0;
+                                       background:#f8fafc;display:flex;align-items:center;gap:12px;">
+                <div id="chatHdAv" class="cp-av" style="width:40px;height:40px;font-size:15px;
+                                                          background:#7c3aed;flex-shrink:0;">B</div>
+                <div style="flex:1;">
+                    <div id="chatHdName" style="font-size:14px;font-weight:800;color:#142d4d;"></div>
+                    <div id="chatHdMeta" style="font-size:11px;color:#6c8097;"></div>
+                </div>
+                <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6c8097;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;"></span> Online
+                </span>
+                <span style="font-size:11px;color:#9ca3af;margin-left:.5rem;">
+                    <i class="bi bi-lock-fill me-1"></i>Private
+                </span>
+            </div>
+
+            
+            <div style="padding:.45rem 1.25rem;background:#eff6ff;border-bottom:1px solid #dbeafe;
+                        font-size:11.5px;color:#1556c8;display:flex;align-items:center;gap:6px;">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>
+                    This conversation is <strong>private</strong> — visible only to you (HOD)
+                    and <strong id="chatPrivName"></strong>.
+                    Other CPs cannot see these messages.
+                </span>
+            </div>
+
+            
+            <div id="chatMsgs" style="flex:1;overflow-y:auto;padding:1.25rem;
+                                       display:flex;flex-direction:column;gap:.85rem;
+                                       background:#fafbfc;min-height:0;"></div>
+
+            
+            <div style="padding:.45rem 1.25rem;border-top:1px solid #f1f5f9;background:#f8fafc;
+                        display:flex;flex-wrap:wrap;gap:.4rem;">
+                <span style="font-size:10px;color:#9ca3af;align-self:center;">Quick:</span>
+                <button class="cqr" onclick="quickSend('Please submit the attendance flag for this week.')">Submit flag</button>
+                <button class="cqr" onclick="quickSend('Your room swap request has been approved.')">Swap approved ✓</button>
+                <button class="cqr" onclick="quickSend('Please come to my office tomorrow at 10:00.')">Meet tomorrow</button>
+                <button class="cqr" onclick="quickSend('Well done, keep up the good work.')">Well done 👍</button>
+            </div>
+
+            
+            <div style="padding:.85rem 1.25rem;border-top:1px solid #e2e8f0;
+                        display:flex;gap:.65rem;align-items:flex-end;
+                        background:#fff;border-radius:0 0 13px 13px;">
+                <textarea id="msgBox" rows="2"
+                          placeholder="Type a private message to this CP… (Enter = send)"
+                          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"
+                          style="flex:1;border:1.5px solid #e2e8f0;border-radius:12px;
+                                 padding:.65rem .9rem;font-size:13px;resize:none;
+                                 outline:none;font-family:inherit;"
+                          onfocus="this.style.borderColor='#1556c8'"
+                          onblur="this.style.borderColor='#e2e8f0'"></textarea>
+                <button onclick="sendMsg()"
+                        style="width:44px;height:44px;background:#1556c8;border:none;
+                               border-radius:10px;cursor:pointer;flex-shrink:0;
+                               display:flex;align-items:center;justify-content:center;
+                               font-size:17px;color:#fff;box-shadow:0 4px 12px rgba(21,86,200,.3);">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .cp-row {
+        display:flex;align-items:center;gap:10px;
+        padding:.8rem 1rem;cursor:pointer;
+        border-bottom:1px solid #f1f5f9;
+        transition:background .15s;
+    }
+    .cp-row:hover  { background:#f0f4ff; }
+    .cp-row.active { background:#eff6ff;border-left:3px solid #1556c8; }
+    .cp-av {
+        width:38px;height:38px;border-radius:50%;flex-shrink:0;
+        display:flex;align-items:center;justify-content:center;
+        font-size:13px;font-weight:800;color:#fff;
+    }
+    .cqr {
+        background:#f1f5f9;border:1px solid #e2e8f0;border-radius:20px;
+        padding:4px 10px;font-size:11px;font-weight:600;color:#374151;
+        cursor:pointer;transition:.15s;white-space:nowrap;
+    }
+    .cqr:hover { background:#dbeafe;border-color:#93c5fd;color:#1556c8; }
+    .cmsg  { display:flex;align-items:flex-end;gap:8px;max-width:80%; }
+    .cin   { align-self:flex-start; }
+    .cout  { align-self:flex-end; }
+    .cav   { width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
+             justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0; }
+    .cbbl  { border-radius:16px;padding:.65rem .9rem;word-break:break-word;max-width:100%; }
+    .cbbl-in  { background:#fff;border:1px solid #e2e8f0;border-bottom-left-radius:4px; }
+    .cbbl-out { background:linear-gradient(135deg,#1556c8,#153f83);color:#fff;border-bottom-right-radius:4px; }
+    .cfrom { font-size:10px;font-weight:800;color:#6c8097;margin-bottom:3px; }
+    .ctxt  { font-size:13px;line-height:1.55; }
+    .cts   { font-size:10px;color:#9ca3af;margin-top:4px;text-align:right; }
+    .cbbl-out .cfrom { color:rgba(255,255,255,.7); }
+    .cbbl-out .cts   { color:rgba(255,255,255,.65); }
+</style>
+
+@section Scripts {
+<script>
+
+// HOD → CP Messaging System
+
+// e.g. CP001 = csas_hod_chat_cp001
+// The SAME key is read by the CP on their chat tab
+// so when HOD sends to Bob → Bob sees it on his chat tab
+
+var _cpId    = null;  // currently selected CP id
+var _cpColor = '#1556c8';
+var _cpInit  = 'C';
+var _cpName  = '';
+
+// Default seed messages per CP (shown first time, stored afterwards)
+var DEFAULTS = {
+    'cp001': [
+        { dir:'in',  txt:'Professor, Mrs. Byukusenge was absent on Tuesday. 38 students waited for the full session.', ts:'Yesterday 14:35' },
+        { dir:'out', txt:'Thank you Bob. I will follow up. Please also submit a formal attendance flag.',               ts:'Yesterday 15:01' },
+        { dir:'in',  txt:'Done. Also, room A108 is over capacity for CSE310. Can we use C302?',                        ts:'Yesterday 15:04' },
+        { dir:'out', txt:'I will arrange C302 starting next week. Submit a swap request and I will approve today.',    ts:'Today 08:15' }
+    ],
+    'cp002': [
+        { dir:'in',  txt:'Good afternoon Professor. I am Alice, CP for Year 1 Day session.', ts:'2 days ago' },
+        { dir:'out', txt:'Welcome Alice. Keep me updated on any attendance or room issues.',  ts:'2 days ago' }
+    ],
+    'cp003': [], 'cp004': [], 'cp005': []
+};
+
+function _key(cpId) { return 'csas_hod_chat_' + cpId; }
+
+function _load(cpId) {
+    var s = localStorage.getItem(_key(cpId));
+    if (s) return JSON.parse(s);
+    var d = DEFAULTS[cpId] || [];
+    if (d.length) localStorage.setItem(_key(cpId), JSON.stringify(d));
+    return d;
+}
+function _save(cpId, msgs) {
+    localStorage.setItem(_key(cpId), JSON.stringify(msgs));
+}
+
+function openConversation(row) {
+    _cpId    = row.dataset.cpid;
+    _cpColor = row.dataset.color;
+    _cpInit  = row.dataset.init;
+    _cpName  = row.dataset.name;
+
+    // Highlight row
+    document.querySelectorAll('.cp-row').forEach(function(r){ r.classList.remove('active'); });
+    row.classList.add('active');
+
+    // Hide unread badge
+    var badge = row.querySelector('.unread-badge');
+    if (badge) badge.style.display = 'none';
+
+    // Update header
+    document.getElementById('chatHdAv').textContent   = _cpInit;
+    document.getElementById('chatHdAv').style.background = _cpColor;
+    document.getElementById('chatHdName').textContent = _cpName;
+    document.getElementById('chatHdMeta').textContent =
+        row.dataset.year + ' · ' + row.dataset.intake + ' · ' + row.dataset.session + ' Session';
+    document.getElementById('chatPrivName').textContent = _cpName;
+
+    // Show chat
+    document.getElementById('chatEmpty').style.display  = 'none';
+    document.getElementById('chatActive').style.display = 'flex';
+
+    renderMsgs();
+    document.getElementById('msgBox').focus();
+}
+
+function renderMsgs() {
+    var box  = document.getElementById('chatMsgs');
+    box.innerHTML = '';
+    var msgs = _load(_cpId);
+
+    if (!msgs.length) {
+        box.innerHTML =
+            '<div style="text-align:center;padding:2rem;color:#9ca3af;font-size:13px;">' +
+            '<i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:.5rem;opacity:.25;"></i>' +
+            'No messages yet with ' + _cpName + '.<br>Send the first message below.</div>';
+        box.scrollTop = box.scrollHeight;
+        return;
+    }
+
+    msgs.forEach(function(m) {
+        var w = document.createElement('div');
+        w.className = 'cmsg c' + m.dir;
+        var hodAv = '<div class="cav" style="background:#b45309;width:34px;height:34px;">H</div>';
+        var cpAv  = '<div class="cav" style="background:' + _cpColor + ';width:34px;height:34px;">' + _cpInit + '</div>';
+        if (m.dir === 'out') {
+            w.innerHTML =
+                '<div class="cbbl cbbl-out">' +
+                  '<div class="cfrom" style="color:rgba(255,255,255,.7);">You (HOD)</div>' +
+                  '<div class="ctxt">' + esc(m.txt) + '</div>' +
+                  '<div class="cts" style="color:rgba(255,255,255,.65);">' + m.ts + '</div>' +
+                '</div>' + hodAv;
+        } else {
+            w.innerHTML = cpAv +
+                '<div class="cbbl cbbl-in">' +
+                  '<div class="cfrom">' + _cpName + ' (CP)</div>' +
+                  '<div class="ctxt">' + esc(m.txt) + '</div>' +
+                  '<div class="cts">' + m.ts + '</div>' +
+                '</div>';
+        }
+        box.appendChild(w);
+    });
+    box.scrollTop = box.scrollHeight;
+}
+
+function sendMsg() {
+    if (!_cpId) return;
+    var box = document.getElementById('msgBox');
+    var txt = box.value.trim();
+    if (!txt) return;
+
+    var now  = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    var msgs = _load(_cpId);
+    msgs.push({ dir:'out', txt:txt, ts:now });
+    _save(_cpId, msgs);
+    box.value = '';
+    renderMsgs();
+
+    setTimeout(function() {
+        var replies = [
+            'Understood Professor, I will take care of it right away.',
+            'Thank you for letting me know. I will inform the class.',
+            'Yes Professor, I will submit the form today.',
+            'Noted. I will handle this and report back to you.',
+            'Thank you Professor, we appreciate your support.'
+        ];
+        var reply   = replies[Math.floor(Math.random() * replies.length)];
+        var replyTs = 'Today ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+        var m2 = _load(_cpId);
+        m2.push({ dir:'in', txt:reply, ts:replyTs });
+        _save(_cpId, m2);
+        renderMsgs();
+    }, 2000);
+}
+
+function quickSend(msg) { document.getElementById('msgBox').value = msg; sendMsg(); }
+
+function filterCPs() {
+    var q   = document.getElementById('cpSearch').value.toLowerCase();
+    var int = document.getElementById('filterIntake').value;
+    var yr  = document.getElementById('filterYear').value;
+    var rows = document.querySelectorAll('.cp-row');
+    var cnt  = 0;
+    rows.forEach(function(r) {
+        var ok = (!q   || r.dataset.name.toLowerCase().includes(q)
+                        || r.dataset.intake.toLowerCase().includes(q))
+              && (!int || r.dataset.intake === int)
+              && (!yr  || r.dataset.year === yr);
+        r.style.display = ok ? '' : 'none';
+        if (ok) cnt++;
+    });
+    document.getElementById('cpCountLbl').textContent =
+        cnt + ' Class Representative' + (cnt !== 1 ? 's' : '');
+}
+
+function esc(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+</script>
+}

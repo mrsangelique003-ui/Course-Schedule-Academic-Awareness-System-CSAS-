@@ -1,4 +1,4 @@
-using CourseScheduleSystem.Web.Models;
+﻿using CourseScheduleSystem.Web.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +9,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
-    // ── Core academic tables ─────────────────────────────────────────────────
     public DbSet<Lecturer>           Lecturers           { get; set; }
     public DbSet<Course>             Courses             { get; set; }
     public DbSet<Room>               Rooms               { get; set; }
@@ -22,11 +21,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     public DbSet<Notification>       Notifications        { get; set; }
     public DbSet<AuditLog>           AuditLogs            { get; set; }
 
-    // ── Auth helpers ─────────────────────────────────────────────────────────
     public DbSet<RefreshToken>       RefreshTokens        { get; set; }
     public DbSet<OtpCode>            OtpCodes             { get; set; }
 
-    // ── Services / Applications / Documents ─────────────────────────────────
     public DbSet<Service>            Services             { get; set; }
     public DbSet<Application>        Applications         { get; set; }
     public DbSet<Document>           Documents            { get; set; }
@@ -35,7 +32,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
     {
         base.OnModelCreating(b);
 
-        // ── ApplicationUser extra columns ─────────────────────────────────
         b.Entity<ApplicationUser>(e =>
         {
             e.Property(u => u.RegNo).HasMaxLength(50);
@@ -45,7 +41,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.HasIndex(u => u.RegNo).IsUnique();
         });
 
-        // ── Lecturer ─────────────────────────────────────────────────────
         b.Entity<Lecturer>(e =>
         {
             e.HasIndex(l => l.StaffId).IsUnique();
@@ -53,7 +48,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(l => l.Department).HasMaxLength(100);
         });
 
-        // ── Course ────────────────────────────────────────────────────────
         b.Entity<Course>(e =>
         {
             e.HasIndex(c => c.Code).IsUnique();
@@ -66,7 +60,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
              .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // ── Room ──────────────────────────────────────────────────────────
         b.Entity<Room>(e =>
         {
             e.HasIndex(r => r.RoomNumber).IsUnique();
@@ -74,7 +67,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(r => r.Building).HasMaxLength(100);
         });
 
-        // ── ScheduleEntry ─────────────────────────────────────────────────
         b.Entity<ScheduleEntry>(e =>
         {
             e.HasOne(s => s.Course)
@@ -91,7 +83,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(s => s.StudySession).HasMaxLength(20).HasDefaultValue("Day");
         });
 
-        // ── RoomShift ─────────────────────────────────────────────────────
         b.Entity<RoomShift>(e =>
         {
             e.HasOne(rs => rs.ScheduleEntry)
@@ -117,7 +108,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(rs => rs.Status).HasMaxLength(20).HasDefaultValue("Pending");
         });
 
-        // ── Enrollment ────────────────────────────────────────────────────
         b.Entity<Enrollment>(e =>
         {
             e.HasIndex(en => new { en.UserId, en.CourseId }).IsUnique();
@@ -134,7 +124,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
              .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // ── ClassRepresentative ───────────────────────────────────────────
         b.Entity<ClassRepresentative>(e =>
         {
             e.HasOne(cr => cr.User)
@@ -148,7 +137,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
              .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // ── LecturerAttendance ────────────────────────────────────────────
         b.Entity<LecturerAttendance>(e =>
         {
             e.HasOne(la => la.Lecturer)
@@ -164,7 +152,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(la => la.AttendanceStatus).HasMaxLength(20).HasDefaultValue("Present");
         });
 
-        // ── AttendanceFlag ────────────────────────────────────────────────
         b.Entity<AttendanceFlag>(e =>
         {
             e.HasOne(af => af.RaisedBy)
@@ -181,7 +168,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(af => af.Status).HasMaxLength(20).HasDefaultValue("Pending");
         });
 
-        // ── Notification ──────────────────────────────────────────────────
         b.Entity<Notification>(e =>
         {
             e.HasOne(n => n.User)
@@ -192,7 +178,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(n => n.Type).HasMaxLength(30).HasDefaultValue("System");
         });
 
-        // ── AuditLog ──────────────────────────────────────────────────────
         b.Entity<AuditLog>(e =>
         {
             e.HasOne(al => al.User)
@@ -204,7 +189,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(al => al.NewValues).HasColumnType("nvarchar(max)");
         });
 
-        // ── RefreshToken ──────────────────────────────────────────────────
         b.Entity<RefreshToken>(e =>
         {
             e.HasIndex(rt => rt.Token).IsUnique();
@@ -214,7 +198,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
              .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // ── OtpCode ───────────────────────────────────────────────────────
         b.Entity<OtpCode>(e =>
         {
             e.HasOne(o => o.User)
@@ -225,7 +208,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(o => o.Purpose).HasMaxLength(50).HasDefaultValue("Login");
         });
 
-        // ── Service ───────────────────────────────────────────────────────
         b.Entity<Service>(e =>
         {
             e.HasIndex(s => s.Code).IsUnique();
@@ -233,7 +215,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
             e.Property(s => s.Fee).HasColumnType("decimal(10,2)");
         });
 
-        // ── Application ───────────────────────────────────────────────────
         b.Entity<Application>(e =>
         {
             e.HasIndex(a => a.ReferenceNumber).IsUnique();
@@ -256,7 +237,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
              .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // ── Document ──────────────────────────────────────────────────────
         b.Entity<Document>(e =>
         {
             e.HasOne(d => d.Application)

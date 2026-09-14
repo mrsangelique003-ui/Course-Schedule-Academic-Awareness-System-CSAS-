@@ -1,0 +1,65 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Quality.EndorsementsModel
+@{ ViewData["Title"]="Endorsements"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="DirectorOfQuality"; ViewData["ActiveNav"]="endorse"; ViewData["UserName"]=User.Identity?.Name??"Director"; }
+
+<div class="dash-welcome">
+    <div><h2 class="dash-heading">Schedule Change Endorsements</h2><p class="dash-subheading">Review and endorse or reject pending schedule change requests</p></div>
+    <div class="dash-welcome-badge" style="background:rgba(5,150,105,.1);color:#059669;"><i class="bi bi-check2-square"></i> 3 Pending</div>
+</div>
+
+<div class="dash-panel">
+    <div class="panel-header"><span><i class="bi bi-check2-square me-2"></i>Pending Endorsements</span><span class="panel-badge">3 awaiting</span></div>
+    <div class="endorsement-list" id="endorseList">
+        <div class="endorse-item" id="end1">
+            <div class="endorse-body">
+                <div class="endorse-title">Room Swap — CSE301 · Mon 08:00</div>
+                <div class="endorse-sub">Requested by CP: Bob Nkurunziza &nbsp;·&nbsp; A204 → Lab 01 &nbsp;·&nbsp; Reason: projector broken</div>
+                <div class="endorse-date">Submitted: 28 Aug 2026</div>
+            </div>
+            <div class="endorse-actions">
+                <button class="btn-endorse-approve" onclick="endorse('end1','Endorsed')"><i class="bi bi-check-lg"></i> Endorse</button>
+                <button class="btn-endorse-reject" onclick="endorse('end1','Rejected')"><i class="bi bi-x-lg"></i> Reject</button>
+            </div>
+        </div>
+        <div class="endorse-item" id="end2">
+            <div class="endorse-body">
+                <div class="endorse-title">Make-Up Session — CSE305 · Sat 10:00</div>
+                <div class="endorse-sub">Requested by: Mrs. A. Byukusenge &nbsp;·&nbsp; Make-up for absence on 27 Aug</div>
+                <div class="endorse-date">Submitted: 27 Aug 2026</div>
+            </div>
+            <div class="endorse-actions">
+                <button class="btn-endorse-approve" onclick="endorse('end2','Endorsed')"><i class="bi bi-check-lg"></i> Endorse</button>
+                <button class="btn-endorse-reject" onclick="endorse('end2','Rejected')"><i class="bi bi-x-lg"></i> Reject</button>
+            </div>
+        </div>
+        <div class="endorse-item" id="end3">
+            <div class="endorse-body">
+                <div class="endorse-title">Room Swap — CSE310 · Wed 13:00</div>
+                <div class="endorse-sub">Requested by CP: John K. &nbsp;·&nbsp; A108 → C302 &nbsp;·&nbsp; Reason: overcapacity (44 students)</div>
+                <div class="endorse-date">Submitted: 26 Aug 2026</div>
+            </div>
+            <div class="endorse-actions">
+                <button class="btn-endorse-approve" onclick="endorse('end3','Endorsed')"><i class="bi bi-check-lg"></i> Endorse</button>
+                <button class="btn-endorse-reject" onclick="endorse('end3','Rejected')"><i class="bi bi-x-lg"></i> Reject</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function endorse(id, action) {
+    var el = document.getElementById(id);
+    var color = action === 'Endorsed' ? '#059669' : '#dc2626';
+    var bg    = action === 'Endorsed' ? '#ecfdf5' : '#fef2f2';
+    el.style.background = bg;
+    el.querySelector('.endorse-actions').innerHTML =
+        '<span style="font-size:12px;font-weight:700;color:'+color+';padding:6px 14px;background:'+bg+';border-radius:8px;border:1px solid '+(action==='Endorsed'?'#bbf7d0':'#fecaca')+';">'
+        +'<i class="bi bi-'+(action==='Endorsed'?'check-circle-fill':'x-circle-fill')+' me-1"></i>'+action+'</span>';
+    var t=document.createElement('div');
+    t.style.cssText='position:fixed;bottom:6rem;right:2rem;background:'+color+';color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;z-index:99999;';
+    t.innerHTML='<i class="bi bi-check-circle-fill me-2"></i>'+action+' successfully!';
+    document.body.appendChild(t);setTimeout(function(){t.remove();},3000);
+}
+</script>
+}

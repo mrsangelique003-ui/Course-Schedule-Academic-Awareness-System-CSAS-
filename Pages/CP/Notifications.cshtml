@@ -1,0 +1,66 @@
+@page
+@model CourseScheduleSystem.Web.Pages.CP.NotificationsModel
+@{ ViewData["Title"]="Notifications"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="CP"; ViewData["ActiveNav"]="notif"; ViewData["UserName"]=User.Identity?.Name??"CP"; }
+
+<div class="dash-welcome">
+    <div><h2 class="dash-heading">Notifications</h2><p class="dash-subheading">Alerts, HOD replies, and system updates</p></div>
+    <button class="btn-dash-secondary" style="font-size:12px;" onclick="markAllRead()"><i class="bi bi-check-all me-1"></i>Mark All Read</button>
+</div>
+
+<div class="dash-panel">
+    <div class="panel-header"><span><i class="bi bi-bell-fill me-2"></i>All Notifications</span><span class="panel-badge" id="unreadCount">3 unread</span></div>
+    <div id="notifList" style="padding:.75rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;">
+        <div class="notif-item notif-unread">
+            <div class="notif-icon notif-blue"><i class="bi bi-chat-dots-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">HOD Replied — Chat</div>
+                <div class="notif-text">"I will arrange C302 starting next week. Submit a room swap request."</div>
+                <div class="notif-time">Today 08:15</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#7c3aed;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread">
+            <div class="notif-icon notif-green"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Room Swap Approved — CSE310</div>
+                <div class="notif-text">Your room swap request for CSE310 (A108→C302) has been approved by HOD.</div>
+                <div class="notif-time">Yesterday 14:00</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#7c3aed;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item notif-unread">
+            <div class="notif-icon notif-orange"><i class="bi bi-flag-fill"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Attendance Flag Reviewed — CSE301</div>
+                <div class="notif-text">Your flag for CSE301 Mon 08:00 has been reviewed by Director of Quality.</div>
+                <div class="notif-time">25 Aug 2026</div>
+            </div>
+            <span style="width:8px;height:8px;border-radius:50%;background:#7c3aed;flex-shrink:0;margin-top:6px;"></span>
+        </div>
+        <div class="notif-item">
+            <div class="notif-icon notif-blue"><i class="bi bi-calendar3"></i></div>
+            <div class="notif-body" style="flex:1;">
+                <div class="notif-title">Timetable Updated</div>
+                <div class="notif-text">CSE402 Thursday session has been updated. Please check the schedule.</div>
+                <div class="notif-time">1 week ago</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function markAllRead(){
+    document.querySelectorAll('.notif-unread').forEach(function(n){
+        n.classList.remove('notif-unread');
+        var d=n.querySelector('span[style*="border-radius:50%"]');
+        if(d) d.remove();
+    });
+    document.getElementById('unreadCount').textContent='0 unread';
+    var t=document.createElement('div');
+    t.style.cssText='position:fixed;bottom:6rem;right:2rem;background:#059669;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-weight:700;font-size:13px;z-index:99999;';
+    t.innerHTML='<i class="bi bi-check-all me-2"></i>All marked as read';
+    document.body.appendChild(t);setTimeout(function(){t.remove();},3000);
+}
+</script>
+}

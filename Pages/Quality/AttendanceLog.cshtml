@@ -1,0 +1,30 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Quality.AttendanceLogModel
+@{ ViewData["Title"]="Attendance Log"; Layout="~/Pages/Shared/_DashboardLayout.cshtml"; ViewData["Role"]="DirectorOfQuality"; ViewData["ActiveNav"]="attlog"; ViewData["UserName"]=User.Identity?.Name??"Director"; }
+
+<div class="dash-welcome">
+    <div><h2 class="dash-heading">Lecturer Attendance Log</h2><p class="dash-subheading">Filter and review all lecturer attendance records</p></div>
+</div>
+
+<div class="dash-panel">
+    <div class="panel-header">
+        <span><i class="bi bi-person-lines-fill me-2"></i>Attendance Records</span>
+        <div style="display:flex;gap:.6rem;">
+            <select class="panel-select"><option>All Lecturers</option><option>Dr. J. Mugisha</option><option>Mrs. A. Byukusenge</option><option>Mr. E. Niyonsenga</option><option>Dr. P. Habimana</option></select>
+            <input type="date" class="panel-select" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            <select class="panel-select"><option>All Status</option><option>Present</option><option>Absent</option><option>Late</option></select>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="dash-table">
+            <thead><tr><th>Date</th><th>Lecturer</th><th>Course</th><th>Session</th><th>Status</th><th>CP Flag</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td>28 Aug 2026</td><td>Dr. J. Mugisha</td><td>CSE301</td><td>Mon 08:00</td><td><span class="att-badge att-present">Present</span></td><td>—</td><td>—</td></tr>
+                <tr><td>27 Aug 2026</td><td>Mrs. A. Byukusenge</td><td>CSE305</td><td>Tue 10:00</td><td><span class="att-badge att-absent">Absent</span></td><td><span style="background:#fef2f2;color:#dc2626;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">Flagged</span></td><td>Official travel</td></tr>
+                <tr><td>27 Aug 2026</td><td>Mr. E. Niyonsenga</td><td>CSE310</td><td>Wed 13:00</td><td><span class="att-badge att-late">Late</span></td><td><span style="background:#fff7ed;color:#ea580c;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">Flagged</span></td><td>30 min delay — traffic</td></tr>
+                <tr><td>26 Aug 2026</td><td>Dr. P. Habimana</td><td>CSE402</td><td>Thu 08:00</td><td><span class="att-badge att-present">Present</span></td><td>—</td><td><span style="color:#059669;font-size:11px;font-weight:700;"><i class="bi bi-star-fill me-1"></i>Presented Well</span></td></tr>
+                <tr><td>25 Aug 2026</td><td>Dr. J. Mugisha</td><td>CSE301</td><td>Mon 08:00</td><td><span class="att-badge att-absent">Absent</span></td><td><span style="background:#fef2f2;color:#dc2626;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">Flagged</span></td><td>Make-up scheduled 30 Aug</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

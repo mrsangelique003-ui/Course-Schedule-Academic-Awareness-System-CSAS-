@@ -1,43 +1,123 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
-  <!-- Outer navy circle with border -->
-  <circle cx="60" cy="60" r="58" fill="#0a1f5c" stroke="#c8a84b" stroke-width="4"/>
-  <!-- Inner ring text band -->
-  <circle cx="60" cy="60" r="50" fill="none" stroke="#c8a84b" stroke-width="1.5"/>
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" style="stop-color:#1e4099"/>
+      <stop offset="100%" style="stop-color:#0c1f5e"/>
+    </radialGradient>
+    <radialGradient id="flameOuter" cx="50%" cy="80%" r="60%">
+      <stop offset="0%" style="stop-color:#ff6600"/>
+      <stop offset="100%" style="stop-color:#cc3300"/>
+    </radialGradient>
+    <radialGradient id="flameMid" cx="50%" cy="75%" r="55%">
+      <stop offset="0%" style="stop-color:#ffaa00"/>
+      <stop offset="100%" style="stop-color:#ff6600"/>
+    </radialGradient>
+  </defs>
 
-  <!-- Torch flame (top center) -->
-  <ellipse cx="60" cy="22" rx="5" ry="9" fill="#e8a020" opacity="0.9"/>
-  <ellipse cx="60" cy="20" rx="3" ry="6" fill="#f5c842"/>
-  <ellipse cx="60" cy="18" rx="2" ry="4" fill="#fff8dc"/>
+  <!-- ── OUTER DARK NAVY RING ── -->
+  <circle cx="110" cy="110" r="108" fill="#0a1540"/>
 
-  <!-- Torch handle -->
-  <rect x="58" y="28" width="4" height="12" rx="2" fill="#c8a84b"/>
+  <!-- ── MAIN NAVY CIRCLE ── -->
+  <circle cx="110" cy="110" r="100" fill="url(#bgGrad)"/>
 
-  <!-- Book (center) -->
-  <rect x="38" y="52" width="44" height="28" rx="3" fill="#1a3a8a" stroke="#c8a84b" stroke-width="1.5"/>
-  <line x1="60" y1="52" x2="60" y2="80" stroke="#c8a84b" stroke-width="1.5"/>
-  <line x1="44" y1="60" x2="56" y2="60" stroke="#c8a84b" stroke-width="1" opacity="0.7"/>
-  <line x1="44" y1="65" x2="56" y2="65" stroke="#c8a84b" stroke-width="1" opacity="0.7"/>
-  <line x1="44" y1="70" x2="56" y2="70" stroke="#c8a84b" stroke-width="1" opacity="0.7"/>
-  <line x1="64" y1="60" x2="76" y2="60" stroke="#c8a84b" stroke-width="1" opacity="0.7"/>
-  <line x1="64" y1="65" x2="76" y2="65" stroke="#c8a84b" stroke-width="1" opacity="0.7"/>
-  <line x1="64" y1="70" x2="76" y2="70" stroke="#c8a84b" stroke-width="1" opacity="0.7"/>
+  <!-- ── GOLD BORDER RINGS ── -->
+  <circle cx="110" cy="110" r="100" fill="none" stroke="#d4a017" stroke-width="4"/>
+  <circle cx="110" cy="110" r="93" fill="none" stroke="#d4a017" stroke-width="1.2"/>
 
-  <!-- UNILAK text -->
-  <text x="60" y="98" text-anchor="middle" font-family="Arial Black, Arial" font-weight="900"
-        font-size="13" fill="#ffffff" letter-spacing="2">UNILAK</text>
-
-  <!-- Since 1997 banner -->
-  <rect x="28" y="103" width="64" height="11" rx="3" fill="#c8a84b"/>
-  <text x="60" y="112" text-anchor="middle" font-family="Arial" font-weight="700"
-        font-size="7" fill="#0a1f5c" letter-spacing="1">Since 1997</text>
-
-  <!-- Arc text top: UNIVERSITY OF LAY ADVENTISTS OF KIGALI -->
-  <path id="topArc" d="M 12,60 A 48,48 0 0,1 108,60" fill="none"/>
-  <text font-family="Arial" font-size="6.5" fill="#c8a84b" font-weight="700" letter-spacing="0.8">
-    <textPath href="#topArc" startOffset="8%">UNIVERSITY OF LAY ADVENTISTS OF KIGALI</textPath>
+  <!-- ══════════════════════════════════════════
+       CIRCULAR TEXT: UNIVERSITY OF LAY ADVENTISTS OF KIGALI
+  ══════════════════════════════════════════ -->
+  <path id="topCircle" d="M 18,110 A 92,92 0 0,1 202,110" fill="none"/>
+  <text font-family="Arial,Helvetica,sans-serif" font-size="10.5" fill="#d4a017" font-weight="800" letter-spacing="1.8">
+    <textPath href="#topCircle" startOffset="3%">UNIVERSITY OF LAY ADVENTISTS OF KIGALI</textPath>
   </text>
 
-  <!-- Stars left and right -->
-  <text x="18" y="72" font-size="8" fill="#c8a84b">★</text>
-  <text x="96" y="72" font-size="8" fill="#c8a84b">★</text>
+  <!-- ══════════════════════════════════════════
+       TORCH
+  ══════════════════════════════════════════ -->
+  <!-- Handle -->
+  <rect x="106" y="68" width="8" height="28" rx="4" fill="#d4a017"/>
+  <!-- Bowl top -->
+  <ellipse cx="110" cy="67" rx="12" ry="5" fill="#b8860b"/>
+  <ellipse cx="110" cy="65" rx="10" ry="4" fill="#d4a017"/>
+
+  <!-- Flame outer (red-orange) -->
+  <path d="M100,65 C96,55 94,42 100,30 C103,22 106,18 110,12
+            C114,18 117,22 120,30 C126,42 124,55 120,65 Z"
+        fill="url(#flameOuter)" opacity="0.9"/>
+  <!-- Flame mid (orange-yellow) -->
+  <path d="M103,63 C100,54 99,44 103,34 C106,27 108,23 110,18
+            C112,23 114,27 117,34 C121,44 120,54 117,63 Z"
+        fill="url(#flameMid)"/>
+  <!-- Flame inner (bright yellow) -->
+  <path d="M106,62 C104,55 104,47 106,38 C108,32 109,28 110,24
+            C111,28 112,32 114,38 C116,47 116,55 114,62 Z"
+        fill="#ffe033"/>
+  <!-- Flame tip (white-hot) -->
+  <path d="M108,58 C108,52 109,44 110,36 C111,44 112,52 112,58 Z"
+        fill="#fff9c4" opacity="0.85"/>
+
+  <!-- ══════════════════════════════════════════
+       OPEN BOOK
+  ══════════════════════════════════════════ -->
+  <!-- Left page -->
+  <path d="M 62,100 C 62,98 64,97 68,97 L 106,97 L 106,138 L 66,140 C 63,141 62,140 62,138 Z"
+        fill="#f5f0e8" stroke="#d4a017" stroke-width="1.2"/>
+  <!-- Right page -->
+  <path d="M 114,97 L 152,97 C 156,97 158,98 158,100 L 158,138 C 158,140 156,141 153,140 L 114,138 Z"
+        fill="#f5f0e8" stroke="#d4a017" stroke-width="1.2"/>
+  <!-- Spine shadow left -->
+  <path d="M 106,97 L 110,97 L 110,138 L 106,138 Z" fill="#d4a017"/>
+  <!-- Spine -->
+  <path d="M 108,97 L 112,97 L 112,138 L 108,138 Z" fill="#b8860b"/>
+
+  <!-- Text lines left page -->
+  <line x1="70" y1="106" x2="102" y2="106" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="70" y1="112" x2="102" y2="112" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="70" y1="118" x2="102" y2="118" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="70" y1="124" x2="102" y2="124" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="70" y1="130" x2="102" y2="130" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <!-- Text lines right page -->
+  <line x1="118" y1="106" x2="150" y2="106" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="118" y1="112" x2="150" y2="112" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="118" y1="118" x2="150" y2="118" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="118" y1="124" x2="150" y2="124" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+  <line x1="118" y1="130" x2="150" y2="130" stroke="#aaa" stroke-width="1.2" opacity="0.6"/>
+
+  <!-- ══════════════════════════════════════════
+       UNILAK NAME BOX
+  ══════════════════════════════════════════ -->
+  <rect x="72" y="142" width="76" height="24" rx="4" fill="#1a3580" stroke="#d4a017" stroke-width="2"/>
+  <text x="110" y="159" text-anchor="middle"
+        font-family="Arial Black,Arial,sans-serif" font-weight="900"
+        font-size="18" fill="#ffffff" letter-spacing="2.5">UNILAK</text>
+
+  <!-- ══════════════════════════════════════════
+       KNOWLEDGE & WISDOM
+  ══════════════════════════════════════════ -->
+  <text x="110" y="174" text-anchor="middle"
+        font-family="Times New Roman,serif" font-style="italic"
+        font-size="8.5" fill="#d4a017" letter-spacing="0.4">Knowledge &amp; Wisdom</text>
+
+  <!-- ══════════════════════════════════════════
+       SINCE 1997 RIBBON
+  ══════════════════════════════════════════ -->
+  <!-- Ribbon shape -->
+  <path d="M 52,182 L 58,178 L 162,178 L 168,182 L 162,186 L 58,186 Z"
+        fill="#d4a017"/>
+  <!-- Left tail -->
+  <path d="M 52,182 L 44,179 L 44,185 L 52,182 Z" fill="#b8860b"/>
+  <!-- Right tail -->
+  <path d="M 168,182 L 176,179 L 176,185 L 168,182 Z" fill="#b8860b"/>
+  <!-- Stars and text -->
+  <text x="110" y="186.5" text-anchor="middle"
+        font-family="Arial,sans-serif" font-weight="800"
+        font-size="7.5" fill="#0c1f5e" letter-spacing="1">★ Since 1997 ★</text>
+
+  <!-- ══════════════════════════════════════════
+       SIDE STARS
+  ══════════════════════════════════════════ -->
+  <text x="24" y="130" font-family="Arial" font-size="13" fill="#d4a017">★</text>
+  <text x="190" y="130" font-family="Arial" font-size="13" fill="#d4a017">★</text>
+
 </svg>
