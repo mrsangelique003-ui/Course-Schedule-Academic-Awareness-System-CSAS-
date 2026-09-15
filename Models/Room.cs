@@ -17,12 +17,11 @@ public class Room
     [Range(1, 2000)]
     public int Capacity { get; set; }
 
+    [StringLength(100)]
+    public string? RoomType { get; set; }
+
+    public bool IsAvailable { get; set; } = true;
+
     public ICollection<ScheduleEntry> ScheduleEntries { get; set; } =
         new List<ScheduleEntry>();
-
-    public ICollection<RoomShift> OriginalRoomShifts { get; set; } =
-        new List<RoomShift>();
-
-    public ICollection<RoomShift> NewRoomShifts { get; set; } =
-        new List<RoomShift>();
 }

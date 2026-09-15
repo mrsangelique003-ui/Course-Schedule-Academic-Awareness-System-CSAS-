@@ -1,255 +1,260 @@
 ﻿using CourseScheduleSystem.Web.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CourseScheduleSystem.Web.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options) { }
-
-    public DbSet<Lecturer>           Lecturers           { get; set; }
-    public DbSet<Course>             Courses             { get; set; }
-    public DbSet<Room>               Rooms               { get; set; }
-    public DbSet<ScheduleEntry>      ScheduleEntries     { get; set; }
-    public DbSet<RoomShift>          RoomShifts          { get; set; }
-    public DbSet<Enrollment>         Enrollments         { get; set; }
-    public DbSet<ClassRepresentative> ClassRepresentatives { get; set; }
-    public DbSet<LecturerAttendance> LecturerAttendances  { get; set; }
-    public DbSet<AttendanceFlag>     AttendanceFlags      { get; set; }
-    public DbSet<Notification>       Notifications        { get; set; }
-    public DbSet<AuditLog>           AuditLogs            { get; set; }
-
-    public DbSet<RefreshToken>       RefreshTokens        { get; set; }
-    public DbSet<OtpCode>            OtpCodes             { get; set; }
-
-    public DbSet<Service>            Services             { get; set; }
-    public DbSet<Application>        Applications         { get; set; }
-    public DbSet<Document>           Documents            { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder b)
+    public ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
-        base.OnModelCreating(b);
+    }
 
-        b.Entity<ApplicationUser>(e =>
+    public DbSet<Administrator> Administrators => Set<Administrator>();
+    public DbSet<ClassRepresentative> ClassRepresentatives => Set<ClassRepresentative>();
+    public DbSet<Student> Students => Set<Student>();
+    public DbSet<Lecturer> Lecturers => Set<Lecturer>();
+    public DbSet<Course> Courses => Set<Course>();
+    public DbSet<Room> Rooms => Set<Room>();
+    public DbSet<ScheduleEntry> ScheduleEntries => Set<ScheduleEntry>();
+    public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        ConfigureAdministrator(modelBuilder);
+        ConfigureClassRepresentative(modelBuilder);
+        ConfigureStudent(modelBuilder);
+        ConfigureLecturer(modelBuilder);
+        ConfigureCourse(modelBuilder);
+        ConfigureRoom(modelBuilder);
+        ConfigureScheduleEntry(modelBuilder);
+        ConfigureEnrollment(modelBuilder);
+    }
+
+    private static void ConfigureAdministrator(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Administrator>(entity =>
         {
-            e.Property(u => u.RegNo).HasMaxLength(50);
-            e.Property(u => u.FullName).HasMaxLength(200);
-            e.Property(u => u.Department).HasMaxLength(100).HasDefaultValue("CIS");
-            e.Property(u => u.StudySession).HasMaxLength(20).HasDefaultValue("Day");
-            e.HasIndex(u => u.RegNo).IsUnique();
+            entity.HasKey(a => a.Id);
+
+            entity.HasIndex(a => a.StaffId)
+                .IsUnique();
+
+            entity.Property(a => a.StaffId)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(a => a.FullName)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.Property(a => a.Department)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(a => a.Role)
+                .IsRequired()
+                .HasMaxLength(50);
         });
+    }
 
-        b.Entity<Lecturer>(e =>
+    private static void ConfigureClassRepresentative(
+        ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ClassRepresentative>(entity =>
         {
-            e.HasIndex(l => l.StaffId).IsUnique();
-            e.Property(l => l.StaffId).HasMaxLength(50);
-            e.Property(l => l.Department).HasMaxLength(100);
+            entity.HasKey(cp => cp.Id);
+
+            entity.HasIndex(cp => cp.RegNo)
+                .IsUnique();
+
+            entity.Property(cp => cp.RegNo)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(cp => cp.FullName)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.Property(cp => cp.Department)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.HasMany(cp => cp.RepresentedCourses)
+                .WithMany(course => course.ClassRepresentatives)
+                .UsingEntity(join =>
+                    join.ToTable("CourseClassRepresentatives"));
         });
+    }
 
-        b.Entity<Course>(e =>
+    private static void ConfigureStudent(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Student>(entity =>
         {
-            e.HasIndex(c => c.Code).IsUnique();
-            e.Property(c => c.Code).HasMaxLength(20);
-            e.Property(c => c.Status).HasMaxLength(30).HasDefaultValue("Available");
+            entity.HasKey(s => s.Id);
 
-            e.HasOne(c => c.Lecturer)
-             .WithMany(l => l.Courses)
-             .HasForeignKey(c => c.LecturerId)
-             .OnDelete(DeleteBehavior.SetNull);
+            entity.HasIndex(s => s.RegNo)
+                .IsUnique();
+
+            entity.Property(s => s.RegNo)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(s => s.FullName)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.Property(s => s.Department)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(s => s.Program)
+                .HasMaxLength(50);
+
+            entity.Property(s => s.Level)
+                .HasMaxLength(50);
         });
+    }
 
-        b.Entity<Room>(e =>
+    private static void ConfigureLecturer(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Lecturer>(entity =>
         {
-            e.HasIndex(r => r.RoomNumber).IsUnique();
-            e.Property(r => r.RoomNumber).HasMaxLength(30);
-            e.Property(r => r.Building).HasMaxLength(100);
+            entity.HasKey(l => l.Id);
+
+            entity.HasIndex(l => l.StaffId)
+                .IsUnique();
+
+            entity.Property(l => l.StaffId)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(l => l.FullName)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.Property(l => l.Department)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.HasMany(l => l.Courses)
+                .WithOne(c => c.Lecturer)
+                .HasForeignKey(c => c.LecturerId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasMany(l => l.ScheduleEntries)
+                .WithOne(s => s.Lecturer)
+                .HasForeignKey(s => s.LecturerId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
+    }
 
-        b.Entity<ScheduleEntry>(e =>
+    private static void ConfigureCourse(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Course>(entity =>
         {
-            e.HasOne(s => s.Course)
-             .WithMany(c => c.ScheduleEntries)
-             .HasForeignKey(s => s.CourseId)
-             .OnDelete(DeleteBehavior.Cascade);
+            entity.HasKey(c => c.Id);
 
-            e.HasOne(s => s.Room)
-             .WithMany(r => r.ScheduleEntries)
-             .HasForeignKey(s => s.RoomId)
-             .OnDelete(DeleteBehavior.Restrict);
+            entity.HasIndex(c => c.Code)
+                .IsUnique();
 
-            e.Property(s => s.DayOfWeek).HasMaxLength(10);
-            e.Property(s => s.StudySession).HasMaxLength(20).HasDefaultValue("Day");
+            entity.Property(c => c.Code)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            entity.Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.Property(c => c.Description)
+                .HasMaxLength(1000);
+
+            entity.HasOne(c => c.Administrator)
+                .WithMany(a => a.ManagedCourses)
+                .HasForeignKey(c => c.AdministratorId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasMany(c => c.ScheduleEntries)
+                .WithOne(s => s.Course)
+                .HasForeignKey(s => s.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(c => c.Enrollments)
+                .WithOne(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
+    }
 
-        b.Entity<RoomShift>(e =>
+    private static void ConfigureRoom(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Room>(entity =>
         {
-            e.HasOne(rs => rs.ScheduleEntry)
-             .WithMany(se => se.RoomShifts)
-             .HasForeignKey(rs => rs.ScheduleEntryId)
-             .OnDelete(DeleteBehavior.Cascade);
+            entity.HasKey(r => r.Id);
 
-            e.HasOne(rs => rs.OriginalRoom)
-             .WithMany(r => r.OriginalShifts)
-             .HasForeignKey(rs => rs.OriginalRoomId)
-             .OnDelete(DeleteBehavior.Restrict);
+            entity.HasIndex(r => new
+            {
+                r.Building,
+                r.RoomNumber
+            })
+            .IsUnique();
 
-            e.HasOne(rs => rs.NewRoom)
-             .WithMany(r => r.NewShifts)
-             .HasForeignKey(rs => rs.NewRoomId)
-             .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(r => r.RoomNumber)
+                .IsRequired()
+                .HasMaxLength(50);
 
-            e.HasOne(rs => rs.CreatedBy)
-             .WithMany(u => u.RoomShifts)
-             .HasForeignKey(rs => rs.CreatedByUserId)
-             .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(r => r.Building)
+                .IsRequired()
+                .HasMaxLength(100);
 
-            e.Property(rs => rs.Status).HasMaxLength(20).HasDefaultValue("Pending");
+            entity.Property(r => r.RoomType)
+                .HasMaxLength(100);
         });
+    }
 
-        b.Entity<Enrollment>(e =>
+    private static void ConfigureScheduleEntry(
+        ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ScheduleEntry>(entity =>
         {
-            e.HasIndex(en => new { en.UserId, en.CourseId }).IsUnique();
-            e.Property(en => en.Status).HasMaxLength(20).HasDefaultValue("Pending");
+            entity.HasKey(s => s.Id);
 
-            e.HasOne(en => en.User)
-             .WithMany(u => u.Enrollments)
-             .HasForeignKey(en => en.UserId)
-             .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(s => s.Room)
+                .WithMany(r => r.ScheduleEntries)
+                .HasForeignKey(s => s.RoomId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            e.HasOne(en => en.Course)
-             .WithMany(c => c.Enrollments)
-             .HasForeignKey(en => en.CourseId)
-             .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(s => s.Notes)
+                .HasMaxLength(500);
         });
+    }
 
-        b.Entity<ClassRepresentative>(e =>
+    private static void ConfigureEnrollment(
+        ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Enrollment>(entity =>
         {
-            e.HasOne(cr => cr.User)
-             .WithMany(u => u.ClassRepresentatives)
-             .HasForeignKey(cr => cr.UserId)
-             .OnDelete(DeleteBehavior.Restrict);
+            entity.HasKey(e => e.Id);
 
-            e.HasOne(cr => cr.Course)
-             .WithMany(c => c.ClassRepresentatives)
-             .HasForeignKey(cr => cr.CourseId)
-             .OnDelete(DeleteBehavior.Cascade);
-        });
+            entity.HasIndex(e => new
+            {
+                e.StudentId,
+                e.CourseId
+            })
+            .IsUnique();
 
-        b.Entity<LecturerAttendance>(e =>
-        {
-            e.HasOne(la => la.Lecturer)
-             .WithMany(l => l.LecturerAttendances)
-             .HasForeignKey(la => la.LecturerId)
-             .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Student)
+                .WithMany(s => s.Enrollments)
+                .HasForeignKey(e => e.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            e.HasOne(la => la.ScheduleEntry)
-             .WithMany(se => se.LecturerAttendances)
-             .HasForeignKey(la => la.ScheduleEntryId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            e.Property(la => la.AttendanceStatus).HasMaxLength(20).HasDefaultValue("Present");
-        });
-
-        b.Entity<AttendanceFlag>(e =>
-        {
-            e.HasOne(af => af.RaisedBy)
-             .WithMany(u => u.AttendanceFlags)
-             .HasForeignKey(af => af.RaisedByUserId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            e.HasOne(af => af.ScheduleEntry)
-             .WithMany(se => se.AttendanceFlags)
-             .HasForeignKey(af => af.ScheduleEntryId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            e.Property(af => af.IssueType).HasMaxLength(20).HasDefaultValue("Absent");
-            e.Property(af => af.Status).HasMaxLength(20).HasDefaultValue("Pending");
-        });
-
-        b.Entity<Notification>(e =>
-        {
-            e.HasOne(n => n.User)
-             .WithMany(u => u.Notifications)
-             .HasForeignKey(n => n.UserId)
-             .OnDelete(DeleteBehavior.Cascade);
-
-            e.Property(n => n.Type).HasMaxLength(30).HasDefaultValue("System");
-        });
-
-        b.Entity<AuditLog>(e =>
-        {
-            e.HasOne(al => al.User)
-             .WithMany(u => u.AuditLogs)
-             .HasForeignKey(al => al.UserId)
-             .OnDelete(DeleteBehavior.SetNull);
-
-            e.Property(al => al.OldValues).HasColumnType("nvarchar(max)");
-            e.Property(al => al.NewValues).HasColumnType("nvarchar(max)");
-        });
-
-        b.Entity<RefreshToken>(e =>
-        {
-            e.HasIndex(rt => rt.Token).IsUnique();
-            e.HasOne(rt => rt.User)
-             .WithMany()
-             .HasForeignKey(rt => rt.UserId)
-             .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        b.Entity<OtpCode>(e =>
-        {
-            e.HasOne(o => o.User)
-             .WithMany()
-             .HasForeignKey(o => o.UserId)
-             .OnDelete(DeleteBehavior.Cascade);
-
-            e.Property(o => o.Purpose).HasMaxLength(50).HasDefaultValue("Login");
-        });
-
-        b.Entity<Service>(e =>
-        {
-            e.HasIndex(s => s.Code).IsUnique();
-            e.Property(s => s.Status).HasMaxLength(20).HasDefaultValue("Active");
-            e.Property(s => s.Fee).HasColumnType("decimal(10,2)");
-        });
-
-        b.Entity<Application>(e =>
-        {
-            e.HasIndex(a => a.ReferenceNumber).IsUnique();
-            e.Property(a => a.Status).HasMaxLength(30).HasDefaultValue("Draft");
-            e.Property(a => a.Priority).HasMaxLength(20).HasDefaultValue("Normal");
-
-            e.HasOne(a => a.Service)
-             .WithMany(s => s.Applications)
-             .HasForeignKey(a => a.ServiceId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            e.HasOne(a => a.Applicant)
-             .WithMany(u => u.Applications)
-             .HasForeignKey(a => a.ApplicantUserId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            e.HasOne(a => a.ReviewedBy)
-             .WithMany()
-             .HasForeignKey(a => a.ReviewedByUserId)
-             .OnDelete(DeleteBehavior.Restrict);
-        });
-
-        b.Entity<Document>(e =>
-        {
-            e.HasOne(d => d.Application)
-             .WithMany(a => a.Documents)
-             .HasForeignKey(d => d.ApplicationId)
-             .OnDelete(DeleteBehavior.Cascade);
-
-            e.HasOne(d => d.UploadedBy)
-             .WithMany()
-             .HasForeignKey(d => d.UploadedByUserId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            e.Property(d => d.Status).HasMaxLength(20).HasDefaultValue("Pending");
+            entity.HasOne(e => e.Course)
+                .WithMany(c => c.Enrollments)
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

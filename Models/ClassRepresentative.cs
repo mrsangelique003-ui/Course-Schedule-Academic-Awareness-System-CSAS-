@@ -1,14 +1,14 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CourseScheduleSystem.Web.Models;
 
-public class Lecturer
+public class ClassRepresentative
 {
     public int Id { get; set; }
 
     [Required]
     [StringLength(50)]
-    public string StaffId { get; set; } = string.Empty;
+    public string RegNo { get; set; } = string.Empty;
 
     [Required]
     [StringLength(200)]
@@ -26,11 +26,12 @@ public class Lecturer
     [StringLength(100)]
     public string Department { get; set; } = "CIS";
 
+    public StudySession StudySession { get; set; } = StudySession.Day;
+
     public bool IsActive { get; set; } = true;
 
-    public ICollection<Course> Courses { get; set; } =
-        new List<Course>();
+    public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
 
-    public ICollection<ScheduleEntry> ScheduleEntries { get; set; } =
-        new List<ScheduleEntry>();
+    public ICollection<Course> RepresentedCourses { get; set; } =
+        new List<Course>();
 }

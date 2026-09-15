@@ -1,8 +1,8 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CourseScheduleSystem.Web.Models;
 
-public class Lecturer
+public class Administrator
 {
     public int Id { get; set; }
 
@@ -26,11 +26,17 @@ public class Lecturer
     [StringLength(100)]
     public string Department { get; set; } = "CIS";
 
+    [Required]
+    [StringLength(50)]
+    public string Role { get; set; } = "HOD";
+
     public bool IsActive { get; set; } = true;
 
-    public ICollection<Course> Courses { get; set; } =
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<Course> ManagedCourses { get; set; } =
         new List<Course>();
 
-    public ICollection<ScheduleEntry> ScheduleEntries { get; set; } =
+    public ICollection<ScheduleEntry> ManagedSchedules { get; set; } =
         new List<ScheduleEntry>();
 }

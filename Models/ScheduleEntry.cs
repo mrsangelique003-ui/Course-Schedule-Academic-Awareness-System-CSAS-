@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace CourseScheduleSystem.Web.Models;
 
 public class ScheduleEntry
@@ -8,6 +10,14 @@ public class ScheduleEntry
 
     public Course Course { get; set; } = null!;
 
+    public int LecturerId { get; set; }
+
+    public Lecturer Lecturer { get; set; } = null!;
+
+    public int RoomId { get; set; }
+
+    public Room Room { get; set; } = null!;
+
     public DayOfWeek DayOfWeek { get; set; }
 
     public TimeOnly StartTime { get; set; }
@@ -16,18 +26,14 @@ public class ScheduleEntry
 
     public StudySession StudySession { get; set; } = StudySession.Day;
 
-    public int RoomId { get; set; }
+    public ScheduleStatus Status { get; set; } = ScheduleStatus.Active;
 
-    public Room Room { get; set; } = null!;
+    [StringLength(500)]
+    public string? Notes { get; set; }
 
     public bool IsActive { get; set; } = true;
 
-    public ICollection<RoomShift> RoomShifts { get; set; } =
-        new List<RoomShift>();
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public ICollection<LecturerAttendance> LecturerAttendances { get; set; } =
-        new List<LecturerAttendance>();
-
-    public ICollection<AttendanceFlag> AttendanceFlags { get; set; } =
-        new List<AttendanceFlag>();
+    public DateTime? UpdatedAt { get; set; }
 }
