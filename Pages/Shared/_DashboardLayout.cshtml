@@ -36,7 +36,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] — Course Schedules Awareness System</title>
 
+<<<<<<< HEAD
     
+=======
+    <!-- ── UNILAK Favicons ── -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
     <link rel="icon" href="https://site.unilak.ac.rw/wp-content/uploads/2021/07/cropped-unnamed-32x32.jpg" sizes="32x32" />
     <link rel="icon" href="https://site.unilak.ac.rw/wp-content/uploads/2021/07/cropped-unnamed-192x192.jpg" sizes="192x192" />
     <link rel="apple-touch-icon" href="https://site.unilak.ac.rw/wp-content/uploads/2021/07/cropped-unnamed-180x180.jpg" />
@@ -72,7 +76,11 @@
     
     <nav class="sidebar-nav">
 
+<<<<<<< HEAD
         
+=======
+        <!-- ── DASHBOARD (all roles) ─────────────────────── -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
         <a href="@dashLink" class="sidebar-link @(activeNav=="home"?"active":"")">
             <i class="bi bi-speedometer2"></i> Dashboard
         </a>
@@ -115,7 +123,11 @@
             <a href="/Dean/Dashboard#lecturers" class="sidebar-link @(activeNav=="lecturers"?"active":"")"><i class="bi bi-person-workspace"></i> Lecturers</a>
             <a href="/Dean/Dashboard#users"     class="sidebar-link @(activeNav=="users"?"active":"")"><i class="bi bi-people"></i> Users</a>
             <a href="/Dean/Messages"            class="sidebar-link @(activeNav=="messages"?"active":"")"><i class="bi bi-chat-dots-fill"></i> Messages to CPs <span class="sidebar-badge" style="background:#dc2626;">2</span></a>
+<<<<<<< HEAD
             
+=======
+            @* Audit Log is visible to Dean only, not HOD *@
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
             @if (User.IsInRole("Dean"))
             {
                 <a href="/Dean/AuditLog" class="sidebar-link @(activeNav=="auditlog"?"active":"")"><i class="bi bi-journal-text"></i> Audit Log</a>
@@ -424,6 +436,10 @@
         document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.color = '#1556c8';
     }
 
+<<<<<<< HEAD
+=======
+    // ── Tab activation handled by each page via window.load + hashchange ──
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
     // CP Dashboard: activateCPHash()  |  Dean Dashboard: activateDeanHash()
         var name    = document.getElementById('sqName').value.trim();
         var cat     = document.getElementById('sqCategory').value;
@@ -446,4 +462,5 @@
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
 

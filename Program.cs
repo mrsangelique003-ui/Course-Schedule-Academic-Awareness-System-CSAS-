@@ -7,6 +7,10 @@ using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
 
+<<<<<<< HEAD
+=======
+// ── Database (with connection pooling + query splitting) ──────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -14,6 +18,10 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     )
 );
 
+<<<<<<< HEAD
+=======
+// ── ASP.NET Core Identity ─────────────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     options.Password.RequireDigit           = false;
@@ -26,6 +34,10 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
+<<<<<<< HEAD
+=======
+// ── Cookie settings ───────────────────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath         = "/Login";
@@ -35,6 +47,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+<<<<<<< HEAD
+=======
+// ── Authorization policies ────────────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("StudentOnly",  p => p.RequireRole("Student"));
@@ -44,6 +60,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AnyRole",      p => p.RequireRole("Student", "CP", "DirectorOfQuality", "Dean", "HOD"));
 });
 
+<<<<<<< HEAD
+=======
+// ── Response Compression (Brotli + Gzip) ─────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 builder.Services.AddResponseCompression(opts =>
 {
     opts.EnableForHttps = true;
@@ -58,27 +78,52 @@ builder.Services.AddResponseCompression(opts =>
 builder.Services.Configure<BrotliCompressionProviderOptions>(o => o.Level = CompressionLevel.Fastest);
 builder.Services.Configure<GzipCompressionProviderOptions>(o => o.Level   = CompressionLevel.Fastest);
 
+<<<<<<< HEAD
 builder.Services.AddResponseCaching();
 
 builder.Services.AddMemoryCache();
 
+=======
+// ── Response Caching ──────────────────────────────────────────────────────────
+builder.Services.AddResponseCaching();
+
+// ── Memory Cache ──────────────────────────────────────────────────────────────
+builder.Services.AddMemoryCache();
+
+// ── Razor Pages ───────────────────────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+<<<<<<< HEAD
+=======
+// ── Seed database ─────────────────────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 using (var scope = app.Services.CreateScope())
 {
     await DbInitializer.SeedAsync(scope.ServiceProvider);
 }
 
+<<<<<<< HEAD
+=======
+// ── Middleware pipeline ───────────────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
+<<<<<<< HEAD
 app.UseResponseCompression();
 
+=======
+// Response compression FIRST — before static files
+app.UseResponseCompression();
+
+// Only redirect HTTPS in production
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 
@@ -87,6 +132,7 @@ app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
     {
+<<<<<<< HEAD
 
         var headers = ctx.Context.Response.Headers;
         headers["Cache-Control"] = "public, max-age=31536000, immutable";
@@ -94,12 +140,25 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 
+=======
+        // Cache static assets for 1 year (CSS, JS, images)
+        var headers = ctx.Context.Response.Headers;
+        headers["Cache-Control"] = "public, max-age=31536000, immutable";
+        headers["Vary"]           = "Accept-Encoding";
+    }
+});
+
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 app.UseResponseCaching();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 
+<<<<<<< HEAD
+=======
+// ── Logout ────────────────────────────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 app.MapPost("/Logout", async (HttpContext ctx) =>
 {
     var signInManager = ctx.RequestServices

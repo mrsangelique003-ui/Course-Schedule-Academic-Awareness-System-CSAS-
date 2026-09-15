@@ -53,6 +53,10 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ── Hidden tab button IDs — driven by sidebar links only ── -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div style="display:none;" aria-hidden="true">
     <button id="btn-overview"  onclick="showCPTab('overview',this)"></button>
     <button id="btn-flags"     onclick="showCPTab('flags',this)"></button>
@@ -63,6 +67,10 @@
     <button id="btn-announce"  onclick="showCPTab('announce',this)"></button>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ═══════════════ TAB: OVERVIEW ═══════════════ -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div id="cptab-overview" class="cptab-content">
     <div class="dash-grid">
         <div class="dash-panel">
@@ -128,6 +136,10 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ═══════════════ TAB: ATTENDANCE FLAGS ═══════════════ -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div id="cptab-flags" class="cptab-content" style="display:none;">
     <div class="dash-grid">
         <div class="dash-panel">
@@ -223,6 +235,10 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ═══════════════ TAB: SCHEDULE & SIGNATURES ═══════════════ -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div id="cptab-schedule" class="cptab-content" style="display:none;">
     <div class="dash-panel">
         <div class="panel-header">
@@ -287,6 +303,10 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ═══════════════ TAB: ALL CIS CLASS REPRESENTATIVES ═══════════════ -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div id="cptab-allcps" class="cptab-content" style="display:none;">
     <div class="dash-panel">
         <div class="panel-header">
@@ -298,7 +318,11 @@
             }
         </div>
 
+<<<<<<< HEAD
         
+=======
+        <!-- Search & filter -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
         <div style="padding:.75rem 1.25rem;border-bottom:1px solid #e2e8f0;display:flex;gap:.65rem;flex-wrap:wrap;">
             <input type="text" id="cpSearch" placeholder="Search name, reg no, course…" oninput="filterCPs()"
                    style="border:1.5px solid #e2e8f0;border-radius:8px;padding:.45rem .9rem;font-size:13px;outline:none;flex:1;min-width:160px;" />
@@ -372,7 +396,11 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     
+=======
+    <!-- ADD/EDIT MODAL -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
     <div id="cpModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
         <div style="background:#fff;border-radius:18px;padding:2rem;max-width:540px;width:100%;box-shadow:0 25px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
@@ -398,17 +426,26 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ═══════════════ TAB: CHAT WITH HOD ═══════════════ -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 @{
     // CP identity for private chat — keyed by Reg No so each CP sees only their own thread
     string cpRegNo   = User.Identity?.Name ?? "CP";
     string cpInitial = cpRegNo.Length > 0 ? cpRegNo[0].ToString().ToUpper() : "C";
+<<<<<<< HEAD
 
+=======
+    // Map known CPs to display names (in production this comes from DB via UserManager)
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
     var cpNames = new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase) {
         {"CP001","Bob Nkurunziza"}, {"CP002","Alice Uwimana"},
         {"CP003","Jean Habimana"}, {"CP004","Marie Uwase"}, {"CP005","Patrick Nzeyimana"}
     };
     string cpDisplayName = cpNames.ContainsKey(cpRegNo) ? cpNames[cpRegNo] : cpRegNo;
     cpInitial = cpDisplayName.Length > 0 ? cpDisplayName[0].ToString().ToUpper() : "C";
+<<<<<<< HEAD
 
     string chatStorageKey = "csas_hod_chat_" + cpRegNo.ToLower().Replace("/","-");
 }
@@ -417,6 +454,16 @@
     <div class="dash-panel">
 
         
+=======
+    // Storage key: unique per CP — other CPs cannot see this conversation
+    string chatStorageKey = "csas_hod_chat_" + cpRegNo.ToLower().Replace("/","-");
+}
+<!-- ═══════════════ TAB: CHAT WITH HOD ═══════════════ -->
+<div id="cptab-chat" class="cptab-content" style="display:none;">
+    <div class="dash-panel">
+
+        <!-- Header -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
         <div class="panel-header" style="background:linear-gradient(135deg,#142d4d,#1e3a8a);color:#fff;border-radius:13px 13px 0 0;">
             <span style="display:flex;align-items:center;gap:10px;">
                 <span style="width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:50%;
@@ -438,7 +485,11 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         
+=======
+        <!-- Participants bar — shows actual logged-in CP name -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
         <div style="display:flex;align-items:center;gap:.75rem;padding:.65rem 1.25rem;
                     border-bottom:1px solid #e2e8f0;background:#f8fafc;">
             <div style="display:flex;align-items:center;gap:6px;">
@@ -465,7 +516,11 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         
+=======
+        <!-- Privacy notice banner -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
         <div style="padding:.5rem 1.25rem;background:#eff6ff;border-bottom:1px solid #dbeafe;
                     font-size:11.5px;color:#1556c8;display:flex;align-items:center;gap:6px;">
             <i class="bi bi-shield-lock-fill"></i>
@@ -476,11 +531,19 @@
             </span>
         </div>
 
+<<<<<<< HEAD
         
         <div id="chatMessages"
              style="height:360px;overflow-y:auto;padding:1.25rem;
                     display:flex;flex-direction:column;gap:.85rem;background:#fafbfc;">
             
+=======
+        <!-- Messages area — loaded from localStorage keyed by CP Reg No -->
+        <div id="chatMessages"
+             style="height:360px;overflow-y:auto;padding:1.25rem;
+                    display:flex;flex-direction:column;gap:.85rem;background:#fafbfc;">
+            <!-- Messages loaded dynamically by JS from localStorage key: @chatStorageKey -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
             <div id="chatTyping" style="display:none;" class="cmsg cin">
                 <div class="cav" style="background:#1556c8;">E</div>
                 <div class="cbbl cbbl-in" style="padding:.5rem .9rem;">
@@ -491,7 +554,11 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         
+=======
+        <!-- Quick replies -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
         <div style="padding:.5rem 1.25rem;border-top:1px solid #f1f5f9;background:#f8fafc;
                     display:flex;flex-wrap:wrap;gap:.4rem;">
             <span style="font-size:10px;color:#9ca3af;align-self:center;">Quick:</span>
@@ -501,7 +568,11 @@
             <button class="cqr" onclick="quickReply('Thank you Professor, understood.')">Acknowledged 🙏</button>
         </div>
 
+<<<<<<< HEAD
         
+=======
+        <!-- Input -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
         <div style="padding:1rem 1.25rem;border-top:1px solid #e2e8f0;display:flex;
                     gap:.65rem;align-items:flex-end;background:#fff;border-radius:0 0 13px 13px;">
             <textarea id="chatInput" rows="2"
@@ -523,6 +594,10 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ═══════════════ TAB: ROOM SWAP ═══════════════ -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div id="cptab-roomswap" class="cptab-content" style="display:none;">
     <div class="dash-panel">
         <div class="panel-header">
@@ -554,6 +629,10 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- ═══════════════ TAB: ANNOUNCEMENTS ═══════════════ -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div id="cptab-announce" class="cptab-content" style="display:none;">
     <div class="dash-panel">
         <div class="panel-header">
@@ -586,6 +665,10 @@
     </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<!-- SIGNATURE MODAL -->
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 <div id="signModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
     <div style="background:#fff;border-radius:18px;padding:2rem;max-width:460px;width:100%;box-shadow:0 25px 60px rgba(0,0,0,.3);">
         <div style="text-align:center;margin-bottom:1.25rem;">
@@ -636,6 +719,7 @@
 
 @section Scripts {
 <script>
+<<<<<<< HEAD
 
 function showCPTab(name, btn) {
     document.querySelectorAll('.cptab-content').forEach(function(t){ t.style.display='none'; });
@@ -732,6 +816,107 @@ function saveCP() {
     var courses = document.getElementById('f-courses').value.trim();
     if(!name||!regno||!phone||!nat||!intake){ alert('Please fill all required fields.'); return; }
 
+=======
+// ── Tab switching ─────────────────────────────────────
+function showCPTab(name, btn) {
+    document.querySelectorAll('.cptab-content').forEach(function(t){ t.style.display='none'; });
+    document.querySelectorAll('.cp-tab').forEach(function(b){ b.classList.remove('active'); });
+    var panel = document.getElementById('cptab-' + name);
+    if (panel) panel.style.display = 'block';
+    // Activate button: use passed btn OR find by id
+    var activBtn = btn || document.getElementById('btn-' + name);
+    if (activBtn) activBtn.classList.add('active');
+    // Update URL hash without page jump
+    if (history.replaceState) history.replaceState(null, '', window.location.pathname + '#' + name);
+    if (name === 'chat' && typeof loadChat === 'function') loadChat();
+}
+// Hash-based navigation — works from sidebar links and URL direct
+function activateCPHash() {
+    var hash  = (window.location.hash || '#overview').replace('#','');
+    var valid = ['overview','flags','schedule','allcps','chat','roomswap','announce'];
+    showCPTab(valid.indexOf(hash) >= 0 ? hash : 'overview', null);
+}
+window.addEventListener('load',       activateCPHash);
+window.addEventListener('hashchange', activateCPHash);
+
+// ── Attendance flag ───────────────────────────────────
+function submitFlag(e) {
+    e.preventDefault();
+    var course = document.getElementById('flagCourse').value;
+    var type   = document.querySelector('input[name="issue"]:checked').value;
+    var notes  = document.getElementById('flagNotes').value.trim();
+    if(!notes){ alert('Please add notes. They are required for HOD review.'); return; }
+    var today = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+    var isGood = type === 'Lecturer Presented Well';
+    var item = document.createElement('div');
+    item.className = 'flag-item';
+    item.style.flexWrap = 'wrap';
+    var badgeSt = isGood
+        ? '<span style="background:#ecfdf5;color:#059669;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;"><i class="bi bi-star-fill me-1"></i>Presented Well</span>'
+        : (type==='Lecturer Absent' ? '<span class="flag-badge badge-absent">Absent</span>' : '<span class="flag-badge badge-late">' + type + '</span>');
+    item.innerHTML = badgeSt +
+        '<div class="flag-detail" style="flex:1;min-width:0;">' +
+          '<div style="font-size:13px;font-weight:700;">' + course.split(' — ')[0] + ' · <span class="text-muted" style="font-size:11px;font-weight:400;">' + today + '</span></div>' +
+          '<div style="font-size:11px;color:#374151;margin-top:2px;font-style:italic;">"' + notes + '"</div>' +
+        '</div>' +
+        '<span style="font-size:11px;font-weight:700;color:' + (isGood?'#059669':'#f59e0b') + ';">' + (isGood?'Recorded':'Pending') + '</span>';
+    document.getElementById('flagsLog').prepend(item);
+    document.getElementById('flagNotes').value = '';
+    toast('Flag saved — visible to HOD &amp; Director of Quality', '#1556c8');
+}
+
+// ── CP list filter ────────────────────────────────────
+function filterCPs() {
+    var q  = document.getElementById('cpSearch').value.toLowerCase();
+    var yr = document.getElementById('cpYearF').value;
+    var ss = document.getElementById('cpSessF').value;
+    var rows = document.querySelectorAll('#cpTbody tr');
+    var cnt = 0;
+    rows.forEach(function(r){
+        var ok = (!q || r.innerText.toLowerCase().includes(q))
+              && (!yr || r.dataset.yr === yr)
+              && (!ss || r.dataset.sess === ss);
+        r.style.display = ok ? '' : 'none';
+        if(ok) cnt++;
+    });
+    document.getElementById('cpCountLbl').textContent = cnt + ' CP' + (cnt!==1?'s':'');
+}
+
+// ── Add/Edit CP ───────────────────────────────────────
+var _editRow = null;
+function openCPModal(){ _editRow=null; clearCPForm(); document.getElementById('cpModalTitle').textContent='Add Class Representative'; document.getElementById('cpSaveLbl').textContent='Add CP'; document.getElementById('cpModal').style.display='flex'; }
+function closeCPModal(){ document.getElementById('cpModal').style.display='none'; _editRow=null; }
+function clearCPForm(){ ['f-name','f-regno','f-phone','f-nat','f-intake','f-courses'].forEach(function(id){ document.getElementById(id).value=''; }); document.getElementById('f-dept').value='CIS'; }
+function editCP(btn) {
+    var row = btn.closest('tr');
+    _editRow = row;
+    var cells = row.cells;
+    // name is in cells[1] inner text (second div)
+    var nameDiv = cells[1].querySelector('div div:first-child');
+    document.getElementById('f-name').value    = nameDiv ? nameDiv.textContent.trim() : '';
+    document.getElementById('f-regno').value   = cells[2].textContent.trim();
+    document.getElementById('f-phone').value   = cells[3].textContent.trim();
+    document.getElementById('f-nat').value     = cells[4].textContent.trim();
+    document.getElementById('f-intake').value  = cells[6].textContent.trim();
+    document.getElementById('f-year').value    = row.dataset.yr;
+    document.getElementById('f-sess').value    = row.dataset.sess;
+    document.getElementById('f-courses').value = cells[9].textContent.trim();
+    document.getElementById('cpModalTitle').textContent = 'Update CP Details';
+    document.getElementById('cpSaveLbl').textContent    = 'Save Changes';
+    document.getElementById('cpModal').style.display    = 'flex';
+}
+function saveCP() {
+    var name    = document.getElementById('f-name').value.trim();
+    var regno   = document.getElementById('f-regno').value.trim();
+    var phone   = document.getElementById('f-phone').value.trim();
+    var nat     = document.getElementById('f-nat').value.trim();
+    var intake  = document.getElementById('f-intake').value.trim();
+    var yr      = document.getElementById('f-year').value;
+    var sess    = document.getElementById('f-sess').value;
+    var courses = document.getElementById('f-courses').value.trim();
+    if(!name||!regno||!phone||!nat||!intake){ alert('Please fill all required fields.'); return; }
+
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
     if(_editRow) {
         // Update existing row
         var cells = _editRow.cells;
@@ -781,6 +966,11 @@ function removeCP(btn) {
     toast('CP removed.', '#6b7280');
 }
 
+<<<<<<< HEAD
+=======
+// ── Chat — PRIVATE per CP (keyed by Reg No in localStorage) ──────────
+// Each CP's conversation is stored under their own unique key.
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 // CP001 sees only CP001's thread. CP002 sees only CP002's thread. Never mixed.
 var _cpRegNo = '@cpRegNo'.trim();
 var _cpNm    = '@cpDisplayName'.trim();
@@ -875,11 +1065,19 @@ function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/
 // Load this CP's private chat on page load
 document.addEventListener('DOMContentLoaded', function(){ loadChat(); });
 
+<<<<<<< HEAD
+=======
+// ── Room swap ─────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 function submitSwap(e){
     e.preventDefault();
     toast('Room swap request submitted! HOD will review shortly.','#1556c8');
 }
 
+<<<<<<< HEAD
+=======
+// ── Announcements ─────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 function submitAnn(e){
     e.preventDefault();
     var title = document.getElementById('annTitle').value.trim();
@@ -895,6 +1093,10 @@ function submitAnn(e){
     toast('Announcement posted to class!','#059669');
 }
 
+<<<<<<< HEAD
+=======
+// ── Course completion signature ───────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 var _sigRow=null, _sigCode='', _sigName='', _sigLec='';
 function signCourse(code,name,lec,btn){
     _sigCode=code; _sigName=name; _sigLec=lec; _sigRow=btn.closest('tr');
@@ -927,6 +1129,10 @@ function confirmSign(){
 document.getElementById('signModal').addEventListener('click',function(e){if(e.target===this) this.style.display='none';});
 document.getElementById('cpModal').addEventListener('click',function(e){if(e.target===this) closeCPModal();});
 
+<<<<<<< HEAD
+=======
+// ── Toast ─────────────────────────────────────────────
+>>>>>>> cbd6148a3feb261b09f363a4b6eaabb695bf6172
 function toast(msg, color){
     var t=document.createElement('div');
     t.style.cssText='position:fixed;bottom:6rem;right:2rem;background:'+color+';color:#fff;'
