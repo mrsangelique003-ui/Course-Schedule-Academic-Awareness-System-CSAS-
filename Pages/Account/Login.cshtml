@@ -1,0 +1,339 @@
+
+@page
+@model CourseScheduleSystem.Web.Pages.Account.LoginModel
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Login | UNILAK Academic Awareness System";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login | UNILAK</title>
+
+    <meta name="description"
+          content="Login to the UNILAK Course Schedule and Academic Awareness System." />
+
+    <meta name="theme-color" content="#0b2545" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/Login.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+    <header class="login-navbar">
+        <div class="nav-container">
+
+            <a asp-page="/Index"
+               class="brand"
+               aria-label="Return to UNILAK Academic Awareness System home">
+
+                <span class="brand-logo">
+                    <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
+                         alt="UNILAK Logo" />
+                </span>
+
+                <span class="brand-text">
+                    <strong>UNILAK</strong>
+                    <small>Academic Awareness System</small>
+                </span>
+
+            </a>
+
+            <div class="nav-actions">
+
+                <!-- Real navigation button -->
+                <a asp-page="/Index"
+                   class="nav-back-button">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Home</span>
+                </a>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- =====================================================
+         LOGIN CONTENT
+         ===================================================== -->
+    <main class="login-main">
+
+        <div class="login-container">
+
+            <!-- =================================================
+                 LEFT INFORMATION PANEL
+                 ================================================= -->
+            <section class="login-info-panel">
+
+                <div class="info-content">
+
+                    <span class="section-eyebrow">
+                        WELCOME BACK
+                    </span>
+
+                    <h1>
+                        Access your
+                        <br />
+                        <span>academic dashboard.</span>
+                    </h1>
+
+                    <p>
+                        Sign in to view your course schedules, academic
+                        updates, and important university information.
+                    </p>
+
+
+                    <div class="info-features">
+
+                        <div class="info-feature-item">
+
+                            <div class="feature-icon-small">
+                                <i class="bi bi-calendar3"></i>
+                            </div>
+
+                            <div class="feature-text">
+                                <strong>Course Schedules</strong>
+                                <span>View your weekly timetable</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-feature-item">
+
+                            <div class="feature-icon-small">
+                                <i class="bi bi-bell"></i>
+                            </div>
+
+                            <div class="feature-text">
+                                <strong>Academic Updates</strong>
+                                <span>Stay informed on changes</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-feature-item">
+
+                            <div class="feature-icon-small">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+
+                            <div class="feature-text">
+                                <strong>Secure Access</strong>
+                                <span>Your data is protected</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LOGIN FORM PANEL
+                 ================================================= -->
+            <section class="login-form-panel">
+
+                <div class="form-wrapper">
+
+                    <div class="form-header">
+
+                        <span class="form-eyebrow">
+                            ACCOUNT ACCESS
+                        </span>
+
+                        <h2>Sign In</h2>
+
+                        <p>
+                            Enter your university credentials to continue.
+                        </p>
+
+                    </div>
+
+
+                    <form method="post"
+                          class="login-form"
+                          autocomplete="on">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="validation-summary">
+                        </div>
+
+
+                        <!-- =========================================
+                             EMAIL
+                             ========================================= -->
+                        <div class="form-group">
+
+                            <label asp-for="Input.Email"
+                                   class="form-label">
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-envelope input-icon"></i>
+
+                                <input asp-for="Input.Email"
+                                       class="form-input"
+                                       placeholder="student@unilak.ac.rw"
+                                       autocomplete="username" />
+
+                            </div>
+
+                            <span asp-validation-for="Input.Email"
+                                  class="field-validation">
+                            </span>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             PASSWORD
+                             ========================================= -->
+                        <div class="form-group">
+
+                            <div class="label-row">
+
+                                <label asp-for="Input.Password"
+                                       class="form-label">
+                                    Password
+                                </label>
+
+                                <a asp-page="/Account/ForgotPassword"
+                                   class="forgot-link">
+                                    Forgot password?
+                                </a>
+
+                            </div>
+
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-lock input-icon"></i>
+
+                                <input asp-for="Input.Password"
+                                       type="password"
+                                       class="form-input"
+                                       placeholder="Enter your password"
+                                       autocomplete="current-password" />
+
+                            </div>
+
+                            <span asp-validation-for="Input.Password"
+                                  class="field-validation">
+                            </span>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             REMEMBER ME
+                             ========================================= -->
+                        <div class="form-options">
+
+                            <label class="checkbox-label">
+
+                                <input asp-for="Input.RememberMe"
+                                       type="checkbox" />
+
+                                <span class="checkbox-custom"></span>
+
+                                <span class="checkbox-text">
+                                    Remember me
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- =========================================
+                             LOGIN SUBMIT BUTTON
+                             ========================================= -->
+                        <button type="submit"
+                                class="submit-button">
+
+                            <span>Sign In</span>
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- =============================================
+                         FORM FOOTER
+                         ============================================= -->
+                    <div class="form-footer">
+
+                        <p>
+                            Don't have an account?
+                            <a asp-page="/Contact">
+                                Contact Academic Office
+                            </a>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+    <footer class="login-footer">
+
+        <div class="footer-inner">
+
+            <span>
+                © @DateTime.Now.Year University of Lay Adventists of Kigali.
+                All rights reserved.
+            </span>
+
+            <span>
+                Course Schedule &amp; Academic Awareness System
+            </span>
+
+        </div>
+
+    </footer>
+
+</div>
+
+</body>
+</html>
+

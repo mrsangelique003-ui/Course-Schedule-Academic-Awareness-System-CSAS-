@@ -37,13 +37,13 @@
 
 <div class="landing-page">
 
-    <!-- =====================================================
-         NAVIGATION — UNILAK BLUE
-         ===================================================== -->
-    <header class="landing-navbar">
-        <div class="nav-container">
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
 
-            <a asp-page="/Index" class="brand">
+            <a asp-page="/Index"
+               class="brand"
+               aria-label="UNILAK Academic Awareness System Home">
+
                 <span class="brand-logo">
                     <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
                          alt="UNILAK Logo" />
@@ -51,73 +51,125 @@
 
                 <span class="brand-text">
                     <strong>UNILAK</strong>
-                    <small>Academic Awareness System</small>
+                    <span>Academic Awareness System</span>
                 </span>
             </a>
 
-            <nav class="desktop-navigation" aria-label="Main navigation">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#audience" class="nav-link">Users</a>
-                <a href="#how-it-works" class="nav-link">How It Works</a>
-            </nav>
+            <div class="desktop-nav">
 
-            <div class="nav-actions">
-                <a asp-page="/Account/Login"
-                   class="nav-login">
-                    Login
+                <a asp-page="/Index"
+                   class="nav-link active"
+                   aria-current="page">
+                    Home
+                </a>
+
+                <a href="#features"
+                   class="nav-link">
+                    Features
+                </a>
+
+                <a href="#users"
+                   class="nav-link">
+                    Users
+                </a>
+
+                <a href="#how-it-works"
+                   class="nav-link">
+                    How It Works
                 </a>
 
                 <a asp-page="/Account/Login"
-                   class="nav-primary-button">
-                    Access System
+                   class="btn btn-login">
+                    <i class="bi bi-box-arrow-in-right"
+                       aria-hidden="true"></i>
+                    <span>Login</span>
                 </a>
+
             </div>
 
             <button type="button"
-                    class="mobile-menu-button"
-                    id="mobileMenuButton"
+                    class="mobile-menu-toggle"
+                    id="mobileMenuToggle"
                     aria-label="Open navigation menu"
                     aria-expanded="false"
                     aria-controls="mobileNavigation">
-                <i class="bi bi-list"></i>
+
+                <i class="bi bi-list"
+                   aria-hidden="true"></i>
+
             </button>
 
-        </div>
+        </nav>
 
         <div class="mobile-navigation"
              id="mobileNavigation">
 
-            <a href="#home" class="mobile-nav-link">Home</a>
-            <a href="#features" class="mobile-nav-link">Features</a>
-            <a href="#audience" class="mobile-nav-link">Users</a>
-            <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
+            <a asp-page="/Index"
+               class="mobile-nav-link active"
+               aria-current="page">
 
-            <div class="mobile-nav-actions">
-                <a asp-page="/Account/Login"
-                   class="mobile-login-button">
-                    Login
-                </a>
+                <i class="bi bi-house-door"
+                   aria-hidden="true"></i>
 
-                <a asp-page="/Account/Login"
-                   class="mobile-primary-button">
-                    Access System
-                </a>
-            </div>
+                Home
+            </a>
+
+            <a href="#features"
+               class="mobile-nav-link">
+
+                <i class="bi bi-grid"
+                   aria-hidden="true"></i>
+
+                Features
+            </a>
+
+            <a href="#users"
+               class="mobile-nav-link">
+
+                <i class="bi bi-people"
+                   aria-hidden="true"></i>
+
+                Users
+            </a>
+
+            <a href="#how-it-works"
+               class="mobile-nav-link">
+
+                <i class="bi bi-arrow-repeat"
+                   aria-hidden="true"></i>
+
+                How It Works
+            </a>
+
+            <!-- CORRECT LOGIN ROUTE -->
+            <Button asp-page="/Account/Login"
+               class="mobile-login">
+
+                <i class="bi bi-box-arrow-in-right"
+                   aria-hidden="true"></i>
+
+                Login
+
+            </Button>
+
         </div>
     </header>
 
 
-    <!-- =====================================================
-         HERO SECTION
-         ===================================================== -->
     <main>
 
-        <section id="home" class="hero-section">
+        <section class="hero-section">
 
-            <div class="hero-container">
+            <div class="hero-background"></div>
+
+            <div class="container hero-container">
 
                 <div class="hero-content">
+
+                    <div class="hero-badge">
+                        <span class="badge-dot"></span>
+                        UNILAK Academic Platform
+                    </div>
 
                     <h1>
                         Your academic schedule,
@@ -125,21 +177,33 @@
                     </h1>
 
                     <p class="hero-description">
-                        Course schedules, academic updates, and important
-                        university information — all in one centralized
-                        platform for UNILAK students and staff.
+                        Access course schedules, academic updates, and
+                        important university information from one
+                        centralized platform designed for the UNILAK
+                        academic community.
                     </p>
 
                     <div class="hero-actions">
 
+                        <!-- CORRECT LOGIN ROUTE -->
                         <a asp-page="/Account/Login"
-                           class="primary-button">
+                           class="btn btn-primary btn-large">
+
+                            <i class="bi bi-box-arrow-in-right"
+                               aria-hidden="true"></i>
+
                             Login
+
                         </a>
 
                         <a href="#features"
-                           class="secondary-button">
-                            Explore Features
+                           class="btn btn-outline btn-large">
+
+                            <span>Explore Features</span>
+
+                            <i class="bi bi-arrow-down"
+                               aria-hidden="true"></i>
+
                         </a>
 
                     </div>
@@ -170,27 +234,23 @@
                 </div>
 
 
-                <!-- =================================================
-                     SCHEDULE PREVIEW
-                     ================================================= -->
                 <div class="hero-visual">
 
-                    <div class="schedule-window">
+                    <div class="schedule-card">
 
-                        <div class="window-header">
+                        <div class="schedule-window-header">
 
-                            <div class="window-brand">
-                                <div class="window-icon">
-                                    <i class="bi bi-calendar3"></i>
-                                </div>
-
-                                <div>
-                                    <strong>Course Schedule</strong>
-                                    <span>Academic Year 2026</span>
-                                </div>
+                            <div class="window-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
                             </div>
 
-                            <div class="window-status">
+                            <div class="window-title">
+                                Course Schedule
+                            </div>
+
+                            <div class="live-status">
                                 <span></span>
                                 Live
                             </div>
@@ -198,16 +258,51 @@
                         </div>
 
 
-                        <div class="schedule-toolbar">
+                        <div class="schedule-header">
 
-                            <div class="toolbar-title">
-                                <strong>Weekly Schedule</strong>
-                                <span>Semester I</span>
+                            <div>
+
+                                <span class="schedule-label">
+                                    Academic Year 2026
+                                </span>
+
+                                <h3>
+                                    Weekly Schedule
+                                </h3>
+
                             </div>
 
-                            <div class="toolbar-date">
-                                <i class="bi bi-calendar-event"></i>
+                            <div class="semester-badge">
+                                Semester I
+                            </div>
+
+                        </div>
+
+
+                        <div class="schedule-month">
+
+                            <span>
                                 September 2026
+                            </span>
+
+                            <div class="month-arrows">
+
+                                <button type="button"
+                                        aria-label="Previous month">
+
+                                    <i class="bi bi-chevron-left"
+                                       aria-hidden="true"></i>
+
+                                </button>
+
+                                <button type="button"
+                                        aria-label="Next month">
+
+                                    <i class="bi bi-chevron-right"
+                                       aria-hidden="true"></i>
+
+                                </button>
+
                             </div>
 
                         </div>
@@ -215,27 +310,27 @@
 
                         <div class="schedule-days">
 
-                            <div class="schedule-day active">
+                            <div class="day">
                                 <span>MON</span>
                                 <strong>14</strong>
                             </div>
 
-                            <div class="schedule-day">
+                            <div class="day">
                                 <span>TUE</span>
                                 <strong>15</strong>
                             </div>
 
-                            <div class="schedule-day">
+                            <div class="day active">
                                 <span>WED</span>
                                 <strong>16</strong>
                             </div>
 
-                            <div class="schedule-day">
+                            <div class="day">
                                 <span>THU</span>
                                 <strong>17</strong>
                             </div>
 
-                            <div class="schedule-day">
+                            <div class="day">
                                 <span>FRI</span>
                                 <strong>18</strong>
                             </div>
@@ -252,15 +347,24 @@
                                     <span>10:00</span>
                                 </div>
 
+                                <div class="schedule-line"></div>
+
                                 <div class="schedule-details">
-                                    <strong>Software Engineering</strong>
+
+                                    <strong>
+                                        Software Engineering
+                                    </strong>
+
                                     <span>
-                                        <i class="bi bi-geo-alt"></i>
+                                        <i class="bi bi-geo-alt"
+                                           aria-hidden="true"></i>
+
                                         Lecture Hall A
                                     </span>
+
                                 </div>
 
-                                <div class="schedule-tag">
+                                <div class="course-code">
                                     SE
                                 </div>
 
@@ -274,15 +378,24 @@
                                     <span>12:30</span>
                                 </div>
 
+                                <div class="schedule-line"></div>
+
                                 <div class="schedule-details">
-                                    <strong>Database Systems</strong>
+
+                                    <strong>
+                                        Database Systems
+                                    </strong>
+
                                     <span>
-                                        <i class="bi bi-geo-alt"></i>
+                                        <i class="bi bi-geo-alt"
+                                           aria-hidden="true"></i>
+
                                         Computer Lab 2
                                     </span>
+
                                 </div>
 
-                                <div class="schedule-tag">
+                                <div class="course-code">
                                     DB
                                 </div>
 
@@ -296,15 +409,24 @@
                                     <span>16:00</span>
                                 </div>
 
+                                <div class="schedule-line"></div>
+
                                 <div class="schedule-details">
-                                    <strong>Research Methodology</strong>
+
+                                    <strong>
+                                        Research Methodology
+                                    </strong>
+
                                     <span>
-                                        <i class="bi bi-geo-alt"></i>
+                                        <i class="bi bi-geo-alt"
+                                           aria-hidden="true"></i>
+
                                         Lecture Hall B
                                     </span>
+
                                 </div>
 
-                                <div class="schedule-tag">
+                                <div class="course-code">
                                     RM
                                 </div>
 
@@ -315,41 +437,69 @@
 
                         <div class="schedule-footer">
 
-                            <div>
-                                <i class="bi bi-clock"></i>
-                                <span>Updated recently</span>
-                            </div>
+                            <span>
+                                <i class="bi bi-clock-history"
+                                   aria-hidden="true"></i>
 
-                            <span class="footer-indicator"></span>
+                                Updated recently
+                            </span>
+
+                            <span class="schedule-footer-status">
+
+                                <span></span>
+
+                                Current
+
+                            </span>
 
                         </div>
 
                     </div>
 
 
-                    <div class="floating-notification notification-top">
+                    <div class="floating-notification notification-one">
 
                         <div class="notification-icon">
-                            <i class="bi bi-bell"></i>
+
+                            <i class="bi bi-calendar-check"
+                               aria-hidden="true"></i>
+
                         </div>
 
                         <div class="notification-content">
-                            <strong>Schedule Updated</strong>
-                            <span>Your academic timetable is current.</span>
+
+                            <strong>
+                                Schedule Updated
+                            </strong>
+
+                            <span>
+                                New timetable available
+                            </span>
+
                         </div>
 
                     </div>
 
 
-                    <div class="floating-notification notification-bottom">
+                    <div class="floating-notification notification-two">
 
                         <div class="notification-icon">
-                            <i class="bi bi-check-circle"></i>
+
+                            <i class="bi bi-bell"
+                               aria-hidden="true"></i>
+
                         </div>
 
                         <div class="notification-content">
-                            <strong>Academic Information</strong>
-                            <span>Everything is organized in one place.</span>
+
+                            <strong>
+                                Academic Information
+                            </strong>
+
+                            <span>
+                                Stay informed
+                            </span>
+
                         </div>
 
                     </div>
@@ -361,365 +511,515 @@
         </section>
 
 
-        <!-- =====================================================
-             FEATURES
-             ===================================================== -->
-        <section id="features" class="features-section">
+        <section class="features-section"
+                 id="features">
 
-            <div class="feature-intro">
+            <div class="container">
 
-                <span class="section-eyebrow">
-                    PLATFORM FEATURES
-                </span>
+                <div class="section-heading">
 
-                <h2 class="section-heading">
-                    Everything you need for
-                    <span>academic awareness</span>
-                </h2>
+                    <span class="section-eyebrow">
+                        PLATFORM FEATURES
+                    </span>
 
-                <p class="section-description">
-                    CSAS brings important academic information together
-                    in one structured and accessible platform.
-                </p>
+                    <h2>
+                        Everything you need for
+                        <span>academic awareness.</span>
+                    </h2>
 
-            </div>
+                    <p>
+                        A centralized platform that makes academic
+                        information easier to access, understand,
+                        and manage.
+                    </p>
+
+                </div>
 
 
-            <div class="features-grid">
+                <div class="features-grid">
 
-                <article class="feature-card">
+                    <article class="feature-card">
 
-                    <div class="feature-icon">
-                        <i class="bi bi-calendar3"></i>
-                    </div>
+                        <div class="feature-icon">
+                            <i class="bi bi-calendar3"
+                               aria-hidden="true"></i>
+                        </div>
 
-                    <div class="feature-content">
-                        <h3>Course Schedules</h3>
+                        <div class="feature-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Course Schedules
+                        </h3>
 
                         <p>
-                            Access organized course timetables and
-                            quickly identify classes, times, and venues.
+                            View organized course timetables and
+                            quickly find when and where your classes
+                            take place.
                         </p>
 
-                        <span class="feature-link">
-                            View schedules
-                        </span>
-                    </div>
+                        <a href="#how-it-works"
+                           class="feature-link">
 
-                </article>
+                            Learn more
+
+                            <i class="bi bi-arrow-right"
+                               aria-hidden="true"></i>
+
+                        </a>
+
+                    </article>
 
 
-                <article class="feature-card">
+                    <article class="feature-card">
 
-                    <div class="feature-icon">
-                        <i class="bi bi-bell"></i>
-                    </div>
+                        <div class="feature-icon">
+                            <i class="bi bi-megaphone"
+                               aria-hidden="true"></i>
+                        </div>
 
-                    <div class="feature-content">
-                        <h3>Academic Updates</h3>
+                        <div class="feature-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Academic Updates
+                        </h3>
 
                         <p>
                             Stay informed about important academic
-                            announcements and schedule changes.
+                            announcements, schedule changes, and
+                            university activities.
                         </p>
 
-                        <span class="feature-link">
-                            Stay informed
-                        </span>
-                    </div>
+                        <a href="#how-it-works"
+                           class="feature-link">
 
-                </article>
+                            Learn more
+
+                            <i class="bi bi-arrow-right"
+                               aria-hidden="true"></i>
+
+                        </a>
+
+                    </article>
 
 
-                <article class="feature-card">
+                    <article class="feature-card">
 
-                    <div class="feature-icon">
-                        <i class="bi bi-book"></i>
-                    </div>
+                        <div class="feature-icon">
+                            <i class="bi bi-book"
+                               aria-hidden="true"></i>
+                        </div>
 
-                    <div class="feature-content">
-                        <h3>Course Information</h3>
+                        <div class="feature-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Course Information
+                        </h3>
 
                         <p>
-                            Find relevant course information in a
-                            structured and easy-to-understand format.
+                            Access useful course information in one
+                            convenient place without searching
+                            through multiple sources.
                         </p>
 
-                        <span class="feature-link">
-                            View courses
-                        </span>
-                    </div>
+                        <a href="#how-it-works"
+                           class="feature-link">
 
-                </article>
+                            Learn more
+
+                            <i class="bi bi-arrow-right"
+                               aria-hidden="true"></i>
+
+                        </a>
+
+                    </article>
 
 
-                <article class="feature-card">
+                    <article class="feature-card">
 
-                    <div class="feature-icon">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
+                        <div class="feature-icon">
+                            <i class="bi bi-grid-1x2"
+                               aria-hidden="true"></i>
+                        </div>
 
-                    <div class="feature-content">
-                        <h3>Centralized Access</h3>
+                        <div class="feature-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Centralized Access
+                        </h3>
 
                         <p>
-                            Use a secure platform for accessing
-                            academic scheduling information.
+                            Bring important academic resources
+                            together through one accessible digital
+                            platform.
                         </p>
 
-                        <span class="feature-link">
-                            Explore resources
-                        </span>
-                    </div>
+                        <a href="#how-it-works"
+                           class="feature-link">
 
-                </article>
+                            Learn more
+
+                            <i class="bi bi-arrow-right"
+                               aria-hidden="true"></i>
+
+                        </a>
+
+                    </article>
+
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- =====================================================
-             AUDIENCE
-             ===================================================== -->
-        <section id="audience" class="audience-section">
+        <section class="audience-section"
+                 id="users">
 
-            <div class="audience-layout">
+            <div class="container audience-container">
 
-                <div class="audience-heading">
+                <div class="audience-content">
 
                     <span class="section-eyebrow">
-                        DESIGNED FOR THE UNIVERSITY
+                        BUILT FOR THE UNIVERSITY
                     </span>
 
                     <h2>
                         One platform.
-                        <span>Multiple academic needs.</span>
+                        <span>Different academic needs.</span>
                     </h2>
 
                     <p>
-                        CSAS provides relevant academic information
-                        according to the needs of different university users.
+                        The system provides relevant academic
+                        information to students, lecturers, and
+                        academic management through a centralized
+                        platform.
                     </p>
 
-                </div>
-
-
-                <div class="audience-cards">
-
-                    <article class="audience-card">
-
-                        <div class="audience-icon">
-                            <i class="bi bi-person"></i>
-                        </div>
-
-                        <div>
-                            <h3>Students</h3>
-
-                            <p>
-                                View course schedules, classroom locations,
-                                and important academic information.
-                            </p>
-                        </div>
-
-                    </article>
-
-
-                    <article class="audience-card">
-
-                        <div class="audience-icon">
-                            <i class="bi bi-person-workspace"></i>
-                        </div>
-
-                        <div>
-                            <h3>Lecturers</h3>
-
-                            <p>
-                                Access assigned courses, schedules,
-                                and relevant academic updates.
-                            </p>
-                        </div>
-
-                    </article>
-
-
-                    <article class="audience-card">
-
-                        <div class="audience-icon">
-                            <i class="bi bi-building"></i>
-                        </div>
-
-                        <div>
-                            <h3>Academic Management</h3>
-
-                            <p>
-                                Manage scheduling information and improve
-                                academic coordination across the institution.
-                            </p>
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             HOW IT WORKS
-             ===================================================== -->
-        <section id="how-it-works" class="process-section">
-
-            <div class="process-header">
-
-                <span class="section-eyebrow">
-                    SIMPLE PROCESS
-                </span>
-
-                <h2 class="section-heading">
-                    Academic information,
-                    <span>made simple</span>
-                </h2>
-
-                <p class="section-description">
-                    Access the information you need through a simple,
-                    structured academic workflow.
-                </p>
-
-            </div>
-
-
-            <div class="process-grid">
-
-                <div class="process-item">
-
-                    <div class="process-number">
-                        01
-                    </div>
-
-                    <div class="process-icon">
-                        <i class="bi bi-person-check"></i>
-                    </div>
-
-                    <h3>Access</h3>
-
-                    <p>
-                        Sign in to the platform using your university account.
-                    </p>
-
-                </div>
-
-
-                <div class="process-connector"></div>
-
-
-                <div class="process-item">
-
-                    <div class="process-number">
-                        02
-                    </div>
-
-                    <div class="process-icon">
-                        <i class="bi bi-grid"></i>
-                    </div>
-
-                    <h3>Explore</h3>
-
-                    <p>
-                        Navigate through the academic information available
-                        to your account.
-                    </p>
-
-                </div>
-
-
-                <div class="process-connector"></div>
-
-
-                <div class="process-item">
-
-                    <div class="process-number">
-                        03
-                    </div>
-
-                    <div class="process-icon">
-                        <i class="bi bi-calendar-check"></i>
-                    </div>
-
-                    <h3>Stay Updated</h3>
-
-                    <p>
-                        Keep track of your schedules and important academic
-                        information throughout the semester.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             CALL TO ACTION
-             ===================================================== -->
-        <section class="cta-section">
-
-            <div class="cta-card">
-
-                <div class="cta-pattern"></div>
-
-                <div class="cta-content">
-
-                    <span class="section-eyebrow">
-                        GET STARTED
-                    </span>
-
-                    <h2>
-                        Stay informed.
-                        <span>Stay organized.</span>
-                    </h2>
-
-                    <p>
-                        Access the Course Schedule and Academic Awareness
-                        System and keep your academic information organized.
-                    </p>
-
+                    <!-- CORRECT LOGIN ROUTE -->
                     <a asp-page="/Account/Login"
-                       class="cta-button">
-                        Login
+                       class="text-button">
+
+                        Access the platform
+
+                        <i class="bi bi-arrow-right"
+                           aria-hidden="true"></i>
+
                     </a>
 
                 </div>
 
 
-                <div class="cta-visual">
+                <div class="audience-grid">
+
+                    <article class="audience-card">
+
+                        <div class="audience-icon">
+
+                            <i class="bi bi-mortarboard"
+                               aria-hidden="true"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Students
+                            </h3>
+
+                            <p>
+                                Quickly check course schedules,
+                                academic information, and important
+                                updates.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="audience-card">
+
+                        <div class="audience-icon">
+
+                            <i class="bi bi-person-workspace"
+                               aria-hidden="true"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Lecturers
+                            </h3>
+
+                            <p>
+                                Access teaching schedules and relevant
+                                academic information from one place.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="audience-card">
+
+                        <div class="audience-icon">
+
+                            <i class="bi bi-building"
+                               aria-hidden="true"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Academic Management
+                            </h3>
+
+                            <p>
+                                Organize and communicate academic
+                                scheduling information efficiently.
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="process-section"
+                 id="how-it-works">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-eyebrow">
+                        HOW IT WORKS
+                    </span>
+
+                    <h2>
+                        Simple access to
+                        <span>academic information.</span>
+                    </h2>
+
+                    <p>
+                        Get the information you need through a
+                        straightforward academic awareness workflow.
+                    </p>
+
+                </div>
+
+
+                <div class="process-grid">
+
+                    <article class="process-card">
+
+                        <div class="process-number">
+                            01
+                        </div>
+
+                        <div class="process-icon">
+
+                            <i class="bi bi-box-arrow-in-right"
+                               aria-hidden="true"></i>
+
+                        </div>
+
+                        <h3>
+                            Access
+                        </h3>
+
+                        <p>
+                            Log in using your university account to
+                            access the platform.
+                        </p>
+
+                    </article>
+
+
+                    <div class="process-connector">
+
+                        <i class="bi bi-arrow-right"
+                           aria-hidden="true"></i>
+
+                    </div>
+
+
+                    <article class="process-card">
+
+                        <div class="process-number">
+                            02
+                        </div>
+
+                        <div class="process-icon">
+
+                            <i class="bi bi-search"
+                               aria-hidden="true"></i>
+
+                        </div>
+
+                        <h3>
+                            Explore
+                        </h3>
+
+                        <p>
+                            Find schedules, course information, and
+                            relevant academic updates.
+                        </p>
+
+                    </article>
+
+
+                    <div class="process-connector">
+
+                        <i class="bi bi-arrow-right"
+                           aria-hidden="true"></i>
+
+                    </div>
+
+
+                    <article class="process-card">
+
+                        <div class="process-number">
+                            03
+                        </div>
+
+                        <div class="process-icon">
+
+                            <i class="bi bi-bell"
+                               aria-hidden="true"></i>
+
+                        </div>
+
+                        <h3>
+                            Stay Updated
+                        </h3>
+
+                        <p>
+                            Keep track of academic information and
+                            changes throughout the semester.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="cta-section">
+
+            <div class="container">
+
+                <div class="cta-card">
+
+                    <div class="cta-content">
+
+                        <span class="section-eyebrow">
+                            ACADEMIC AWARENESS
+                        </span>
+
+                        <h2>
+                            Stay informed.
+                            <span>Stay organized.</span>
+                        </h2>
+
+                        <p>
+                            Access your academic information from one
+                            centralized platform designed for the
+                            UNILAK community.
+                        </p>
+
+                        <!-- CORRECT LOGIN ROUTE -->
+                        <a asp-page="/Account/Login"
+                           class="btn btn-white btn-large">
+
+                            <i class="bi bi-box-arrow-in-right"
+                               aria-hidden="true"></i>
+
+                            Login to the System
+
+                        </a>
+
+                    </div>
+
 
                     <div class="cta-calendar">
 
                         <div class="calendar-header">
-                            <span>ACADEMIC SCHEDULE</span>
-                            <i class="bi bi-calendar3"></i>
-                        </div>
 
-                        <div class="calendar-body">
+                            <div>
 
-                            <div class="calendar-month">
-                                <strong>SEP</strong>
-                                <span>2026</span>
+                                <span>
+                                    Academic Calendar
+                                </span>
+
+                                <strong>
+                                    September 2026
+                                </strong>
+
                             </div>
 
-                            <div class="calendar-check">
-                                <i class="bi bi-check2-circle"></i>
-                            </div>
+                            <i class="bi bi-calendar3"
+                               aria-hidden="true"></i>
 
                         </div>
 
-                        <div class="calendar-footer">
-                            <span>Course schedules</span>
-                            <span>Academic updates</span>
+
+                        <div class="calendar-week">
+
+                            <span>MON</span>
+                            <span>TUE</span>
+                            <span>WED</span>
+                            <span>THU</span>
+                            <span>FRI</span>
+
+                        </div>
+
+
+                        <div class="calendar-grid">
+
+                            <span>31</span>
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+
+                            <span>7</span>
+                            <span>8</span>
+                            <span>9</span>
+                            <span>10</span>
+                            <span>11</span>
+
+                            <span>14</span>
+                            <span>15</span>
+                            <span class="today">16</span>
+                            <span>17</span>
+                            <span>18</span>
+
+                            <span>21</span>
+                            <span>22</span>
+                            <span>23</span>
+                            <span>24</span>
+                            <span>25</span>
+
                         </div>
 
                     </div>
@@ -733,91 +1033,124 @@
     </main>
 
 
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-    <footer class="landing-footer">
+    <footer class="site-footer">
 
-        <div class="footer-main">
+        <div class="container">
 
-            <div class="footer-brand">
+            <div class="footer-main">
 
-                <a asp-page="/Index"
-                   class="brand footer-brand-link">
+                <div class="footer-brand">
 
-                    <span class="brand-logo">
-                        <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
-                             alt="UNILAK Logo" />
-                    </span>
+                    <a asp-page="/Index"
+                       class="brand footer-brand-link">
 
-                    <span class="brand-text">
-                        <strong>UNILAK</strong>
-                        <small>Academic Awareness System</small>
-                    </span>
+                        <span class="brand-logo">
 
-                </a>
+                            <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
+                                 alt="UNILAK Logo" />
 
-                <p>
-                    A centralized platform for course scheduling
-                    and academic awareness.
-                </p>
+                        </span>
+
+                        <span class="brand-text">
+
+                            <strong>
+                                UNILAK
+                            </strong>
+
+                            <span>
+                                Academic Awareness System
+                            </span>
+
+                        </span>
+
+                    </a>
+
+                    <p>
+                        A centralized academic scheduling and
+                        awareness platform for the UNILAK community.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Platform
+                    </h3>
+
+                    <a href="#features">
+                        Features
+                    </a>
+
+                    <a href="#users">
+                        Users
+                    </a>
+
+                    <a href="#how-it-works">
+                        How It Works
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Access
+                    </h3>
+
+                    <!-- CORRECT LOGIN ROUTE -->
+                    <a asp-page="/Account/Login">
+                        Login
+                    </a>
+
+                    <a href="#features">
+                        Course Schedules
+                    </a>
+
+                    <a href="#features">
+                        Academic Updates
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        University
+                    </h3>
+
+                    <a href="#users">
+                        Students
+                    </a>
+
+                    <a href="#users">
+                        Lecturers
+                    </a>
+
+                    <a href="#users">
+                        Academic Management
+                    </a>
+
+                </div>
 
             </div>
 
 
-            <div class="footer-column">
+            <div class="footer-bottom">
 
-                <h3>Platform</h3>
+                <span>
+                    © @DateTime.Now.Year University of Lay Adventists
+                    of Kigali. All rights reserved.
+                </span>
 
-                <a href="#features">Features</a>
-                <a href="#audience">Users</a>
-                <a href="#how-it-works">How It Works</a>
-
-            </div>
-
-
-            <div class="footer-column">
-
-                <h3>Access</h3>
-
-                <a asp-page="/Account/Login">
-                    Login
-                </a>
-
-                <a asp-page="/Account/Login">
-                    Academic Portal
-                </a>
+                <span>
+                    Course Schedule & Academic Awareness System
+                </span>
 
             </div>
-
-
-            <div class="footer-column">
-
-                <h3>University</h3>
-
-                <a href="#home">
-                    UNILAK
-                </a>
-
-                <a href="#features">
-                    Academic Information
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="footer-bottom">
-
-            <span>
-                © @DateTime.Now.Year University of Lay Adventists of Kigali.
-                All rights reserved.
-            </span>
-
-            <span>
-                Course Schedule & Academic Awareness System
-            </span>
 
         </div>
 
@@ -829,72 +1162,143 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        const menuButton = document.getElementById("mobileMenuButton");
-        const mobileNavigation = document.getElementById("mobileNavigation");
+        const menuToggle =
+            document.getElementById("mobileMenuToggle");
 
-        if (!menuButton || !mobileNavigation) {
+        const mobileNavigation =
+            document.getElementById("mobileNavigation");
+
+        if (!menuToggle || !mobileNavigation) {
             return;
         }
 
-        menuButton.addEventListener("click", function () {
-
-            const isOpen =
-                mobileNavigation.classList.toggle("open");
-
-            menuButton.setAttribute(
-                "aria-expanded",
-                isOpen.toString()
-            );
-
-            menuButton.setAttribute(
-                "aria-label",
-                isOpen
-                    ? "Close navigation menu"
-                    : "Open navigation menu"
-            );
-
-            const icon =
-                menuButton.querySelector("i");
-
-            if (icon) {
-                icon.className =
-                    isOpen
-                        ? "bi bi-x-lg"
-                        : "bi bi-list";
-            }
-
-        });
-
+        const menuIcon =
+            menuToggle.querySelector("i");
 
         const mobileLinks =
-            mobileNavigation.querySelectorAll(".mobile-nav-link");
+            mobileNavigation.querySelectorAll("a");
+
+        function openMenu() {
+
+            mobileNavigation.classList.add("open");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            menuToggle.setAttribute(
+                "aria-label",
+                "Close navigation menu"
+            );
+
+            menuIcon.classList.remove("bi-list");
+
+            menuIcon.classList.add("bi-x-lg");
+
+            document.body.classList.add(
+                "mobile-menu-open"
+            );
+        }
+
+
+        function closeMenu() {
+
+            mobileNavigation.classList.remove("open");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            menuToggle.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+            );
+
+            menuIcon.classList.remove("bi-x-lg");
+
+            menuIcon.classList.add("bi-list");
+
+            document.body.classList.remove(
+                "mobile-menu-open"
+            );
+        }
+
+
+        menuToggle.addEventListener(
+            "click",
+            function () {
+
+                const isOpen =
+                    mobileNavigation.classList.contains("open");
+
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+
+            }
+        );
+
 
         mobileLinks.forEach(function (link) {
 
-            link.addEventListener("click", function () {
-
-                mobileNavigation.classList.remove("open");
-
-                menuButton.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuButton.setAttribute(
-                    "aria-label",
-                    "Open navigation menu"
-                );
-
-                const icon =
-                    menuButton.querySelector("i");
-
-                if (icon) {
-                    icon.className = "bi bi-list";
+            link.addEventListener(
+                "click",
+                function () {
+                    closeMenu();
                 }
-
-            });
+            );
 
         });
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+                    closeMenu();
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                const clickedInsideNavigation =
+                    mobileNavigation.contains(event.target);
+
+                const clickedToggle =
+                    menuToggle.contains(event.target);
+
+                if (
+                    mobileNavigation.classList.contains("open") &&
+                    !clickedInsideNavigation &&
+                    !clickedToggle
+                ) {
+                    closeMenu();
+                }
+
+            }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (window.innerWidth > 900) {
+                    closeMenu();
+                }
+
+            }
+        );
 
     });
 </script>
