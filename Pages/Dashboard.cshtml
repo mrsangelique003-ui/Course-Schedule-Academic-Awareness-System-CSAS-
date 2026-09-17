@@ -1,617 +1,393 @@
 @page
 @model CourseScheduleSystem.Web.Pages.DashboardModel
 
+@using CourseScheduleSystem.Web.Models
+
 @{
     ViewData["Title"] = "Dashboard";
-    ViewData["StudentId"] = "10/2020";
+    ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
 }
 
-@section Styles {
+@section Styles
+{
     <link rel="stylesheet"
           href="~/css/Dashboard.css"
           asp-append-version="true" />
 }
 
+<div class="dashboard-page">
 
-<!-- =====================================================
-     WELCOME HEADER
-     ===================================================== -->
-<section class="dash-welcome">
+    <!-- Welcome -->
+    <section class="dash-welcome">
 
-    <div class="dash-welcome-text">
+        <div class="dash-welcome-text">
 
-        <h1>Welcome Back!</h1>
+            <span class="dash-eyebrow">
+                STUDENT DASHBOARD
+            </span>
 
-        <p>Begin building your educational skills today.</p>
+            <h1>
+                Welcome Back, @(Model.CurrentStudent?.FullName ?? Model.UserName)!
+            </h1>
 
-    </div>
-
-
-    <div class="dash-welcome-actions">
-
-        <div class="dash-search">
-
-            <i class="bi bi-search"
-               aria-hidden="true"></i>
-
-            <input type="search"
-                   placeholder="Search"
-                   aria-label="Search" />
+            <p>
+                Here's an overview of your academic activities
+                and today's class schedule.
+            </p>
 
         </div>
 
-        <button type="button"
-                class="dash-icon-button"
-                aria-label="Notifications">
+        <div class="dash-welcome-actions">
 
-            <i class="bi bi-bell"
-               aria-hidden="true"></i>
+            <div class="dash-student-badge">
 
-            <span class="dash-badge">4</span>
-
-        </button>
-
-        <button type="button"
-                class="dash-icon-button"
-                aria-label="Messages">
-
-            <i class="bi bi-envelope"
-               aria-hidden="true"></i>
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     STAT CARDS
-     ===================================================== -->
-<section class="dash-stats">
-
-    <article class="dash-stat-card">
-
-        <div class="dash-stat-icon dash-stat-icon-blue">
-            <i class="bi bi-mortarboard"
-               aria-hidden="true"></i>
-        </div>
-
-        <strong>15</strong>
-        <span>Total Classes</span>
-
-    </article>
-
-
-    <article class="dash-stat-card">
-
-        <div class="dash-stat-icon dash-stat-icon-teal">
-            <i class="bi bi-clipboard-check"
-               aria-hidden="true"></i>
-        </div>
-
-        <strong>22</strong>
-        <span>Total Tasks</span>
-
-    </article>
-
-
-    <article class="dash-stat-card">
-
-        <div class="dash-stat-icon dash-stat-icon-green">
-            <i class="bi bi-patch-question"
-               aria-hidden="true"></i>
-        </div>
-
-        <strong>05</strong>
-        <span>Total Exam</span>
-
-    </article>
-
-</section>
-
-
-<!-- =====================================================
-     MAIN GRID (Task list + Class schedule)
-     ===================================================== -->
-<section class="dash-grid">
-
-    <!-- =============================================
-         LEFT — TASK LIST
-         ============================================= -->
-    <div class="dash-panel">
-
-        <div class="dash-panel-header">
-
-            <div>
-                <h2>Task List</h2>
-                <span class="dash-panel-sub">(Due 10 Tasks)</span>
-            </div>
-
-
-            <div class="dash-panel-actions">
-
-                <div class="dash-tabs">
-
-                    <button type="button"
-                            class="dash-tab active">
-                        Home Work
-                    </button>
-
-                    <button type="button"
-                            class="dash-tab">
-                        Exam Task
-                    </button>
-
-                    <button type="button"
-                            class="dash-tab">
-                        Exam Task
-                    </button>
-
-                </div>
-
-                <button type="button"
-                        class="dash-dropdown">
-
-                    <span>Today Tasks</span>
-
-                    <i class="bi bi-chevron-down"
+                <span class="dash-student-avatar">
+                    <i class="bi bi-person-fill"
                        aria-hidden="true"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="dash-task-table">
-
-            <div class="dash-task-head">
-                <span>Name of Tasks</span>
-                <span>Teacher Name</span>
-                <span>Status</span>
-                <span>Point</span>
-                <span></span>
-            </div>
-
-
-            <!-- Task rows -->
-
-            <div class="dash-task-row">
-
-                <div class="dash-task-name">
-                    <strong>Quran &amp; Islamic</strong>
-                    <span>Surah Al-Fatihah - Ayat 1-10</span>
-                </div>
-
-                <div class="dash-task-teacher">
-                    <span class="dash-task-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <div>
-                        <strong>Abdulloh Ibe Ibrahim</strong>
-                        <span>Teacher, Quran &amp; Islamic</span>
-                    </div>
-                </div>
-
-                <div class="dash-task-status">
-                    <div class="dash-progress">
-                        <span style="width: 80%; background: #22a06b;"></span>
-                    </div>
-                    <small>8/10 Complete</small>
-                </div>
-
-                <div class="dash-task-point">
-                    <i class="bi bi-fire"
-                       aria-hidden="true"></i>
-                    <span>10</span>
-                </div>
-
-                <button type="button"
-                        class="dash-task-button">
-                    Start Again
-                </button>
-
-            </div>
-
-
-            <div class="dash-task-row">
-
-                <div class="dash-task-name">
-                    <strong>Fiqh Islamic law</strong>
-                    <span>Protection of wealth, property</span>
-                </div>
-
-                <div class="dash-task-teacher">
-                    <span class="dash-task-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <div>
-                        <strong>Muhammad Fateh</strong>
-                        <span>Professor, Fiqh</span>
-                    </div>
-                </div>
-
-                <div class="dash-task-status">
-                    <div class="dash-progress">
-                        <span style="width: 40%; background: #f5a524;"></span>
-                    </div>
-                    <small>4/10 Complete</small>
-                </div>
-
-                <div class="dash-task-point">
-                    <i class="bi bi-fire"
-                       aria-hidden="true"></i>
-                    <span>10</span>
-                </div>
-
-                <button type="button"
-                        class="dash-task-button">
-                    Start Again
-                </button>
-
-            </div>
-
-
-            <div class="dash-task-row">
-
-                <div class="dash-task-name">
-                    <strong>Mathematics</strong>
-                    <span>Exercises 1-8, 10-12 (+abstract)</span>
-                </div>
-
-                <div class="dash-task-teacher">
-                    <span class="dash-task-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <div>
-                        <strong>Kazi Ibna Shahed</strong>
-                        <span>Teacher, Mathematics</span>
-                    </div>
-                </div>
-
-                <div class="dash-task-status">
-                    <div class="dash-progress">
-                        <span style="width: 0%; background: #22a06b;"></span>
-                    </div>
-                    <small>0/10 Complete</small>
-                </div>
-
-                <div class="dash-task-point">
-                    <i class="bi bi-fire"
-                       aria-hidden="true"></i>
-                    <span>10</span>
-                </div>
-
-                <button type="button"
-                        class="dash-task-button dash-task-button-green">
-                    Start Now
-                </button>
-
-            </div>
-
-
-            <div class="dash-task-row">
-
-                <div class="dash-task-name">
-                    <strong>Biology Atomic Model</strong>
-                    <span>Exercises 1-4, 8-12</span>
-                </div>
-
-                <div class="dash-task-teacher">
-                    <span class="dash-task-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <div>
-                        <strong>Ahmad Abdullah</strong>
-                        <span>Professor, Biology</span>
-                    </div>
-                </div>
-
-                <div class="dash-task-status">
-                    <div class="dash-progress">
-                        <span style="width: 100%; background: #22a06b;"></span>
-                    </div>
-                    <small>10/10 Complete</small>
-                </div>
-
-                <div class="dash-task-point">
-                    <i class="bi bi-fire"
-                       aria-hidden="true"></i>
-                    <span>10</span>
-                </div>
-
-                <button type="button"
-                        class="dash-task-button dash-task-button-teal">
-                    Check Again
-                </button>
-
-            </div>
-
-
-            <div class="dash-task-row">
-
-                <div class="dash-task-name">
-                    <strong>English Language</strong>
-                    <span>8-12 prepare for presentation</span>
-                </div>
-
-                <div class="dash-task-teacher">
-                    <span class="dash-task-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <div>
-                        <strong>Rashed Ibe Jaber</strong>
-                        <span>Teacher, English</span>
-                    </div>
-                </div>
-
-                <div class="dash-task-status">
-                    <div class="dash-progress">
-                        <span style="width: 40%; background: #f5a524;"></span>
-                    </div>
-                    <small>4/10 Complete</small>
-                </div>
-
-                <div class="dash-task-point">
-                    <i class="bi bi-fire"
-                       aria-hidden="true"></i>
-                    <span>10</span>
-                </div>
-
-                <button type="button"
-                        class="dash-task-button">
-                    Start Again
-                </button>
-
-            </div>
-
-
-            <div class="dash-task-row">
-
-                <div class="dash-task-name">
-                    <strong>Science</strong>
-                    <span>Paragraph 2 and 3</span>
-                </div>
-
-                <div class="dash-task-teacher">
-                    <span class="dash-task-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <div>
-                        <strong>Dr. Hammud Ibn Khan</strong>
-                        <span>Professor, Science</span>
-                    </div>
-                </div>
-
-                <div class="dash-task-status">
-                    <div class="dash-progress">
-                        <span style="width: 80%; background: #22a06b;"></span>
-                    </div>
-                    <small>8/10 Complete</small>
-                </div>
-
-                <div class="dash-task-point">
-                    <i class="bi bi-fire"
-                       aria-hidden="true"></i>
-                    <span>10</span>
-                </div>
-
-                <button type="button"
-                        class="dash-task-button">
-                    Start Again
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =============================================
-         RIGHT — CLASS SCHEDULE
-         ============================================= -->
-    <aside class="dash-schedule">
-
-        <div class="dash-schedule-header">
-
-            <h2>Class Schedule</h2>
-            <span>Today 10 class is available</span>
-
-        </div>
-
-
-        <div class="dash-schedule-days">
-
-            <div class="dash-day">
-                <span>Sun</span>
-                <strong>10</strong>
-            </div>
-
-            <div class="dash-day">
-                <span>Mon</span>
-                <strong>11</strong>
-            </div>
-
-            <div class="dash-day">
-                <span>Tue</span>
-                <strong>12</strong>
-            </div>
-
-            <div class="dash-day active">
-                <span>Wed</span>
-                <strong>13</strong>
-            </div>
-
-            <div class="dash-day">
-                <span>Thu</span>
-                <strong>14</strong>
-            </div>
-
-            <div class="dash-day">
-                <span>Fri</span>
-                <strong>15</strong>
-            </div>
-
-            <div class="dash-day">
-                <span>Sat</span>
-                <strong>16</strong>
-            </div>
-
-        </div>
-
-
-        <div class="dash-schedule-list">
-
-            <div class="dash-schedule-time">10:00 am</div>
-
-            <article class="dash-schedule-card dash-schedule-card-green">
-
-                <div class="dash-schedule-card-head">
-                    <span class="dash-schedule-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <strong>Muhommad Sood</strong>
-                </div>
-
-                <div class="dash-schedule-card-body">
-                    <span class="dash-schedule-tag">Science</span>
-                    <span>10:00 am to 10:30 am</span>
-                </div>
-
-                <span class="dash-schedule-check">
-                    <i class="bi bi-check-lg"></i>
                 </span>
 
-            </article>
+                <div>
+                    <strong>
+                        @(Model.CurrentStudent?.FullName ?? "Student")
+                    </strong>
 
-
-            <div class="dash-schedule-time">11:00 am</div>
-
-            <article class="dash-schedule-card dash-schedule-card-yellow">
-
-                <div class="dash-schedule-card-head">
-                    <span class="dash-schedule-avatar">
-                        <i class="bi bi-person-fill"></i>
+                    <span>
+                        Registration No:
+                        @(Model.CurrentStudent?.RegNo ?? "—")
                     </span>
-                    <strong>Muhammad Jaber</strong>
                 </div>
 
-                <div class="dash-schedule-card-body">
-                    <span class="dash-schedule-tag">Biology</span>
-                    <span>11:00 am to 12:00 pm</span>
-                </div>
-
-                <span class="dash-schedule-check">
-                    <i class="bi bi-check-lg"></i>
-                </span>
-
-            </article>
-
-
-            <div class="dash-schedule-time">12:00 pm</div>
-
-            <article class="dash-schedule-card dash-schedule-card-plain">
-
-                <strong>Lunch Break</strong>
-                <span>12:00 pm to 12:30 pm</span>
-
-            </article>
-
-
-            <div class="dash-schedule-time">01:00 pm</div>
-
-            <article class="dash-schedule-card dash-schedule-card-yellow">
-
-                <div class="dash-schedule-card-head">
-                    <span class="dash-schedule-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <strong>Mark Anderson</strong>
-                </div>
-
-                <div class="dash-schedule-card-body">
-                    <span class="dash-schedule-tag">Mathematics</span>
-                    <span>01:00 pm to 02:00 pm</span>
-                </div>
-
-            </article>
-
-
-            <div class="dash-schedule-time">02:00 pm</div>
-
-            <article class="dash-schedule-card dash-schedule-card-green">
-
-                <div class="dash-schedule-card-head">
-                    <span class="dash-schedule-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <strong>Sajib Khan</strong>
-                </div>
-
-                <div class="dash-schedule-card-body">
-                    <span class="dash-schedule-tag">History</span>
-                    <span>02:00 pm to 03:30 pm</span>
-                </div>
-
-            </article>
-
-
-            <div class="dash-schedule-time">03:00 pm</div>
-
-            <article class="dash-schedule-card dash-schedule-card-green">
-
-                <div class="dash-schedule-card-head">
-                    <span class="dash-schedule-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <strong>Kazi Shahriyar</strong>
-                </div>
-
-                <div class="dash-schedule-card-body">
-                    <span class="dash-schedule-tag">Literature</span>
-                    <span>03:00 pm to 05:30 pm</span>
-                </div>
-
-            </article>
-
-
-            <div class="dash-schedule-time">04:00 pm</div>
-
-            <article class="dash-schedule-card dash-schedule-card-plain">
-
-                <strong>Tea Break</strong>
-                <span>05:00 pm to 05:45 pm</span>
-
-            </article>
-
-
-            <div class="dash-schedule-time">05:00 pm</div>
-
-            <article class="dash-schedule-card dash-schedule-card-purple">
-
-                <div class="dash-schedule-card-head">
-                    <span class="dash-schedule-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
-                    <strong>Muhammad Fateh</strong>
-                </div>
-
-                <div class="dash-schedule-card-body">
-                    <span class="dash-schedule-tag">Physics</span>
-                    <span>05:00 pm to 05:45 pm</span>
-                </div>
-
-                <span class="dash-schedule-check dash-schedule-check-light">
-                    <i class="bi bi-check-lg"></i>
-                </span>
-
-            </article>
+            </div>
 
         </div>
 
-    </aside>
+    </section>
 
-</section>
+
+    <!-- Statistics -->
+    <section class="dash-stats">
+
+        <article class="dash-stat-card">
+
+            <div class="dash-stat-icon dash-stat-icon-blue">
+                <i class="bi bi-journal-bookmark"
+                   aria-hidden="true"></i>
+            </div>
+
+            <strong>
+                @Model.TotalEnrolledCourses
+            </strong>
+
+            <span>
+                Enrolled Courses
+            </span>
+
+        </article>
+
+
+        <article class="dash-stat-card">
+
+            <div class="dash-stat-icon dash-stat-icon-teal">
+                <i class="bi bi-calendar-check"
+                   aria-hidden="true"></i>
+            </div>
+
+            <strong>
+                @Model.TotalUpcomingClasses
+            </strong>
+
+            <span>
+                Today's Classes
+            </span>
+
+        </article>
+
+
+        <article class="dash-stat-card">
+
+            <div class="dash-stat-icon dash-stat-icon-green">
+                <i class="bi bi-award"
+                   aria-hidden="true"></i>
+            </div>
+
+            <strong>
+                @Model.TotalCredits
+            </strong>
+
+            <span>
+                Total Credits
+            </span>
+
+        </article>
+
+    </section>
+
+
+    <!-- Main Dashboard Content -->
+    <section class="dash-grid">
+
+        <!-- My Courses -->
+        <div class="dash-panel">
+
+            <div class="dash-panel-header">
+
+                <div>
+                    <span class="dash-panel-label">
+                        ACADEMIC REGISTRATION
+                    </span>
+
+                    <h2>
+                        My Courses
+                    </h2>
+                </div>
+
+                <a asp-page="/Courses"
+                   class="dash-view-all">
+                    View All
+                    <i class="bi bi-arrow-right"
+                       aria-hidden="true"></i>
+                </a>
+
+            </div>
+
+
+            @if (Model.Courses.Count == 0)
+            {
+                <div class="dash-empty">
+
+                    <div class="dash-empty-icon">
+                        <i class="bi bi-journal-x"
+                           aria-hidden="true"></i>
+                    </div>
+
+                    <h3>
+                        No courses found
+                    </h3>
+
+                    <p>
+                        You currently have no courses associated
+                        with your academic account.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="dash-course-list">
+
+                    @foreach (var course in Model.Courses)
+                    {
+                        var statusClass =
+                            course.Status switch
+                            {
+                                EnrollmentStatus.Enrolled =>
+                                    "dash-course-status-enrolled",
+
+                                EnrollmentStatus.Pending =>
+                                    "dash-course-status-pending",
+
+                                EnrollmentStatus.Closed =>
+                                    "dash-course-status-closed",
+
+                                _ =>
+                                    "dash-course-status-default"
+                            };
+
+                        <article class="dash-course-item">
+
+                            <div class="dash-course-code">
+                                @course.Code
+                            </div>
+
+
+                            <div class="dash-course-info">
+
+                                <strong>
+                                    @course.Name
+                                </strong>
+
+                                <span>
+                                    <i class="bi bi-person"
+                                       aria-hidden="true"></i>
+
+                                    @course.LecturerName
+                                </span>
+
+                            </div>
+
+
+                            <div class="dash-course-credits">
+
+                                <strong>
+                                    @course.Credits
+                                </strong>
+
+                                <span>
+                                    Credits
+                                </span>
+
+                            </div>
+
+
+                            <span class="dash-course-status @statusClass">
+                                @course.Status
+                            </span>
+
+                        </article>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- Today's Schedule -->
+        <aside class="dash-schedule">
+
+            <div class="dash-schedule-header">
+
+                <div>
+                    <span class="dash-panel-label">
+                        TODAY
+                    </span>
+
+                    <h2>
+                        Class Schedule
+                    </h2>
+                </div>
+
+                <span class="dash-schedule-count">
+                    @Model.TotalUpcomingClasses
+                    @(Model.TotalUpcomingClasses == 1
+                        ? "class"
+                        : "classes")
+                </span>
+
+            </div>
+
+
+            <div class="dash-schedule-list">
+
+                @if (Model.ScheduleItems.Count == 0)
+                {
+                    <div class="dash-empty dash-schedule-empty">
+
+                        <div class="dash-empty-icon">
+                            <i class="bi bi-calendar-x"
+                               aria-hidden="true"></i>
+                        </div>
+
+                        <h3>
+                            No classes today
+                        </h3>
+
+                        <p>
+                            You have no scheduled classes
+                            for today.
+                        </p>
+
+                    </div>
+                }
+                else
+                {
+                    @foreach (var schedule in Model.ScheduleItems)
+                    {
+                        <article class="dash-schedule-card @schedule.CardColorClass">
+
+                            <div class="dash-schedule-time">
+
+                                <strong>
+                                    @schedule.StartTime
+                                </strong>
+
+                                <span>
+                                    @schedule.EndTime
+                                </span>
+
+                            </div>
+
+
+                            <div class="dash-schedule-card-content">
+
+                                <div class="dash-schedule-card-head">
+
+                                    <span class="dash-schedule-avatar">
+                                        <i class="bi bi-book"
+                                           aria-hidden="true"></i>
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            @schedule.Subject
+                                        </strong>
+
+                                        @if (!string.IsNullOrWhiteSpace(schedule.CourseCode))
+                                        {
+                                            <span>
+                                                @schedule.CourseCode
+                                            </span>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="dash-schedule-card-details">
+
+                                    <span>
+                                        <i class="bi bi-person-badge"
+                                           aria-hidden="true"></i>
+
+                                        @schedule.TeacherName
+                                    </span>
+
+                                    <span>
+                                        <i class="bi bi-door-open"
+                                           aria-hidden="true"></i>
+
+                                        @schedule.RoomNumber
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+                    }
+                }
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+    <!-- Academic Information -->
+    <section class="dash-information">
+
+        <div class="dash-information-icon">
+            <i class="bi bi-info-circle-fill"
+               aria-hidden="true"></i>
+        </div>
+
+        <div>
+
+            <strong>
+                Academic information
+            </strong>
+
+            <p>
+                Your dashboard displays information based on
+                your current course registrations and today's
+                scheduled classes.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>

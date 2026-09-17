@@ -1,0 +1,265 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.ScheduleModel
+
+@using CourseScheduleSystem.Web.Models
+
+@{
+    ViewData["Title"] = "My Schedule";
+    ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
+}
+
+<link rel="stylesheet" href="~/css/Student/Schedule.css" />
+
+<div class="schedule-page">
+
+    <section class="schedule-header">
+        <div class="schedule-header-content">
+            <div>
+                <span class="page-eyebrow">
+                    <i class="bi bi-calendar3" aria-hidden="true"></i>
+                    Academic Schedule
+                </span>
+
+                <h1>My Schedule</h1>
+
+                <p>
+                    View your scheduled classes, lecturers, rooms, and study sessions.
+                </p>
+            </div>
+
+            <div class="student-badge">
+                <span class="student-badge-icon">
+                    <i class="bi bi-person" aria-hidden="true"></i>
+                </span>
+
+                <div>
+                    <span class="student-badge-label">Student</span>
+                    <strong>@(Model.CurrentStudent?.RegNo ?? "—")</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedule-stats">
+
+        <div class="schedule-stat-card">
+            <div class="schedule-stat-icon">
+                <i class="bi bi-calendar-check" aria-hidden="true"></i>
+            </div>
+
+            <div>
+                <span>Total Classes</span>
+                <strong>@Model.TotalClasses</strong>
+            </div>
+        </div>
+
+        <div class="schedule-stat-card">
+            <div class="schedule-stat-icon">
+                <i class="bi bi-journal-bookmark" aria-hidden="true"></i>
+            </div>
+
+            <div>
+                <span>Enrolled Courses</span>
+                <strong>@Model.TotalCourses</strong>
+            </div>
+        </div>
+
+        <div class="schedule-stat-card">
+            <div class="schedule-stat-icon">
+                <i class="bi bi-clock" aria-hidden="true"></i>
+            </div>
+
+            <div>
+                <span>Study Sessions</span>
+                <strong>
+                    @Model.ScheduleItems
+                        .Select(x => x.StudySession)
+                        .Distinct()
+                        .Count()
+                </strong>
+            </div>
+        </div>
+
+    </section>
+
+    @if (Model.ScheduleItems.Any())
+    {
+        <section class="schedule-panel">
+
+            <div class="schedule-panel-header">
+                <div>
+                    <span class="section-eyebrow">Weekly timetable</span>
+                    <h2>Class Schedule</h2>
+                </div>
+
+                <span class="class-count">
+                    @Model.TotalClasses @(Model.TotalClasses == 1 ? "Class" : "Classes")
+                </span>
+            </div>
+
+            <div class="schedule-list">
+
+                @foreach (var dayGroup in Model.ScheduleItems.GroupBy(x => x.DayOfWeek))
+                {
+                    <div class="schedule-day">
+
+                        <div class="schedule-day-header">
+                            <div class="day-icon">
+                                <i class="bi bi-calendar-day" aria-hidden="true"></i>
+                            </div>
+
+                            <div>
+                                <span>Day</span>
+                                <h3>@dayGroup.Key</h3>
+                            </div>
+
+                            <span class="day-class-count">
+                                @dayGroup.Count() @(dayGroup.Count() == 1 ? "class" : "classes")
+                            </span>
+                        </div>
+
+                        <div class="schedule-day-items">
+
+                            @foreach (var item in dayGroup.OrderBy(x => x.StartTime))
+                            {
+                                <article class="schedule-card">
+
+                                    <div class="schedule-time">
+                                        <strong>
+                                            @item.StartTime.ToString("hh\\:mm")
+                                        </strong>
+
+                                        <span>
+                                            @item.StartTime.ToString("tt")
+                                        </span>
+
+                                        <div class="time-line"></div>
+
+                                        <strong>
+                                            @item.EndTime.ToString("hh\\:mm")
+                                        </strong>
+
+                                        <span>
+                                            @item.EndTime.ToString("tt")
+                                        </span>
+                                    </div>
+
+                                    <div class="schedule-course">
+
+                                        <div class="course-topline">
+                                            <span class="course-code">
+                                                @item.CourseCode
+                                            </span>
+
+                                            <span class="session-badge">
+                                                @item.StudySession
+                                            </span>
+                                        </div>
+
+                                        <h3>@item.CourseName</h3>
+
+                                        <div class="schedule-details">
+
+                                            <div class="schedule-detail">
+                                                <i class="bi bi-person-badge" aria-hidden="true"></i>
+
+                                                <div>
+                                                    <span>Lecturer</span>
+                                                    <strong>@item.LecturerName</strong>
+                                                </div>
+                                            </div>
+
+                                            <div class="schedule-detail">
+                                                <i class="bi bi-geo-alt" aria-hidden="true"></i>
+
+                                                <div>
+                                                    <span>Room</span>
+                                                    <strong>
+                                                        @item.Building
+                                                        @if (!string.IsNullOrWhiteSpace(item.RoomNumber))
+                                                        {
+                                                            <span>· @item.RoomNumber</span>
+                                                        }
+                                                    </strong>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        @if (!string.IsNullOrWhiteSpace(item.Notes))
+                                        {
+                                            <div class="schedule-notes">
+                                                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                                                <span>@item.Notes</span>
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <div class="schedule-status">
+                                        <span>
+                                            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                            @item.Status
+                                        </span>
+                                    </div>
+
+                                </article>
+                            }
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+        </section>
+    }
+    else
+    {
+        <section class="schedule-empty">
+
+            <div class="empty-icon">
+                <i class="bi bi-calendar-x" aria-hidden="true"></i>
+            </div>
+
+            <h2>No Classes Scheduled</h2>
+
+            @if (Model.TotalCourses == 0)
+            {
+                <p>
+                    You currently have no enrolled courses with a class schedule.
+                </p>
+            }
+            else
+            {
+                <p>
+                    Your enrolled courses do not have any active scheduled classes yet.
+                </p>
+            }
+
+            <a asp-page="/Student/MyCourses" class="empty-action">
+                <i class="bi bi-journal-bookmark" aria-hidden="true"></i>
+                View My Courses
+            </a>
+
+        </section>
+    }
+
+    <section class="schedule-information">
+
+        <div class="information-icon">
+            <i class="bi bi-lightbulb" aria-hidden="true"></i>
+        </div>
+
+        <div>
+            <h3>Schedule Information</h3>
+
+            <p>
+                This timetable displays active classes for your enrolled courses.
+                Check your schedule regularly for any changes or rescheduled classes.
+            </p>
+        </div>
+
+    </section>
+
+</div>

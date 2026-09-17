@@ -1,107 +1,257 @@
 using System.Security.Claims;
-using CourseScheduleSystem.Web.Models; // Adjust namespace to match your project
+using CourseScheduleSystem.Web.Data;
+using CourseScheduleSystem.Web.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseScheduleSystem.Web.Pages
+namespace CourseScheduleSystem.Web.Pages;
+
+[Authorize]
+public class DashboardModel : PageModel
 {
-    [Authorize]
-    public class DashboardModel : PageModel
+    private readonly ApplicationDbContext _db;
+
+    public DashboardModel(ApplicationDbContext db)
     {
-        private readonly ApplicationDbContext _db;
+        _db = db;
+    }
 
-        public DashboardModel(ApplicationDbContext db)
+    public CourseScheduleSystem.Web.Models.Student? CurrentStudent { get; set; }
+
+    public string UserName { get; set; } = string.Empty;
+
+    public string UserRole { get; set; } = string.Empty;
+
+    public int TotalEnrolledCourses { get; private set; }
+
+    public int TotalUpcomingClasses { get; private set; }
+
+    public int TotalCredits { get; private set; }
+
+    public List<CourseItem> Courses { get; set; } = new();
+
+    public List<ScheduleItemDto> ScheduleItems { get; set; } = new();
+
+    public async Task OnGetAsync()
+    {
+        UserName =
+            User.FindFirstValue(ClaimTypes.Name)
+            ?? "User";
+
+        UserRole =
+            User.FindFirstValue(ClaimTypes.Role)
+            ?? string.Empty;
+
+        var userIdValue =
+            User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(userIdValue, out var studentId))
         {
-            _db = db;
+            return;
         }
 
-        // Stats
-        public int TotalClasses { get; set; }
-        public int TotalTasks { get; set; }
-        public int TotalExams { get; set; }
+        CurrentStudent = await _db.Students
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s =>
+                s.Id == studentId &&
+                s.IsActive);
 
-        // Data Lists
-        public List<TaskItemDto> Tasks { get; set; } = new();
-        public List<ScheduleItemDto> ScheduleItems { get; set; } = new();
-
-        public async Task OnGetAsync()
+        if (CurrentStudent == null)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var role = User.FindFirstValue(ClaimTypes.Role);
-
-            // Fetch summary stats
-            TotalClasses = await _db.Schedules.CountAsync();
-            TotalTasks = await _db.Tasks.CountAsync();
-            TotalExams = await _db.Tasks.CountAsync(t => t.IsExam);
-
-            // Load Task Items
-            Tasks = await _db.Tasks
-                .Include(t => t.Teacher)
-                .Select(t => new TaskItemDto
-                {
-                    Id = t.Id,
-                    Title = t.Title,
-                    Description = t.Description,
-                    TeacherName = t.Teacher.FullName,
-                    TeacherRole = t.Teacher.Title,
-                    CompletedSteps = t.CompletedSteps,
-                    TotalSteps = t.TotalSteps,
-                    Points = t.Points,
-                    ProgressPercentage = t.TotalSteps > 0 ? (t.CompletedSteps * 100) / t.TotalSteps : 0
-                })
-                .Take(5)
-                .ToListAsync();
-
-            // Load Today's Class Schedule
-            ScheduleItems = await _db.Schedules
-                .Include(s => s.Teacher)
-                .Where(s => s.Date.Date == DateTime.Today)
-                .OrderBy(s => s.StartTime)
-                .Select(s => new ScheduleItemDto
-                {
-                    Id = s.Id,
-                    TeacherName = s.Teacher != null ? s.Teacher.FullName : string.Empty,
-                    Subject = s.Subject,
-                    StartTime = s.StartTime.ToString("hh:mm tt"),
-                    EndTime = s.EndTime.ToString("hh:mm tt"),
-                    IsBreak = s.IsBreak,
-                    CardColorClass = s.IsBreak ? "dash-schedule-card-plain" : GetColorClass(s.Subject)
-                })
-                .ToListAsync();
+            return;
         }
 
-        private static string GetColorClass(string subject) => subject.ToLower() switch
-        {
-            "science" => "dash-schedule-card-green",
-            "biology" => "dash-schedule-card-yellow",
-            "physics" => "dash-schedule-card-purple",
-            _ => "dash-schedule-card-green"
-        };
+        Courses = await _db.Enrollments
+            .AsNoTracking()
+            .Where(e =>
+                e.StudentId == studentId)
+            .OrderBy(e => e.Course.Code)
+            .Select(e => new CourseItem
+            {
+                EnrollmentId = e.Id,
 
-        public class TaskItemDto
+                CourseId = e.CourseId,
+
+                Code = e.Course.Code,
+
+                Name = e.Course.Name,
+
+                Credits = e.Course.Credits,
+
+                LecturerName =
+                    e.Course.Lecturer != null &&
+                    !string.IsNullOrWhiteSpace(e.Course.Lecturer.FullName)
+                        ? e.Course.Lecturer.FullName
+                        : "Lecturer not assigned",
+
+                Status = e.Status
+            })
+            .ToListAsync();
+
+        TotalEnrolledCourses =
+            Courses.Count(c =>
+                c.Status == EnrollmentStatus.Enrolled);
+
+        TotalCredits =
+            Courses
+                .Where(c =>
+                    c.Status == EnrollmentStatus.Enrolled)
+                .Sum(c => c.Credits);
+
+        var enrolledCourseIds =
+            Courses
+                .Where(c =>
+                    c.Status == EnrollmentStatus.Enrolled)
+                .Select(c => c.CourseId)
+                .ToList();
+
+        if (enrolledCourseIds.Count == 0)
         {
-            public int Id { get; set; }
-            public string Title { get; set; } = string.Empty;
-            public string Description { get; set; } = string.Empty;
-            public string TeacherName { get; set; } = string.Empty;
-            public string TeacherRole { get; set; } = string.Empty;
-            public int CompletedSteps { get; set; }
-            public int TotalSteps { get; set; }
-            public int Points { get; set; }
-            public int ProgressPercentage { get; set; }
+            ScheduleItems = new List<ScheduleItemDto>();
+            TotalUpcomingClasses = 0;
+            return;
         }
 
-        public class ScheduleItemDto
+        var today = DateTime.Today.DayOfWeek;
+
+        ScheduleItems = await _db.ScheduleEntries
+            .AsNoTracking()
+            .Where(s =>
+                s.IsActive &&
+                s.Status == ScheduleStatus.Active &&
+                s.DayOfWeek == today &&
+                enrolledCourseIds.Contains(s.CourseId))
+            .OrderBy(s => s.StartTime)
+            .Select(s => new ScheduleItemDto
+            {
+                Id = s.Id,
+
+                TeacherName =
+                    s.Lecturer != null &&
+                    !string.IsNullOrWhiteSpace(s.Lecturer.FullName)
+                        ? s.Lecturer.FullName
+                        : "Lecturer not assigned",
+
+                Subject =
+                    s.Course != null &&
+                    !string.IsNullOrWhiteSpace(s.Course.Name)
+                        ? s.Course.Name
+                        : "Course not assigned",
+
+                CourseCode =
+                    s.Course != null
+                        ? s.Course.Code
+                        : string.Empty,
+
+                StartTime =
+                    s.StartTime.ToString("hh:mm tt"),
+
+                EndTime =
+                    s.EndTime.ToString("hh:mm tt"),
+
+                RoomNumber =
+                    s.Room == null
+                        ? "Room not assigned"
+                        : string.IsNullOrWhiteSpace(s.Room.Building)
+                            ? (
+                                string.IsNullOrWhiteSpace(s.Room.RoomNumber)
+                                    ? "Room not assigned"
+                                    : s.Room.RoomNumber
+                              )
+                            : string.IsNullOrWhiteSpace(s.Room.RoomNumber)
+                                ? s.Room.Building
+                                : $"{s.Room.Building} · {s.Room.RoomNumber}",
+
+                StudySession =
+                    s.StudySession,
+
+                Notes =
+                    s.Notes,
+
+                CardColorClass =
+                    GetColorClass(
+                        s.Course != null
+                            ? s.Course.Name
+                            : string.Empty)
+            })
+            .ToListAsync();
+
+        TotalUpcomingClasses =
+            ScheduleItems.Count;
+    }
+
+    private static string GetColorClass(string subject)
+    {
+        if (string.IsNullOrWhiteSpace(subject))
         {
-            public int Id { get; set; }
-            public string TeacherName { get; set; } = string.Empty;
-            public string Subject { get; set; } = string.Empty;
-            public string StartTime { get; set; } = string.Empty;
-            public string EndTime { get; set; } = string.Empty;
-            public bool IsBreak { get; set; }
-            public string CardColorClass { get; set; } = string.Empty;
+            return "dash-schedule-card-green";
         }
+
+        var value =
+            subject.Trim().ToLowerInvariant();
+
+        if (value.Contains("science"))
+        {
+            return "dash-schedule-card-green";
+        }
+
+        if (value.Contains("biology"))
+        {
+            return "dash-schedule-card-yellow";
+        }
+
+        if (value.Contains("physics"))
+        {
+            return "dash-schedule-card-purple";
+        }
+
+        if (value.Contains("mathematics") ||
+            value.Contains("math"))
+        {
+            return "dash-schedule-card-blue";
+        }
+
+        return "dash-schedule-card-green";
+    }
+
+    public class CourseItem
+    {
+        public int EnrollmentId { get; set; }
+
+        public int CourseId { get; set; }
+
+        public string Code { get; set; } = string.Empty;
+
+        public string Name { get; set; } = string.Empty;
+
+        public int Credits { get; set; }
+
+        public string LecturerName { get; set; } = string.Empty;
+
+        public EnrollmentStatus Status { get; set; }
+    }
+
+    public class ScheduleItemDto
+    {
+        public int Id { get; set; }
+
+        public string TeacherName { get; set; } = string.Empty;
+
+        public string Subject { get; set; } = string.Empty;
+
+        public string CourseCode { get; set; } = string.Empty;
+
+        public string StartTime { get; set; } = string.Empty;
+
+        public string EndTime { get; set; } = string.Empty;
+
+        public string RoomNumber { get; set; } = string.Empty;
+
+        public StudySession StudySession { get; set; }
+
+        public string? Notes { get; set; }
+
+        public string CardColorClass { get; set; } = string.Empty;
     }
 }

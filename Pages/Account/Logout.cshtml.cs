@@ -1,40 +1,19 @@
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
-namespace CourseScheduleSystem.Web.Pages.Account
+namespace CourseScheduleSystem.Web.Pages.Account;
+
+[AllowAnonymous]
+public class LogoutModel : PageModel
 {
-    [AllowAnonymous]
-    public class LogoutModel : PageModel
+    public async Task<IActionResult> OnPostAsync()
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
+        await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme);
 
-        public LogoutModel(
-            SignInManager<IdentityUser> signInManager,
-            ILogger<LogoutModel> logger)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-        }
-
-        public void OnGet() { }
-
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-
-            _logger.LogInformation("User signed out.");
-
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-
-            return RedirectToPage("/Index");
-        }
+        return RedirectToPage("/Account/Login");
     }
 }

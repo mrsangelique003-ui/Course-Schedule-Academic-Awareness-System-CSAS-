@@ -1,5 +1,5 @@
-using System.Security.Claims;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using CourseScheduleSystem.Web.Data;
 using CourseScheduleSystem.Web.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -25,9 +25,10 @@ namespace CourseScheduleSystem.Web.Pages.Account
 
         public class InputModel
         {
-            [Required(ErrorMessage = "Email is required.")]
-            [EmailAddress(ErrorMessage = "Invalid email address.")]
-            public string Email { get; set; } = string.Empty;
+            [Required(ErrorMessage = "Email or registration number is required.")]
+            [StringLength(256)]
+            [Display(Name = "Email or Registration Number")]
+            public string Identifier { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Password is required.")]
             [DataType(DataType.Password)]
@@ -38,38 +39,64 @@ namespace CourseScheduleSystem.Web.Pages.Account
         }
 
         private record AccountMatch(
-            int Id, string FullName, string Email, string Role, bool MustChangePassword);
+            int Id,
+            string FullName,
+            string? Email,
+            string Role);
 
-        public void OnGet() { }
+        public void OnGet()
+        {
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
                 return Page();
 
-            var email = Input.Email.Trim();
+            var identifier = Input.Identifier.Trim();
 
             var match =
-                await CheckAdministratorAsync(email, Input.Password) ??
-                await CheckLecturerAsync(email, Input.Password) ??
-                await CheckClassRepresentativeAsync(email, Input.Password) ??
-                await CheckStudentAsync(email, Input.Password);
+                await CheckAdministratorAsync(identifier, Input.Password) ??
+                await CheckLecturerAsync(identifier, Input.Password) ??
+                await CheckClassRepresentativeAsync(identifier, Input.Password) ??
+                await CheckStudentAsync(identifier, Input.Password);
 
             if (match is null)
             {
-                ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Invalid email/registration number or password.");
+
                 return Page();
             }
 
             var claims = new List<Claim>
             {
-                new(ClaimTypes.NameIdentifier, match.Id.ToString()),
-                new(ClaimTypes.Name, match.FullName),
-                new(ClaimTypes.Email, match.Email),
-                new(ClaimTypes.Role, match.Role)
+                new(
+                    ClaimTypes.NameIdentifier,
+                    match.Id.ToString()),
+
+                new(
+                    ClaimTypes.Name,
+                    match.FullName),
+
+                new(
+                    ClaimTypes.Role,
+                    match.Role)
             };
 
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            if (!string.IsNullOrWhiteSpace(match.Email))
+            {
+                claims.Add(
+                    new Claim(
+                        ClaimTypes.Email,
+                        match.Email));
+            }
+
+            var identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(
@@ -81,62 +108,121 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
                 });
 
-            if (match.MustChangePassword)
-                return RedirectToPage("/Account/ChangePassword");
-
             return RedirectToPage("/Dashboard");
         }
 
-        private async Task<AccountMatch?> CheckAdministratorAsync(string email, string password)
+        private async Task<AccountMatch?> CheckAdministratorAsync(
+            string identifier,
+            string password)
         {
-            var account = await _db.Administrators.FirstOrDefaultAsync(
-                a => a.IsActive && a.Email != null && a.Email.ToLower() == email.ToLower());
-            if (account is null) return null;
+            var account = await _db.Administrators
+                .FirstOrDefaultAsync(a =>
+                    a.IsActive &&
+                    a.Email != null &&
+                    a.Email.ToLower() == identifier.ToLower());
+
+            if (account is null)
+                return null;
 
             var result = new PasswordHasher<Administrator>()
-                .VerifyHashedPassword(account, account.PasswordHash, password);
+                .VerifyHashedPassword(
+                    account,
+                    account.PasswordHash,
+                    password);
 
-            return result == PasswordVerificationResult.Failed ? null
-                : new AccountMatch(account.Id, account.FullName, account.Email!, "Administrator", account.MustChangePassword);
+            if (result == PasswordVerificationResult.Failed)
+                return null;
+
+            return new AccountMatch(
+                account.Id,
+                account.FullName,
+                account.Email,
+                "Administrator");
         }
 
-        private async Task<AccountMatch?> CheckLecturerAsync(string email, string password)
+        private async Task<AccountMatch?> CheckLecturerAsync(
+            string identifier,
+            string password)
         {
-            var account = await _db.Lecturers.FirstOrDefaultAsync(
-                l => l.IsActive && l.Email != null && l.Email.ToLower() == email.ToLower());
-            if (account is null) return null;
+            var account = await _db.Lecturers
+                .FirstOrDefaultAsync(l =>
+                    l.IsActive &&
+                    l.Email != null &&
+                    l.Email.ToLower() == identifier.ToLower());
+
+            if (account is null)
+                return null;
 
             var result = new PasswordHasher<Lecturer>()
-                .VerifyHashedPassword(account, account.PasswordHash, password);
+                .VerifyHashedPassword(
+                    account,
+                    account.PasswordHash,
+                    password);
 
-            return result == PasswordVerificationResult.Failed ? null
-                : new AccountMatch(account.Id, account.FullName, account.Email!, "Lecturer", account.MustChangePassword);
+            if (result == PasswordVerificationResult.Failed)
+                return null;
+
+            return new AccountMatch(
+                account.Id,
+                account.FullName,
+                account.Email,
+                "Lecturer");
         }
 
-        private async Task<AccountMatch?> CheckClassRepresentativeAsync(string email, string password)
+        private async Task<AccountMatch?> CheckClassRepresentativeAsync(
+            string identifier,
+            string password)
         {
-            var account = await _db.ClassRepresentatives.FirstOrDefaultAsync(
-                c => c.IsActive && c.Email != null && c.Email.ToLower() == email.ToLower());
-            if (account is null) return null;
+            var account = await _db.ClassRepresentatives
+                .FirstOrDefaultAsync(c =>
+                    c.IsActive &&
+                    c.RegNo.ToLower() == identifier.ToLower());
+
+            if (account is null)
+                return null;
 
             var result = new PasswordHasher<ClassRepresentative>()
-                .VerifyHashedPassword(account, account.PasswordHash, password);
+                .VerifyHashedPassword(
+                    account,
+                    account.PasswordHash,
+                    password);
 
-            return result == PasswordVerificationResult.Failed ? null
-                : new AccountMatch(account.Id, account.FullName, account.Email!, "ClassRepresentative", account.MustChangePassword);
+            if (result == PasswordVerificationResult.Failed)
+                return null;
+
+            return new AccountMatch(
+                account.Id,
+                account.FullName,
+                account.Email,
+                "ClassRepresentative");
         }
 
-        private async Task<AccountMatch?> CheckStudentAsync(string email, string password)
+        private async Task<AccountMatch?> CheckStudentAsync(
+            string identifier,
+            string password)
         {
-            var account = await _db.Students.FirstOrDefaultAsync(
-                s => s.IsActive && s.Email != null && s.Email.ToLower() == email.ToLower());
-            if (account is null) return null;
+            var account = await _db.Students
+                .FirstOrDefaultAsync(s =>
+                    s.IsActive &&
+                    s.RegNo.ToLower() == identifier.ToLower());
 
-            var result = new PasswordHasher<Student>()
-                .VerifyHashedPassword(account, account.PasswordHash, password);
+            if (account is null)
+                return null;
 
-            return result == PasswordVerificationResult.Failed ? null
-                : new AccountMatch(account.Id, account.FullName, account.Email!, "Student", account.MustChangePassword);
+            var result = new PasswordHasher<CourseScheduleSystem.Web.Models.Student>()
+                .VerifyHashedPassword(
+                    account,
+                    account.PasswordHash,
+                    password);
+
+            if (result == PasswordVerificationResult.Failed)
+                return null;
+
+            return new AccountMatch(
+                account.Id,
+                account.FullName,
+                account.Email,
+                "Student");
         }
     }
 }

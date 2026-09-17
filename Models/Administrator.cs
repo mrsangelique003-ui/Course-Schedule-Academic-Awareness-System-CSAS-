@@ -32,6 +32,9 @@ public class Administrator
 
     public bool IsActive { get; set; } = true;
 
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<Course> ManagedCourses { get; set; } =

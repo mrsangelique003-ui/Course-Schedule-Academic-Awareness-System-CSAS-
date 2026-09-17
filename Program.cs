@@ -1,4 +1,5 @@
 ﻿using CourseScheduleSystem.Web.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using System.IO.Compression;
@@ -12,6 +13,25 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
             QuerySplittingBehavior.SplitQuery)
     )
 );
+
+builder.Services.AddAuthentication(
+    CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+
+        options.Cookie.Name = "CSAS.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+    });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddResponseCompression(options =>
 {
@@ -75,6 +95,10 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseResponseCaching();
 
 app.UseRouting();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapRazorPages();
 

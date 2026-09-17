@@ -1,24 +1,6 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+@page
+@model CourseScheduleSystem.Web.Pages.Account.LogoutModel
 
-namespace CourseScheduleSystem.Web.Pages.Account
-{
-    [AllowAnonymous]
-    public class LogoutModel : PageModel
-    {
-        public void OnGet() { }
-
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            if (returnUrl != null)
-                return LocalRedirect(returnUrl);
-
-            return RedirectToPage("/Index");
-        }
-    }
+@{
+    Layout = null;
 }

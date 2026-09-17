@@ -38,24 +38,34 @@
 <div class="login-page">
 
     <!-- =====================================================
-         NAVIGATION  (same as Index, no Login button)
+         NAVIGATION
          ===================================================== -->
     <header class="site-header">
-        <nav class="navbar" aria-label="Main navigation">
+
+        <nav class="navbar"
+             aria-label="Main navigation">
 
             <a asp-page="/Index"
                class="brand"
                aria-label="UNILAK Academic Awareness System Home">
 
                 <span class="brand-logo">
+
                     <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
                          alt="UNILAK Logo" />
+
                 </span>
 
                 <span class="brand-text">
+
                     <strong>UNILAK</strong>
-                    <span>Academic Awareness System</span>
+
+                    <span>
+                        Academic Awareness System
+                    </span>
+
                 </span>
+
             </a>
 
             <div class="desktop-nav">
@@ -109,6 +119,7 @@
                    aria-hidden="true"></i>
 
                 Home
+
             </a>
 
             <a asp-page="/Index"
@@ -119,6 +130,7 @@
                    aria-hidden="true"></i>
 
                 Features
+
             </a>
 
             <a asp-page="/Index"
@@ -129,6 +141,7 @@
                    aria-hidden="true"></i>
 
                 Users
+
             </a>
 
             <a asp-page="/Index"
@@ -139,45 +152,45 @@
                    aria-hidden="true"></i>
 
                 How It Works
+
             </a>
 
         </div>
+
     </header>
 
 
     <!-- =====================================================
-         LOGIN CONTENT  (single centered card)
+         LOGIN CONTENT
          ===================================================== -->
     <main class="login-main">
 
         <div class="login-card">
 
-            <!-- =============================================
-                 CENTERED LOGO
-                 ============================================= -->
+            <!-- LOGO -->
             <div class="login-logo">
+
                 <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
                      alt="UNILAK Logo" />
+
             </div>
 
 
-            <!-- =============================================
-                 HEADING
-                 ============================================= -->
+            <!-- HEADING -->
             <div class="login-header">
 
-                <h1>Login to Account</h1>
+                <h1>
+                    Login to Account
+                </h1>
 
                 <p>
-                    Enter your registration number and password to continue.
+                    Enter your email or registration number and password to continue.
                 </p>
 
             </div>
 
 
-            <!-- =============================================
-                 FORM
-                 ============================================= -->
+            <!-- LOGIN FORM -->
             <form method="post"
                   class="login-form"
                   autocomplete="on">
@@ -187,24 +200,25 @@
                 </div>
 
 
-                <!-- REGISTRATION NUMBER -->
+                <!-- EMAIL / REGISTRATION NUMBER -->
                 <div class="form-group">
 
-                    <label asp-for="Input.Email"
+                    <label asp-for="Input.Identifier"
                            class="form-label">
-                        Registration Number
+                        Email or Registration Number
                     </label>
 
                     <div class="input-wrapper">
 
-                        <input asp-for="Input.Email"
+                        <input asp-for="Input.Identifier"
                                class="form-input"
-                               placeholder="e.g. 20240012345"
-                               autocomplete="username" />
+                               placeholder="Enter email or registration number"
+                               autocomplete="username"
+                               autofocus />
 
                     </div>
 
-                    <span asp-validation-for="Input.Email"
+                    <span asp-validation-for="Input.Identifier"
                           class="field-validation">
                     </span>
 
@@ -225,7 +239,7 @@
                                type="password"
                                id="passwordInput"
                                class="form-input"
-                               placeholder="••••"
+                               placeholder="Enter your password"
                                autocomplete="current-password" />
 
                         <button type="button"
@@ -247,25 +261,47 @@
                 </div>
 
 
+                <!-- REMEMBER ME -->
+                <div class="remember-row">
+
+                    <label class="remember-label">
+
+                        <input asp-for="Input.RememberMe"
+                               type="checkbox" />
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+                </div>
+
+
                 <!-- SUBMIT -->
                 <button type="submit"
                         class="submit-button">
 
-                    Login
+                    <span>
+                        Login
+                    </span>
+
+                    <i class="bi bi-arrow-right"
+                       aria-hidden="true"></i>
 
                 </button>
 
             </form>
 
 
-            <!-- =============================================
-                 FORGOT PASSWORD LINK
-                 ============================================= -->
+            <!-- FORGOT PASSWORD -->
             <div class="login-footer-links">
 
                 <a asp-page="/Account/ForgotPassword"
                    class="forgot-link">
+
                     Forgot Password?
+
                 </a>
 
             </div>
@@ -304,6 +340,7 @@
         /* =============================================
            MOBILE MENU
            ============================================= */
+
         const menuToggle =
             document.getElementById("mobileMenuToggle");
 
@@ -316,31 +353,70 @@
                 menuToggle.querySelector("i");
 
             function openMenu() {
+
                 mobileNavigation.classList.add("open");
-                menuToggle.setAttribute("aria-expanded", "true");
-                menuIcon.classList.remove("bi-list");
-                menuIcon.classList.add("bi-x-lg");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+                menuIcon.classList.remove(
+                    "bi-list"
+                );
+
+                menuIcon.classList.add(
+                    "bi-x-lg"
+                );
             }
 
             function closeMenu() {
-                mobileNavigation.classList.remove("open");
-                menuToggle.setAttribute("aria-expanded", "false");
-                menuIcon.classList.remove("bi-x-lg");
-                menuIcon.classList.add("bi-list");
+
+                mobileNavigation.classList.remove(
+                    "open"
+                );
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                menuIcon.classList.remove(
+                    "bi-x-lg"
+                );
+
+                menuIcon.classList.add(
+                    "bi-list"
+                );
             }
 
-            menuToggle.addEventListener("click", function () {
-                if (mobileNavigation.classList.contains("open")) {
-                    closeMenu();
-                } else {
-                    openMenu();
+            menuToggle.addEventListener(
+                "click",
+                function () {
+
+                    if (
+                        mobileNavigation.classList.contains(
+                            "open"
+                        )
+                    ) {
+                        closeMenu();
+                    }
+                    else {
+                        openMenu();
+                    }
+
                 }
-            });
+            );
 
             mobileNavigation
                 .querySelectorAll("a")
                 .forEach(function (link) {
-                    link.addEventListener("click", closeMenu);
+
+                    link.addEventListener(
+                        "click",
+                        closeMenu
+                    );
+
                 });
         }
 
@@ -348,6 +424,7 @@
         /* =============================================
            PASSWORD TOGGLE
            ============================================= */
+
         const passwordInput =
             document.getElementById("passwordInput");
 
@@ -359,29 +436,36 @@
             const toggleIcon =
                 passwordToggle.querySelector("i");
 
-            passwordToggle.addEventListener("click", function () {
+            passwordToggle.addEventListener(
+                "click",
+                function () {
 
-                const isPassword =
-                    passwordInput.type === "password";
+                    const isPassword =
+                        passwordInput.type === "password";
 
-                passwordInput.type =
-                    isPassword ? "text" : "password";
+                    passwordInput.type =
+                        isPassword
+                            ? "text"
+                            : "password";
 
-                toggleIcon.classList.toggle(
-                    "bi-eye",
-                    !isPassword
-                );
+                    toggleIcon.classList.toggle(
+                        "bi-eye",
+                        !isPassword
+                    );
 
-                toggleIcon.classList.toggle(
-                    "bi-eye-slash",
-                    isPassword
-                );
+                    toggleIcon.classList.toggle(
+                        "bi-eye-slash",
+                        isPassword
+                    );
 
-                passwordToggle.setAttribute(
-                    "aria-label",
-                    isPassword ? "Hide password" : "Show password"
-                );
-            });
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        isPassword
+                            ? "Hide password"
+                            : "Show password"
+                    );
+                }
+            );
         }
 
     });

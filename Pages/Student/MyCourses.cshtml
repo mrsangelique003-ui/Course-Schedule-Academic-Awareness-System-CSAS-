@@ -1,0 +1,320 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.MyCoursesModel
+
+@using CourseScheduleSystem.Web.Models
+
+@{
+    ViewData["Title"] = "My Courses";
+    ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
+}
+
+<link rel="stylesheet" href="~/css/Student/MyCourses.css" />
+
+<div class="student-courses-page">
+
+    <section class="courses-page-header">
+        <div class="courses-header-content">
+            <div class="courses-eyebrow">
+                <i class="bi bi-book"></i>
+                Academic Courses
+            </div>
+
+            <h1>My Courses</h1>
+
+            <p>
+                View the courses you are registered for, your lecturers,
+                credits, study sessions, and enrollment status.
+            </p>
+        </div>
+
+        <div class="courses-student-badge">
+            <div class="courses-student-avatar">
+                <i class="bi bi-person"></i>
+            </div>
+
+            <div>
+                <span>Student</span>
+                <strong>
+                    @(Model.CurrentStudent?.FullName ?? "Student")
+                </strong>
+                <small>
+                    @(Model.CurrentStudent?.RegNo ?? "—")
+                </small>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="courses-stats">
+
+        <div class="course-stat-card">
+            <div class="course-stat-icon course-stat-icon-blue">
+                <i class="bi bi-book"></i>
+            </div>
+
+            <div class="course-stat-content">
+                <span>Total Courses</span>
+                <strong>@Model.TotalCourses</strong>
+            </div>
+        </div>
+
+
+        <div class="course-stat-card">
+            <div class="course-stat-icon course-stat-icon-green">
+                <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div class="course-stat-content">
+                <span>Enrolled</span>
+                <strong>@Model.EnrolledCourses</strong>
+            </div>
+        </div>
+
+
+        <div class="course-stat-card">
+            <div class="course-stat-icon course-stat-icon-yellow">
+                <i class="bi bi-clock"></i>
+            </div>
+
+            <div class="course-stat-content">
+                <span>Pending</span>
+                <strong>@Model.PendingCourses</strong>
+            </div>
+        </div>
+
+
+        <div class="course-stat-card">
+            <div class="course-stat-icon course-stat-icon-purple">
+                <i class="bi bi-award"></i>
+            </div>
+
+            <div class="course-stat-content">
+                <span>Total Credits</span>
+                <strong>@Model.TotalCredits</strong>
+            </div>
+        </div>
+
+    </section>
+
+
+    <section class="courses-panel">
+
+        <div class="courses-panel-header">
+            <div>
+                <span class="courses-panel-label">
+                    Course Registration
+                </span>
+
+                <h2>Your Courses</h2>
+            </div>
+
+            <div class="courses-count">
+                <i class="bi bi-collection"></i>
+                <span>@Model.TotalCourses courses</span>
+            </div>
+        </div>
+
+
+        @if (Model.Courses.Any())
+        {
+            <div class="courses-list">
+
+                @foreach (var course in Model.Courses)
+                {
+                    var statusClass =
+                        course.Status switch
+                        {
+                            EnrollmentStatus.Enrolled =>
+                                "course-status-enrolled",
+
+                            EnrollmentStatus.Pending =>
+                                "course-status-pending",
+
+                            EnrollmentStatus.Closed =>
+                                "course-status-closed",
+
+                            _ =>
+                                "course-status-default"
+                        };
+
+                    var statusIcon =
+                        course.Status switch
+                        {
+                            EnrollmentStatus.Enrolled =>
+                                "bi-check-circle",
+
+                            EnrollmentStatus.Pending =>
+                                "bi-clock",
+
+                            EnrollmentStatus.Closed =>
+                                "bi-x-circle",
+
+                            _ =>
+                                "bi-info-circle"
+                        };
+
+                    <article class="course-card">
+
+                        <div class="course-card-top">
+
+                            <div class="course-code">
+                                @course.Code
+                            </div>
+
+                            <div class="course-status @statusClass">
+                                <i class="bi @statusIcon"></i>
+                                @course.Status
+                            </div>
+
+                        </div>
+
+
+                        <div class="course-card-body">
+
+                            <div class="course-main-info">
+
+                                <h3>
+                                    @course.Name
+                                </h3>
+
+                                @if (!string.IsNullOrWhiteSpace(course.Description))
+                                {
+                                    <p class="course-description">
+                                        @course.Description
+                                    </p>
+                                }
+
+                            </div>
+
+
+                            <div class="course-details">
+
+                                <div class="course-detail">
+
+                                    <div class="course-detail-icon">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Lecturer</span>
+                                        <strong>
+                                            @course.LecturerName
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="course-detail">
+
+                                    <div class="course-detail-icon">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Credits</span>
+                                        <strong>
+                                            @course.Credits
+                                            @(course.Credits == 1 ? "Credit" : "Credits")
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="course-detail">
+
+                                    <div class="course-detail-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Study Session</span>
+                                        <strong>
+                                            @course.StudySession
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="course-card-footer">
+
+                            <div class="course-dates">
+
+                                @if (course.StartDate.HasValue)
+                                {
+                                    <span>
+                                        <i class="bi bi-calendar-event"></i>
+                                        Starts
+                                        @course.StartDate.Value.ToString("dd MMM yyyy")
+                                    </span>
+                                }
+
+                                @if (course.EndDate.HasValue)
+                                {
+                                    <span>
+                                        <i class="bi bi-calendar-check"></i>
+                                        Ends
+                                        @course.EndDate.Value.ToString("dd MMM yyyy")
+                                    </span>
+                                }
+
+                            </div>
+
+                            <div class="course-reference">
+                                Course ID: @course.CourseId
+                            </div>
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="courses-empty">
+
+                <div class="courses-empty-icon">
+                    <i class="bi bi-journal-x"></i>
+                </div>
+
+                <h3>No courses found</h3>
+
+                <p>
+                    You currently do not have any course registrations.
+                    Your courses will appear here once you are enrolled.
+                </p>
+
+            </div>
+        }
+
+    </section>
+
+
+    <section class="courses-information">
+
+        <div class="courses-information-icon">
+            <i class="bi bi-info-circle"></i>
+        </div>
+
+        <div>
+            <h3>Course Information</h3>
+
+            <p>
+                Your course information is retrieved directly from the
+                academic system. If a course, lecturer, or enrollment
+                status appears incorrect, please contact your academic
+                administrator or class representative.
+            </p>
+        </div>
+
+    </section>
+
+</div>

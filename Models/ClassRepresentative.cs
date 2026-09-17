@@ -30,6 +30,9 @@ public class ClassRepresentative
 
     public bool IsActive { get; set; } = true;
 
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
+
     public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<Course> RepresentedCourses { get; set; } =

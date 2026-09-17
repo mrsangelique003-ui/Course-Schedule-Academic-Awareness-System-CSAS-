@@ -28,6 +28,9 @@ public class Lecturer
 
     public bool IsActive { get; set; } = true;
 
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
+
     public ICollection<Course> Courses { get; set; } =
         new List<Course>();
 

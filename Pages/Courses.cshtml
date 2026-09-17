@@ -1,0 +1,389 @@
+@page
+@model CourseScheduleSystem.Web.Pages.CoursesModel
+
+@using CourseScheduleSystem.Web.Models
+
+@{
+ViewData["Title"] = "My Courses";
+}
+
+@section Styles { <link rel="stylesheet"
+       href="~/css/Courses.css"
+       asp-append-version="true" />
+}
+
+<div class="courses-page">
+
+
+<div class="courses-page-header">
+
+    <div class="courses-heading">
+
+        <div class="courses-heading-icon">
+            <i class="bi bi-journal-bookmark-fill"
+               aria-hidden="true"></i>
+        </div>
+
+        <div>
+
+            <span class="courses-eyebrow">
+                ACADEMIC PORTAL
+            </span>
+
+            <h1>
+                My Courses
+            </h1>
+
+            <p>
+                View and manage the courses associated
+                with your academic account.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="courses-student-info">
+
+        <div class="courses-student-avatar">
+            <i class="bi bi-person-fill"
+               aria-hidden="true"></i>
+        </div>
+
+        <div>
+
+            <strong>
+                @(Model.CurrentStudent?.FullName ?? "Student")
+            </strong>
+
+            <span>
+                Registration No:
+                @(Model.CurrentStudent?.RegNo ?? "—")
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="courses-stats">
+
+    <div class="course-stat-card">
+
+        <div class="course-stat-icon">
+            <i class="bi bi-journal-text"
+               aria-hidden="true"></i>
+        </div>
+
+        <div class="course-stat-content">
+
+            <span>
+                Total Courses
+            </span>
+
+            <strong>
+                @Model.TotalCourses
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="course-stat-card">
+
+        <div class="course-stat-icon enrolled">
+            <i class="bi bi-check-circle-fill"
+               aria-hidden="true"></i>
+        </div>
+
+        <div class="course-stat-content">
+
+            <span>
+                Enrolled
+            </span>
+
+            <strong>
+                @Model.EnrolledCourses
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="course-stat-card">
+
+        <div class="course-stat-icon pending">
+            <i class="bi bi-clock-fill"
+               aria-hidden="true"></i>
+        </div>
+
+        <div class="course-stat-content">
+
+            <span>
+                Pending
+            </span>
+
+            <strong>
+                @Model.PendingCourses
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="course-stat-card">
+
+        <div class="course-stat-icon credits">
+            <i class="bi bi-award-fill"
+               aria-hidden="true"></i>
+        </div>
+
+        <div class="course-stat-content">
+
+            <span>
+                Earned Credits
+            </span>
+
+            <strong>
+                @Model.TotalCredits
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<section class="courses-section">
+
+    <div class="courses-section-header">
+
+        <div>
+
+            <span class="courses-section-label">
+                COURSE REGISTRATION
+            </span>
+
+            <h2>
+                Your Courses
+            </h2>
+
+        </div>
+
+        <span class="courses-count">
+            @Model.TotalCourses
+            @(Model.TotalCourses == 1 ? "course" : "courses")
+        </span>
+
+    </div>
+
+
+    @if (Model.Courses.Count == 0)
+    {
+        <div class="courses-empty">
+
+            <div class="courses-empty-icon">
+                <i class="bi bi-journal-x"
+                   aria-hidden="true"></i>
+            </div>
+
+            <h3>
+                No courses found
+            </h3>
+
+            <p>
+                You currently have no course registrations
+                associated with your account.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="courses-list">
+
+            @foreach (var course in Model.Courses)
+            {
+                var statusClass =
+                    course.Status switch
+                    {
+                        EnrollmentStatus.Enrolled =>
+                            "course-status-enrolled",
+
+                        EnrollmentStatus.Pending =>
+                            "course-status-pending",
+
+                        EnrollmentStatus.Closed =>
+                            "course-status-closed",
+
+                        _ =>
+                            "course-status-default"
+                    };
+
+                var statusIcon =
+                    course.Status switch
+                    {
+                        EnrollmentStatus.Enrolled =>
+                            "bi-check-circle-fill",
+
+                        EnrollmentStatus.Pending =>
+                            "bi-clock-fill",
+
+                        EnrollmentStatus.Closed =>
+                            "bi-x-circle-fill",
+
+                        _ =>
+                            "bi-info-circle-fill"
+                    };
+
+                var statusText =
+                    course.Status.ToString();
+
+                <article class="course-card">
+
+                    <div class="course-code-box">
+
+                        <span>
+                            @course.Code
+                        </span>
+
+                    </div>
+
+
+                    <div class="course-main">
+
+                        <div class="course-title-row">
+
+                            <h3>
+                                @course.Name
+                            </h3>
+
+                            <span class="course-status @statusClass">
+
+                                <i class="bi @statusIcon"
+                                   aria-hidden="true"></i>
+
+                                @statusText
+
+                            </span>
+
+                        </div>
+
+
+                        @if (!string.IsNullOrWhiteSpace(course.Description))
+                        {
+                            <p class="course-description">
+                                @course.Description
+                            </p>
+                        }
+
+
+                        <div class="course-details">
+
+                            <div class="course-detail">
+
+                                <i class="bi bi-person-badge"
+                                   aria-hidden="true"></i>
+
+                                <div>
+
+                                    <span>
+                                        Lecturer
+                                    </span>
+
+                                    <strong>
+                                        @course.LecturerName
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="course-detail">
+
+                                <i class="bi bi-award"
+                                   aria-hidden="true"></i>
+
+                                <div>
+
+                                    <span>
+                                        Credits
+                                    </span>
+
+                                    <strong>
+                                        @course.Credits
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="course-detail">
+
+                                <i class="bi bi-calendar-event"
+                                   aria-hidden="true"></i>
+
+                                <div>
+
+                                    <span>
+                                        Requested
+                                    </span>
+
+                                    <strong>
+                                        @course.RequestedAt.ToLocalTime().ToString("dd MMM yyyy")
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+
+        </div>
+    }
+
+</section>
+
+
+<div class="courses-information">
+
+    <div class="courses-information-icon">
+
+        <i class="bi bi-info-circle-fill"
+           aria-hidden="true"></i>
+
+    </div>
+
+    <div>
+
+        <strong>
+            Course registration information
+        </strong>
+
+        <p>
+            Your course status reflects the current state
+            of your registration request. Pending courses
+            are awaiting approval, enrolled courses have
+            been successfully approved, and closed courses
+            are no longer active.
+        </p>
+
+    </div>
+
+</div>
+
+
+</div>
