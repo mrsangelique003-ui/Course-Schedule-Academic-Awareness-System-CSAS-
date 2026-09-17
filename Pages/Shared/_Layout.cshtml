@@ -13,20 +13,311 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="~/css/Layout.css"
+          asp-append-version="true" />
+
     @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
 
-    @RenderBody()
+<div class="app-shell">
 
-    <script src="~/lib/jquery/dist/jquery.min.js"
-            asp-append-version="true"></script>
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
+    <header class="app-header">
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-            asp-append-version="true"></script>
+        <nav class="app-navbar" aria-label="Main navigation">
 
-    @await RenderSectionAsync("Scripts", required: false)
+            <a asp-page="/Dashboard"
+               class="app-brand">
+
+                <span class="app-brand-logo">
+                    <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
+                         alt="UNILAK Logo" />
+                </span>
+
+                <span class="app-brand-text">
+                    <strong>UNILAK</strong>
+                    <small>Academic Awareness System</small>
+                </span>
+            </a>
+
+
+            <div class="app-nav-user">
+
+                <div class="app-nav-user-info">
+
+                    <span class="app-nav-user-avatar">
+                        <i class="bi bi-person-fill"
+                           aria-hidden="true"></i>
+                    </span>
+
+                    <span class="app-nav-user-text">
+                        <strong>@(User.Identity?.Name ?? "Student User")</strong>
+                        <small>Signed in</small>
+                    </span>
+
+                </div>
+
+
+                <form method="post"
+                      asp-page="/Account/Logout"
+                      class="app-logout-form">
+
+                    <button type="submit"
+                            class="app-logout-button">
+
+                        <span>Logout</span>
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <button type="button"
+                    class="app-mobile-toggle"
+                    id="appMobileToggle"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                    aria-controls="appSidebar">
+
+                <i class="bi bi-list"
+                   aria-hidden="true"></i>
+
+            </button>
+
+        </nav>
+
+    </header>
+
+
+    <div class="app-body">
+
+        <!-- =================================================
+             SIDEBAR
+             ================================================= -->
+        <aside class="app-sidebar"
+               id="appSidebar"
+               aria-label="Sidebar navigation">
+
+            <div class="app-sidebar-user">
+
+                <div class="app-sidebar-user-avatar">
+                    <i class="bi bi-person-fill"
+                       aria-hidden="true"></i>
+                </div>
+
+                <div class="app-sidebar-user-info">
+                    <strong>@(User.Identity?.Name ?? "Student User")</strong>
+                    <span>Student ID: @(ViewData["StudentId"] ?? "—")</span>
+                </div>
+
+            </div>
+
+
+            <nav class="app-sidebar-nav">
+
+                <span class="app-sidebar-group">
+                    MAIN MENU
+                </span>
+
+                <a asp-page="/Dashboard"
+                   class="app-sidebar-link active">
+
+                    <i class="bi bi-grid-1x2"
+                       aria-hidden="true"></i>
+                    <span>Dashboard</span>
+
+                </a>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-mortarboard"
+                       aria-hidden="true"></i>
+                    <span>Classroom</span>
+
+                </a>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-journal-bookmark"
+                       aria-hidden="true"></i>
+                    <span>My Courses</span>
+
+                </a>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-list-task"
+                       aria-hidden="true"></i>
+                    <span>My Tasks List</span>
+
+                </a>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-clipboard-check"
+                       aria-hidden="true"></i>
+                    <span>Exam List</span>
+
+                </a>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-award"
+                       aria-hidden="true"></i>
+                    <span>My Result</span>
+
+                </a>
+
+
+                <span class="app-sidebar-group">
+                    REPORT &amp; OTHERS
+                </span>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-file-earmark-text"
+                       aria-hidden="true"></i>
+                    <span>Student Report</span>
+
+                </a>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-people"
+                       aria-hidden="true"></i>
+                    <span>Community Chat</span>
+
+                </a>
+
+                <a href="#"
+                   class="app-sidebar-link">
+
+                    <i class="bi bi-life-preserver"
+                       aria-hidden="true"></i>
+                    <span>Technical Support</span>
+
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+             ================================================= -->
+        <main class="app-main">
+            @RenderBody()
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+    <footer class="app-footer">
+
+        <div class="app-footer-inner">
+
+            <span>
+                © @DateTime.Now.Year University of Lay Adventists of Kigali.
+                All rights reserved.
+            </span>
+
+            <span>
+                Course Schedule &amp; Academic Awareness System
+            </span>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"
+        asp-append-version="true"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+        asp-append-version="true"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const toggle =
+            document.getElementById("appMobileToggle");
+
+        const sidebar =
+            document.getElementById("appSidebar");
+
+        if (!toggle || !sidebar) {
+            return;
+        }
+
+        const icon = toggle.querySelector("i");
+
+        function openSidebar() {
+            sidebar.classList.add("open");
+            toggle.setAttribute("aria-expanded", "true");
+            icon.classList.remove("bi-list");
+            icon.classList.add("bi-x-lg");
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+            icon.classList.remove("bi-x-lg");
+            icon.classList.add("bi-list");
+        }
+
+        toggle.addEventListener("click", function () {
+            if (sidebar.classList.contains("open")) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        });
+
+        document.addEventListener("click", function (e) {
+            if (
+                sidebar.classList.contains("open") &&
+                !sidebar.contains(e.target) &&
+                !toggle.contains(e.target)
+            ) {
+                closeSidebar();
+            }
+        });
+
+        window.addEventListener("resize", function () {
+            if (window.innerWidth > 900) {
+                closeSidebar();
+            }
+        });
+
+    });
+</script>
+
+@await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>

@@ -109,14 +109,20 @@ img {
     flex-shrink: 0;
 }
 
+/* --- Logo with styled white background --- */
+
 .brand-logo {
     width: 46px;
     height: 46px;
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
+    border-radius: 11px;
+    background: #ffffff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18), inset 0 0 0 1px rgba(11, 37, 69, 0.06);
 }
 
     .brand-logo img {
@@ -315,7 +321,7 @@ img {
 
 .hero-section {
     position: relative;
-    padding: 82px 0 96px;
+    padding: 40px 0 96px;
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     overflow: hidden;
 }
@@ -369,43 +375,19 @@ img {
     max-width: 600px;
 }
 
-.hero-badge {
-    width: fit-content;
-    margin-bottom: 20px;
-    padding: 7px 11px;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    border: 1px solid #dbe6f0;
-    border-radius: 100px;
-    background: #ffffff;
-    color: var(--accent);
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-}
-
-.hero-content h1 {
-    color: var(--primary-dark);
-    font-family: "Plus Jakarta Sans", sans-serif;
-    font-size: clamp(38px, 4.4vw, 58px);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.045em;
-}
-
-    .hero-content h1 span {
-        display: block;
-        color: var(--accent);
+    .hero-content h1 {
+        color: var(--primary-dark);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: clamp(38px, 4.4vw, 58px);
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -0.045em;
     }
+
+        .hero-content h1 span {
+            display: block;
+            color: var(--accent);
+        }
 
 .hero-description {
     max-width: 540px;
@@ -1410,6 +1392,13 @@ img {
     width: fit-content;
 }
 
+.footer-brand .brand-logo {
+    width: 52px;
+    height: 52px;
+    padding: 6px;
+    border-radius: 12px;
+}
+
 .footer-brand .brand-text strong {
     color: #ffffff;
 }
@@ -1523,7 +1512,7 @@ img {
     }
 
     .hero-section {
-        padding: 65px 0 80px;
+        padding: 32px 0 80px;
     }
 
     .hero-container {
@@ -1535,11 +1524,6 @@ img {
         max-width: 700px;
         margin: 0 auto;
         text-align: center;
-    }
-
-    .hero-badge {
-        margin-left: auto;
-        margin-right: auto;
     }
 
     .hero-description {
@@ -1621,17 +1605,13 @@ img {
     }
 
     .hero-section {
-        padding: 55px 0 70px;
+        padding: 28px 0 70px;
     }
 
     .hero-container,
     .container,
     .audience-container {
         width: min(calc(100% - 32px), var(--container));
-    }
-
-    .hero-badge {
-        font-size: 8px;
     }
 
     .hero-content h1 {
@@ -1736,6 +1716,7 @@ img {
     .brand-logo {
         width: 40px;
         height: 40px;
+        padding: 4px;
     }
 
     .brand-text strong {
@@ -1856,7 +1837,6 @@ img {
    CURSOR POINTER FOR ALL CLICKABLE ELEMENTS
    ========================================================= */
 
-/* All buttons and button-like elements */
 button,
 .btn,
 .btn-login,
@@ -1875,7 +1855,6 @@ a[href] {
     cursor: pointer;
 }
 
-/* Specifically ensure login links show pointer */
 a.btn-login,
 a.mobile-login,
 a.btn-primary,
@@ -1884,7 +1863,6 @@ a.text-button {
     cursor: pointer;
 }
 
-/* Disabled state should not show pointer */
 button:disabled,
 .btn:disabled,
 a.btn.disabled {

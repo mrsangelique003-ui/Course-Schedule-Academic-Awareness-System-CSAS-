@@ -1,4 +1,3 @@
-
 @page
 @model CourseScheduleSystem.Web.Pages.Account.LoginModel
 
@@ -39,14 +38,14 @@
 <div class="login-page">
 
     <!-- =====================================================
-         NAVIGATION
+         NAVIGATION  (same as Index, no Login button)
          ===================================================== -->
-    <header class="login-navbar">
-        <div class="nav-container">
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
 
             <a asp-page="/Index"
                class="brand"
-               aria-label="Return to UNILAK Academic Awareness System home">
+               aria-label="UNILAK Academic Awareness System Home">
 
                 <span class="brand-logo">
                     <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
@@ -55,257 +54,221 @@
 
                 <span class="brand-text">
                     <strong>UNILAK</strong>
-                    <small>Academic Awareness System</small>
+                    <span>Academic Awareness System</span>
                 </span>
-
             </a>
 
-            <div class="nav-actions">
+            <div class="desktop-nav">
 
-                <!-- Real navigation button -->
                 <a asp-page="/Index"
-                   class="nav-back-button">
-                    <i class="bi bi-arrow-left"></i>
-                    <span>Back to Home</span>
+                   class="nav-link">
+                    Home
+                </a>
+
+                <a asp-page="/Index"
+                   asp-fragment="features"
+                   class="nav-link">
+                    Features
+                </a>
+
+                <a asp-page="/Index"
+                   asp-fragment="users"
+                   class="nav-link">
+                    Users
+                </a>
+
+                <a asp-page="/Index"
+                   asp-fragment="how-it-works"
+                   class="nav-link">
+                    How It Works
                 </a>
 
             </div>
+
+            <button type="button"
+                    class="mobile-menu-toggle"
+                    id="mobileMenuToggle"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                    aria-controls="mobileNavigation">
+
+                <i class="bi bi-list"
+                   aria-hidden="true"></i>
+
+            </button>
+
+        </nav>
+
+        <div class="mobile-navigation"
+             id="mobileNavigation">
+
+            <a asp-page="/Index"
+               class="mobile-nav-link">
+
+                <i class="bi bi-house-door"
+                   aria-hidden="true"></i>
+
+                Home
+            </a>
+
+            <a asp-page="/Index"
+               asp-fragment="features"
+               class="mobile-nav-link">
+
+                <i class="bi bi-grid"
+                   aria-hidden="true"></i>
+
+                Features
+            </a>
+
+            <a asp-page="/Index"
+               asp-fragment="users"
+               class="mobile-nav-link">
+
+                <i class="bi bi-people"
+                   aria-hidden="true"></i>
+
+                Users
+            </a>
+
+            <a asp-page="/Index"
+               asp-fragment="how-it-works"
+               class="mobile-nav-link">
+
+                <i class="bi bi-arrow-repeat"
+                   aria-hidden="true"></i>
+
+                How It Works
+            </a>
 
         </div>
     </header>
 
 
     <!-- =====================================================
-         LOGIN CONTENT
+         LOGIN CONTENT  (single centered card)
          ===================================================== -->
     <main class="login-main">
 
-        <div class="login-container">
+        <div class="login-card">
 
-            <!-- =================================================
-                 LEFT INFORMATION PANEL
-                 ================================================= -->
-            <section class="login-info-panel">
-
-                <div class="info-content">
-
-                    <span class="section-eyebrow">
-                        WELCOME BACK
-                    </span>
-
-                    <h1>
-                        Access your
-                        <br />
-                        <span>academic dashboard.</span>
-                    </h1>
-
-                    <p>
-                        Sign in to view your course schedules, academic
-                        updates, and important university information.
-                    </p>
+            <!-- =============================================
+                 CENTERED LOGO
+                 ============================================= -->
+            <div class="login-logo">
+                <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
+                     alt="UNILAK Logo" />
+            </div>
 
 
-                    <div class="info-features">
+            <!-- =============================================
+                 HEADING
+                 ============================================= -->
+            <div class="login-header">
 
-                        <div class="info-feature-item">
+                <h1>Login to Account</h1>
 
-                            <div class="feature-icon-small">
-                                <i class="bi bi-calendar3"></i>
-                            </div>
+                <p>
+                    Enter your registration number and password to continue.
+                </p>
 
-                            <div class="feature-text">
-                                <strong>Course Schedules</strong>
-                                <span>View your weekly timetable</span>
-                            </div>
-
-                        </div>
+            </div>
 
 
-                        <div class="info-feature-item">
+            <!-- =============================================
+                 FORM
+                 ============================================= -->
+            <form method="post"
+                  class="login-form"
+                  autocomplete="on">
 
-                            <div class="feature-icon-small">
-                                <i class="bi bi-bell"></i>
-                            </div>
-
-                            <div class="feature-text">
-                                <strong>Academic Updates</strong>
-                                <span>Stay informed on changes</span>
-                            </div>
-
-                        </div>
+                <div asp-validation-summary="ModelOnly"
+                     class="validation-summary">
+                </div>
 
 
-                        <div class="info-feature-item">
+                <!-- REGISTRATION NUMBER -->
+                <div class="form-group">
 
-                            <div class="feature-icon-small">
-                                <i class="bi bi-shield-check"></i>
-                            </div>
+                    <label asp-for="Input.Email"
+                           class="form-label">
+                        Registration Number
+                    </label>
 
-                            <div class="feature-text">
-                                <strong>Secure Access</strong>
-                                <span>Your data is protected</span>
-                            </div>
+                    <div class="input-wrapper">
 
-                        </div>
+                        <input asp-for="Input.Email"
+                               class="form-input"
+                               placeholder="e.g. 20240012345"
+                               autocomplete="username" />
 
                     </div>
+
+                    <span asp-validation-for="Input.Email"
+                          class="field-validation">
+                    </span>
 
                 </div>
 
-            </section>
 
+                <!-- PASSWORD -->
+                <div class="form-group">
 
-            <!-- =================================================
-                 LOGIN FORM PANEL
-                 ================================================= -->
-            <section class="login-form-panel">
+                    <label asp-for="Input.Password"
+                           class="form-label">
+                        Password
+                    </label>
 
-                <div class="form-wrapper">
+                    <div class="input-wrapper">
 
-                    <div class="form-header">
+                        <input asp-for="Input.Password"
+                               type="password"
+                               id="passwordInput"
+                               class="form-input"
+                               placeholder="••••"
+                               autocomplete="current-password" />
 
-                        <span class="form-eyebrow">
-                            ACCOUNT ACCESS
-                        </span>
+                        <button type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password">
 
-                        <h2>Sign In</h2>
-
-                        <p>
-                            Enter your university credentials to continue.
-                        </p>
-
-                    </div>
-
-
-                    <form method="post"
-                          class="login-form"
-                          autocomplete="on">
-
-                        <div asp-validation-summary="ModelOnly"
-                             class="validation-summary">
-                        </div>
-
-
-                        <!-- =========================================
-                             EMAIL
-                             ========================================= -->
-                        <div class="form-group">
-
-                            <label asp-for="Input.Email"
-                                   class="form-label">
-                                Email Address
-                            </label>
-
-                            <div class="input-wrapper">
-
-                                <i class="bi bi-envelope input-icon"></i>
-
-                                <input asp-for="Input.Email"
-                                       class="form-input"
-                                       placeholder="student@unilak.ac.rw"
-                                       autocomplete="username" />
-
-                            </div>
-
-                            <span asp-validation-for="Input.Email"
-                                  class="field-validation">
-                            </span>
-
-                        </div>
-
-
-                        <!-- =========================================
-                             PASSWORD
-                             ========================================= -->
-                        <div class="form-group">
-
-                            <div class="label-row">
-
-                                <label asp-for="Input.Password"
-                                       class="form-label">
-                                    Password
-                                </label>
-
-                                <a asp-page="/Account/ForgotPassword"
-                                   class="forgot-link">
-                                    Forgot password?
-                                </a>
-
-                            </div>
-
-
-                            <div class="input-wrapper">
-
-                                <i class="bi bi-lock input-icon"></i>
-
-                                <input asp-for="Input.Password"
-                                       type="password"
-                                       class="form-input"
-                                       placeholder="Enter your password"
-                                       autocomplete="current-password" />
-
-                            </div>
-
-                            <span asp-validation-for="Input.Password"
-                                  class="field-validation">
-                            </span>
-
-                        </div>
-
-
-                        <!-- =========================================
-                             REMEMBER ME
-                             ========================================= -->
-                        <div class="form-options">
-
-                            <label class="checkbox-label">
-
-                                <input asp-for="Input.RememberMe"
-                                       type="checkbox" />
-
-                                <span class="checkbox-custom"></span>
-
-                                <span class="checkbox-text">
-                                    Remember me
-                                </span>
-
-                            </label>
-
-                        </div>
-
-
-                        <!-- =========================================
-                             LOGIN SUBMIT BUTTON
-                             ========================================= -->
-                        <button type="submit"
-                                class="submit-button">
-
-                            <span>Sign In</span>
-
-                            <i class="bi bi-arrow-right"></i>
+                            <i class="bi bi-eye"
+                               aria-hidden="true"></i>
 
                         </button>
 
-                    </form>
-
-
-                    <!-- =============================================
-                         FORM FOOTER
-                         ============================================= -->
-                    <div class="form-footer">
-
-                        <p>
-                            Don't have an account?
-                            <a asp-page="/Contact">
-                                Contact Academic Office
-                            </a>
-                        </p>
-
                     </div>
+
+                    <span asp-validation-for="Input.Password"
+                          class="field-validation">
+                    </span>
 
                 </div>
 
-            </section>
+
+                <!-- SUBMIT -->
+                <button type="submit"
+                        class="submit-button">
+
+                    Login
+
+                </button>
+
+            </form>
+
+
+            <!-- =============================================
+                 FORGOT PASSWORD LINK
+                 ============================================= -->
+            <div class="login-footer-links">
+
+                <a asp-page="/Account/ForgotPassword"
+                   class="forgot-link">
+                    Forgot Password?
+                </a>
+
+            </div>
 
         </div>
 
@@ -334,6 +297,95 @@
 
 </div>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* =============================================
+           MOBILE MENU
+           ============================================= */
+        const menuToggle =
+            document.getElementById("mobileMenuToggle");
+
+        const mobileNavigation =
+            document.getElementById("mobileNavigation");
+
+        if (menuToggle && mobileNavigation) {
+
+            const menuIcon =
+                menuToggle.querySelector("i");
+
+            function openMenu() {
+                mobileNavigation.classList.add("open");
+                menuToggle.setAttribute("aria-expanded", "true");
+                menuIcon.classList.remove("bi-list");
+                menuIcon.classList.add("bi-x-lg");
+            }
+
+            function closeMenu() {
+                mobileNavigation.classList.remove("open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuIcon.classList.remove("bi-x-lg");
+                menuIcon.classList.add("bi-list");
+            }
+
+            menuToggle.addEventListener("click", function () {
+                if (mobileNavigation.classList.contains("open")) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            mobileNavigation
+                .querySelectorAll("a")
+                .forEach(function (link) {
+                    link.addEventListener("click", closeMenu);
+                });
+        }
+
+
+        /* =============================================
+           PASSWORD TOGGLE
+           ============================================= */
+        const passwordInput =
+            document.getElementById("passwordInput");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        if (passwordInput && passwordToggle) {
+
+            const toggleIcon =
+                passwordToggle.querySelector("i");
+
+            passwordToggle.addEventListener("click", function () {
+
+                const isPassword =
+                    passwordInput.type === "password";
+
+                passwordInput.type =
+                    isPassword ? "text" : "password";
+
+                toggleIcon.classList.toggle(
+                    "bi-eye",
+                    !isPassword
+                );
+
+                toggleIcon.classList.toggle(
+                    "bi-eye-slash",
+                    isPassword
+                );
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    isPassword ? "Hide password" : "Show password"
+                );
+            });
+        }
+
+    });
+</script>
+
 </body>
 </html>
-
