@@ -1,36 +1,24 @@
-@page
-@model CourseScheduleSystem.Web.Pages.Account.LogoutModel
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-@{
-    Layout = null;
-    ViewData["Title"] = "Signing out…";
+namespace CourseScheduleSystem.Web.Pages.Account
+{
+    [AllowAnonymous]
+    public class LogoutModel : PageModel
+    {
+        public void OnGet() { }
+
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (returnUrl != null)
+                return LocalRedirect(returnUrl);
+
+            return RedirectToPage("/Index");
+        }
+    }
 }
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signing out | UNILAK</title>
-    <meta name="theme-color" content="#0b2545" />
-</head>
-
-<body>
-
-    <div class="logout-screen">
-        <div class="logout-card">
-            <div class="logout-logo">
-                <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
-                     alt="UNILAK Logo" />
-            </div>
-
-            <h1>Signing you out…</h1>
-
-            <p>Please wait while we securely end your session.</p>
-
-            <div class="logout-spinner" aria-hidden="true"></div>
-        </div>
-    </div>
-
-</body>
-</html>
