@@ -7,21 +7,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseScheduleSystem.Web.Pages;
 
-[Authorize]
+[Authorize(Roles = "Student")]
 public class DashboardModel : PageModel
 {
     private readonly ApplicationDbContext _db;
 
-    public DashboardModel(ApplicationDbContext db)
+public DashboardModel(ApplicationDbContext db)
     {
         _db = db;
     }
 
-    public CourseScheduleSystem.Web.Models.Student? CurrentStudent { get; set; }
+    public CourseScheduleSystem.Web.Models.Student? CurrentStudent { get; private set; }
 
-    public string UserName { get; set; } = string.Empty;
+    public string UserName { get; private set; } = string.Empty;
 
-    public string UserRole { get; set; } = string.Empty;
+    public string UserRole { get; private set; } = string.Empty;
 
     public int TotalEnrolledCourses { get; private set; }
 
@@ -29,19 +29,19 @@ public class DashboardModel : PageModel
 
     public int TotalCredits { get; private set; }
 
-    public List<CourseItem> Courses { get; set; } = new();
+    public List<CourseItem> Courses { get; private set; } = new();
 
-    public List<ScheduleItemDto> ScheduleItems { get; set; } = new();
+    public List<ScheduleItemDto> ScheduleItems { get; private set; } = new();
 
     public async Task OnGetAsync()
     {
         UserName =
             User.FindFirstValue(ClaimTypes.Name)
-            ?? "User";
+            ?? "Student";
 
         UserRole =
             User.FindFirstValue(ClaimTypes.Role)
-            ?? string.Empty;
+            ?? "Student";
 
         var userIdValue =
             User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -65,7 +65,8 @@ public class DashboardModel : PageModel
         Courses = await _db.Enrollments
             .AsNoTracking()
             .Where(e =>
-                e.StudentId == studentId)
+                e.StudentId == studentId &&
+                e.Status == EnrollmentStatus.Enrolled)
             .OrderBy(e => e.Course.Code)
             .Select(e => new CourseItem
             {
@@ -90,20 +91,15 @@ public class DashboardModel : PageModel
             .ToListAsync();
 
         TotalEnrolledCourses =
-            Courses.Count(c =>
-                c.Status == EnrollmentStatus.Enrolled);
+            Courses.Count;
 
         TotalCredits =
-            Courses
-                .Where(c =>
-                    c.Status == EnrollmentStatus.Enrolled)
-                .Sum(c => c.Credits);
+            Courses.Sum(c => c.Credits);
 
         var enrolledCourseIds =
             Courses
-                .Where(c =>
-                    c.Status == EnrollmentStatus.Enrolled)
                 .Select(c => c.CourseId)
+                .Distinct()
                 .ToList();
 
         if (enrolledCourseIds.Count == 0)
@@ -113,7 +109,8 @@ public class DashboardModel : PageModel
             return;
         }
 
-        var today = DateTime.Today.DayOfWeek;
+        var today =
+            DateTime.Today.DayOfWeek;
 
         ScheduleItems = await _db.ScheduleEntries
             .AsNoTracking()
@@ -153,15 +150,14 @@ public class DashboardModel : PageModel
                 RoomNumber =
                     s.Room == null
                         ? "Room not assigned"
-                        : string.IsNullOrWhiteSpace(s.Room.Building)
-                            ? (
-                                string.IsNullOrWhiteSpace(s.Room.RoomNumber)
-                                    ? "Room not assigned"
-                                    : s.Room.RoomNumber
-                              )
-                            : string.IsNullOrWhiteSpace(s.Room.RoomNumber)
-                                ? s.Room.Building
-                                : $"{s.Room.Building} · {s.Room.RoomNumber}",
+                        : !string.IsNullOrWhiteSpace(s.Room.Building) &&
+                          !string.IsNullOrWhiteSpace(s.Room.RoomNumber)
+                            ? $"{s.Room.Building} · {s.Room.RoomNumber}"
+                            : !string.IsNullOrWhiteSpace(s.Room.RoomNumber)
+                                ? s.Room.RoomNumber
+                                : !string.IsNullOrWhiteSpace(s.Room.Building)
+                                    ? s.Room.Building
+                                    : "Room not assigned",
 
                 StudySession =
                     s.StudySession,
@@ -170,49 +166,12 @@ public class DashboardModel : PageModel
                     s.Notes,
 
                 CardColorClass =
-                    GetColorClass(
-                        s.Course != null
-                            ? s.Course.Name
-                            : string.Empty)
+                    "dash-schedule-card-default"
             })
             .ToListAsync();
 
         TotalUpcomingClasses =
             ScheduleItems.Count;
-    }
-
-    private static string GetColorClass(string subject)
-    {
-        if (string.IsNullOrWhiteSpace(subject))
-        {
-            return "dash-schedule-card-green";
-        }
-
-        var value =
-            subject.Trim().ToLowerInvariant();
-
-        if (value.Contains("science"))
-        {
-            return "dash-schedule-card-green";
-        }
-
-        if (value.Contains("biology"))
-        {
-            return "dash-schedule-card-yellow";
-        }
-
-        if (value.Contains("physics"))
-        {
-            return "dash-schedule-card-purple";
-        }
-
-        if (value.Contains("mathematics") ||
-            value.Contains("math"))
-        {
-            return "dash-schedule-card-blue";
-        }
-
-        return "dash-schedule-card-green";
     }
 
     public class CourseItem
@@ -254,4 +213,5 @@ public class DashboardModel : PageModel
 
         public string CardColorClass { get; set; } = string.Empty;
     }
+
 }

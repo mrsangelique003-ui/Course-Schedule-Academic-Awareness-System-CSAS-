@@ -1,312 +1,327 @@
 @using System.Security.Claims
 
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0" />
 
-    <title>@ViewData["Title"] - CSAS</title>
 
-    <link rel="stylesheet"
-          href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-          asp-append-version="true" />
+<title>@ViewData["Title"] - CSAS</title>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<link rel="stylesheet"
+      href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+      asp-append-version="true" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
-          rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <link rel="stylesheet"
-          href="~/css/Layout.css"
-          asp-append-version="true" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet" />
 
-    @await RenderSectionAsync("Styles", required: false)
+<link rel="stylesheet"
+      href="~/css/Layout.css"
+      asp-append-version="true" />
+
+@await RenderSectionAsync("Styles", required: false)
+
+
 </head>
 
 <body>
 
+@{
+var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+
+
+var userName =
+    User.Identity?.IsAuthenticated == true
+        ? User.Identity.Name ?? "User"
+        : "User";
+
+var userRole =
+    User.FindFirstValue(ClaimTypes.Role) ?? "User";
+
+var registrationNumber =
+    User.FindFirstValue("RegNo");
+
+var isAuthenticated =
+    User.Identity?.IsAuthenticated == true;
+
+var isStudent =
+    User.IsInRole("Student");
+
+
+}
+
 <div class="app-shell">
 
-    <!-- =====================================================
-         NAVBAR
-         ===================================================== -->
-    <header class="app-header">
 
-        <nav class="app-navbar" aria-label="Main navigation">
+<header class="app-header">
+    <nav class="app-navbar" aria-label="Main navigation">
 
-            <a asp-page="/Dashboard" class="app-brand">
+        <a asp-page="/Dashboard"
+           class="app-brand"
+           aria-label="CSAS Dashboard">
 
-                <span class="app-brand-logo">
-                    <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
-                         alt="UNILAK Logo" />
+            <span class="app-brand-logo">
+                <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
+                     alt="UNILAK Logo" />
+            </span>
+
+            <span class="app-brand-text">
+                <strong>UNILAK</strong>
+                <small>Academic Awareness System</small>
+            </span>
+
+        </a>
+
+        <div class="app-nav-user">
+
+            <div class="app-nav-user-info">
+
+                <span class="app-nav-user-avatar">
+                    <i class="bi bi-person-fill"
+                       aria-hidden="true"></i>
                 </span>
 
-                <span class="app-brand-text">
-                    <strong>UNILAK</strong>
-                    <small>Academic Awareness System</small>
+                <span class="app-nav-user-text">
+
+                    <strong>@userName</strong>
+
+                    @if (isStudent &&
+                         !string.IsNullOrWhiteSpace(registrationNumber))
+                    {
+                        <small>
+                            @registrationNumber
+                            <span class="app-user-divider">•</span>
+                            @userRole
+                        </small>
+                    }
+                    else
+                    {
+                        <small>@userRole</small>
+                    }
+
                 </span>
-
-            </a>
-
-
-            <div class="app-nav-user">
-
-                <div class="app-nav-user-info">
-
-                    <span class="app-nav-user-avatar">
-                        <i class="bi bi-person-fill"
-                           aria-hidden="true"></i>
-                    </span>
-
-                    <span class="app-nav-user-text">
-                        <strong>@(User.Identity?.Name ?? "User")</strong>
-                        <small>@(User.FindFirstValue(ClaimTypes.Role) ?? "User")</small>
-                    </span>
-
-                </div>
-
-
-                @if (User.Identity?.IsAuthenticated == true)
-                {
-                    <form method="post"
-                          action="/Account/Logout"
-                          class="app-logout-form">
-
-                        @Html.AntiForgeryToken()
-
-                        <button type="submit"
-                                class="app-logout-button"
-                                title="Sign out of your account">
-
-                            <i class="bi bi-box-arrow-right"
-                               aria-hidden="true"></i>
-
-                            <span>Logout</span>
-
-                        </button>
-
-                    </form>
-                }
 
             </div>
 
+            @if (isAuthenticated)
+            {
+                <form method="post"
+                      action="/Account/Logout"
+                      class="app-logout-form">
 
-            <button type="button"
-                    class="app-mobile-toggle"
-                    id="appMobileToggle"
-                    aria-label="Open navigation menu"
-                    aria-expanded="false"
-                    aria-controls="appSidebar">
+                    @Html.AntiForgeryToken()
 
-                <i class="bi bi-list"
+                    <button type="submit"
+                            class="app-logout-button"
+                            title="Sign out of your account">
+
+                        <i class="bi bi-box-arrow-right"
+                           aria-hidden="true"></i>
+
+                        <span>Logout</span>
+
+                    </button>
+
+                </form>
+            }
+
+        </div>
+
+        <button type="button"
+                class="app-mobile-toggle"
+                id="appMobileToggle"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+                aria-controls="appSidebar">
+
+            <i class="bi bi-list"
+               aria-hidden="true"></i>
+
+        </button>
+
+    </nav>
+</header>
+
+<div class="app-body">
+
+    <aside class="app-sidebar"
+           id="appSidebar"
+           aria-label="Sidebar navigation">
+
+        <nav class="app-sidebar-nav">
+
+            <span class="app-sidebar-group">
+                MAIN MENU
+            </span>
+
+            <a asp-page="/Dashboard"
+               class="app-sidebar-link @(currentPage == "/Dashboard" ? "active" : "")">
+
+                <i class="bi bi-grid-1x2"
                    aria-hidden="true"></i>
 
-            </button>
+                <span>Dashboard</span>
 
-        </nav>
+            </a>
 
-    </header>
+            @if (isStudent)
+            {
+                <a asp-page="/Student/MyCourses"
+                   class="app-sidebar-link @(currentPage == "/Student/MyCourses" ? "active" : "")">
 
-
-    <!-- =====================================================
-         APP BODY
-         ===================================================== -->
-    <div class="app-body">
-
-
-        <!-- =================================================
-             SIDEBAR
-             ================================================= -->
-        <aside class="app-sidebar"
-               id="appSidebar"
-               aria-label="Sidebar navigation">
-
-            <nav class="app-sidebar-nav">
-
-                <span class="app-sidebar-group">
-                    MAIN MENU
-                </span>
-
-
-                <!-- Dashboard -->
-                <a asp-page="/Dashboard"
-                   class="app-sidebar-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Dashboard" ? "active" : "")">
-
-                    <i class="bi bi-grid-1x2"
+                    <i class="bi bi-journal-bookmark"
                        aria-hidden="true"></i>
 
-                    <span>Dashboard</span>
+                    <span>My Courses</span>
 
                 </a>
 
+                <a asp-page="/Student/Schedule"
+                   class="app-sidebar-link @(currentPage == "/Student/Schedule" ? "active" : "")">
 
-                @if (User.IsInRole("Student"))
-                {
-                    <!-- My Courses -->
-                    <a asp-page="/Student/MyCourses"
-                       class="app-sidebar-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Student/MyCourses" ? "active" : "")">
+                    <i class="bi bi-calendar3"
+                       aria-hidden="true"></i>
 
-                        <i class="bi bi-journal-bookmark"
-                           aria-hidden="true"></i>
+                    <span>My Schedule</span>
 
-                        <span>My Courses</span>
+                </a>
 
-                    </a>
+                <a asp-page="/Student/Profile"
+                   class="app-sidebar-link @(currentPage == "/Student/Profile" ? "active" : "")">
 
+                    <i class="bi bi-person-circle"
+                       aria-hidden="true"></i>
 
-                    <!-- My Schedule -->
-                    <a asp-page="/Student/Schedule"
-                       class="app-sidebar-link @(ViewContext.RouteData.Values["page"]?.ToString() == "/Student/Schedule" ? "active" : "")">
+                    <span>My Profile</span>
 
-                        <i class="bi bi-calendar3"
-                           aria-hidden="true"></i>
+                </a>
+            }
 
-                        <span>My Schedule</span>
+            <span class="app-sidebar-group">
+                COMING SOON
+            </span>
 
-                    </a>
-                }
+            <div class="app-sidebar-link app-sidebar-link-disabled"
+                 aria-disabled="true">
 
+                <i class="bi bi-mortarboard"
+                   aria-hidden="true"></i>
 
-                <span class="app-sidebar-group">
-                    COMING SOON
+                <span>Classroom</span>
+
+                <small class="app-coming-soon">Soon</small>
+
+            </div>
+
+            <div class="app-sidebar-link app-sidebar-link-disabled"
+                 aria-disabled="true">
+
+                <i class="bi bi-list-task"
+                   aria-hidden="true"></i>
+
+                <span>My Tasks List</span>
+
+                <small class="app-coming-soon">Soon</small>
+
+            </div>
+
+            <div class="app-sidebar-link app-sidebar-link-disabled"
+                 aria-disabled="true">
+
+                <i class="bi bi-clipboard-check"
+                   aria-hidden="true"></i>
+
+                <span>Exam List</span>
+
+                <small class="app-coming-soon">Soon</small>
+
+            </div>
+
+            <div class="app-sidebar-link app-sidebar-link-disabled"
+                 aria-disabled="true">
+
+                <i class="bi bi-award"
+                   aria-hidden="true"></i>
+
+                <span>My Result</span>
+
+                <small class="app-coming-soon">Soon</small>
+
+            </div>
+
+            <span class="app-sidebar-group">
+                REPORT &amp; OTHERS
+            </span>
+
+            <div class="app-sidebar-link app-sidebar-link-disabled"
+                 aria-disabled="true">
+
+                <i class="bi bi-file-earmark-text"
+                   aria-hidden="true"></i>
+
+                <span>Student Report</span>
+
+                <small class="app-coming-soon">Soon</small>
+
+            </div>
+
+            <div class="app-sidebar-link app-sidebar-link-disabled"
+                 aria-disabled="true">
+
+                <i class="bi bi-people"
+                   aria-hidden="true"></i>
+
+                <span>Community Chat</span>
+
+                <small class="app-coming-soon">Soon</small>
+
+            </div>
+
+            <div class="app-sidebar-link app-sidebar-link-disabled"
+                 aria-disabled="true">
+
+                <i class="bi bi-life-preserver"
+                   aria-hidden="true"></i>
+
+                <span>Technical Support</span>
+
+                <small class="app-coming-soon">Soon</small>
+
+            </div>
+
+            <div class="app-sidebar-footer">
+
+                <span>
+                    © @DateTime.Now.Year University of Lay Adventists of Kigali.
                 </span>
 
-
-                <div class="app-sidebar-link app-sidebar-link-disabled"
-                     aria-disabled="true">
-
-                    <i class="bi bi-mortarboard"
-                       aria-hidden="true"></i>
-
-                    <span>Classroom</span>
-
-                    <small class="app-coming-soon">Soon</small>
-
-                </div>
-
-
-                <div class="app-sidebar-link app-sidebar-link-disabled"
-                     aria-disabled="true">
-
-                    <i class="bi bi-list-task"
-                       aria-hidden="true"></i>
-
-                    <span>My Tasks List</span>
-
-                    <small class="app-coming-soon">Soon</small>
-
-                </div>
-
-
-                <div class="app-sidebar-link app-sidebar-link-disabled"
-                     aria-disabled="true">
-
-                    <i class="bi bi-clipboard-check"
-                       aria-hidden="true"></i>
-
-                    <span>Exam List</span>
-
-                    <small class="app-coming-soon">Soon</small>
-
-                </div>
-
-
-                <div class="app-sidebar-link app-sidebar-link-disabled"
-                     aria-disabled="true">
-
-                    <i class="bi bi-award"
-                       aria-hidden="true"></i>
-
-                    <span>My Result</span>
-
-                    <small class="app-coming-soon">Soon</small>
-
-                </div>
-
-
-                <span class="app-sidebar-group">
-                    REPORT &amp; OTHERS
+                <span>
+                    Course Schedule &amp; Academic Awareness System
                 </span>
 
+            </div>
 
-                <div class="app-sidebar-link app-sidebar-link-disabled"
-                     aria-disabled="true">
+        </nav>
 
-                    <i class="bi bi-file-earmark-text"
-                       aria-hidden="true"></i>
+    </aside>
 
-                    <span>Student Report</span>
-
-                    <small class="app-coming-soon">Soon</small>
-
-                </div>
-
-
-                <div class="app-sidebar-link app-sidebar-link-disabled"
-                     aria-disabled="true">
-
-                    <i class="bi bi-people"
-                       aria-hidden="true"></i>
-
-                    <span>Community Chat</span>
-
-                    <small class="app-coming-soon">Soon</small>
-
-                </div>
-
-
-                <div class="app-sidebar-link app-sidebar-link-disabled"
-                     aria-disabled="true">
-
-                    <i class="bi bi-life-preserver"
-                       aria-hidden="true"></i>
-
-                    <span>Technical Support</span>
-
-                    <small class="app-coming-soon">Soon</small>
-
-                </div>
-
-
-                <!-- =================================================
-                     SIDEBAR FOOTER
-                     ================================================= -->
-                <div class="app-sidebar-footer">
-
-                    <span>
-                        © @DateTime.Now.Year University of Lay Adventists of Kigali.
-                    </span>
-
-                    <span>
-                        Course Schedule &amp; Academic Awareness System
-                    </span>
-
-                </div>
-
-            </nav>
-
-        </aside>
-
-
-        <!-- =================================================
-             MAIN CONTENT
-             ================================================= -->
-        <main class="app-main">
-
-            @RenderBody()
-
-        </main>
-
-    </div>
+    <main class="app-main">
+        @RenderBody()
+    </main>
 
 </div>
 
+
+</div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"
         asp-append-version="true"></script>
@@ -327,36 +342,62 @@
         const icon = toggle.querySelector("i");
 
         function openSidebar() {
+
             sidebar.classList.add("open");
-            toggle.setAttribute("aria-expanded", "true");
-            toggle.setAttribute("aria-label", "Close navigation menu");
+
+            toggle.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            toggle.setAttribute(
+                "aria-label",
+                "Close navigation menu"
+            );
 
             if (icon) {
+
                 icon.classList.remove("bi-list");
                 icon.classList.add("bi-x-lg");
+
             }
         }
 
         function closeSidebar() {
+
             sidebar.classList.remove("open");
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.setAttribute("aria-label", "Open navigation menu");
+
+            toggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            toggle.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+            );
 
             if (icon) {
+
                 icon.classList.remove("bi-x-lg");
                 icon.classList.add("bi-list");
+
             }
         }
 
         toggle.addEventListener("click", function () {
+
             if (sidebar.classList.contains("open")) {
                 closeSidebar();
-            } else {
+            }
+            else {
                 openSidebar();
             }
+
         });
 
         document.addEventListener("click", function (event) {
+
             if (
                 sidebar.classList.contains("open") &&
                 !sidebar.contains(event.target) &&
@@ -364,12 +405,15 @@
             ) {
                 closeSidebar();
             }
+
         });
 
         window.addEventListener("resize", function () {
+
             if (window.innerWidth > 900) {
                 closeSidebar();
             }
+
         });
 
         const sidebarLinks = document.querySelectorAll(
@@ -377,11 +421,15 @@
         );
 
         sidebarLinks.forEach(function (link) {
+
             link.addEventListener("click", function () {
+
                 if (window.innerWidth <= 900) {
                     closeSidebar();
                 }
+
             });
+
         });
 
     });

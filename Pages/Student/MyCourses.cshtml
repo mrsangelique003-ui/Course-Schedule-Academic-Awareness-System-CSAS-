@@ -8,12 +8,17 @@
     ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
 }
 
-<link rel="stylesheet" href="~/css/Student/MyCourses.css" />
+<link rel="stylesheet"
+      href="~/css/Student/MyCourses.css"
+      asp-append-version="true" />
 
 <div class="student-courses-page">
 
+    <!-- Page Header -->
     <section class="courses-page-header">
+
         <div class="courses-header-content">
+
             <div class="courses-eyebrow">
                 <i class="bi bi-book"></i>
                 Academic Courses
@@ -22,32 +27,42 @@
             <h1>My Courses</h1>
 
             <p>
-                View the courses you are registered for, your lecturers,
-                credits, study sessions, and enrollment status.
+                See your registered courses, lecturers, credits,
+                and class information.
             </p>
+
         </div>
 
         <div class="courses-student-badge">
+
             <div class="courses-student-avatar">
                 <i class="bi bi-person"></i>
             </div>
 
-            <div>
+            <div class="courses-student-details">
+
                 <span>Student</span>
+
                 <strong>
                     @(Model.CurrentStudent?.FullName ?? "Student")
                 </strong>
+
                 <small>
                     @(Model.CurrentStudent?.RegNo ?? "—")
                 </small>
+
             </div>
+
         </div>
+
     </section>
 
 
+    <!-- Course Statistics -->
     <section class="courses-stats">
 
         <div class="course-stat-card">
+
             <div class="course-stat-icon course-stat-icon-blue">
                 <i class="bi bi-book"></i>
             </div>
@@ -56,10 +71,12 @@
                 <span>Total Courses</span>
                 <strong>@Model.TotalCourses</strong>
             </div>
+
         </div>
 
 
         <div class="course-stat-card">
+
             <div class="course-stat-icon course-stat-icon-green">
                 <i class="bi bi-check-circle"></i>
             </div>
@@ -68,10 +85,12 @@
                 <span>Enrolled</span>
                 <strong>@Model.EnrolledCourses</strong>
             </div>
+
         </div>
 
 
         <div class="course-stat-card">
+
             <div class="course-stat-icon course-stat-icon-yellow">
                 <i class="bi bi-clock"></i>
             </div>
@@ -80,10 +99,12 @@
                 <span>Pending</span>
                 <strong>@Model.PendingCourses</strong>
             </div>
+
         </div>
 
 
         <div class="course-stat-card">
+
             <div class="course-stat-icon course-stat-icon-purple">
                 <i class="bi bi-award"></i>
             </div>
@@ -92,17 +113,20 @@
                 <span>Total Credits</span>
                 <strong>@Model.TotalCredits</strong>
             </div>
+
         </div>
 
     </section>
 
 
+    <!-- Courses Panel -->
     <section class="courses-panel">
 
         <div class="courses-panel-header">
+
             <div>
                 <span class="courses-panel-label">
-                    Course Registration
+                    Academic Registration
                 </span>
 
                 <h2>Your Courses</h2>
@@ -110,8 +134,12 @@
 
             <div class="courses-count">
                 <i class="bi bi-collection"></i>
-                <span>@Model.TotalCourses courses</span>
+                <span>
+                    @Model.TotalCourses
+                    @(Model.TotalCourses == 1 ? "course" : "courses")
+                </span>
             </div>
+
         </div>
 
 
@@ -141,100 +169,106 @@
                         course.Status switch
                         {
                             EnrollmentStatus.Enrolled =>
-                                "bi-check-circle",
+                                "bi-check-circle-fill",
 
                             EnrollmentStatus.Pending =>
-                                "bi-clock",
+                                "bi-clock-fill",
 
                             EnrollmentStatus.Closed =>
-                                "bi-x-circle",
+                                "bi-x-circle-fill",
 
                             _ =>
-                                "bi-info-circle"
+                                "bi-info-circle-fill"
                         };
 
                     <article class="course-card">
 
+                        <!-- Course Card Header -->
                         <div class="course-card-top">
 
-                            <div class="course-code">
-                                @course.Code
-                            </div>
+                            <div class="course-heading">
 
-                            <div class="course-status @statusClass">
-                                <i class="bi @statusIcon"></i>
-                                @course.Status
-                            </div>
-
-                        </div>
-
-
-                        <div class="course-card-body">
-
-                            <div class="course-main-info">
+                                <span class="course-code">
+                                    @course.Code
+                                </span>
 
                                 <h3>
                                     @course.Name
                                 </h3>
 
-                                @if (!string.IsNullOrWhiteSpace(course.Description))
-                                {
-                                    <p class="course-description">
-                                        @course.Description
-                                    </p>
-                                }
+                            </div>
+
+                            <div class="course-status @statusClass">
+                                <i class="bi @statusIcon"></i>
+                                <span>@course.Status</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Course Description -->
+                        @if (!string.IsNullOrWhiteSpace(course.Description))
+                        {
+                            <div class="course-description">
+                                <p>
+                                    @course.Description
+                                </p>
+                            </div>
+                        }
+
+
+                        <!-- Course Information -->
+                        <div class="course-details">
+
+                            <div class="course-detail">
+
+                                <div class="course-detail-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <div class="course-detail-content">
+                                    <span>Lecturer</span>
+
+                                    <strong>
+                                        @course.LecturerName
+                                    </strong>
+                                </div>
 
                             </div>
 
 
-                            <div class="course-details">
+                            <div class="course-detail">
 
-                                <div class="course-detail">
-
-                                    <div class="course-detail-icon">
-                                        <i class="bi bi-person"></i>
-                                    </div>
-
-                                    <div>
-                                        <span>Lecturer</span>
-                                        <strong>
-                                            @course.LecturerName
-                                        </strong>
-                                    </div>
-
+                                <div class="course-detail-icon">
+                                    <i class="bi bi-award"></i>
                                 </div>
 
+                                <div class="course-detail-content">
+                                    <span>Credits</span>
 
-                                <div class="course-detail">
-
-                                    <div class="course-detail-icon">
-                                        <i class="bi bi-award"></i>
-                                    </div>
-
-                                    <div>
-                                        <span>Credits</span>
-                                        <strong>
-                                            @course.Credits
-                                            @(course.Credits == 1 ? "Credit" : "Credits")
-                                        </strong>
-                                    </div>
-
+                                    <strong>
+                                        @course.Credits
+                                        @(course.Credits == 1
+                                            ? "Credit"
+                                            : "Credits")
+                                    </strong>
                                 </div>
 
+                            </div>
 
-                                <div class="course-detail">
 
-                                    <div class="course-detail-icon">
-                                        <i class="bi bi-clock"></i>
-                                    </div>
+                            <div class="course-detail">
 
-                                    <div>
-                                        <span>Study Session</span>
-                                        <strong>
-                                            @course.StudySession
-                                        </strong>
-                                    </div>
+                                <div class="course-detail-icon">
+                                    <i class="bi bi-clock"></i>
+                                </div>
 
+                                <div class="course-detail-content">
+                                    <span>Study Session</span>
+
+                                    <strong>
+                                        @course.StudySession
+                                    </strong>
                                 </div>
 
                             </div>
@@ -242,33 +276,69 @@
                         </div>
 
 
-                        <div class="course-card-footer">
-
+                        <!-- Course Dates -->
+                        @if (course.StartDate.HasValue ||
+                             course.EndDate.HasValue)
+                        {
                             <div class="course-dates">
 
                                 @if (course.StartDate.HasValue)
                                 {
-                                    <span>
+                                    <div class="course-date">
+
                                         <i class="bi bi-calendar-event"></i>
-                                        Starts
-                                        @course.StartDate.Value.ToString("dd MMM yyyy")
-                                    </span>
+
+                                        <div>
+                                            <span>Starts</span>
+
+                                            <strong>
+                                                @course.StartDate.Value
+                                                    .ToString("dd MMM yyyy")
+                                            </strong>
+                                        </div>
+
+                                    </div>
                                 }
+
 
                                 @if (course.EndDate.HasValue)
                                 {
-                                    <span>
+                                    <div class="course-date">
+
                                         <i class="bi bi-calendar-check"></i>
-                                        Ends
-                                        @course.EndDate.Value.ToString("dd MMM yyyy")
-                                    </span>
+
+                                        <div>
+                                            <span>Ends</span>
+
+                                            <strong>
+                                                @course.EndDate.Value
+                                                    .ToString("dd MMM yyyy")
+                                            </strong>
+                                        </div>
+
+                                    </div>
                                 }
 
                             </div>
+                        }
 
-                            <div class="course-reference">
+
+                        <!-- Course Footer -->
+                        <div class="course-card-footer">
+
+                            <span class="course-reference">
                                 Course ID: @course.CourseId
-                            </div>
+                            </span>
+
+                            <a asp-page="/Student/CourseDetails"
+                               asp-route-id="@course.CourseId"
+                               class="course-details-button">
+
+                                <span>View Details</span>
+
+                                <i class="bi bi-arrow-right"></i>
+
+                            </a>
 
                         </div>
 
@@ -279,18 +349,27 @@
         }
         else
         {
+            <!-- Empty State -->
             <div class="courses-empty">
 
                 <div class="courses-empty-icon">
                     <i class="bi bi-journal-x"></i>
                 </div>
 
-                <h3>No courses found</h3>
+                <h3>No courses yet</h3>
 
                 <p>
-                    You currently do not have any course registrations.
+                    You do not have any registered courses at the moment.
                     Your courses will appear here once you are enrolled.
                 </p>
+
+                <a asp-page="/Dashboard"
+                   class="courses-empty-button">
+
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Dashboard
+
+                </a>
 
             </div>
         }
@@ -298,21 +377,23 @@
     </section>
 
 
+    <!-- Information Notice -->
     <section class="courses-information">
 
         <div class="courses-information-icon">
             <i class="bi bi-info-circle"></i>
         </div>
 
-        <div>
-            <h3>Course Information</h3>
+        <div class="courses-information-content">
+
+            <h3>Need help with a course?</h3>
 
             <p>
-                Your course information is retrieved directly from the
-                academic system. If a course, lecturer, or enrollment
-                status appears incorrect, please contact your academic
-                administrator or class representative.
+                If your course information, lecturer, or enrollment
+                status is incorrect, contact your academic administrator
+                or class representative.
             </p>
+
         </div>
 
     </section>

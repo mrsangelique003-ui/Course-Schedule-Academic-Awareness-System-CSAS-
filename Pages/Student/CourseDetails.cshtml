@@ -1,0 +1,370 @@
+@page "{id:int}"
+@model CourseScheduleSystem.Web.Pages.Student.CourseDetailsModel
+
+@using CourseScheduleSystem.Web.Models
+
+@{
+ViewData["Title"] = "Course Details";
+ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
+
+var statusClass =
+    Model.Course?.Status switch
+    {
+        EnrollmentStatus.Enrolled => "details-status-enrolled",
+        EnrollmentStatus.Pending => "details-status-pending",
+        EnrollmentStatus.Closed => "details-status-closed",
+        _ => "details-status-default"
+    };
+
+var statusIcon =
+    Model.Course?.Status switch
+    {
+        EnrollmentStatus.Enrolled => "bi-check-circle-fill",
+        EnrollmentStatus.Pending => "bi-clock-fill",
+        EnrollmentStatus.Closed => "bi-x-circle-fill",
+        _ => "bi-info-circle-fill"
+    };
+
+
+}
+
+<link rel="stylesheet"
+      href="~/css/Student/CourseDetails.css"
+      asp-append-version="true" />
+
+<div class="course-details-page">
+
+
+<div class="course-details-back">
+    <a asp-page="/Student/MyCourses">
+        <i class="bi bi-arrow-left"></i>
+        <span>Back to My Courses</span>
+    </a>
+</div>
+
+@if (Model.Course != null)
+{
+    <section class="course-details-hero">
+
+        <div class="course-details-hero-content">
+
+            <div class="course-details-eyebrow">
+                <i class="bi bi-book"></i>
+                Course Information
+            </div>
+
+            <span class="course-details-code">
+                @Model.Course.Code
+            </span>
+
+            <h1>
+                @Model.Course.Name
+            </h1>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Course.Description))
+            {
+                <p class="course-details-description">
+                    @Model.Course.Description
+                </p>
+            }
+
+            <div class="course-details-status @statusClass">
+                <i class="bi @statusIcon"></i>
+                <span>@Model.Course.Status</span>
+            </div>
+
+        </div>
+
+        <div class="course-details-hero-icon">
+            <i class="bi bi-journal-bookmark"></i>
+        </div>
+
+    </section>
+
+    <section class="course-overview">
+
+        <div class="course-overview-card">
+
+            <div class="overview-icon">
+                <i class="bi bi-person"></i>
+            </div>
+
+            <div class="overview-content">
+                <span>Lecturer</span>
+                <strong>
+                    @Model.Course.LecturerName
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="course-overview-card">
+
+            <div class="overview-icon">
+                <i class="bi bi-award"></i>
+            </div>
+
+            <div class="overview-content">
+                <span>Credits</span>
+                <strong>
+                    @Model.Course.Credits
+                    @(Model.Course.Credits == 1 ? "Credit" : "Credits")
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="course-overview-card">
+
+            <div class="overview-icon">
+                <i class="bi bi-clock"></i>
+            </div>
+
+            <div class="overview-content">
+                <span>Study Session</span>
+                <strong>
+                    @Model.Course.StudySession
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="course-overview-card">
+
+            <div class="overview-icon">
+                <i class="bi bi-hash"></i>
+            </div>
+
+            <div class="overview-content">
+                <span>Course ID</span>
+                <strong>
+                    @Model.Course.CourseId
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    @if (Model.Course.StartDate.HasValue ||
+         Model.Course.EndDate.HasValue)
+    {
+        <section class="course-period-panel">
+
+            <div class="section-heading">
+                <div class="section-heading-icon">
+                    <i class="bi bi-calendar-range"></i>
+                </div>
+
+                <div>
+                    <span>Academic Period</span>
+                    <h2>Course Dates</h2>
+                </div>
+            </div>
+
+            <div class="course-period-content">
+
+                @if (Model.Course.StartDate.HasValue)
+                {
+                    <div class="period-item">
+                        <span>Start Date</span>
+                        <strong>
+                            @Model.Course.StartDate.Value
+                                .ToString("dd MMMM yyyy")
+                        </strong>
+                    </div>
+                }
+
+                @if (Model.Course.EndDate.HasValue)
+                {
+                    <div class="period-divider"></div>
+
+                    <div class="period-item">
+                        <span>End Date</span>
+                        <strong>
+                            @Model.Course.EndDate.Value
+                                .ToString("dd MMMM yyyy")
+                        </strong>
+                    </div>
+                }
+
+            </div>
+
+        </section>
+    }
+
+    <section class="course-schedule-panel">
+
+        <div class="schedule-panel-header">
+
+            <div class="section-heading">
+                <div class="section-heading-icon">
+                    <i class="bi bi-calendar-week"></i>
+                </div>
+
+                <div>
+                    <span>Class Timetable</span>
+                    <h2>Course Schedule</h2>
+                </div>
+            </div>
+
+            <div class="schedule-count">
+                <i class="bi bi-calendar-check"></i>
+                <span>
+                    @Model.Schedule.Count
+                    @(Model.Schedule.Count == 1
+                        ? "class"
+                        : "classes")
+                </span>
+            </div>
+
+        </div>
+
+        @if (Model.Schedule.Any())
+        {
+            <div class="schedule-list">
+
+                @foreach (var item in Model.Schedule)
+                {
+                    <article class="schedule-item">
+
+                        <div class="schedule-day">
+
+                            <span class="schedule-day-label">
+                                Day
+                            </span>
+
+                            <strong>
+                                @item.DayOfWeek
+                            </strong>
+
+                        </div>
+
+                        <div class="schedule-time">
+
+                            <div class="schedule-time-icon">
+                                <i class="bi bi-clock"></i>
+                            </div>
+
+                            <div>
+                                <span>Time</span>
+                                <strong>
+                                    @item.StartTime.ToString("hh\\:mm")
+                                    -
+                                    @item.EndTime.ToString("hh\\:mm")
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="schedule-room">
+
+                            <div class="schedule-room-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+
+                            <div>
+                                <span>Room</span>
+                                <strong>
+                                    @item.Building
+                                    @if (!string.IsNullOrWhiteSpace(item.RoomNumber) &&
+                                         item.RoomNumber != "Room not assigned")
+                                    {
+                                        <span> · @item.RoomNumber</span>
+                                    }
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="schedule-session">
+
+                            <div class="schedule-session-icon">
+                                <i class="bi bi-moon-stars"></i>
+                            </div>
+
+                            <div>
+                                <span>Session</span>
+                                <strong>
+                                    @item.StudySession
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(item.Notes))
+                        {
+                            <div class="schedule-notes">
+                                <i class="bi bi-info-circle"></i>
+                                <span>@item.Notes</span>
+                            </div>
+                        }
+
+                    </article>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="schedule-empty">
+
+                <div class="schedule-empty-icon">
+                    <i class="bi bi-calendar-x"></i>
+                </div>
+
+                <h3>No schedule available</h3>
+
+                <p>
+                    There is currently no active timetable
+                    assigned to this course.
+                </p>
+
+            </div>
+        }
+
+    </section>
+
+    <section class="course-help">
+
+        <div class="course-help-icon">
+            <i class="bi bi-info-circle"></i>
+        </div>
+
+        <div class="course-help-content">
+            <h3>Course information</h3>
+
+            <p>
+                If any course, lecturer, room, or timetable
+                information appears incorrect, contact your
+                academic administrator or class representative.
+            </p>
+        </div>
+
+    </section>
+
+}
+else
+{
+    <section class="course-not-found">
+
+        <div class="course-not-found-icon">
+            <i class="bi bi-journal-x"></i>
+        </div>
+
+        <h1>Course not found</h1>
+
+        <p>
+            The course you are looking for could not be found
+            or is not available in your registered courses.
+        </p>
+
+        <a asp-page="/Student/MyCourses"
+           class="course-back-button">
+            <i class="bi bi-arrow-left"></i>
+            Back to My Courses
+        </a>
+
+    </section>
+}
+</div>

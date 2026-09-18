@@ -1,0 +1,555 @@
+/* =========================================================
+   Design Tokens
+   ========================================================= */
+
+:root {
+    --color-bg: #f6f7f9;
+    --color-surface: #ffffff;
+    --color-surface-alt: #fafbfc;
+    --color-border: #e3e6ea;
+    --color-border-strong: #d0d5da;
+    --color-text: #1a1f2b;
+    --color-text-muted: #5b6472;
+    --color-text-subtle: #8a92a0;
+    --color-primary: #1a4b8c;
+    --color-primary-hover: #143c72;
+    --color-success-fg: #14663a;
+    --color-success-bg: #e9f6ee;
+    --color-success-border: #bfe3ce;
+    --color-danger-fg: #a02020;
+    --color-danger-bg: #fbeaea;
+    --color-danger-border: #f0c4c4;
+    --radius-sm: 6px;
+    --radius: 8px;
+    --radius-lg: 10px;
+    --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.04);
+    --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.06);
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* =========================================================
+   Reset / Base
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.profile-page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-5) var(--space-7);
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+    .profile-page h1,
+    .profile-page h2,
+    .profile-page h3 {
+        margin: 0;
+        font-weight: 600;
+        color: var(--color-text);
+        letter-spacing: -0.01em;
+    }
+
+    .profile-page p {
+        margin: 0;
+    }
+
+    .profile-page a {
+        color: var(--color-primary);
+        text-decoration: none;
+    }
+
+/* =========================================================
+   Page Header
+   ========================================================= */
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+}
+
+    .page-header h1 {
+        font-size: 1.5rem;
+        line-height: 1.25;
+    }
+
+.page-header-text p {
+    margin-top: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+}
+
+/* =========================================================
+   Alert
+   ========================================================= */
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    margin-bottom: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    font-size: 0.9375rem;
+}
+
+    .alert strong {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    .alert p {
+        color: var(--color-text-muted);
+        font-size: 0.875rem;
+    }
+
+.alert-success {
+    border-color: var(--color-success-border);
+    background: var(--color-success-bg);
+    color: var(--color-success-fg);
+}
+
+    .alert-success p {
+        color: var(--color-success-fg);
+        opacity: 0.85;
+    }
+
+    .alert-success i {
+        color: var(--color-success-fg);
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+/* =========================================================
+   Layout
+   ========================================================= */
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--space-5);
+    align-items: start;
+}
+
+.side-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+/* =========================================================
+   Card
+   ========================================================= */
+
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    padding: var(--space-5);
+}
+
+/* =========================================================
+   Identity block
+   ========================================================= */
+
+.identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.avatar {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    flex: 0 0 56px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.identity-text {
+    flex: 1;
+    min-width: 0;
+}
+
+    .identity-text h2 {
+        font-size: 1.125rem;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+    }
+
+    .identity-text p {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+        margin-top: 4px;
+        color: var(--color-text-muted);
+        font-size: 0.875rem;
+    }
+
+    .identity-text i {
+        color: var(--color-text-subtle);
+        margin-right: 4px;
+    }
+
+    .identity-text .dot {
+        color: var(--color-text-subtle);
+    }
+
+/* =========================================================
+   Section
+   ========================================================= */
+
+.section {
+    padding-top: var(--space-5);
+    margin-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+}
+
+    .section:first-of-type {
+        padding-top: var(--space-5);
+    }
+
+.section-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+}
+
+.card > .section-title:first-child {
+    margin-top: 0;
+}
+
+/* =========================================================
+   Info list (definition list)
+   ========================================================= */
+
+.info-list {
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+}
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-row dt {
+        color: var(--color-text-muted);
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .info-row dd {
+        margin: 0;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: var(--color-text);
+        overflow-wrap: anywhere;
+    }
+
+/* =========================================================
+   Stat grid
+   ========================================================= */
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface-alt);
+}
+
+.stat-label {
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.stat-value {
+    color: var(--color-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+/* =========================================================
+   Badge
+   ========================================================= */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+    .badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.85;
+    }
+
+.badge-success {
+    color: var(--color-success-fg);
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
+}
+
+.badge-danger {
+    color: var(--color-danger-fg);
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+    .btn i {
+        font-size: 1rem;
+    }
+
+.btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+}
+
+    .btn-primary:hover {
+        background: var(--color-primary-hover);
+        border-color: var(--color-primary-hover);
+        color: #fff;
+    }
+
+.btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+}
+
+    .btn-secondary:hover {
+        background: var(--color-surface-alt);
+        border-color: var(--color-text-subtle);
+        color: var(--color-text);
+    }
+
+.btn-block {
+    width: 100%;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   Side column helpers
+   ========================================================= */
+
+.muted {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    margin-bottom: var(--space-4);
+}
+
+.card .badge + .muted {
+    margin-top: var(--space-3);
+}
+
+/* =========================================================
+   Empty state
+   ========================================================= */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-3);
+    padding: var(--space-7) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+}
+
+    .empty-state i {
+        font-size: 2rem;
+        color: var(--color-text-subtle);
+    }
+
+    .empty-state h2 {
+        font-size: 1.125rem;
+    }
+
+    .empty-state p {
+        max-width: 400px;
+        color: var(--color-text-muted);
+        font-size: 0.9375rem;
+    }
+
+    .empty-state .btn {
+        margin-top: var(--space-2);
+    }
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side-column {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 640px) {
+    .profile-page {
+        padding: var(--space-5) var(--space-4) var(--space-6);
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-4);
+    }
+
+        .page-header .btn {
+            width: 100%;
+        }
+
+    .identity {
+        flex-wrap: wrap;
+    }
+
+        .identity .badge {
+            margin-left: 0;
+        }
+
+    .info-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-1);
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .stat-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   Accessibility
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+/* =========================================================
+   Print
+   ========================================================= */
+
+@media print {
+    .profile-page {
+        padding: 0;
+        background: #fff;
+    }
+
+    .btn,
+    .alert {
+        display: none;
+    }
+
+    .card {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+}

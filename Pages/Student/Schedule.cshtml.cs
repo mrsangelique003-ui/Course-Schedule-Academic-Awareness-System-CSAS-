@@ -76,25 +76,39 @@ public class ScheduleModel : PageModel
             {
                 Id = s.Id,
                 CourseId = s.CourseId,
+
                 CourseCode = s.Course.Code,
+
                 CourseName = s.Course.Name,
+
                 LecturerName =
+                    s.Lecturer != null &&
                     !string.IsNullOrWhiteSpace(s.Lecturer.FullName)
                         ? s.Lecturer.FullName
                         : "Lecturer not assigned",
+
                 Building =
+                    s.Room != null &&
                     !string.IsNullOrWhiteSpace(s.Room.Building)
                         ? s.Room.Building
                         : "Building not assigned",
+
                 RoomNumber =
+                    s.Room != null &&
                     !string.IsNullOrWhiteSpace(s.Room.RoomNumber)
                         ? s.Room.RoomNumber
                         : "Room not assigned",
+
                 DayOfWeek = s.DayOfWeek,
+
                 StartTime = s.StartTime,
+
                 EndTime = s.EndTime,
+
                 StudySession = s.StudySession,
+
                 Notes = s.Notes,
+
                 Status = s.Status
             })
             .ToListAsync();

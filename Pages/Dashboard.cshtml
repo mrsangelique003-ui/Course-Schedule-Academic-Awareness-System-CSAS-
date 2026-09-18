@@ -4,390 +4,443 @@
 @using CourseScheduleSystem.Web.Models
 
 @{
-    ViewData["Title"] = "Dashboard";
-    ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
+ViewData["Title"] = "Dashboard";
+ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
 }
 
 @section Styles
-{
-    <link rel="stylesheet"
-          href="~/css/Dashboard.css"
-          asp-append-version="true" />
+{ <link rel="stylesheet"
+       href="~/css/Dashboard.css"
+       asp-append-version="true" />
 }
 
 <div class="dashboard-page">
 
-    <!-- Welcome -->
-    <section class="dash-welcome">
+<!-- =====================================================
+     WELCOME
+     ===================================================== -->
 
-        <div class="dash-welcome-text">
+<section class="dash-welcome">
 
-            <span class="dash-eyebrow">
-                STUDENT DASHBOARD
+    <div class="dash-welcome-text">
+
+        <span class="dash-eyebrow">
+            STUDENT DASHBOARD
+        </span>
+
+        <h1>
+            Welcome Back, @(Model.CurrentStudent?.FullName ?? Model.UserName)!
+        </h1>
+
+        <p>
+            Here's an overview of your academic activities
+            and today's class schedule.
+        </p>
+
+    </div>
+
+    <div class="dash-welcome-actions">
+
+        <div class="dash-student-badge">
+
+            <span class="dash-student-avatar">
+                <i class="bi bi-person-fill"
+                   aria-hidden="true"></i>
             </span>
 
-            <h1>
-                Welcome Back, @(Model.CurrentStudent?.FullName ?? Model.UserName)!
-            </h1>
+            <div>
 
-            <p>
-                Here's an overview of your academic activities
-                and today's class schedule.
-            </p>
+                <strong>
+                    @(Model.CurrentStudent?.FullName ?? "Student")
+                </strong>
 
-        </div>
-
-        <div class="dash-welcome-actions">
-
-            <div class="dash-student-badge">
-
-                <span class="dash-student-avatar">
-                    <i class="bi bi-person-fill"
-                       aria-hidden="true"></i>
+                <span>
+                    Registration No:
+                    @(Model.CurrentStudent?.RegNo ?? "—")
                 </span>
 
-                <div>
-                    <strong>
-                        @(Model.CurrentStudent?.FullName ?? "Student")
-                    </strong>
-
-                    <span>
-                        Registration No:
-                        @(Model.CurrentStudent?.RegNo ?? "—")
-                    </span>
-                </div>
-
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- Statistics -->
-    <section class="dash-stats">
+<!-- =====================================================
+     STATISTICS
+     ===================================================== -->
 
-        <article class="dash-stat-card">
+<section class="dash-stats">
 
-            <div class="dash-stat-icon dash-stat-icon-blue">
-                <i class="bi bi-journal-bookmark"
-                   aria-hidden="true"></i>
+    <!-- Enrolled Courses -->
+    <article class="dash-stat-card">
+
+        <div class="dash-stat-icon dash-stat-icon-blue">
+            <i class="bi bi-journal-bookmark"
+               aria-hidden="true"></i>
+        </div>
+
+        <strong>
+            @Model.TotalEnrolledCourses
+        </strong>
+
+        <span>
+            Enrolled Courses
+        </span>
+
+    </article>
+
+
+    <!-- Today's Classes -->
+    <article class="dash-stat-card">
+
+        <div class="dash-stat-icon dash-stat-icon-teal">
+            <i class="bi bi-calendar-check"
+               aria-hidden="true"></i>
+        </div>
+
+        <strong>
+            @Model.TotalUpcomingClasses
+        </strong>
+
+        <span>
+            Today's Classes
+        </span>
+
+    </article>
+
+
+    <!-- Total Credits -->
+    <article class="dash-stat-card">
+
+        <div class="dash-stat-icon dash-stat-icon-green">
+            <i class="bi bi-award"
+               aria-hidden="true"></i>
+        </div>
+
+        <strong>
+            @Model.TotalCredits
+        </strong>
+
+        <span>
+            Total Credits
+        </span>
+
+    </article>
+
+</section>
+
+
+<!-- =====================================================
+     MAIN DASHBOARD CONTENT
+     ===================================================== -->
+
+<section class="dash-grid">
+
+    <!-- =================================================
+         MY COURSES
+         ================================================= -->
+
+    <div class="dash-panel">
+
+        <div class="dash-panel-header">
+
+            <div>
+
+                <span class="dash-panel-label">
+                    ACADEMIC REGISTRATION
+                </span>
+
+                <h2>
+                    My Courses
+                </h2>
+
             </div>
 
-            <strong>
-                @Model.TotalEnrolledCourses
-            </strong>
+            <a asp-page="/Student/MyCourses"
+               class="dash-view-all">
 
-            <span>
-                Enrolled Courses
-            </span>
+                View All
 
-        </article>
-
-
-        <article class="dash-stat-card">
-
-            <div class="dash-stat-icon dash-stat-icon-teal">
-                <i class="bi bi-calendar-check"
+                <i class="bi bi-arrow-right"
                    aria-hidden="true"></i>
-            </div>
 
-            <strong>
-                @Model.TotalUpcomingClasses
-            </strong>
+            </a>
 
-            <span>
-                Today's Classes
-            </span>
-
-        </article>
+        </div>
 
 
-        <article class="dash-stat-card">
+        @if (Model.Courses.Count == 0)
+        {
+            <div class="dash-empty">
 
-            <div class="dash-stat-icon dash-stat-icon-green">
-                <i class="bi bi-award"
-                   aria-hidden="true"></i>
-            </div>
-
-            <strong>
-                @Model.TotalCredits
-            </strong>
-
-            <span>
-                Total Credits
-            </span>
-
-        </article>
-
-    </section>
-
-
-    <!-- Main Dashboard Content -->
-    <section class="dash-grid">
-
-        <!-- My Courses -->
-        <div class="dash-panel">
-
-            <div class="dash-panel-header">
-
-                <div>
-                    <span class="dash-panel-label">
-                        ACADEMIC REGISTRATION
-                    </span>
-
-                    <h2>
-                        My Courses
-                    </h2>
+                <div class="dash-empty-icon">
+                    <i class="bi bi-journal-x"
+                       aria-hidden="true"></i>
                 </div>
 
-                <a asp-page="/Courses"
-                   class="dash-view-all">
-                    View All
-                    <i class="bi bi-arrow-right"
-                       aria-hidden="true"></i>
-                </a>
+                <h3>
+                    No courses found
+                </h3>
+
+                <p>
+                    You currently have no enrolled courses
+                    associated with your academic account.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="dash-course-list">
+
+                @foreach (var course in Model.Courses)
+                {
+                    <article class="dash-course-item">
+
+                        <div class="dash-course-code">
+                            @course.Code
+                        </div>
+
+
+                        <div class="dash-course-info">
+
+                            <strong>
+                                @course.Name
+                            </strong>
+
+                            <span>
+
+                                <i class="bi bi-person"
+                                   aria-hidden="true"></i>
+
+                                @course.LecturerName
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="dash-course-credits">
+
+                            <strong>
+                                @course.Credits
+                            </strong>
+
+                            <span>
+                                Credits
+                            </span>
+
+                        </div>
+
+
+                        <span class="dash-course-status dash-course-status-enrolled">
+                            @course.Status
+                        </span>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </div>
+
+
+    <!-- =================================================
+         TODAY'S SCHEDULE
+         ================================================= -->
+
+    <aside class="dash-schedule">
+
+        <div class="dash-schedule-header">
+
+            <div>
+
+                <span class="dash-panel-label">
+                    TODAY
+                </span>
+
+                <h2>
+                    Class Schedule
+                </h2>
 
             </div>
 
+            <span class="dash-schedule-count">
 
-            @if (Model.Courses.Count == 0)
+                @Model.TotalUpcomingClasses
+
+                @(Model.TotalUpcomingClasses == 1
+                    ? "class"
+                    : "classes")
+
+            </span>
+
+        </div>
+
+
+        <div class="dash-schedule-list">
+
+            @if (Model.ScheduleItems.Count == 0)
             {
-                <div class="dash-empty">
+                <div class="dash-empty dash-schedule-empty">
 
                     <div class="dash-empty-icon">
-                        <i class="bi bi-journal-x"
+
+                        <i class="bi bi-calendar-x"
                            aria-hidden="true"></i>
+
                     </div>
 
                     <h3>
-                        No courses found
+                        No classes today
                     </h3>
 
                     <p>
-                        You currently have no courses associated
-                        with your academic account.
+                        You have no scheduled classes
+                        for today.
                     </p>
+
+                    <a asp-page="/Student/Schedule"
+                       class="dash-empty-link">
+
+                        View Full Schedule
+
+                        <i class="bi bi-arrow-right"
+                           aria-hidden="true"></i>
+
+                    </a>
 
                 </div>
             }
             else
             {
-                <div class="dash-course-list">
+                @foreach (var schedule in Model.ScheduleItems)
+                {
+                    <article class="dash-schedule-card @schedule.CardColorClass">
 
-                    @foreach (var course in Model.Courses)
-                    {
-                        var statusClass =
-                            course.Status switch
-                            {
-                                EnrollmentStatus.Enrolled =>
-                                    "dash-course-status-enrolled",
+                        <div class="dash-schedule-time">
 
-                                EnrollmentStatus.Pending =>
-                                    "dash-course-status-pending",
+                            <strong>
+                                @schedule.StartTime
+                            </strong>
 
-                                EnrollmentStatus.Closed =>
-                                    "dash-course-status-closed",
-
-                                _ =>
-                                    "dash-course-status-default"
-                            };
-
-                        <article class="dash-course-item">
-
-                            <div class="dash-course-code">
-                                @course.Code
-                            </div>
-
-
-                            <div class="dash-course-info">
-
-                                <strong>
-                                    @course.Name
-                                </strong>
-
-                                <span>
-                                    <i class="bi bi-person"
-                                       aria-hidden="true"></i>
-
-                                    @course.LecturerName
-                                </span>
-
-                            </div>
-
-
-                            <div class="dash-course-credits">
-
-                                <strong>
-                                    @course.Credits
-                                </strong>
-
-                                <span>
-                                    Credits
-                                </span>
-
-                            </div>
-
-
-                            <span class="dash-course-status @statusClass">
-                                @course.Status
+                            <span>
+                                @schedule.EndTime
                             </span>
 
-                        </article>
-                    }
+                        </div>
 
-                </div>
+
+                        <div class="dash-schedule-card-content">
+
+                            <div class="dash-schedule-card-head">
+
+                                <span class="dash-schedule-avatar">
+
+                                    <i class="bi bi-book"
+                                       aria-hidden="true"></i>
+
+                                </span>
+
+                                <div>
+
+                                    <strong>
+                                        @schedule.Subject
+                                    </strong>
+
+                                    @if (!string.IsNullOrWhiteSpace(schedule.CourseCode))
+                                    {
+                                        <span>
+                                            @schedule.CourseCode
+                                        </span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="dash-schedule-card-details">
+
+                                <span>
+
+                                    <i class="bi bi-person-badge"
+                                       aria-hidden="true"></i>
+
+                                    @schedule.TeacherName
+
+                                </span>
+
+
+                                <span>
+
+                                    <i class="bi bi-door-open"
+                                       aria-hidden="true"></i>
+
+                                    @schedule.RoomNumber
+
+                                </span>
+
+                            </div>
+
+
+                            @if (!string.IsNullOrWhiteSpace(schedule.Notes))
+                            {
+                                <div class="dash-schedule-card-notes">
+
+                                    <i class="bi bi-info-circle"
+                                       aria-hidden="true"></i>
+
+                                    <span>
+                                        @schedule.Notes
+                                    </span>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </article>
+                }
             }
 
         </div>
 
+    </aside>
 
-        <!-- Today's Schedule -->
-        <aside class="dash-schedule">
-
-            <div class="dash-schedule-header">
-
-                <div>
-                    <span class="dash-panel-label">
-                        TODAY
-                    </span>
-
-                    <h2>
-                        Class Schedule
-                    </h2>
-                </div>
-
-                <span class="dash-schedule-count">
-                    @Model.TotalUpcomingClasses
-                    @(Model.TotalUpcomingClasses == 1
-                        ? "class"
-                        : "classes")
-                </span>
-
-            </div>
+</section>
 
 
-            <div class="dash-schedule-list">
+<!-- =====================================================
+     ACADEMIC INFORMATION
+     ===================================================== -->
 
-                @if (Model.ScheduleItems.Count == 0)
-                {
-                    <div class="dash-empty dash-schedule-empty">
+<section class="dash-information">
 
-                        <div class="dash-empty-icon">
-                            <i class="bi bi-calendar-x"
-                               aria-hidden="true"></i>
-                        </div>
+    <div class="dash-information-icon">
 
-                        <h3>
-                            No classes today
-                        </h3>
+        <i class="bi bi-info-circle-fill"
+           aria-hidden="true"></i>
 
-                        <p>
-                            You have no scheduled classes
-                            for today.
-                        </p>
+    </div>
 
-                    </div>
-                }
-                else
-                {
-                    @foreach (var schedule in Model.ScheduleItems)
-                    {
-                        <article class="dash-schedule-card @schedule.CardColorClass">
+    <div>
 
-                            <div class="dash-schedule-time">
+        <strong>
+            Academic information
+        </strong>
 
-                                <strong>
-                                    @schedule.StartTime
-                                </strong>
+        <p>
+            Your dashboard displays information based on
+            your current course registrations and today's
+            scheduled classes.
+        </p>
 
-                                <span>
-                                    @schedule.EndTime
-                                </span>
+    </div>
 
-                            </div>
-
-
-                            <div class="dash-schedule-card-content">
-
-                                <div class="dash-schedule-card-head">
-
-                                    <span class="dash-schedule-avatar">
-                                        <i class="bi bi-book"
-                                           aria-hidden="true"></i>
-                                    </span>
-
-                                    <div>
-
-                                        <strong>
-                                            @schedule.Subject
-                                        </strong>
-
-                                        @if (!string.IsNullOrWhiteSpace(schedule.CourseCode))
-                                        {
-                                            <span>
-                                                @schedule.CourseCode
-                                            </span>
-                                        }
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="dash-schedule-card-details">
-
-                                    <span>
-                                        <i class="bi bi-person-badge"
-                                           aria-hidden="true"></i>
-
-                                        @schedule.TeacherName
-                                    </span>
-
-                                    <span>
-                                        <i class="bi bi-door-open"
-                                           aria-hidden="true"></i>
-
-                                        @schedule.RoomNumber
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        </article>
-                    }
-                }
-
-            </div>
-
-        </aside>
-
-    </section>
-
-
-    <!-- Academic Information -->
-    <section class="dash-information">
-
-        <div class="dash-information-icon">
-            <i class="bi bi-info-circle-fill"
-               aria-hidden="true"></i>
-        </div>
-
-        <div>
-
-            <strong>
-                Academic information
-            </strong>
-
-            <p>
-                Your dashboard displays information based on
-                your current course registrations and today's
-                scheduled classes.
-            </p>
-
-        </div>
-
-    </section>
-
+</section>
 </div>

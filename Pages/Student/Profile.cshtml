@@ -1,0 +1,164 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.ProfileModel
+
+@{
+    ViewData["Title"] = "My Profile";
+    ViewData["StudentId"] = Model.Profile?.RegNo ?? "—";
+
+    var initials = "ST";
+
+    if (!string.IsNullOrWhiteSpace(Model.Profile?.FullName))
+    {
+        var nameParts = Model.Profile.FullName
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        initials = nameParts.Length >= 2
+            ? $"{nameParts[0][0]}{nameParts[^1][0]}".ToUpper()
+            : nameParts[0][0].ToString().ToUpper();
+    }
+}
+
+<link rel="stylesheet"
+      href="~/css/Student/Profile.css"
+      asp-append-version="true" />
+
+<div class="profile-page">
+
+    <header class="page-header">
+        <div class="page-header-text">
+            <h1>My Profile</h1>
+            <p>Your personal information and academic account details.</p>
+        </div>
+    </header>
+
+    @if (TempData["PasswordChanged"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <i class="bi bi-check-circle-fill"></i>
+            <div>
+                <strong>Password changed successfully</strong>
+                <p>@TempData["PasswordChanged"]</p>
+            </div>
+        </div>
+    }
+
+    @if (Model.Profile != null)
+    {
+        <div class="profile-layout">
+
+            <main class="card">
+
+                <div class="identity">
+                    <div class="avatar">@initials</div>
+
+                    <div class="identity-text">
+                        <h2>@Model.Profile.FullName</h2>
+                        <p>
+                            <span><i class="bi bi-person-badge"></i> @Model.Profile.RegNo</span>
+                            <span class="dot">•</span>
+                            <span><i class="bi bi-mortarboard"></i> Student</span>
+                        </p>
+                    </div>
+
+                    <span class="badge @(Model.Profile.IsActive ? "badge-success" : "badge-danger")">
+                        @(Model.Profile.IsActive ? "Active" : "Inactive")
+                    </span>
+                </div>
+
+                <section class="section">
+                    <h3 class="section-title">Personal Information</h3>
+
+                    <dl class="info-list">
+                        <div class="info-row">
+                            <dt>Full Name</dt>
+                            <dd>@Model.Profile.FullName</dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Registration Number</dt>
+                            <dd>@Model.Profile.RegNo</dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Email Address</dt>
+                            <dd>
+                                @(string.IsNullOrWhiteSpace(Model.Profile.Email)
+                                    ? "Not provided"
+                                    : Model.Profile.Email)
+                            </dd>
+                        </div>
+
+                        <div class="info-row">
+                            <dt>Account Role</dt>
+                            <dd>Student</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="section">
+                    <h3 class="section-title">Academic Overview</h3>
+
+                    <div class="stat-grid">
+                        <div class="stat">
+                            <span class="stat-label">Enrolled Courses</span>
+                            <span class="stat-value">@Model.EnrolledCourses</span>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-label">Total Credits</span>
+                            <span class="stat-value">@Model.TotalCredits</span>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+            <aside class="side-column">
+
+                <section class="card">
+                    <h3 class="section-title">Account Security</h3>
+
+                    <p class="muted">
+                        Your account is protected with a password.
+                        Use the button below to update it.
+                    </p>
+
+                    <a asp-page="/Student/ChangePassword" class="btn btn-secondary btn-block">
+                        <i class="bi bi-key"></i>
+                        <span>Change Password</span>
+                    </a>
+                </section>
+
+                <section class="card">
+                    <h3 class="section-title">Account Status</h3>
+
+                    <span class="badge @(Model.Profile.IsActive ? "badge-success" : "badge-danger")">
+                        @(Model.Profile.IsActive ? "Account Active" : "Account Inactive")
+                    </span>
+
+                    <p class="muted">
+                        @(Model.Profile.IsActive
+                            ? "Your student account is currently active."
+                            : "Your student account is currently inactive.")
+                    </p>
+                </section>
+
+            </aside>
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="bi bi-person-x"></i>
+            <h2>Profile unavailable</h2>
+            <p>We could not load your student profile. Please sign in again.</p>
+
+            <a asp-page="/Account/Login" class="btn btn-primary">
+                <i class="bi bi-box-arrow-in-right"></i>
+                <span>Sign In</span>
+            </a>
+        </div>
+    }
+
+</div>

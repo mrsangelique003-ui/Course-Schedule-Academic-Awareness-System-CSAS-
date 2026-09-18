@@ -42,7 +42,8 @@ namespace CourseScheduleSystem.Web.Pages.Account
             int Id,
             string FullName,
             string? Email,
-            string Role);
+            string Role,
+            string? RegistrationNumber);
 
         public void OnGet()
         {
@@ -93,6 +94,14 @@ namespace CourseScheduleSystem.Web.Pages.Account
                         match.Email));
             }
 
+            if (!string.IsNullOrWhiteSpace(match.RegistrationNumber))
+            {
+                claims.Add(
+                    new Claim(
+                        "RegNo",
+                        match.RegistrationNumber));
+            }
+
             var identity = new ClaimsIdentity(
                 claims,
                 CookieAuthenticationDefaults.AuthenticationScheme);
@@ -137,7 +146,8 @@ namespace CourseScheduleSystem.Web.Pages.Account
                 account.Id,
                 account.FullName,
                 account.Email,
-                "Administrator");
+                "Administrator",
+                null);
         }
 
         private async Task<AccountMatch?> CheckLecturerAsync(
@@ -166,7 +176,8 @@ namespace CourseScheduleSystem.Web.Pages.Account
                 account.Id,
                 account.FullName,
                 account.Email,
-                "Lecturer");
+                "Lecturer",
+                null);
         }
 
         private async Task<AccountMatch?> CheckClassRepresentativeAsync(
@@ -194,7 +205,8 @@ namespace CourseScheduleSystem.Web.Pages.Account
                 account.Id,
                 account.FullName,
                 account.Email,
-                "ClassRepresentative");
+                "ClassRepresentative",
+                account.RegNo);
         }
 
         private async Task<AccountMatch?> CheckStudentAsync(
@@ -222,7 +234,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
                 account.Id,
                 account.FullName,
                 account.Email,
-                "Student");
+                "Student",
+                account.RegNo);
         }
     }
 }
+
