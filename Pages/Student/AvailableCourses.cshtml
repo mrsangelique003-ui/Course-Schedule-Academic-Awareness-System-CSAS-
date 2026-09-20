@@ -1,0 +1,332 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.AvailableCoursesModel
+@using CourseScheduleSystem.Web.Models
+
+@{
+    ViewData["Title"] = "Available Courses";
+    ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
+}
+
+<link rel="stylesheet" href="~/css/Student/AvailableCourses.css" />
+
+<div class="available-courses-page">
+
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title-area">
+                <span class="page-eyebrow">
+                    <i class="bi bi-book-half"></i>
+                    Course Registration
+                </span>
+                <h1>Available Courses</h1>
+                <p>Browse the courses currently available for registration.</p>
+            </div>
+
+            <div class="course-summary">
+                <div class="summary-icon">
+                    <i class="bi bi-journal-bookmark-fill"></i>
+                </div>
+                <div>
+                    <span class="summary-label">Available Courses</span>
+                    <strong>@Model.AvailableCourseCount</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["EnrollmentSuccess"] != null)
+    {
+        <div class="enrollment-alert alert-success">
+            <div class="alert-icon"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="alert-content">
+                <strong>Enrollment Successful</strong>
+                <span>@TempData["EnrollmentSuccess"]</span>
+            </div>
+        </div>
+    }
+
+    @if (TempData["EnrollmentError"] != null)
+    {
+        <div class="enrollment-alert alert-error">
+            <div class="alert-icon"><i class="bi bi-exclamation-circle-fill"></i></div>
+            <div class="alert-content">
+                <strong>Enrollment Unsuccessful</strong>
+                <span>@TempData["EnrollmentError"]</span>
+            </div>
+        </div>
+    }
+
+    @if (TempData["EnrollmentInfo"] != null)
+    {
+        <div class="enrollment-alert alert-info">
+            <div class="alert-icon"><i class="bi bi-info-circle-fill"></i></div>
+            <div class="alert-content">
+                <strong>Enrollment Information</strong>
+                <span>@TempData["EnrollmentInfo"]</span>
+            </div>
+        </div>
+    }
+
+    @if (Model.Courses.Count > 0)
+    {
+        <section class="course-discovery">
+
+            <div class="course-discovery-header">
+                <div>
+                    <span class="section-eyebrow">Course Catalogue</span>
+                    <h2>Find your course</h2>
+                    <p>Search by course code, name, lecturer, or description.</p>
+                </div>
+                <span class="course-result-count" id="courseResultCount">
+                    @Model.Courses.Count courses
+                </span>
+            </div>
+
+            <div class="course-search">
+                <div class="search-icon"><i class="bi bi-search"></i></div>
+                <input type="search"
+                       id="courseSearch"
+                       class="course-search-input"
+                       placeholder="Search courses..."
+                       autocomplete="off"
+                       aria-label="Search available courses" />
+                <button type="button"
+                        id="clearCourseSearch"
+                        class="clear-search"
+                        aria-label="Clear course search"
+                        title="Clear search">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <div class="course-grid" id="courseGrid">
+
+                @foreach (var course in Model.Courses)
+                {
+                    var statusClass =
+                        course.EnrollmentStatus == EnrollmentStatus.Enrolled
+                            ? "status-enrolled"
+                            : course.EnrollmentStatus == EnrollmentStatus.Pending
+                                ? "status-pending"
+                                : "status-available";
+
+                    var statusText =
+                        course.EnrollmentStatus == EnrollmentStatus.Enrolled
+                            ? "Enrolled"
+                            : course.EnrollmentStatus == EnrollmentStatus.Pending
+                                ? "Pending"
+                                : "Available";
+
+                    var statusIcon =
+                        course.EnrollmentStatus == EnrollmentStatus.Enrolled
+                            ? "bi-check-circle-fill"
+                            : course.EnrollmentStatus == EnrollmentStatus.Pending
+                                ? "bi-clock-fill"
+                                : "bi-unlock-fill";
+
+                    <article class="course-card"
+                             data-search="@course.Code @course.Name @course.LecturerName @course.Description @course.StudySession">
+
+                        <div class="course-card-top">
+                            <span class="course-code">@course.Code</span>
+                            <span class="course-status @statusClass">
+                                <i class="bi @statusIcon"></i>
+                                @statusText
+                            </span>
+                        </div>
+
+                        <div class="course-card-body">
+
+                            <h3>@course.Name</h3>
+
+                            <p class="course-description">
+                                @(string.IsNullOrWhiteSpace(course.Description)
+                                    ? "Course information is available through the course details page."
+                                    : course.Description)
+                            </p>
+
+                            <div class="course-details">
+                                <div class="course-detail">
+                                    <div class="detail-icon"><i class="bi bi-person-fill"></i></div>
+                                    <div>
+                                        <span>Lecturer</span>
+                                        <strong>@course.LecturerName</strong>
+                                    </div>
+                                </div>
+                                <div class="course-detail">
+                                    <div class="detail-icon"><i class="bi bi-award-fill"></i></div>
+                                    <div>
+                                        <span>Credits</span>
+                                        <strong>@course.Credits @(course.Credits == 1 ? "Credit" : "Credits")</strong>
+                                    </div>
+                                </div>
+                                <div class="course-detail">
+                                    <div class="detail-icon"><i class="bi bi-calendar3"></i></div>
+                                    <div>
+                                        <span>Session</span>
+                                        <strong>@course.StudySession</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="registration-window">
+                                <div class="registration-heading">
+                                    <span>
+                                        <i class="bi bi-calendar-check"></i>
+                                        Registration Window
+                                    </span>
+                                    <span class="registration-open">Open</span>
+                                </div>
+                                <div class="registration-dates">
+                                    <div>
+                                        <span>Opens</span>
+                                        <strong>@(course.RegistrationOpenDate?.ToString("dd MMM yyyy, HH:mm") ?? "—")</strong>
+                                    </div>
+                                    <i class="bi bi-arrow-right"></i>
+                                    <div>
+                                        <span>Closes</span>
+                                        <strong>@(course.RegistrationCloseDate?.ToString("dd MMM yyyy, HH:mm") ?? "—")</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="course-period">
+                                <div>
+                                    <i class="bi bi-calendar-range"></i>
+                                    <span>Course Period</span>
+                                </div>
+                                <strong>
+                                    @(course.StartDate?.ToString("dd MMM yyyy") ?? "—")
+                                    <span>—</span>
+                                    @(course.EndDate?.ToString("dd MMM yyyy") ?? "—")
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="course-card-footer">
+                            @if (course.EnrollmentStatus == EnrollmentStatus.Enrolled)
+                            {
+                                <a asp-page="/Student/CourseDetails"
+                                   asp-route-id="@course.Id"
+                                   class="course-action course-action-primary">
+                                    View Course
+                                </a>
+                            }
+                            else if (course.EnrollmentStatus == EnrollmentStatus.Pending)
+                            {
+                                <button type="button" class="course-action course-action-disabled" disabled>
+                                    Enrollment Pending
+                                </button>
+                            }
+                            else
+                            {
+                                <form method="post" asp-page-handler="Enroll" class="enrollment-form">
+                                    <input type="hidden" name="courseId" value="@course.Id" />
+                                    <button type="submit" class="course-action course-action-primary">
+                                        Enroll Now
+                                    </button>
+                                </form>
+                            }
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+
+            <div class="no-search-results" id="noSearchResults" hidden>
+                <div class="no-results-icon"><i class="bi bi-search"></i></div>
+                <h3>No courses found</h3>
+                <p>No available course matches your search. Try another course code, name, or lecturer.</p>
+                <button type="button" id="resetCourseSearch" class="reset-search-button">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    Clear Search
+                </button>
+            </div>
+
+        </section>
+    }
+    else
+    {
+        <section class="empty-state">
+            <div class="empty-state-icon"><i class="bi bi-journal-x"></i></div>
+            <h2>No Courses Available</h2>
+            <p>There are currently no courses available for registration. Please check again later.</p>
+            <a asp-page="/Dashboard" class="empty-state-button">
+                <i class="bi bi-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </section>
+    }
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("courseSearch");
+        const clearButton = document.getElementById("clearCourseSearch");
+        const resetButton = document.getElementById("resetCourseSearch");
+        const courseGrid = document.getElementById("courseGrid");
+        const noResults = document.getElementById("noSearchResults");
+        const resultCount = document.getElementById("courseResultCount");
+
+        if (!searchInput || !courseGrid) return;
+
+        const cards = Array.from(courseGrid.querySelectorAll(".course-card"));
+
+        // Stagger card entrance + remove shimmer after it completes
+        cards.forEach((card, index) => {
+            card.style.setProperty("--card-index", index);
+
+            setTimeout(() => {
+                card.classList.add("card-loaded");
+            }, 600 + index * 80);
+        });
+
+        function updateResults() {
+            const query = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            cards.forEach((card) => {
+                const searchableText = (card.dataset.search || "")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                    .toLowerCase();
+
+                const matches = query === "" || searchableText.includes(query);
+
+                if (matches) {
+                    card.classList.remove("course-card-hidden");
+                    card.classList.remove("course-card-reveal");
+                    void card.offsetWidth;
+                    card.classList.add("course-card-reveal");
+                    visibleCount++;
+                } else {
+                    card.classList.add("course-card-hidden");
+                    card.classList.remove("course-card-reveal");
+                }
+            });
+
+            if (resultCount) {
+                resultCount.textContent = visibleCount === 1 ? "1 course" : `${visibleCount} courses`;
+            }
+
+            if (noResults) noResults.hidden = visibleCount !== 0;
+
+            clearButton.classList.toggle("search-has-value", query.length > 0);
+        }
+
+        function clearSearch() {
+            searchInput.value = "";
+            updateResults();
+            searchInput.focus();
+        }
+
+        searchInput.addEventListener("input", updateResults);
+        clearButton.addEventListener("click", clearSearch);
+        if (resetButton) resetButton.addEventListener("click", clearSearch);
+
+        updateResults();
+    });
+</script>

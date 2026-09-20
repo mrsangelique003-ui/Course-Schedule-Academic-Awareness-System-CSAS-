@@ -314,8 +314,11 @@ public static class DbInitializer
 
         foreach (var item in roomData)
         {
-            if (!await db.Rooms.AnyAsync(
-                r => r.RoomNumber == item.Item1))
+            var room = await db.Rooms
+                .FirstOrDefaultAsync(
+                    r => r.RoomNumber == item.Item1);
+
+            if (room == null)
             {
                 db.Rooms.Add(new Room
                 {
@@ -325,6 +328,13 @@ public static class DbInitializer
                     RoomType = item.Item4,
                     IsAvailable = true
                 });
+            }
+            else
+            {
+                room.Building = item.Item2;
+                room.Capacity = item.Item3;
+                room.RoomType = item.Item4;
+                room.IsAvailable = true;
             }
         }
 
@@ -368,18 +378,30 @@ public static class DbInitializer
             ("CSE406", "Final Year Project", 6, "Planning, development and presentation of a software project.")
         };
 
-        var existingCourseCodes =
-            await db.Courses
-                .Select(c => c.Code)
-                .ToListAsync();
+        var registrationOpen =
+            DateTime.UtcNow.AddDays(-1);
+
+        var registrationClose =
+            registrationOpen.AddDays(2);
+
+        var courseStart =
+            DateTime.UtcNow.AddDays(-10);
+
+        var courseEnd =
+            DateTime.UtcNow.AddDays(90);
 
         for (var i = 0; i < courseData.Length; i++)
         {
             var item = courseData[i];
 
-            if (!existingCourseCodes.Contains(item.Item1))
+            var course =
+                await db.Courses
+                    .FirstOrDefaultAsync(
+                        c => c.Code == item.Item1);
+
+            if (course == null)
             {
-                db.Courses.Add(new Course
+                course = new Course
                 {
                     Code = item.Item1,
                     Name = item.Item2,
@@ -387,15 +409,35 @@ public static class DbInitializer
                     Credits = item.Item3,
                     Status = CourseStatus.Available,
                     StudySession = StudySession.Day,
-                    LecturerId = lecturers[i % lecturers.Count].Id,
-                    StartDate = new DateTime(2026, 9, 1),
-                    EndDate = new DateTime(2026, 12, 15),
+                    LecturerId =
+                        lecturers[i % lecturers.Count].Id,
+                    StartDate = courseStart,
+                    EndDate = courseEnd,
                     RegistrationOpenDate =
-                        new DateTime(2026, 8, 25),
+                        registrationOpen,
                     RegistrationCloseDate =
-                        new DateTime(2026, 9, 30),
+                        registrationClose,
                     IsActive = true
-                });
+                };
+
+                db.Courses.Add(course);
+            }
+            else
+            {
+                course.Name = item.Item2;
+                course.Description = item.Item4;
+                course.Credits = item.Item3;
+                course.Status = CourseStatus.Available;
+                course.StudySession = StudySession.Day;
+                course.LecturerId =
+                    lecturers[i % lecturers.Count].Id;
+                course.StartDate = courseStart;
+                course.EndDate = courseEnd;
+                course.RegistrationOpenDate =
+                    registrationOpen;
+                course.RegistrationCloseDate =
+                    registrationClose;
+                course.IsActive = true;
             }
         }
 
@@ -418,61 +460,63 @@ public static class DbInitializer
                 .ToListAsync();
 
         // =========================================================
-        // SCHEDULE ENTRIES — 20 RECORDS
+        // SCHEDULE ENTRIES — ORIGINAL 20 RECORDS
         // =========================================================
 
         var scheduleSlots = new[]
         {
-            (DayOfWeek.Monday,  new TimeOnly(8, 0),  new TimeOnly(10, 0)),
-            (DayOfWeek.Monday,  new TimeOnly(10, 0), new TimeOnly(12, 0)),
-            (DayOfWeek.Monday,  new TimeOnly(13, 0), new TimeOnly(15, 0)),
-            (DayOfWeek.Monday,  new TimeOnly(15, 0), new TimeOnly(17, 0)),
+            (DayOfWeek.Monday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+            (DayOfWeek.Monday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+            (DayOfWeek.Monday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
+            (DayOfWeek.Monday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Tuesday, new TimeOnly(8, 0),  new TimeOnly(10, 0)),
+            (DayOfWeek.Tuesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
             (DayOfWeek.Tuesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
             (DayOfWeek.Tuesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
             (DayOfWeek.Tuesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Wednesday, new TimeOnly(8, 0),  new TimeOnly(10, 0)),
+            (DayOfWeek.Wednesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
             (DayOfWeek.Wednesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
             (DayOfWeek.Wednesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
             (DayOfWeek.Wednesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Thursday, new TimeOnly(8, 0),  new TimeOnly(10, 0)),
+            (DayOfWeek.Thursday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
             (DayOfWeek.Thursday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
             (DayOfWeek.Thursday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
             (DayOfWeek.Thursday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Friday, new TimeOnly(8, 0),  new TimeOnly(10, 0)),
+            (DayOfWeek.Friday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
             (DayOfWeek.Friday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
             (DayOfWeek.Friday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
             (DayOfWeek.Friday, new TimeOnly(15, 0), new TimeOnly(17, 0))
         };
 
+        var existingScheduleKeys =
+            await db.ScheduleEntries
+                .Select(s => new
+                {
+                    s.CourseId,
+                    s.DayOfWeek,
+                    s.StartTime
+                })
+                .ToListAsync();
+
         var existingScheduleCount =
-            await db.ScheduleEntries.CountAsync();
+            existingScheduleKeys.Count;
 
         if (existingScheduleCount < 20)
         {
-            var existingScheduleKeys =
-                await db.ScheduleEntries
-                    .Select(s => new
-                    {
-                        s.CourseId,
-                        s.DayOfWeek,
-                        s.StartTime
-                    })
-                    .ToListAsync();
-
-            for (var i = existingScheduleCount;
-                 i < 20;
-                 i++)
+            for (var i = 0; i < 20; i++)
             {
-                var course = courses[i % courses.Count];
+                var course =
+                    courses[i % courses.Count];
+
                 var lecturer =
                     lecturers[i % lecturers.Count];
+
                 var room =
                     rooms[i % rooms.Count];
+
                 var slot =
                     scheduleSlots[i];
 
@@ -506,7 +550,246 @@ public static class DbInitializer
         }
 
         // =========================================================
-        // ENROLLMENTS — 20 RECORDS
+        // ADD 2 EXTRA CLASSES FOR TODAY — CLASSROOM TESTING
+        // USING RWANDA TIME (UTC+2)
+        // =========================================================
+
+        DateTime testingNow;
+
+        try
+        {
+            var rwandaTimeZone =
+                TimeZoneInfo.FindSystemTimeZoneById(
+                    "South Africa Standard Time");
+
+            testingNow =
+                TimeZoneInfo.ConvertTimeFromUtc(
+                    DateTime.UtcNow,
+                    rwandaTimeZone);
+        }
+        catch (TimeZoneNotFoundException)
+        {
+            testingNow =
+                DateTime.UtcNow.AddHours(2);
+        }
+        catch (InvalidTimeZoneException)
+        {
+            testingNow =
+                DateTime.UtcNow.AddHours(2);
+        }
+
+        var testingToday =
+            testingNow.DayOfWeek;
+
+        var currentTime =
+            TimeOnly.FromDateTime(testingNow);
+
+        var firstTestingCourse =
+            courses[0];
+
+        var secondTestingCourse =
+            courses[1];
+
+        var firstTestingLecturer =
+            lecturers[0];
+
+        var secondTestingLecturer =
+            lecturers[1];
+
+        var firstTestingRoom =
+            rooms[0];
+
+        var secondTestingRoom =
+            rooms[1];
+
+        // ---------------------------------------------------------
+        // ONGOING CLASS
+        // ---------------------------------------------------------
+
+        var ongoingStart =
+            currentTime.AddMinutes(-30);
+
+        var ongoingEnd =
+            currentTime.AddMinutes(30);
+
+        // ---------------------------------------------------------
+        // UPCOMING CLASS
+        // ---------------------------------------------------------
+
+        var upcomingStart =
+            currentTime.AddMinutes(45);
+
+        var upcomingEnd =
+            currentTime.AddMinutes(105);
+
+        // ---------------------------------------------------------
+        // ONGOING TEST CLASS
+        // ---------------------------------------------------------
+
+        var existingOngoingTest =
+            await db.ScheduleEntries
+                .FirstOrDefaultAsync(s =>
+                    s.Notes ==
+                    "CLASSROOM TEST — ONGOING");
+
+        if (existingOngoingTest == null)
+        {
+            existingOngoingTest =
+                new ScheduleEntry
+                {
+                    CourseId =
+                        firstTestingCourse.Id,
+
+                    LecturerId =
+                        firstTestingLecturer.Id,
+
+                    RoomId =
+                        firstTestingRoom.Id,
+
+                    DayOfWeek =
+                        testingToday,
+
+                    StartTime =
+                        ongoingStart,
+
+                    EndTime =
+                        ongoingEnd,
+
+                    StudySession =
+                        StudySession.Day,
+
+                    Status =
+                        ScheduleStatus.Active,
+
+                    Notes =
+                        "CLASSROOM TEST — ONGOING",
+
+                    IsActive =
+                        true
+                };
+
+            db.ScheduleEntries.Add(
+                existingOngoingTest);
+        }
+        else
+        {
+            existingOngoingTest.CourseId =
+                firstTestingCourse.Id;
+
+            existingOngoingTest.LecturerId =
+                firstTestingLecturer.Id;
+
+            existingOngoingTest.RoomId =
+                firstTestingRoom.Id;
+
+            existingOngoingTest.DayOfWeek =
+                testingToday;
+
+            existingOngoingTest.StartTime =
+                ongoingStart;
+
+            existingOngoingTest.EndTime =
+                ongoingEnd;
+
+            existingOngoingTest.StudySession =
+                StudySession.Day;
+
+            existingOngoingTest.Status =
+                ScheduleStatus.Active;
+
+            existingOngoingTest.Notes =
+                "CLASSROOM TEST — ONGOING";
+
+            existingOngoingTest.IsActive =
+                true;
+        }
+
+        // ---------------------------------------------------------
+        // UPCOMING TEST CLASS
+        // ---------------------------------------------------------
+
+        var existingUpcomingTest =
+            await db.ScheduleEntries
+                .FirstOrDefaultAsync(s =>
+                    s.Notes ==
+                    "CLASSROOM TEST — UPCOMING");
+
+        if (existingUpcomingTest == null)
+        {
+            existingUpcomingTest =
+                new ScheduleEntry
+                {
+                    CourseId =
+                        secondTestingCourse.Id,
+
+                    LecturerId =
+                        secondTestingLecturer.Id,
+
+                    RoomId =
+                        secondTestingRoom.Id,
+
+                    DayOfWeek =
+                        testingToday,
+
+                    StartTime =
+                        upcomingStart,
+
+                    EndTime =
+                        upcomingEnd,
+
+                    StudySession =
+                        StudySession.Day,
+
+                    Status =
+                        ScheduleStatus.Active,
+
+                    Notes =
+                        "CLASSROOM TEST — UPCOMING",
+
+                    IsActive =
+                        true
+                };
+
+            db.ScheduleEntries.Add(
+                existingUpcomingTest);
+        }
+        else
+        {
+            existingUpcomingTest.CourseId =
+                secondTestingCourse.Id;
+
+            existingUpcomingTest.LecturerId =
+                secondTestingLecturer.Id;
+
+            existingUpcomingTest.RoomId =
+                secondTestingRoom.Id;
+
+            existingUpcomingTest.DayOfWeek =
+                testingToday;
+
+            existingUpcomingTest.StartTime =
+                upcomingStart;
+
+            existingUpcomingTest.EndTime =
+                upcomingEnd;
+
+            existingUpcomingTest.StudySession =
+                StudySession.Day;
+
+            existingUpcomingTest.Status =
+                ScheduleStatus.Active;
+
+            existingUpcomingTest.Notes =
+                "CLASSROOM TEST — UPCOMING";
+
+            existingUpcomingTest.IsActive =
+                true;
+        }
+
+        await db.SaveChangesAsync();
+
+        // =========================================================
+        // ENROLLMENTS — TEST DATA
         // =========================================================
 
         var students =
@@ -574,12 +857,19 @@ public static class DbInitializer
                     db.Enrollments.Add(
                         new Enrollment
                         {
-                            StudentId = student.Id,
-                            CourseId = course.Id,
-                            Status = status,
+                            StudentId =
+                                student.Id,
+
+                            CourseId =
+                                course.Id,
+
+                            Status =
+                                status,
+
                             RequestedAt =
                                 DateTime.UtcNow.AddDays(
                                     -(enrollmentIndex + 1)),
+
                             ApprovedAt =
                                 status ==
                                 EnrollmentStatus.Enrolled
@@ -623,22 +913,30 @@ public static class DbInitializer
                 var enrollment =
                     await db.Enrollments
                         .FirstOrDefaultAsync(e =>
-                            e.StudentId == firstStudent.Id &&
-                            e.CourseId == course.Id);
+                            e.StudentId ==
+                                firstStudent.Id &&
+                            e.CourseId ==
+                                course.Id);
 
                 if (enrollment == null)
                 {
                     db.Enrollments.Add(
                         new Enrollment
                         {
-                            StudentId = firstStudent.Id,
-                            CourseId = course.Id,
+                            StudentId =
+                                firstStudent.Id,
+
+                            CourseId =
+                                course.Id,
+
                             Status =
                                 EnrollmentStatus.Enrolled,
+
                             RequestedAt =
-                                DateTime.UtcNow.AddDays(-7),
+                                DateTime.UtcNow.AddDays(-1),
+
                             ApprovedAt =
-                                DateTime.UtcNow.AddDays(-6)
+                                DateTime.UtcNow
                         });
                 }
                 else
@@ -649,7 +947,7 @@ public static class DbInitializer
                     if (!enrollment.ApprovedAt.HasValue)
                     {
                         enrollment.ApprovedAt =
-                            DateTime.UtcNow.AddDays(-6);
+                            DateTime.UtcNow;
                     }
                 }
             }
@@ -658,3 +956,4 @@ public static class DbInitializer
         }
     }
 }
+

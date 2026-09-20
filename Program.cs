@@ -1,5 +1,6 @@
 ﻿using CourseScheduleSystem.Web.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using System.IO.Compression;
@@ -7,29 +8,35 @@ using System.IO.Compression;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sql => sql.UseQuerySplittingBehavior(
-            QuerySplittingBehavior.SplitQuery)
-    )
+options.UseSqlServer(
+builder.Configuration.GetConnectionString("DefaultConnection"),
+sql => sql.UseQuerySplittingBehavior(
+QuerySplittingBehavior.SplitQuery)
+)
 );
 
+builder.Services.AddScoped<
+IPasswordHasher<CourseScheduleSystem.Web.Models.Student>,
+PasswordHasher<CourseScheduleSystem.Web.Models.Student>>();
+
 builder.Services.AddAuthentication(
-    CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Account/Login";
-        options.LogoutPath = "/Account/Logout";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
 
-        options.ExpireTimeSpan = TimeSpan.FromHours(8);
-        options.SlidingExpiration = true;
 
-        options.Cookie.Name = "CSAS.Auth";
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-        options.Cookie.SameSite = SameSiteMode.Lax;
-    });
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.SlidingExpiration = true;
+
+    options.Cookie.Name = "CSAS.Auth";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
+
 
 builder.Services.AddAuthorization();
 
@@ -39,23 +46,26 @@ builder.Services.AddResponseCompression(options =>
     options.Providers.Add<BrotliCompressionProvider>();
     options.Providers.Add<GzipCompressionProvider>();
 
-    options.MimeTypes =
-        ResponseCompressionDefaults.MimeTypes.Concat(
-        [
-            "text/html",
-            "text/css",
-            "application/javascript",
-            "application/json",
-            "image/svg+xml",
-            "font/woff2"
-        ]);
+
+options.MimeTypes =
+    ResponseCompressionDefaults.MimeTypes.Concat(
+    [
+        "text/html",
+        "text/css",
+        "application/javascript",
+        "application/json",
+        "image/svg+xml",
+        "font/woff2"
+    ]);
+
+
 });
 
 builder.Services.Configure<BrotliCompressionProviderOptions>(
-    options => options.Level = CompressionLevel.Fastest);
+options => options.Level = CompressionLevel.Fastest);
 
 builder.Services.Configure<GzipCompressionProviderOptions>(
-    options => options.Level = CompressionLevel.Fastest);
+options => options.Level = CompressionLevel.Fastest);
 
 builder.Services.AddResponseCaching();
 
@@ -85,11 +95,14 @@ app.UseStaticFiles(new StaticFileOptions
     {
         var headers = context.Context.Response.Headers;
 
-        headers["Cache-Control"] =
-            "public, max-age=31536000, immutable";
+
+    headers["Cache-Control"] =
+        "public, max-age=31536000, immutable";
 
         headers["Vary"] = "Accept-Encoding";
     }
+
+
 });
 
 app.UseResponseCaching();

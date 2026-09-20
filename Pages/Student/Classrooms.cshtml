@@ -1,0 +1,439 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.ClassroomsModel
+
+@{
+    ViewData["Title"] = "Classrooms";
+    ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
+}
+
+<link rel="stylesheet" href="~/css/Student/Classrooms.css" />
+
+<div class="page-shell">
+
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">
+                <i class="bi bi-building"></i>
+                Academic Facilities
+            </span>
+
+            <h1>Classrooms</h1>
+
+            <p>
+                View classroom availability, current classes,
+                and upcoming sessions across the university.
+            </p>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-buildings"></i>
+            </div>
+            <div class="stat-content">
+                <span>Total Classrooms</span>
+                <strong>@Model.TotalClassrooms</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-door-open"></i>
+            </div>
+            <div class="stat-content">
+                <span>Available</span>
+                <strong>@Model.AvailableClassrooms</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+            <div class="stat-content">
+                <span>Currently Occupied</span>
+                <strong>@Model.OccupiedClassrooms</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div class="stat-content">
+                <span>Upcoming Classes</span>
+                <strong>@Model.UpcomingClasses</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="toolbar">
+
+        <div class="search-box">
+            <i class="bi bi-search"></i>
+
+            <input type="text"
+                   id="classroomSearch"
+                   placeholder="Search by room, building, type, course or lecturer..."
+                   autocomplete="off" />
+
+            <button type="button"
+                    id="clearSearch"
+                    class="clear-search"
+                    aria-label="Clear search">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+
+        <div class="filter-group">
+            <button type="button" class="filter-button active" data-filter="all">All</button>
+            <button type="button" class="filter-button" data-filter="available">Available</button>
+            <button type="button" class="filter-button" data-filter="occupied">Occupied</button>
+            <button type="button" class="filter-button" data-filter="upcoming">Upcoming</button>
+        </div>
+
+    </div>
+
+    @if (Model.Classrooms.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-building-x"></i>
+            </div>
+            <h2>No classrooms found</h2>
+            <p>There are currently no classrooms available in the system.</p>
+        </div>
+    }
+    else
+    {
+        <div class="classrooms-grid" id="classroomsGrid">
+
+            @foreach (var classroom in Model.Classrooms)
+            {
+                var searchText =
+                    $"{classroom.RoomNumber} " +
+                    $"{classroom.Building} " +
+                    $"{classroom.RoomType} " +
+                    $"{classroom.CurrentClass?.CourseCode} " +
+                    $"{classroom.CurrentClass?.CourseName} " +
+                    $"{classroom.CurrentClass?.LecturerName} " +
+                    $"{classroom.CurrentClassDate?.ToString("dddd dd MMMM yyyy")} " +
+                    $"{classroom.NextClass?.CourseCode} " +
+                    $"{classroom.NextClass?.CourseName} " +
+                    $"{classroom.NextClass?.LecturerName} " +
+                    $"{classroom.NextClassDate?.ToString("dddd dd MMMM yyyy")}";
+
+                var statusClass = classroom.Status switch
+                {
+                    ClassroomsModel.ClassroomStatus.Occupied => "occupied",
+                    ClassroomsModel.ClassroomStatus.Upcoming => "upcoming",
+                    ClassroomsModel.ClassroomStatus.Unavailable => "unavailable",
+                    _ => "available"
+                };
+
+                <article class="classroom-card"
+                         data-status="@statusClass"
+                         data-search="@searchText.ToLowerInvariant()">
+
+                    <div class="classroom-card-top">
+
+                        <div class="room-identity">
+                            <div class="room-icon">
+                                <i class="bi bi-door-open"></i>
+                            </div>
+                            <div>
+                                <span class="room-label">ROOM</span>
+                                <h2>@classroom.RoomNumber</h2>
+                            </div>
+                        </div>
+
+                        <span class="status-badge @statusClass">
+                            <span class="status-dot"></span>
+                            @classroom.StatusText
+                        </span>
+
+                    </div>
+
+                    <div class="classroom-location">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>@classroom.Building</span>
+                    </div>
+
+                    <div class="classroom-details">
+
+                        <div class="detail-item">
+                            <i class="bi bi-people"></i>
+                            <div>
+                                <span>Capacity</span>
+                                <strong>@classroom.Capacity</strong>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="bi bi-grid-3x3-gap"></i>
+                            <div>
+                                <span>Room Type</span>
+                                <strong>
+                                    @(string.IsNullOrWhiteSpace(classroom.RoomType)
+                                        ? "Standard"
+                                        : classroom.RoomType)
+                                </strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @if (classroom.CurrentClass != null)
+                    {
+                        <div class="class-panel current">
+
+                            <div class="class-panel-header">
+                                <span>
+                                    <i class="bi bi-broadcast"></i>
+                                    Current Class
+                                </span>
+                                <span class="live-indicator">LIVE</span>
+                            </div>
+
+                            <div class="class-date">
+                                <i class="bi bi-calendar3"></i>
+                                <div>
+                                    <strong>Today</strong>
+                                    <span>
+                                        @(classroom.CurrentClassDate?.ToString("dddd, dd MMMM yyyy"))
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="class-main">
+                                <strong>@classroom.CurrentClass.CourseCode</strong>
+                                <span>@classroom.CurrentClass.CourseName</span>
+                            </div>
+
+                            <div class="class-meta">
+                                <span>
+                                    <i class="bi bi-person"></i>
+                                    @classroom.CurrentClass.LecturerName
+                                </span>
+                                <span>
+                                    <i class="bi bi-clock"></i>
+                                    @classroom.CurrentClass.StartTime.ToString("HH:mm")
+                                    –
+                                    @classroom.CurrentClass.EndTime.ToString("HH:mm")
+                                </span>
+                            </div>
+
+                        </div>
+                    }
+                    else if (classroom.NextClass != null)
+                    {
+                        var nextLabel =
+                            classroom.NextClassDate?.Date == DateTime.Today
+                                ? "Today"
+                                : classroom.NextClassDate?.Date == DateTime.Today.AddDays(1)
+                                    ? "Tomorrow"
+                                    : classroom.NextClassDate?.ToString("dddd") ?? "Upcoming";
+
+                        <div class="class-panel next">
+
+                            <div class="class-panel-header">
+                                <span>
+                                    <i class="bi bi-clock"></i>
+                                    Next Class
+                                </span>
+                                <span class="next-label">UPCOMING</span>
+                            </div>
+
+                            <div class="class-date">
+                                <i class="bi bi-calendar3"></i>
+                                <div>
+                                    <strong>@nextLabel</strong>
+                                    <span>
+                                        @(classroom.NextClassDate?.ToString("dddd, dd MMMM yyyy"))
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="class-main">
+                                <strong>@classroom.NextClass.CourseCode</strong>
+                                <span>@classroom.NextClass.CourseName</span>
+                            </div>
+
+                            <div class="class-meta">
+                                <span>
+                                    <i class="bi bi-person"></i>
+                                    @classroom.NextClass.LecturerName
+                                </span>
+                                <span>
+                                    <i class="bi bi-clock"></i>
+                                    @classroom.NextClass.StartTime.ToString("HH:mm")
+                                    –
+                                    @classroom.NextClass.EndTime.ToString("HH:mm")
+                                </span>
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="class-panel free">
+
+                            <div class="class-panel-header">
+                                <span>
+                                    <i class="bi bi-check-circle"></i>
+                                    Classroom Status
+                                </span>
+                            </div>
+
+                            <div class="free-message">
+                                <strong>No upcoming class scheduled</strong>
+                                <span>
+                                    There are no active classes scheduled
+                                    for this classroom.
+                                </span>
+                            </div>
+
+                        </div>
+                    }
+
+                    <div class="classroom-footer">
+                        <span>
+                            <i class="bi bi-calendar3"></i>
+                            Weekly Schedule
+                        </span>
+                        <span class="schedule-count">
+                            @classroom.ScheduleEntries.Count
+                            @(classroom.ScheduleEntries.Count == 1 ? "class" : "classes")
+                        </span>
+                    </div>
+
+                </article>
+            }
+
+        </div>
+
+        <div class="no-results" id="noResults" hidden>
+
+            <div class="no-results-icon">
+                <i class="bi bi-search"></i>
+            </div>
+
+            <h2>No classrooms match your search</h2>
+
+            <p>
+                Try searching with a different room number,
+                building, course, lecturer, or room type.
+            </p>
+
+            <button type="button" id="resetSearch" class="reset-button">
+                <i class="bi bi-arrow-counterclockwise"></i>
+                Clear Search
+            </button>
+
+        </div>
+    }
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput = document.getElementById("classroomSearch");
+        const clearSearch = document.getElementById("clearSearch");
+        const resetSearch = document.getElementById("resetSearch");
+        const noResults = document.getElementById("noResults");
+
+        const cards = Array.from(document.querySelectorAll(".classroom-card"));
+        const filterButtons = Array.from(document.querySelectorAll(".filter-button"));
+
+        let activeFilter = "all";
+
+        function filterClassrooms() {
+
+            const query = (searchInput?.value || "").trim().toLowerCase();
+            let visibleCount = 0;
+
+            cards.forEach(function (card) {
+
+                const text = card.dataset.search || "";
+                const status = card.dataset.status || "";
+
+                const matchesSearch = !query || text.includes(query);
+                const matchesFilter = activeFilter === "all" || status === activeFilter;
+                const shouldShow = matchesSearch && matchesFilter;
+
+                if (shouldShow) {
+
+                    card.hidden = false;
+                    card.classList.remove("search-visible");
+                    void card.offsetWidth;
+
+                    card.style.setProperty("--animation-delay", `${visibleCount * 45}ms`);
+                    card.classList.add("search-visible");
+
+                    visibleCount++;
+
+                } else {
+                    card.hidden = true;
+                }
+
+            });
+
+            if (noResults) {
+                noResults.hidden = visibleCount !== 0;
+            }
+
+            if (clearSearch) {
+                clearSearch.classList.toggle("visible", query.length > 0);
+            }
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener("input", filterClassrooms);
+        }
+
+        if (clearSearch) {
+            clearSearch.addEventListener("click", function () {
+                if (searchInput) {
+                    searchInput.value = "";
+                    searchInput.focus();
+                }
+                activeFilter = "all";
+                filterButtons.forEach(function (button) {
+                    button.classList.toggle("active", button.dataset.filter === "all");
+                });
+                filterClassrooms();
+            });
+        }
+
+        filterButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                activeFilter = button.dataset.filter || "all";
+                filterButtons.forEach(function (item) {
+                    item.classList.toggle("active", item === button);
+                });
+                filterClassrooms();
+            });
+        });
+
+        if (resetSearch) {
+            resetSearch.addEventListener("click", function () {
+                if (searchInput) {
+                    searchInput.value = "";
+                    searchInput.focus();
+                }
+                activeFilter = "all";
+                filterButtons.forEach(function (button) {
+                    button.classList.toggle("active", button.dataset.filter === "all");
+                });
+                filterClassrooms();
+            });
+        }
+
+        filterClassrooms();
+
+    });
+</script>
