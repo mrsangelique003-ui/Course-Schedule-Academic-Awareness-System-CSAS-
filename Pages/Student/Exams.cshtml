@@ -1,0 +1,241 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.ExamsModel
+
+@{
+    ViewData["Title"] = "Exams";
+    ViewData["ActivePage"] = "Exams";
+
+    var monthTitle = Model.CurrentMonth.ToString("MMMM yyyy");
+}
+
+<link rel="stylesheet" href="~/css/Student/Exams.css" />
+
+<div class="exams-page">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">
+                <i class="bi bi-calendar2-check"></i>
+                Academic Assessment
+            </span>
+
+            <h1>My Exams</h1>
+
+            <p>
+                View your upcoming CATs and final examinations in one place.
+            </p>
+        </div>
+    </div>
+
+    <div class="exam-stats">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-calendar2-event"></i>
+            </div>
+            <div class="stat-content">
+                <span>Total Exams</span>
+                <strong>@Model.TotalExams</strong>
+                <small>Visible this month</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon cat-icon">
+                <i class="bi bi-journal-text"></i>
+            </div>
+            <div class="stat-content">
+                <span>CAT Exams</span>
+                <strong>@Model.CatCount</strong>
+                <small>Continuous assessment</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon final-icon">
+                <i class="bi bi-mortarboard"></i>
+            </div>
+            <div class="stat-content">
+                <span>Final Exams</span>
+                <strong>@Model.FinalCount</strong>
+                <small>End of course</small>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon upcoming-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div class="stat-content">
+                <span>Upcoming</span>
+                <strong>@Model.UpcomingCount</strong>
+                <small>Not yet completed</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="exam-toolbar">
+        <div class="month-navigation">
+            <a href="@Model.GetPreviousMonthUrl()" class="month-button" aria-label="Previous month">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+
+            <div class="current-month">
+                <i class="bi bi-calendar3"></i>
+                <span>@monthTitle</span>
+            </div>
+
+            <a href="@Model.GetNextMonthUrl()" class="month-button" aria-label="Next month">
+                <i class="bi bi-chevron-right"></i>
+            </a>
+
+            <a href="@Model.GetTodayUrl()" class="today-button">
+                Today
+            </a>
+        </div>
+
+        <form method="get" class="search-form">
+            <input type="hidden" name="year" value="@Model.CurrentMonth.Year" />
+            <input type="hidden" name="month" value="@Model.CurrentMonth.Month" />
+
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="search" name="search" value="@Model.Search" placeholder="Search course..." autocomplete="off" />
+                @if (!string.IsNullOrWhiteSpace(Model.Search))
+                {
+                    <a href="?year=@Model.CurrentMonth.Year&month=@Model.CurrentMonth.Month" class="clear-search" aria-label="Clear search">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </a>
+                }
+            </div>
+
+            <button type="submit" class="search-button">
+                Search
+            </button>
+        </form>
+    </div>
+
+    @if (Model.Exams.Any())
+    {
+        <div class="results-header">
+            <div>
+                <h2>Examination Schedule</h2>
+                <span>
+                    @Model.Exams.Count examination@(Model.Exams.Count == 1 ? "" : "s")
+                    for @monthTitle
+                </span>
+            </div>
+
+            <div class="legend">
+                <span><i class="legend-dot upcoming"></i> Upcoming</span>
+                <span><i class="legend-dot ongoing"></i> Ongoing</span>
+                <span><i class="legend-dot completed"></i> Completed</span>
+            </div>
+        </div>
+
+        <div class="exam-list">
+            @foreach (var exam in Model.Exams)
+            {
+                var status = Model.GetExamStatus(exam);
+                var statusClass = Model.GetExamStatusClass(exam);
+                var typeClass = Model.GetExamTypeClass(exam.ExamType);
+
+                <article class="exam-card">
+                    <div class="exam-date">
+                        <span class="date-day">@exam.ExamDate.ToString("dd")</span>
+                        <span class="date-month">@exam.ExamDate.ToString("MMM")</span>
+                        <span class="date-day-name">@exam.ExamDate.ToString("ddd")</span>
+                    </div>
+
+                    <div class="exam-main">
+                        <div class="exam-top">
+                            <div class="course-info">
+                                <div class="course-code">@exam.Course.Code</div>
+                                <h3>@exam.Course.Name</h3>
+                            </div>
+
+                            <div class="exam-badges">
+                                <span class="exam-type @typeClass">
+                                    @if (exam.ExamType == CourseScheduleSystem.Web.Models.ExamType.CAT)
+                                    {
+                                        <i class="bi bi-journal-text"></i>
+                                        <span>CAT</span>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-mortarboard"></i>
+                                        <span>Final Exam</span>
+                                    }
+                                </span>
+
+                                <span class="exam-status @statusClass">
+                                    <span class="status-dot"></span>
+                                    @status
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="exam-details">
+                            <!-- Time Detail (Icon Kept) -->
+                            <div class="detail-item">
+                                <i class="bi bi-clock"></i>
+                                <div>
+                                    <span>Time</span>
+                                    <strong>@exam.StartTime.ToString("hh\\:mm") - @exam.EndTime.ToString("hh\\:mm")</strong>
+                                </div>
+                            </div>
+
+                            <!-- Room Detail (Icon Removed) -->
+                            <div class="detail-item no-icon">
+                                <div>
+                                    <span>Room</span>
+                                    <strong>@Model.GetRoomName(exam)</strong>
+                                </div>
+                            </div>
+
+                            <!-- Study Session Detail (Icon Removed) -->
+                            <div class="detail-item no-icon">
+                                <div>
+                                    <span>Study Session</span>
+                                    <strong>@Model.GetStudySession(exam)</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(exam.Notes))
+                        {
+                            <div class="exam-note">
+                                <i class="bi bi-info-circle"></i>
+                                <span>@exam.Notes</span>
+                            </div>
+                        }
+                    </div>
+                </article>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Search))
+            {
+                <h2>No exams found</h2>
+                <p>No examinations matching <strong>"@Model.Search"</strong> were found for @monthTitle.</p>
+                <a href="?year=@Model.CurrentMonth.Year&month=@Model.CurrentMonth.Month" class="empty-action">
+                    <i class="bi bi-arrow-counterclockwise"></i> Clear Search
+                </a>
+            }
+            else
+            {
+                <h2>No examinations scheduled</h2>
+                <p>You do not have any examinations scheduled for @monthTitle.</p>
+                <a href="@Model.GetTodayUrl()" class="empty-action">
+                    <i class="bi bi-calendar3"></i> View Current Month
+                </a>
+            }
+        </div>
+    }
+</div>

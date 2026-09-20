@@ -19,6 +19,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Room> Rooms => Set<Room>();
     public DbSet<ScheduleEntry> ScheduleEntries => Set<ScheduleEntry>();
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+    public DbSet<Exam> Exams => Set<Exam>();
+    public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,6 +34,8 @@ public class ApplicationDbContext : DbContext
         ConfigureRoom(modelBuilder);
         ConfigureScheduleEntry(modelBuilder);
         ConfigureEnrollment(modelBuilder);
+        ConfigureExam(modelBuilder);
+        ConfigureSupportTicket(modelBuilder);
     }
 
     private static void ConfigureAdministrator(ModelBuilder modelBuilder)
@@ -186,6 +190,11 @@ public class ApplicationDbContext : DbContext
                 .WithOne(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany<Exam>()
+                .WithOne(e => e.Course)
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 
@@ -257,4 +266,54 @@ public class ApplicationDbContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }
+
+    private static void ConfigureExam(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Exam>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.HasOne(e => e.Course)
+                .WithMany()
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Room)
+                .WithMany()
+                .HasForeignKey(e => e.RoomId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.Property(e => e.Notes)
+                .HasMaxLength(500);
+        });
+    }
+
+    private static void ConfigureSupportTicket(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<SupportTicket>(entity =>
+        {
+            entity.HasKey(t => t.Id);
+
+            entity.HasIndex(t => t.TicketNumber)
+                .IsUnique();
+
+            entity.Property(t => t.TicketNumber)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            entity.Property(t => t.Subject)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(t => t.Description)
+                .IsRequired()
+                .HasMaxLength(2000);
+
+            entity.HasOne(t => t.Student)
+                .WithMany()
+                .HasForeignKey(t => t.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
 }
+

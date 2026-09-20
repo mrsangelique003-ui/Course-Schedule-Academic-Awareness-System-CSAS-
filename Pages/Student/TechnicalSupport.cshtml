@@ -1,0 +1,524 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Student.TechnicalSupportModel
+@using CourseScheduleSystem.Web.Models
+
+@{
+ViewData["Title"] = "Technical Support";
+ViewData["ActivePage"] = "TechnicalSupport";
+}
+
+<link rel="stylesheet" href="~/css/Student/TechnicalSupport.css" />
+
+<div class="support-page">
+
+
+<div class="support-header">
+    <div class="support-header-content">
+
+        <div class="support-icon">
+            <i class="bi bi-headset" aria-hidden="true"></i>
+        </div>
+
+        <div>
+            <span class="support-eyebrow">
+                Student Support
+            </span>
+
+            <h1>
+                Technical Support
+            </h1>
+
+            <p>
+                Report technical problems and get help with your CSAS account
+                and academic services.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+@if (TempData["SupportSuccess"] is string successMessage)
+{
+    <div class="support-alert success-alert"
+         role="alert">
+
+        <div class="alert-icon">
+            <i class="bi bi-check-circle-fill"
+               aria-hidden="true"></i>
+        </div>
+
+        <div class="alert-content">
+
+            <strong>
+                Request submitted successfully
+            </strong>
+
+            <span>
+                @successMessage
+            </span>
+
+        </div>
+
+        <button type="button"
+                class="alert-close"
+                onclick="this.parentElement.remove()"
+                aria-label="Close notification">
+
+            <i class="bi bi-x"
+               aria-hidden="true"></i>
+
+        </button>
+
+    </div>
+}
+
+<div class="support-grid">
+
+    <section class="support-card create-ticket-card">
+
+        <div class="card-heading">
+
+            <div class="heading-icon">
+                <i class="bi bi-plus-lg"
+                   aria-hidden="true"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Create Support Request
+                </h2>
+
+                <p>
+                    Describe the problem you are experiencing.
+                </p>
+
+            </div>
+
+        </div>
+
+        <form method="post"
+              class="support-form">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary"
+                 role="alert">
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Input.Category">
+
+                    Support Category
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+                <select asp-for="Input.Category"
+                        class="form-control">
+
+                    <option value="">
+                        Select a category
+                    </option>
+
+                    <option value="@SupportCategory.TechnicalIssue">
+                        Technical Issue
+                    </option>
+
+                    <option value="@SupportCategory.AccountAccess">
+                        Account Access
+                    </option>
+
+                    <option value="@SupportCategory.CourseSchedule">
+                        Course Schedule
+                    </option>
+
+                    <option value="@SupportCategory.Enrollment">
+                        Enrollment
+                    </option>
+
+                    <option value="@SupportCategory.Examination">
+                        Examination
+                    </option>
+
+                    <option value="@SupportCategory.Other">
+                        Other
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="Input.Category"
+                      class="field-error">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Input.Subject">
+
+                    Subject
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+                <input asp-for="Input.Subject"
+                       class="form-control"
+                       placeholder="Briefly describe your issue"
+                       maxlength="100"
+                       autocomplete="off" />
+
+                <div class="field-hint">
+                    Keep your subject short and specific.
+                </div>
+
+                <span asp-validation-for="Input.Subject"
+                      class="field-error">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Input.Description">
+
+                    Describe Your Issue
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+                <textarea asp-for="Input.Description"
+                          class="form-control description-input"
+                          rows="7"
+                          maxlength="2000"
+                          placeholder="Explain what happened, what you were trying to do, and any error message you received."></textarea>
+
+                <div class="field-footer">
+
+                    <span class="field-hint">
+                        Please provide enough detail to help us understand the problem.
+                    </span>
+
+                    <span class="character-count">
+                        Maximum 2000 characters
+                    </span>
+
+                </div>
+
+                <span asp-validation-for="Input.Description"
+                      class="field-error">
+                </span>
+
+            </div>
+
+            <div class="form-actions">
+
+                <button type="submit"
+                        class="submit-button">
+
+                    <i class="bi bi-send-fill"
+                       aria-hidden="true"></i>
+
+                    Submit Request
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+    <aside class="support-info">
+
+        <div class="info-card">
+
+            <div class="info-card-icon">
+
+                <i class="bi bi-info-circle"
+                   aria-hidden="true"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Before submitting
+                </h3>
+
+                <p>
+                    Provide as much detail as possible. Include the page where
+                    the problem occurred and any error message you received.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-card-icon">
+
+                <i class="bi bi-ticket-perforated"
+                   aria-hidden="true"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Track your request
+                </h3>
+
+                <p>
+                    Every request receives a unique ticket number that you can
+                    use to identify your support request.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-card-icon">
+
+                <i class="bi bi-shield-check"
+                   aria-hidden="true"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Your information is protected
+                </h3>
+
+                <p>
+                    Your support requests are linked to your student account
+                    and are visible only to you and authorized support staff.
+                </p>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+</div>
+
+<section class="tickets-section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-eyebrow">
+                Support History
+            </span>
+
+            <h2>
+                My Support Requests
+            </h2>
+
+            <p>
+                View the requests you have submitted and their current status.
+            </p>
+
+        </div>
+
+        <div class="ticket-count">
+
+            <span>
+                @Model.Tickets.Count
+            </span>
+
+            @(Model.Tickets.Count == 1 ? "Request" : "Requests")
+
+        </div>
+
+    </div>
+
+    @if (Model.Tickets.Any())
+    {
+        <div class="tickets-list">
+
+            @foreach (var ticket in Model.Tickets)
+            {
+                <article class="ticket-card">
+
+                    <div class="ticket-main">
+
+                        <div class="ticket-top">
+
+                            <span class="ticket-number">
+
+                                <i class="bi bi-ticket-perforated"
+                                   aria-hidden="true"></i>
+
+                                @ticket.TicketNumber
+
+                            </span>
+
+                            <span class="ticket-status @TechnicalSupportModel.GetStatusClass(ticket.Status)">
+
+                                <span class="status-dot"></span>
+
+                                @TechnicalSupportModel.GetStatusName(ticket.Status)
+
+                            </span>
+
+                        </div>
+
+                        <h3>
+                            @ticket.Subject
+                        </h3>
+
+                        <p class="ticket-description">
+                            @ticket.Description
+                        </p>
+
+                        <div class="ticket-meta">
+
+                            <span>
+
+                                <i class="bi bi-folder2-open"
+                                   aria-hidden="true"></i>
+
+                                @TechnicalSupportModel.GetCategoryName(ticket.Category)
+
+                            </span>
+
+                            <span>
+
+                                <i class="bi bi-calendar3"
+                                   aria-hidden="true"></i>
+
+                                Submitted
+                                @ticket.CreatedAt
+                                    .ToLocalTime()
+                                    .ToString("dd MMM yyyy")
+
+                            </span>
+
+                            @if (ticket.UpdatedAt.HasValue)
+                            {
+                                <span>
+
+                                    <i class="bi bi-arrow-repeat"
+                                       aria-hidden="true"></i>
+
+                                    Updated
+                                    @ticket.UpdatedAt.Value
+                                        .ToLocalTime()
+                                        .ToString("dd MMM yyyy")
+
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+
+            <div class="empty-icon">
+
+                <i class="bi bi-inbox"
+                   aria-hidden="true"></i>
+
+            </div>
+
+            <h3>
+                No support requests yet
+            </h3>
+
+            <p>
+                You have not submitted any technical support requests.
+                If you experience a problem, use the form above to contact support.
+            </p>
+
+        </div>
+    }
+
+</section>
+
+
+</div>
+
+<!-- =========================================================
+     UMURONGOSMART FLOATING SUPPORT
+     ========================================================= -->
+
+<a href="https://www.umurongosmart.com/"
+class="umurongo-floating"
+target="_blank"
+rel="noopener noreferrer"
+aria-label="Open UmurongoSmart">
+
+
+<span class="umurongo-tooltip">
+    Open UmurongoSmart
+</span>
+
+<span class="umurongo-icon">
+
+    <img src="~/images/umurongo.png"
+         alt="UmurongoSmart" />
+
+</span>
+
+
+</a>
+
+@section Scripts {
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const description =
+            document.getElementById("Input_Description");
+
+        const counter =
+            document.querySelector(".character-count");
+
+        if (!description || !counter) {
+            return;
+        }
+
+        function updateCounter() {
+
+            counter.textContent =
+                `${description.value.length} / 2000 characters`;
+
+        }
+
+        description.addEventListener(
+            "input",
+            updateCounter
+        );
+
+        updateCounter();
+
+    });
+</script>
+
+
+}

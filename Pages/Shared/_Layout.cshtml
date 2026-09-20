@@ -36,7 +36,8 @@
 <body>
 
 @{
-var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+var currentPage =
+ViewContext.RouteData.Values["page"]?.ToString();
 
 
 var userName =
@@ -247,6 +248,18 @@ var isStudent =
 
                 </a>
 
+                <a asp-page="/Student/Exams"
+                   class="app-sidebar-link @(currentPage == "/Student/Exams" ? "active" : "")">
+
+                    <i class="bi bi-clipboard-check"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        Exam Timetable
+                    </span>
+
+                </a>
+
                 <a asp-page="/Student/Profile"
                    class="app-sidebar-link @(currentPage == "/Student/Profile" ? "active" : "")">
 
@@ -258,123 +271,19 @@ var isStudent =
                     </span>
 
                 </a>
+
+                <a asp-page="/Student/TechnicalSupport"
+                   class="app-sidebar-link @(currentPage == "/Student/TechnicalSupport" ? "active" : "")">
+
+                    <i class="bi bi-headset"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        Technical Support
+                    </span>
+
+                </a>
             }
-
-            <span class="app-sidebar-group">
-                COMING SOON
-            </span>
-
-            <div class="app-sidebar-link app-sidebar-link-disabled"
-                 aria-disabled="true">
-
-                <i class="bi bi-list-task"
-                   aria-hidden="true"></i>
-
-                <span>
-                    My Tasks List
-                </span>
-
-                <small class="app-coming-soon">
-                    Soon
-                </small>
-
-            </div>
-
-            <div class="app-sidebar-link app-sidebar-link-disabled"
-                 aria-disabled="true">
-
-                <i class="bi bi-clipboard-check"
-                   aria-hidden="true"></i>
-
-                <span>
-                    Exam List
-                </span>
-
-                <small class="app-coming-soon">
-                    Soon
-                </small>
-
-            </div>
-
-            <div class="app-sidebar-link app-sidebar-link-disabled"
-                 aria-disabled="true">
-
-                <i class="bi bi-award"
-                   aria-hidden="true"></i>
-
-                <span>
-                    My Result
-                </span>
-
-                <small class="app-coming-soon">
-                    Soon
-                </small>
-
-            </div>
-
-            <span class="app-sidebar-group">
-                REPORT &amp; OTHERS
-            </span>
-
-            <div class="app-sidebar-link app-sidebar-link-disabled"
-                 aria-disabled="true">
-
-                <i class="bi bi-file-earmark-text"
-                   aria-hidden="true"></i>
-
-                <span>
-                    Student Report
-                </span>
-
-                <small class="app-coming-soon">
-                    Soon
-                </small>
-
-            </div>
-
-            <div class="app-sidebar-link app-sidebar-link-disabled"
-                 aria-disabled="true">
-
-                <i class="bi bi-people"
-                   aria-hidden="true"></i>
-
-                <span>
-                    Community Chat
-                </span>
-
-                <small class="app-coming-soon">
-                    Soon
-                </small>
-
-            </div>
-
-            <div class="app-sidebar-link app-sidebar-link-disabled"
-                 aria-disabled="true">
-
-                <i class="bi bi-life-preserver"
-                   aria-hidden="true"></i>
-
-                <span>
-                    Technical Support
-                </span>
-
-                <small class="app-coming-soon">
-                    Soon
-                </small>
-
-            </div>
-
-            <div class="app-sidebar-footer">
-
-                <span>
-                    © @DateTime.Now.Year University of Lay Adventists of Kigali.
-                </span>
-
-                <span>
-                    Course Schedule &amp; Academic Awareness System
-                </span>
-
-            </div>
 
         </nav>
 

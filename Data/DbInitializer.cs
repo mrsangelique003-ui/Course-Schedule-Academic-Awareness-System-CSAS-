@@ -10,7 +10,8 @@ public static class DbInitializer
     {
         var db = services.GetRequiredService<ApplicationDbContext>();
 
-        await db.Database.MigrateAsync();
+
+    await db.Database.MigrateAsync();
 
         const string defaultPassword = "M00del!!";
 
@@ -28,27 +29,27 @@ public static class DbInitializer
 
         var studentData = new[]
         {
-            ("STU001", "Alice Uwimana", "alice@unilak.ac.rw"),
-            ("STU002", "Brian Niyonzima", "brian@unilak.ac.rw"),
-            ("STU003", "Chantal Mukamana", "chantal@unilak.ac.rw"),
-            ("STU004", "David Habimana", "david@unilak.ac.rw"),
-            ("STU005", "Esther Ingabire", "esther@unilak.ac.rw"),
-            ("STU006", "Fabrice Nshimiyimana", "fabrice@unilak.ac.rw"),
-            ("STU007", "Grace Uwamahoro", "grace@unilak.ac.rw"),
-            ("STU008", "Herve Tuyisenge", "herve@unilak.ac.rw"),
-            ("STU009", "Immaculate Mukeshimana", "immaculate@unilak.ac.rw"),
-            ("STU010", "Jean Claude Nkurunziza", "jeanclaude@unilak.ac.rw"),
-            ("STU011", "Kevin Nsengiyumva", "kevin@unilak.ac.rw"),
-            ("STU012", "Liliane Uwase", "liliane@unilak.ac.rw"),
-            ("STU013", "Martin Ndayisenga", "martin@unilak.ac.rw"),
-            ("STU014", "Nadine Mukamana", "nadine@unilak.ac.rw"),
-            ("STU015", "Olivier Bizimana", "olivier@unilak.ac.rw"),
-            ("STU016", "Peace Uwamariya", "peace@unilak.ac.rw"),
-            ("STU017", "Richard Mugabo", "richard@unilak.ac.rw"),
-            ("STU018", "Sarah Ingabire", "sarah@unilak.ac.rw"),
-            ("STU019", "Theogene Niyomugabo", "theogene@unilak.ac.rw"),
-            ("STU020", "Yvette Mukamana", "yvette@unilak.ac.rw")
-        };
+        ("STU001", "Alice Uwimana", "alice@unilak.ac.rw"),
+        ("STU002", "Brian Niyonzima", "brian@unilak.ac.rw"),
+        ("STU003", "Chantal Mukamana", "chantal@unilak.ac.rw"),
+        ("STU004", "David Habimana", "david@unilak.ac.rw"),
+        ("STU005", "Esther Ingabire", "esther@unilak.ac.rw"),
+        ("STU006", "Fabrice Nshimiyimana", "fabrice@unilak.ac.rw"),
+        ("STU007", "Grace Uwamahoro", "grace@unilak.ac.rw"),
+        ("STU008", "Herve Tuyisenge", "herve@unilak.ac.rw"),
+        ("STU009", "Immaculate Mukeshimana", "immaculate@unilak.ac.rw"),
+        ("STU010", "Jean Claude Nkurunziza", "jeanclaude@unilak.ac.rw"),
+        ("STU011", "Kevin Nsengiyumva", "kevin@unilak.ac.rw"),
+        ("STU012", "Liliane Uwase", "liliane@unilak.ac.rw"),
+        ("STU013", "Martin Ndayisenga", "martin@unilak.ac.rw"),
+        ("STU014", "Nadine Mukamana", "nadine@unilak.ac.rw"),
+        ("STU015", "Olivier Bizimana", "olivier@unilak.ac.rw"),
+        ("STU016", "Peace Uwamariya", "peace@unilak.ac.rw"),
+        ("STU017", "Richard Mugabo", "richard@unilak.ac.rw"),
+        ("STU018", "Sarah Ingabire", "sarah@unilak.ac.rw"),
+        ("STU019", "Theogene Niyomugabo", "theogene@unilak.ac.rw"),
+        ("STU020", "Yvette Mukamana", "yvette@unilak.ac.rw")
+    };
 
         foreach (var item in studentData)
         {
@@ -93,27 +94,27 @@ public static class DbInitializer
 
         var classRepresentativeData = new[]
         {
-            ("CP001", "Bob Nkurunziza", "bob@unilak.ac.rw"),
-            ("CP002", "Clarisse Uwimana", "clarisse@unilak.ac.rw"),
-            ("CP003", "Derrick Niyonsenga", "derrick@unilak.ac.rw"),
-            ("CP004", "Emmanuel Habimana", "emmanuel@unilak.ac.rw"),
-            ("CP005", "Florence Mukamana", "florence@unilak.ac.rw"),
-            ("CP006", "Gaspard Bizimana", "gaspard@unilak.ac.rw"),
-            ("CP007", "Hope Uwamahoro", "hope@unilak.ac.rw"),
-            ("CP008", "Ivan Nshimiyimana", "ivan@unilak.ac.rw"),
-            ("CP009", "Josiane Ingabire", "josiane@unilak.ac.rw"),
-            ("CP010", "Kenneth Mugisha", "kenneth@unilak.ac.rw"),
-            ("CP011", "Lydia Uwase", "lydia@unilak.ac.rw"),
-            ("CP012", "Michel Ndayisenga", "michel@unilak.ac.rw"),
-            ("CP013", "Nathalie Mukeshimana", "nathalie@unilak.ac.rw"),
-            ("CP014", "Oscar Tuyisenge", "oscar@unilak.ac.rw"),
-            ("CP015", "Patricia Uwamariya", "patricia@unilak.ac.rw"),
-            ("CP016", "Robert Niyomugabo", "robert@unilak.ac.rw"),
-            ("CP017", "Sandrine Mukamana", "sandrine@unilak.ac.rw"),
-            ("CP018", "Theoneste Habimana", "theoneste@unilak.ac.rw"),
-            ("CP019", "Valerie Ingabire", "valerie@unilak.ac.rw"),
-            ("CP020", "William Nkurunziza", "william@unilak.ac.rw")
-        };
+        ("CP001", "Bob Nkurunziza", "bob@unilak.ac.rw"),
+        ("CP002", "Clarisse Uwimana", "clarisse@unilak.ac.rw"),
+        ("CP003", "Derrick Niyonsenga", "derrick@unilak.ac.rw"),
+        ("CP004", "Emmanuel Habimana", "emmanuel@unilak.ac.rw"),
+        ("CP005", "Florence Mukamana", "florence@unilak.ac.rw"),
+        ("CP006", "Gaspard Bizimana", "gaspard@unilak.ac.rw"),
+        ("CP007", "Hope Uwamahoro", "hope@unilak.ac.rw"),
+        ("CP008", "Ivan Nshimiyimana", "ivan@unilak.ac.rw"),
+        ("CP009", "Josiane Ingabire", "josiane@unilak.ac.rw"),
+        ("CP010", "Kenneth Mugisha", "kenneth@unilak.ac.rw"),
+        ("CP011", "Lydia Uwase", "lydia@unilak.ac.rw"),
+        ("CP012", "Michel Ndayisenga", "michel@unilak.ac.rw"),
+        ("CP013", "Nathalie Mukeshimana", "nathalie@unilak.ac.rw"),
+        ("CP014", "Oscar Tuyisenge", "oscar@unilak.ac.rw"),
+        ("CP015", "Patricia Uwamariya", "patricia@unilak.ac.rw"),
+        ("CP016", "Robert Niyomugabo", "robert@unilak.ac.rw"),
+        ("CP017", "Sandrine Mukamana", "sandrine@unilak.ac.rw"),
+        ("CP018", "Theoneste Habimana", "theoneste@unilak.ac.rw"),
+        ("CP019", "Valerie Ingabire", "valerie@unilak.ac.rw"),
+        ("CP020", "William Nkurunziza", "william@unilak.ac.rw")
+    };
 
         foreach (var item in classRepresentativeData)
         {
@@ -159,27 +160,27 @@ public static class DbInitializer
 
         var administratorData = new[]
         {
-            ("ADM001", "Prof. Denis Habimana", "denis@unilak.ac.rw", "Dean"),
-            ("ADM002", "Prof. Eric Mugisha", "eric@unilak.ac.rw", "HOD"),
-            ("ADM003", "Dr. Claire Mukamana", "claire@unilak.ac.rw", "DirectorOfQuality"),
-            ("ADM004", "Dr. Alice Mukamana", "alice.admin@unilak.ac.rw", "Dean"),
-            ("ADM005", "Dr. Bernard Niyonzima", "bernard@unilak.ac.rw", "HOD"),
-            ("ADM006", "Dr. Chantal Uwase", "chantal.admin@unilak.ac.rw", "HOD"),
-            ("ADM007", "Prof. Daniel Nshimiyimana", "daniel@unilak.ac.rw", "Dean"),
-            ("ADM008", "Dr. Emmanuel Mugabo", "emmanuel.admin@unilak.ac.rw", "HOD"),
-            ("ADM009", "Dr. Florence Ingabire", "florence.admin@unilak.ac.rw", "DirectorOfQuality"),
-            ("ADM010", "Prof. George Habimana", "george@unilak.ac.rw", "Dean"),
-            ("ADM011", "Dr. Helene Mukamana", "helene@unilak.ac.rw", "HOD"),
-            ("ADM012", "Dr. Isaac Nkurunziza", "isaac@unilak.ac.rw", "HOD"),
-            ("ADM013", "Prof. Jacqueline Uwimana", "jacqueline@unilak.ac.rw", "Dean"),
-            ("ADM014", "Dr. Kevin Bizimana", "kevin.admin@unilak.ac.rw", "HOD"),
-            ("ADM015", "Dr. Louise Niyomugabo", "louise@unilak.ac.rw", "DirectorOfQuality"),
-            ("ADM016", "Prof. Michael Tuyisenge", "michael@unilak.ac.rw", "Dean"),
-            ("ADM017", "Dr. Nicole Uwamahoro", "nicole@unilak.ac.rw", "HOD"),
-            ("ADM018", "Dr. Olivier Ndayisenga", "olivier.admin@unilak.ac.rw", "HOD"),
-            ("ADM019", "Prof. Patrick Mugisha", "patrick@unilak.ac.rw", "Dean"),
-            ("ADM020", "Dr. Sarah Ingabire", "sarah.admin@unilak.ac.rw", "DirectorOfQuality")
-        };
+        ("ADM001", "Prof. Denis Habimana", "denis@unilak.ac.rw", "Dean"),
+        ("ADM002", "Prof. Eric Mugisha", "eric@unilak.ac.rw", "HOD"),
+        ("ADM003", "Dr. Claire Mukamana", "claire@unilak.ac.rw", "DirectorOfQuality"),
+        ("ADM004", "Dr. Alice Mukamana", "alice.admin@unilak.ac.rw", "Dean"),
+        ("ADM005", "Dr. Bernard Niyonzima", "bernard@unilak.ac.rw", "HOD"),
+        ("ADM006", "Dr. Chantal Uwase", "chantal.admin@unilak.ac.rw", "HOD"),
+        ("ADM007", "Prof. Daniel Nshimiyimana", "daniel@unilak.ac.rw", "Dean"),
+        ("ADM008", "Dr. Emmanuel Mugabo", "emmanuel.admin@unilak.ac.rw", "HOD"),
+        ("ADM009", "Dr. Florence Ingabire", "florence.admin@unilak.ac.rw", "DirectorOfQuality"),
+        ("ADM010", "Prof. George Habimana", "george@unilak.ac.rw", "Dean"),
+        ("ADM011", "Dr. Helene Mukamana", "helene@unilak.ac.rw", "HOD"),
+        ("ADM012", "Dr. Isaac Nkurunziza", "isaac@unilak.ac.rw", "HOD"),
+        ("ADM013", "Prof. Jacqueline Uwimana", "jacqueline@unilak.ac.rw", "Dean"),
+        ("ADM014", "Dr. Kevin Bizimana", "kevin.admin@unilak.ac.rw", "HOD"),
+        ("ADM015", "Dr. Louise Niyomugabo", "louise@unilak.ac.rw", "DirectorOfQuality"),
+        ("ADM016", "Prof. Michael Tuyisenge", "michael@unilak.ac.rw", "Dean"),
+        ("ADM017", "Dr. Nicole Uwamahoro", "nicole@unilak.ac.rw", "HOD"),
+        ("ADM018", "Dr. Olivier Ndayisenga", "olivier.admin@unilak.ac.rw", "HOD"),
+        ("ADM019", "Prof. Patrick Mugisha", "patrick@unilak.ac.rw", "Dean"),
+        ("ADM020", "Dr. Sarah Ingabire", "sarah.admin@unilak.ac.rw", "DirectorOfQuality")
+    };
 
         foreach (var item in administratorData)
         {
@@ -225,27 +226,27 @@ public static class DbInitializer
 
         var lecturerData = new[]
         {
-            ("LEC001", "Dr. Jean Mugisha", "j.mugisha@unilak.ac.rw"),
-            ("LEC002", "Mrs. Anne Byukusenge", "a.byukusenge@unilak.ac.rw"),
-            ("LEC003", "Mr. Emmanuel Niyonsenga", "e.niyonsenga@unilak.ac.rw"),
-            ("LEC004", "Dr. Patrick Habimana", "p.habimana@unilak.ac.rw"),
-            ("LEC005", "Dr. Alice Uwase", "alice.lecturer@unilak.ac.rw"),
-            ("LEC006", "Mr. Bernard Nkurunziza", "bernard.lecturer@unilak.ac.rw"),
-            ("LEC007", "Dr. Chantal Ingabire", "chantal.lecturer@unilak.ac.rw"),
-            ("LEC008", "Mr. David Mugabo", "david.lecturer@unilak.ac.rw"),
-            ("LEC009", "Dr. Esther Mukamana", "esther.lecturer@unilak.ac.rw"),
-            ("LEC010", "Mr. Fabrice Nshimiyimana", "fabrice.lecturer@unilak.ac.rw"),
-            ("LEC011", "Dr. Grace Uwamahoro", "grace.lecturer@unilak.ac.rw"),
-            ("LEC012", "Mr. Herve Tuyisenge", "herve.lecturer@unilak.ac.rw"),
-            ("LEC013", "Dr. Immaculate Mukeshimana", "immaculate.lecturer@unilak.ac.rw"),
-            ("LEC014", "Mr. Joseph Ndayisenga", "joseph.lecturer@unilak.ac.rw"),
-            ("LEC015", "Dr. Liliane Uwase", "liliane.lecturer@unilak.ac.rw"),
-            ("LEC016", "Mr. Martin Bizimana", "martin.lecturer@unilak.ac.rw"),
-            ("LEC017", "Dr. Nadine Mukamana", "nadine.lecturer@unilak.ac.rw"),
-            ("LEC018", "Mr. Olivier Niyomugabo", "olivier.lecturer@unilak.ac.rw"),
-            ("LEC019", "Dr. Peace Uwamariya", "peace.lecturer@unilak.ac.rw"),
-            ("LEC020", "Mr. Richard Mugisha", "richard.lecturer@unilak.ac.rw")
-        };
+        ("LEC001", "Dr. Jean Mugisha", "j.mugisha@unilak.ac.rw"),
+        ("LEC002", "Mrs. Anne Byukusenge", "a.byukusenge@unilak.ac.rw"),
+        ("LEC003", "Mr. Emmanuel Niyonsenga", "e.niyonsenga@unilak.ac.rw"),
+        ("LEC004", "Dr. Patrick Habimana", "p.habimana@unilak.ac.rw"),
+        ("LEC005", "Dr. Alice Uwase", "alice.lecturer@unilak.ac.rw"),
+        ("LEC006", "Mr. Bernard Nkurunziza", "bernard.lecturer@unilak.ac.rw"),
+        ("LEC007", "Dr. Chantal Ingabire", "chantal.lecturer@unilak.ac.rw"),
+        ("LEC008", "Mr. David Mugabo", "david.lecturer@unilak.ac.rw"),
+        ("LEC009", "Dr. Esther Mukamana", "esther.lecturer@unilak.ac.rw"),
+        ("LEC010", "Mr. Fabrice Nshimiyimana", "fabrice.lecturer@unilak.ac.rw"),
+        ("LEC011", "Dr. Grace Uwamahoro", "grace.lecturer@unilak.ac.rw"),
+        ("LEC012", "Mr. Herve Tuyisenge", "herve.lecturer@unilak.ac.rw"),
+        ("LEC013", "Dr. Immaculate Mukeshimana", "immaculate.lecturer@unilak.ac.rw"),
+        ("LEC014", "Mr. Joseph Ndayisenga", "joseph.lecturer@unilak.ac.rw"),
+        ("LEC015", "Dr. Liliane Uwase", "liliane.lecturer@unilak.ac.rw"),
+        ("LEC016", "Mr. Martin Bizimana", "martin.lecturer@unilak.ac.rw"),
+        ("LEC017", "Dr. Nadine Mukamana", "nadine.lecturer@unilak.ac.rw"),
+        ("LEC018", "Mr. Olivier Niyomugabo", "olivier.lecturer@unilak.ac.rw"),
+        ("LEC019", "Dr. Peace Uwamariya", "peace.lecturer@unilak.ac.rw"),
+        ("LEC020", "Mr. Richard Mugisha", "richard.lecturer@unilak.ac.rw")
+    };
 
         foreach (var item in lecturerData)
         {
@@ -290,27 +291,27 @@ public static class DbInitializer
 
         var roomData = new[]
         {
-            ("A204", "Block A", 60, "Classroom"),
-            ("B101", "Block B", 80, "Classroom"),
-            ("A108", "Block A", 40, "Classroom"),
-            ("C302", "Block C", 50, "Classroom"),
-            ("LAB01", "Block D", 30, "Computer Lab"),
-            ("A205", "Block A", 55, "Classroom"),
-            ("A206", "Block A", 45, "Classroom"),
-            ("B102", "Block B", 70, "Classroom"),
-            ("B103", "Block B", 60, "Classroom"),
-            ("B201", "Block B", 90, "Lecture Hall"),
-            ("B202", "Block B", 75, "Classroom"),
-            ("C301", "Block C", 55, "Classroom"),
-            ("C303", "Block C", 45, "Classroom"),
-            ("C304", "Block C", 60, "Classroom"),
-            ("LAB02", "Block D", 35, "Computer Lab"),
-            ("LAB03", "Block D", 40, "Computer Lab"),
-            ("D101", "Block D", 50, "Classroom"),
-            ("D102", "Block D", 65, "Classroom"),
-            ("E201", "Block E", 100, "Lecture Hall"),
-            ("E202", "Block E", 80, "Classroom")
-        };
+        ("A204", "Block A", 60, "Classroom"),
+        ("B101", "Block B", 80, "Classroom"),
+        ("A108", "Block A", 40, "Classroom"),
+        ("C302", "Block C", 50, "Classroom"),
+        ("LAB01", "Block D", 30, "Computer Lab"),
+        ("A205", "Block A", 55, "Classroom"),
+        ("A206", "Block A", 45, "Classroom"),
+        ("B102", "Block B", 70, "Classroom"),
+        ("B103", "Block B", 60, "Classroom"),
+        ("B201", "Block B", 90, "Lecture Hall"),
+        ("B202", "Block B", 75, "Classroom"),
+        ("C301", "Block C", 55, "Classroom"),
+        ("C303", "Block C", 45, "Classroom"),
+        ("C304", "Block C", 60, "Classroom"),
+        ("LAB02", "Block D", 35, "Computer Lab"),
+        ("LAB03", "Block D", 40, "Computer Lab"),
+        ("D101", "Block D", 50, "Classroom"),
+        ("D102", "Block D", 65, "Classroom"),
+        ("E201", "Block E", 100, "Lecture Hall"),
+        ("E202", "Block E", 80, "Classroom")
+    };
 
         foreach (var item in roomData)
         {
@@ -356,27 +357,27 @@ public static class DbInitializer
 
         var courseData = new[]
         {
-            ("CSE301", "Software Engineering", 3, "Principles and practices of software engineering."),
-            ("CSE305", "Database Systems", 3, "Database design, implementation and management."),
-            ("CSE310", "Human-Computer Interaction", 3, "Design and evaluation of user-centered interfaces."),
-            ("CSE402", "Software Architecture", 3, "Software architecture principles and system design."),
-            ("CSE303", "Data Structures and Algorithms", 3, "Algorithms, complexity and fundamental data structures."),
-            ("CSE304", "Computer Networks", 3, "Network architecture, protocols and communication."),
-            ("CSE306", "Operating Systems", 3, "Operating system concepts, processes and memory management."),
-            ("CSE307", "Web Application Development", 3, "Modern web application development techniques."),
-            ("CSE308", "Mobile Application Development", 3, "Development of applications for mobile platforms."),
-            ("CSE309", "Information Security", 3, "Principles of cybersecurity and information protection."),
-            ("CSE311", "Systems Analysis and Design", 3, "Analysis, modelling and design of information systems."),
-            ("CSE312", "Artificial Intelligence", 3, "Fundamental concepts and applications of artificial intelligence."),
-            ("CSE313", "Machine Learning", 3, "Introduction to machine learning algorithms and applications."),
-            ("CSE314", "Cloud Computing", 3, "Cloud infrastructure, services and deployment models."),
-            ("CSE315", "Software Testing", 3, "Software verification, validation and testing techniques."),
-            ("CSE401", "Project Management", 3, "Planning, execution and control of software projects."),
-            ("CSE403", "Distributed Systems", 3, "Distributed computing concepts and architectures."),
-            ("CSE404", "Enterprise Systems", 3, "Design and management of enterprise information systems."),
-            ("CSE405", "Research Methods", 3, "Research design, methods and academic investigation."),
-            ("CSE406", "Final Year Project", 6, "Planning, development and presentation of a software project.")
-        };
+        ("CSE301", "Software Engineering", 3, "Principles and practices of software engineering."),
+        ("CSE305", "Database Systems", 3, "Database design, implementation and management."),
+        ("CSE310", "Human-Computer Interaction", 3, "Design and evaluation of user-centered interfaces."),
+        ("CSE402", "Software Architecture", 3, "Software architecture principles and system design."),
+        ("CSE303", "Data Structures and Algorithms", 3, "Algorithms, complexity and fundamental data structures."),
+        ("CSE304", "Computer Networks", 3, "Network architecture, protocols and communication."),
+        ("CSE306", "Operating Systems", 3, "Operating system concepts, processes and memory management."),
+        ("CSE307", "Web Application Development", 3, "Modern web application development techniques."),
+        ("CSE308", "Mobile Application Development", 3, "Development of applications for mobile platforms."),
+        ("CSE309", "Information Security", 3, "Principles of cybersecurity and information protection."),
+        ("CSE311", "Systems Analysis and Design", 3, "Analysis, modelling and design of information systems."),
+        ("CSE312", "Artificial Intelligence", 3, "Fundamental concepts and applications of artificial intelligence."),
+        ("CSE313", "Machine Learning", 3, "Introduction to machine learning algorithms and applications."),
+        ("CSE314", "Cloud Computing", 3, "Cloud infrastructure, services and deployment models."),
+        ("CSE315", "Software Testing", 3, "Software verification, validation and testing techniques."),
+        ("CSE401", "Project Management", 3, "Planning, execution and control of software projects."),
+        ("CSE403", "Distributed Systems", 3, "Distributed computing concepts and architectures."),
+        ("CSE404", "Enterprise Systems", 3, "Design and management of enterprise information systems."),
+        ("CSE405", "Research Methods", 3, "Research design, methods and academic investigation."),
+        ("CSE406", "Final Year Project", 6, "Planning, development and presentation of a software project.")
+    };
 
         var registrationOpen =
             DateTime.UtcNow.AddDays(-1);
@@ -465,31 +466,31 @@ public static class DbInitializer
 
         var scheduleSlots = new[]
         {
-            (DayOfWeek.Monday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-            (DayOfWeek.Monday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-            (DayOfWeek.Monday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-            (DayOfWeek.Monday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
+        (DayOfWeek.Monday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (DayOfWeek.Monday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (DayOfWeek.Monday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
+        (DayOfWeek.Monday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Tuesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-            (DayOfWeek.Tuesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-            (DayOfWeek.Tuesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-            (DayOfWeek.Tuesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
+        (DayOfWeek.Tuesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (DayOfWeek.Tuesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (DayOfWeek.Tuesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
+        (DayOfWeek.Tuesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Wednesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-            (DayOfWeek.Wednesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-            (DayOfWeek.Wednesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-            (DayOfWeek.Wednesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
+        (DayOfWeek.Wednesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (DayOfWeek.Wednesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (DayOfWeek.Wednesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
+        (DayOfWeek.Wednesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Thursday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-            (DayOfWeek.Thursday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-            (DayOfWeek.Thursday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-            (DayOfWeek.Thursday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
+        (DayOfWeek.Thursday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (DayOfWeek.Thursday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (DayOfWeek.Thursday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
+        (DayOfWeek.Thursday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
 
-            (DayOfWeek.Friday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-            (DayOfWeek.Friday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-            (DayOfWeek.Friday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-            (DayOfWeek.Friday, new TimeOnly(15, 0), new TimeOnly(17, 0))
-        };
+        (DayOfWeek.Friday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (DayOfWeek.Friday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (DayOfWeek.Friday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
+        (DayOfWeek.Friday, new TimeOnly(15, 0), new TimeOnly(17, 0))
+    };
 
         var existingScheduleKeys =
             await db.ScheduleEntries
@@ -954,6 +955,176 @@ public static class DbInitializer
 
             await db.SaveChangesAsync();
         }
-    }
-}
 
+        // =========================================================
+        // EXAMS — TEST DATA FOR VISUALISATION
+        // =========================================================
+
+        var examToday =
+            testingNow.Date;
+
+        var examDefinitions = new[]
+        {
+        (
+            CourseIndex: 0,
+            ExamType: ExamType.CAT,
+            DaysFromToday: 3,
+            StartTime: new TimeOnly(9, 0),
+            EndTime: new TimeOnly(11, 0),
+            RoomIndex: 0
+        ),
+        (
+            CourseIndex: 1,
+            ExamType: ExamType.CAT,
+            DaysFromToday: 5,
+            StartTime: new TimeOnly(13, 0),
+            EndTime: new TimeOnly(15, 0),
+            RoomIndex: 1
+        ),
+        (
+            CourseIndex: 2,
+            ExamType: ExamType.CAT,
+            DaysFromToday: 8,
+            StartTime: new TimeOnly(9, 0),
+            EndTime: new TimeOnly(11, 0),
+            RoomIndex: 2
+        ),
+        (
+            CourseIndex: 3,
+            ExamType: ExamType.CAT,
+            DaysFromToday: 10,
+            StartTime: new TimeOnly(13, 0),
+            EndTime: new TimeOnly(15, 0),
+            RoomIndex: 3
+        ),
+        (
+            CourseIndex: 4,
+            ExamType: ExamType.CAT,
+            DaysFromToday: 13,
+            StartTime: new TimeOnly(9, 0),
+            EndTime: new TimeOnly(11, 0),
+            RoomIndex: 4
+        ),
+        (
+            CourseIndex: 0,
+            ExamType: ExamType.Final,
+            DaysFromToday: 21,
+            StartTime: new TimeOnly(9, 0),
+            EndTime: new TimeOnly(12, 0),
+            RoomIndex: 5
+        ),
+        (
+            CourseIndex: 1,
+            ExamType: ExamType.Final,
+            DaysFromToday: 25,
+            StartTime: new TimeOnly(13, 0),
+            EndTime: new TimeOnly(16, 0),
+            RoomIndex: 6
+        ),
+        (
+            CourseIndex: 2,
+            ExamType: ExamType.Final,
+            DaysFromToday: 30,
+            StartTime: new TimeOnly(9, 0),
+            EndTime: new TimeOnly(12, 0),
+            RoomIndex: 7
+        ),
+        (
+            CourseIndex: 3,
+            ExamType: ExamType.Final,
+            DaysFromToday: 35,
+            StartTime: new TimeOnly(13, 0),
+            EndTime: new TimeOnly(16, 0),
+            RoomIndex: 8
+        ),
+        (
+            CourseIndex: 4,
+            ExamType: ExamType.Final,
+            DaysFromToday: 40,
+            StartTime: new TimeOnly(9, 0),
+            EndTime: new TimeOnly(12, 0),
+            RoomIndex: 9
+        )
+    };
+
+        foreach (var definition in examDefinitions)
+        {
+            var course =
+                courses[definition.CourseIndex];
+
+            var room =
+                rooms[definition.RoomIndex];
+
+            var examDate =
+                examToday.AddDays(
+                    definition.DaysFromToday);
+
+            var existingExam =
+                await db.Exams
+                    .FirstOrDefaultAsync(e =>
+                        e.CourseId == course.Id &&
+                        e.ExamType == definition.ExamType);
+
+            if (existingExam == null)
+            {
+                db.Exams.Add(
+                    new Exam
+                    {
+                        CourseId =
+                            course.Id,
+
+                        RoomId =
+                            room.Id,
+
+                        ExamType =
+                            definition.ExamType,
+
+                        ExamDate =
+                            examDate,
+
+                        StartTime =
+                            definition.StartTime,
+
+                        EndTime =
+                            definition.EndTime,
+
+                        IsActive =
+                            true,
+
+                        Notes =
+                            $"{definition.ExamType} examination for {course.Code}",
+
+                        CreatedAt =
+                            DateTime.UtcNow
+                    });
+            }
+            else
+            {
+                existingExam.RoomId =
+                    room.Id;
+
+                existingExam.ExamDate =
+                    examDate;
+
+                existingExam.StartTime =
+                    definition.StartTime;
+
+                existingExam.EndTime =
+                    definition.EndTime;
+
+                existingExam.IsActive =
+                    true;
+
+                existingExam.Notes =
+                    $"{definition.ExamType} examination for {course.Code}";
+
+                existingExam.UpdatedAt =
+                    DateTime.UtcNow;
+            }
+        }
+
+        await db.SaveChangesAsync();
+    }
+
+
+}
