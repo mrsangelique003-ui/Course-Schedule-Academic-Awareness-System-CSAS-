@@ -52,7 +52,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+            {
                 return Page();
+            }
 
             var identifier = Input.Identifier.Trim();
 
@@ -73,15 +75,15 @@ namespace CourseScheduleSystem.Web.Pages.Account
 
             var claims = new List<Claim>
             {
-                new(
+                new Claim(
                     ClaimTypes.NameIdentifier,
                     match.Id.ToString()),
 
-                new(
+                new Claim(
                     ClaimTypes.Name,
                     match.FullName),
 
-                new(
+                new Claim(
                     ClaimTypes.Role,
                     match.Role)
             };
@@ -117,7 +119,14 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
                 });
 
-            return RedirectToPage("/Dashboard");
+            // Class Representatives go to the CP dashboard.
+            if (match.Role == "ClassRepresentative")
+            {
+                return LocalRedirect("/CP/Dashboard");
+            }
+
+            // Other account types go to the normal dashboard.
+            return LocalRedirect("/Dashboard");
         }
 
         private async Task<AccountMatch?> CheckAdministratorAsync(
@@ -131,7 +140,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     a.Email.ToLower() == identifier.ToLower());
 
             if (account is null)
+            {
                 return null;
+            }
 
             var result = new PasswordHasher<Administrator>()
                 .VerifyHashedPassword(
@@ -140,7 +151,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     password);
 
             if (result == PasswordVerificationResult.Failed)
+            {
                 return null;
+            }
 
             return new AccountMatch(
                 account.Id,
@@ -161,7 +174,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     l.Email.ToLower() == identifier.ToLower());
 
             if (account is null)
+            {
                 return null;
+            }
 
             var result = new PasswordHasher<Lecturer>()
                 .VerifyHashedPassword(
@@ -170,7 +185,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     password);
 
             if (result == PasswordVerificationResult.Failed)
+            {
                 return null;
+            }
 
             return new AccountMatch(
                 account.Id,
@@ -190,7 +207,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     c.RegNo.ToLower() == identifier.ToLower());
 
             if (account is null)
+            {
                 return null;
+            }
 
             var result = new PasswordHasher<ClassRepresentative>()
                 .VerifyHashedPassword(
@@ -199,7 +218,9 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     password);
 
             if (result == PasswordVerificationResult.Failed)
+            {
                 return null;
+            }
 
             return new AccountMatch(
                 account.Id,
@@ -219,16 +240,23 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     s.RegNo.ToLower() == identifier.ToLower());
 
             if (account is null)
+            {
                 return null;
+            }
 
-            var result = new PasswordHasher<CourseScheduleSystem.Web.Models.Student>()
-                .VerifyHashedPassword(
-                    account,
-                    account.PasswordHash,
-                    password);
+            // Fully qualify Student because Pages.Student
+            // is also a namespace in this project.
+            var result =
+                new PasswordHasher<CourseScheduleSystem.Web.Models.Student>()
+                    .VerifyHashedPassword(
+                        account,
+                        account.PasswordHash,
+                        password);
 
             if (result == PasswordVerificationResult.Failed)
+            {
                 return null;
+            }
 
             return new AccountMatch(
                 account.Id,
@@ -239,4 +267,3 @@ namespace CourseScheduleSystem.Web.Pages.Account
         }
     }
 }
-

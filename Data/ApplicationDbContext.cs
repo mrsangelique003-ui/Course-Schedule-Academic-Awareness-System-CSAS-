@@ -22,6 +22,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<Exam> Exams => Set<Exam>();
     public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
 
+    // CP module
+    public DbSet<ClassGroup> ClassGroups => Set<ClassGroup>();
+    public DbSet<CourseCompletion> CourseCompletions => Set<CourseCompletion>();
+    public DbSet<HodMessage> HodMessages => Set<HodMessage>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -36,6 +41,11 @@ public class ApplicationDbContext : DbContext
         ConfigureEnrollment(modelBuilder);
         ConfigureExam(modelBuilder);
         ConfigureSupportTicket(modelBuilder);
+
+        // CP module
+        ConfigureClassGroup(modelBuilder);
+        ConfigureCourseCompletion(modelBuilder);
+        ConfigureHodMessage(modelBuilder);
     }
 
     private static void ConfigureAdministrator(ModelBuilder modelBuilder)
@@ -87,10 +97,34 @@ public class ApplicationDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(100);
 
+            // CP module
+            entity.Property(cp => cp.Intake)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(cp => cp.Level)
+                .IsRequired()
+                .HasMaxLength(50);
+
             entity.HasMany(cp => cp.RepresentedCourses)
                 .WithMany(course => course.ClassRepresentatives)
                 .UsingEntity(join =>
                     join.ToTable("CourseClassRepresentatives"));
+
+            entity.HasMany(cp => cp.ClassGroups)
+                .WithOne(group => group.ClassRepresentative)
+                .HasForeignKey(group => group.ClassRepresentativeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany(cp => cp.CourseCompletions)
+                .WithOne(completion => completion.ClassRepresentative)
+                .HasForeignKey(completion => completion.ClassRepresentativeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany(cp => cp.HodMessages)
+                .WithOne(message => message.ClassRepresentative)
+                .HasForeignKey(message => message.ClassRepresentativeId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 
@@ -153,6 +187,12 @@ public class ApplicationDbContext : DbContext
                 .WithOne(s => s.Lecturer)
                 .HasForeignKey(s => s.LecturerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // CP module
+            entity.HasMany<CourseCompletion>()
+                .WithOne(completion => completion.Lecturer)
+                .HasForeignKey(completion => completion.LecturerId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 
@@ -195,6 +235,17 @@ public class ApplicationDbContext : DbContext
                 .WithOne(e => e.Course)
                 .HasForeignKey(e => e.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // CP module
+            entity.HasMany<ClassGroup>()
+                .WithOne(group => group.Course)
+                .HasForeignKey(group => group.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany<CourseCompletion>()
+                .WithOne(completion => completion.Course)
+                .HasForeignKey(completion => completion.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 
@@ -315,5 +366,93 @@ public class ApplicationDbContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }
-}
 
+    // ============================================================
+    // CP MODULE CONFIGURATION
+    // ============================================================
+
+    private static void ConfigureClassGroup(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ClassGroup>(entity =>
+        {
+            entity.HasKey(g => g.Id);
+
+            entity.Property(g => g.GroupName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(g => g.Intake)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(g => g.Level)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(g => g.GroupLink)
+                .IsRequired()
+                .HasMaxLength(500);
+
+            entity.Property(g => g.CreatedAt)
+                .IsRequired();
+
+            // Prevent duplicate groups for the same course,
+            // CP, intake and level.
+            entity.HasIndex(g => new
+            {
+                g.CourseId,
+                g.ClassRepresentativeId,
+                g.Intake,
+                g.Level
+            })
+            .IsUnique();
+        });
+    }
+
+    private static void ConfigureCourseCompletion(
+        ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<CourseCompletion>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+
+            entity.Property(c => c.Status)
+                .IsRequired();
+
+            entity.Property(c => c.Remarks)
+                .HasMaxLength(1000);
+
+            // A CP can have only one completion record
+            // for a particular course.
+            entity.HasIndex(c => new
+            {
+                c.CourseId,
+                c.ClassRepresentativeId
+            })
+            .IsUnique();
+
+            entity.Property(c => c.SubmittedAt);
+
+            entity.Property(c => c.ConfirmedAt);
+        });
+    }
+
+    private static void ConfigureHodMessage(
+        ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<HodMessage>(entity =>
+        {
+            entity.HasKey(m => m.Id);
+
+            entity.Property(m => m.Message)
+                .IsRequired()
+                .HasMaxLength(2000);
+
+            entity.Property(m => m.SentAt)
+                .IsRequired();
+
+            entity.Property(m => m.IsRead)
+                .IsRequired();
+        });
+    }
+}
