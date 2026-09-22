@@ -119,18 +119,39 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
                 });
 
-<<<<<<< HEAD
-            return RedirectToPage("/Admin/Dashboard");
-=======
-            // Class Representatives go to the CP dashboard.
-            if (match.Role == "ClassRepresentative")
+            // -------------------------------------------------------------
+            // Honor ReturnUrl if the user was bounced here from a protected
+            // page. Only allow local redirects to prevent open-redirect
+            // attacks.
+            // -------------------------------------------------------------
+            var returnUrl = Request.Query["ReturnUrl"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(returnUrl) &&
+                Url.IsLocalUrl(returnUrl))
             {
-                return LocalRedirect("/CP/Dashboard");
+                return LocalRedirect(returnUrl);
             }
 
-            // Other account types go to the normal dashboard.
-            return LocalRedirect("/Dashboard");
->>>>>>> 30a3a628bd95cf05fc2d15155d2eb74214696457
+            // -------------------------------------------------------------
+            // Role-based landing page.
+            // -------------------------------------------------------------
+            return match.Role switch
+            {
+                "Administrator" =>
+                    LocalRedirect("/Admin/Dashboard"),
+
+                "ClassRepresentative" =>
+                    LocalRedirect("/CP/Dashboard"),
+
+                "Lecturer" =>
+                    LocalRedirect("/Lecturer/Dashboard"),
+
+                "Student" =>
+                    LocalRedirect("/Student/Dashboard"),
+
+                _ =>
+                    LocalRedirect("/")
+            };
         }
 
         private async Task<AccountMatch?> CheckAdministratorAsync(

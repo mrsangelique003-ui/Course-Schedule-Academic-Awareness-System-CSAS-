@@ -1,15 +1,8 @@
-
-
-
 @page
-@model CourseScheduleSystem.Web.Pages.CP.Dashboard.IndexModel
+@model CourseScheduleSystem.Web.Pages.CP.DashboardModel
 
 @{
-    Layout = "/Pages/CP/_CPLayout.cshtml";
-    ViewData["Title"] = "CP Dashboard";
-}
-
-@{
+    Layout = "/Pages/Shared/_CPLayout.cshtml";
     ViewData["Title"] = "CP Dashboard";
 }
 
@@ -80,7 +73,7 @@
                         Create and manage your class communication groups.
                     </p>
 
-                    <a asp-page="/CP/ClassGroups"
+                    <a asp-page="/CP/ClassGroups/ClassGroups"
                        class="btn btn-primary">
                         Manage Groups
                     </a>
