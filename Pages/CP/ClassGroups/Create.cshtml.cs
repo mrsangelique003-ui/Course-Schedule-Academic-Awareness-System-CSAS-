@@ -70,8 +70,6 @@ public class CreateModel : CourseScheduleSystem.Web.Pages.CP.CpPageModel
             return Page();
         }
 
-        // Make sure the selected course actually belongs
-        // to the currently signed-in CP.
         var courseBelongsToCp = await _context.Courses
             .AnyAsync(c =>
                 c.Id == Input.CourseId &&
@@ -92,7 +90,6 @@ public class CreateModel : CourseScheduleSystem.Web.Pages.CP.CpPageModel
         var level = Input.Level.Trim();
         var groupLink = Input.GroupLink.Trim();
 
-        // Prevent duplicate active groups for the same CP/course/group.
         var duplicateExists = await _context.ClassGroups
             .AnyAsync(g =>
                 g.ClassRepresentativeId == CurrentCpId &&
