@@ -22,6 +22,9 @@ public class ClassRepresentative
     [StringLength(20)]
     public string? PhoneNumber { get; set; }
 
+    [StringLength(100)]
+    public string? Nationality { get; set; }
+
     [Required]
     [StringLength(100)]
     public string Department { get; set; } = "CIS";
@@ -35,6 +38,34 @@ public class ClassRepresentative
 
     public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
 
+    // ============================================================
+    // EXISTING COURSE RELATIONSHIP
+    // ============================================================
+
     public ICollection<Course> RepresentedCourses { get; set; } =
         new List<Course>();
+
+    // ============================================================
+    // CP MODULE
+    // ============================================================
+
+    [Required]
+    [StringLength(100)]
+    public string Intake { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(50)]
+    public string Level { get; set; } = string.Empty;
+
+    // Class groups managed by this Class Representative
+    public ICollection<ClassGroup> ClassGroups { get; set; } =
+        new List<ClassGroup>();
+
+    // Course completion/sign-off records
+    public ICollection<CourseCompletion> CourseCompletions { get; set; } =
+        new List<CourseCompletion>();
+
+    // Messages exchanged with the HOD
+    public ICollection<HodMessage> HodMessages { get; set; } =
+        new List<HodMessage>();
 }

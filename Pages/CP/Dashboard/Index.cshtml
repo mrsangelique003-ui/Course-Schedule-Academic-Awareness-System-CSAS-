@@ -1,0 +1,125 @@
+
+
+
+@page
+@model CourseScheduleSystem.Web.Pages.CP.Dashboard.IndexModel
+
+@{
+    Layout = "/Pages/CP/_CPLayout.cshtml";
+    ViewData["Title"] = "CP Dashboard";
+}
+
+@{
+    ViewData["Title"] = "CP Dashboard";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="h3 mb-1">Class Representative Dashboard</h1>
+
+        @if (Model.CurrentCp != null)
+        {
+            <p class="text-muted mb-0">
+                Welcome, @Model.CurrentCp.FullName
+            </p>
+        }
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Courses -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Represented Courses</h6>
+                    <h2 class="mb-0">@Model.TotalCourses</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Groups -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Active Class Groups</h6>
+                    <h2 class="mb-0">@Model.TotalGroups</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completions -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Pending Sign-Off</h6>
+                    <h2 class="mb-0">@Model.PendingCompletions</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-muted">Unread Messages</h6>
+                    <h2 class="mb-0">@Model.UnreadMessages</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-4 mt-2">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Class Groups</h5>
+                    <p class="text-muted">
+                        Create and manage your class communication groups.
+                    </p>
+
+                    <a asp-page="/CP/ClassGroups"
+                       class="btn btn-primary">
+                        Manage Groups
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Course Sign-Off</h5>
+                    <p class="text-muted">
+                        Review and submit course completion information.
+                    </p>
+
+                    <a asp-page="/CP/SignOff"
+                       class="btn btn-primary">
+                        View Sign-Off
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>HOD Messages</h5>
+                    <p class="text-muted">
+                        Communicate with the Head of Department.
+                    </p>
+
+                    <a asp-page="/CP/Chat"
+                       class="btn btn-primary">
+                        Open Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,168 @@
+@page
+@model CourseScheduleSystem.Web.Pages.CP.ClassGroups.CreateModel
+
+@{
+    Layout = "/Pages/CP/_CPLayout.cshtml";
+    ViewData["Title"] = "Create Class Group";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex align-items-center mb-4">
+        <a asp-page="/CP/ClassGroups"
+           class="btn btn-outline-secondary me-3">
+            <i class="bi bi-arrow-left"></i>
+            Back
+        </a>
+
+        <div>
+            <h1 class="h3 mb-1">Create Class Group</h1>
+            <p class="text-muted mb-0">
+                Create a communication group for one of your represented courses.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-xl-7">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <form method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger"
+                             role="alert">
+                        </div>
+
+                        <!-- Course -->
+                        <div class="mb-3">
+                            <label asp-for="Input.CourseId"
+                                   class="form-label fw-semibold">
+                                Course
+                            </label>
+
+                            <select asp-for="Input.CourseId"
+                                    class="form-select">
+
+                                <option value="0">
+                                    -- Select Course --
+                                </option>
+
+                                @foreach (var course in Model.AvailableCourses)
+                                {
+                                    <option value="@course.Id">
+                                        @course.Name
+                                    </option>
+                                }
+
+                            </select>
+
+                            <span asp-validation-for="Input.CourseId"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <!-- Group Name -->
+                        <div class="mb-3">
+                            <label asp-for="Input.GroupName"
+                                   class="form-label fw-semibold">
+                                Group Name
+                            </label>
+
+                            <input asp-for="Input.GroupName"
+                                   class="form-control"
+                                   placeholder="e.g. CIS Level 3 Day Group A"
+                                   maxlength="100" />
+
+                            <span asp-validation-for="Input.GroupName"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <!-- Intake -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Intake"
+                                   class="form-label fw-semibold">
+                                Intake
+                            </label>
+
+                            <input asp-for="Input.Intake"
+                                   class="form-control"
+                                   placeholder="e.g. 2025/2026"
+                                   maxlength="100" />
+
+                            <span asp-validation-for="Input.Intake"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <!-- Level -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Level"
+                                   class="form-label fw-semibold">
+                                Level
+                            </label>
+
+                            <input asp-for="Input.Level"
+                                   class="form-control"
+                                   placeholder="e.g. Level 3"
+                                   maxlength="50" />
+
+                            <span asp-validation-for="Input.Level"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <!-- Group Link -->
+                        <div class="mb-4">
+                            <label asp-for="Input.GroupLink"
+                                   class="form-label fw-semibold">
+                                Group Link
+                            </label>
+
+                            <input asp-for="Input.GroupLink"
+                                   type="url"
+                                   class="form-control"
+                                   placeholder="https://..."
+                                   maxlength="500" />
+
+                            <div class="form-text">
+                                Enter the link students will use to join the group.
+                            </div>
+
+                            <span asp-validation-for="Input.GroupLink"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i>
+                                Create Group
+                            </button>
+
+                            <a asp-page="/CP/ClassGroups"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

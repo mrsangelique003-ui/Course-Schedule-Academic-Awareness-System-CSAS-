@@ -1,0 +1,439 @@
+@using System.Security.Claims
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - CSAS</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="~/css/Layout.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/CP/CP.css"
+          asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+
+@{
+    var currentPage =
+        ViewContext.RouteData.Values["page"]?.ToString();
+
+    var userName =
+        User.Identity?.IsAuthenticated == true
+            ? User.Identity.Name ?? "Class Representative"
+            : "Class Representative";
+
+    var userRole =
+        User.FindFirstValue(ClaimTypes.Role) ?? "Class Representative";
+
+    var registrationNumber =
+        User.FindFirstValue("RegNo");
+
+    var isAuthenticated =
+        User.Identity?.IsAuthenticated == true;
+}
+
+<div class="app-shell">
+
+    <!-- HEADER -->
+    <header class="app-header">
+
+        <nav class="app-navbar"
+             aria-label="Main navigation">
+
+            <a asp-page="/CP/Dashboard"
+               class="app-brand"
+               aria-label="CP Dashboard">
+
+                <span class="app-brand-logo">
+                    <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
+                         alt="UNILAK Logo" />
+                </span>
+
+                <span class="app-brand-text">
+
+                    <strong>UNILAK</strong>
+
+                    <small>
+                        Academic Awareness System
+                    </small>
+
+                </span>
+
+            </a>
+
+            <!-- USER -->
+            <div class="app-nav-user">
+
+                <div class="app-nav-user-info">
+
+                    <span class="app-nav-user-avatar">
+                        <i class="bi bi-person-badge-fill"
+                           aria-hidden="true"></i>
+                    </span>
+
+                    <span class="app-nav-user-text">
+
+                        <strong>@userName</strong>
+
+                        @if (!string.IsNullOrWhiteSpace(registrationNumber))
+                        {
+                            <small>
+
+                                @registrationNumber
+
+                                <span class="app-user-divider">
+                                    •
+                                </span>
+
+                                @userRole
+
+                            </small>
+                        }
+                        else
+                        {
+                            <small>
+                                @userRole
+                            </small>
+                        }
+
+                    </span>
+
+                </div>
+
+                @if (isAuthenticated)
+                {
+                    <form method="post"
+                          action="/Account/Logout"
+                          class="app-logout-form">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="app-logout-button"
+                                title="Sign out of your account">
+
+                            <i class="bi bi-box-arrow-right"
+                               aria-hidden="true"></i>
+
+                            <span>
+                                Logout
+                            </span>
+
+                        </button>
+
+                    </form>
+                }
+
+            </div>
+
+            <!-- MOBILE MENU -->
+            <button type="button"
+                    class="app-mobile-toggle"
+                    id="appMobileToggle"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                    aria-controls="appSidebar">
+
+                <i class="bi bi-list"
+                   aria-hidden="true"></i>
+
+            </button>
+
+        </nav>
+
+    </header>
+
+
+    <!-- BODY -->
+    <div class="app-body">
+
+        <!-- SIDEBAR -->
+        <aside class="app-sidebar"
+               id="appSidebar"
+               aria-label="CP Sidebar navigation">
+
+            <nav class="app-sidebar-nav">
+
+                <span class="app-sidebar-group">
+                    CP MENU
+                </span>
+
+
+                <!-- DASHBOARD -->
+                <a asp-page="/CP/Dashboard"
+                   class="app-sidebar-link @(currentPage == "/CP/Dashboard/Index" ? "active" : "")">
+
+                    <i class="bi bi-grid-1x2"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- CLASS GROUPS -->
+                <a asp-page="/CP/ClassGroups"
+                   class="app-sidebar-link @(currentPage == "/CP/ClassGroups/Index" ? "active" : "")">
+
+                    <i class="bi bi-people"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        Class Groups
+                    </span>
+
+                </a>
+
+
+                <!-- COURSE SIGN-OFF -->
+                <a asp-page="/CP/SignOff"
+                   class="app-sidebar-link @(currentPage == "/CP/SignOff" ? "active" : "")">
+
+                    <i class="bi bi-check2-square"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        Course Sign-Off
+                    </span>
+
+                </a>
+
+
+                <!-- CIS CPs -->
+                <a asp-page="/CP/CisCps"
+                   class="app-sidebar-link @(currentPage == "/CP/CisCps" ? "active" : "")">
+
+                    <i class="bi bi-person-vcard"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        CIS Class Representatives
+                    </span>
+
+                </a>
+
+
+                <!-- CHAT -->
+                <a asp-page="/CP/Chat"
+                   class="app-sidebar-link @(currentPage == "/CP/Chat" ? "active" : "")">
+
+                    <i class="bi bi-chat-dots"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        HOD Chat
+                    </span>
+
+                </a>
+
+
+                <span class="app-sidebar-group mt-3">
+                    ACCOUNT
+                </span>
+
+
+                <!-- PROFILE -->
+                <a asp-page="/CP/Profile"
+                   class="app-sidebar-link @(currentPage == "/CP/Profile" ? "active" : "")">
+
+                    <i class="bi bi-person-circle"
+                       aria-hidden="true"></i>
+
+                    <span>
+                        My Profile
+                    </span>
+
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="app-main">
+
+            @RenderBody()
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- SCRIPTS -->
+
+<script src="~/lib/jquery/dist/jquery.min.js"
+        asp-append-version="true"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+        asp-append-version="true"></script>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const toggle =
+            document.getElementById("appMobileToggle");
+
+        const sidebar =
+            document.getElementById("appSidebar");
+
+        if (!toggle || !sidebar) {
+            return;
+        }
+
+        const icon =
+            toggle.querySelector("i");
+
+
+        function openSidebar() {
+
+            sidebar.classList.add("open");
+
+            toggle.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            toggle.setAttribute(
+                "aria-label",
+                "Close navigation menu"
+            );
+
+            if (icon) {
+
+                icon.classList.remove("bi-list");
+                icon.classList.add("bi-x-lg");
+
+            }
+        }
+
+
+        function closeSidebar() {
+
+            sidebar.classList.remove("open");
+
+            toggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            toggle.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+            );
+
+            if (icon) {
+
+                icon.classList.remove("bi-x-lg");
+                icon.classList.add("bi-list");
+
+            }
+        }
+
+
+        toggle.addEventListener(
+            "click",
+            function () {
+
+                if (sidebar.classList.contains("open")) {
+                    closeSidebar();
+                }
+                else {
+                    openSidebar();
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    sidebar.classList.contains("open") &&
+                    !sidebar.contains(event.target) &&
+                    !toggle.contains(event.target)
+                ) {
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (window.innerWidth > 900) {
+                    closeSidebar();
+                }
+
+            }
+        );
+
+
+        const sidebarLinks =
+            document.querySelectorAll(
+                ".app-sidebar-link:not(.app-sidebar-link-disabled)"
+            );
+
+
+        sidebarLinks.forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        if (window.innerWidth <= 900) {
+                            closeSidebar();
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    });
+
+</script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
