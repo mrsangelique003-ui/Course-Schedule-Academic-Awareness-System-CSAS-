@@ -1,0 +1,539 @@
+@using System.Security.Claims
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+<title>@ViewData["Title"] - CSAS</title>
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="~/css/Admin/Layout.css" asp-append-version="true" />
+
+@await RenderSectionAsync("Styles", required: false)
+
+
+</head>
+
+<body>
+
+@{
+var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+
+
+var userName = User.Identity?.IsAuthenticated == true
+    ? User.Identity.Name ?? "Administrator"
+    : "Administrator";
+
+var userRole = User.FindFirstValue(ClaimTypes.Role) ?? "Administrator";
+var staffId = User.FindFirstValue("StaffId");
+var isAuthenticated = User.Identity?.IsAuthenticated == true;
+
+var initials = string.IsNullOrWhiteSpace(userName)
+    ? "AD"
+    : string.Concat(
+        userName
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Take(2)
+            .Select(p => char.ToUpper(p[0])));
+
+
+}
+
+<div class="admin-shell">
+
+
+<aside class="admin-sidebar"
+       id="adminSidebar"
+       aria-label="Administrator sidebar navigation">
+
+    <a asp-page="/Admin/Dashboard"
+       class="admin-brand"
+       aria-label="CSAS Administrator Dashboard">
+
+        <span class="admin-brand-logo">
+            <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
+                 alt="UNILAK Logo" />
+        </span>
+
+        <span class="admin-brand-text">
+            <strong>UNILAK</strong>
+            <small>Academic Awareness System</small>
+        </span>
+
+    </a>
+
+
+    <div class="admin-user-card">
+
+        <span class="admin-user-avatar">
+            @initials
+        </span>
+
+        <div class="admin-user-meta">
+
+            <strong title="@userName">
+                @userName
+            </strong>
+
+            @if (!string.IsNullOrWhiteSpace(staffId))
+            {
+                <small>
+                    @staffId
+                    <span class="admin-user-divider">•</span>
+                    @userRole
+                </small>
+            }
+            else
+            {
+                <small>@userRole</small>
+            }
+
+        </div>
+
+        <div class="admin-user-actions">
+
+            <button type="button"
+                    class="admin-icon-btn"
+                    title="Messages"
+                    aria-label="Messages">
+                <i class="bi bi-envelope"></i>
+            </button>
+
+            <button type="button"
+                    class="admin-icon-btn"
+                    title="Settings"
+                    aria-label="Settings">
+                <i class="bi bi-gear"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <nav class="admin-sidebar-nav">
+
+        <span class="admin-sidebar-group">
+            Main Menu
+        </span>
+
+
+        <a asp-page="/Admin/Dashboard"
+           class="admin-sidebar-link @(currentPage == "/Admin/Dashboard" ? "active" : "")">
+
+            <i class="bi bi-grid-1x2"></i>
+            <span>Dashboard</span>
+
+        </a>
+
+
+        <span class="admin-sidebar-group">
+            Academic Management
+        </span>
+
+
+        <!-- ACTIVE MODULE -->
+
+        <a asp-page="/Admin/Students"
+           class="admin-sidebar-link @(currentPage == "/Admin/Students" ? "active" : "")">
+
+            <i class="bi bi-people"></i>
+            <span>Students</span>
+
+        </a>
+
+
+        <!-- FUTURE MODULES -->
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Lecturers module will be implemented later">
+
+            <i class="bi bi-person-workspace"></i>
+            <span>Lecturers</span>
+            <small>Soon</small>
+
+        </a>
+
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Courses module will be implemented later">
+
+            <i class="bi bi-journal-bookmark"></i>
+            <span>Courses</span>
+            <small>Soon</small>
+
+        </a>
+
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Classrooms module will be implemented later">
+
+            <i class="bi bi-building"></i>
+            <span>Classrooms</span>
+            <small>Soon</small>
+
+        </a>
+
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Schedules module will be implemented later">
+
+            <i class="bi bi-calendar3"></i>
+            <span>Schedules</span>
+            <small>Soon</small>
+
+        </a>
+
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Enrollments module will be implemented later">
+
+            <i class="bi bi-person-check"></i>
+            <span>Enrollments</span>
+            <small>Soon</small>
+
+        </a>
+
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Examinations module will be implemented later">
+
+            <i class="bi bi-clipboard-check"></i>
+            <span>Examinations</span>
+            <small>Soon</small>
+
+        </a>
+
+
+        <span class="admin-sidebar-group">
+            Communication
+        </span>
+
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Support module will be implemented later">
+
+            <i class="bi bi-headset"></i>
+            <span>Support</span>
+            <small>Soon</small>
+
+        </a>
+
+
+        <span class="admin-sidebar-group">
+            Account
+        </span>
+
+
+        <a href="#"
+           class="admin-sidebar-link admin-sidebar-link-disabled"
+           aria-disabled="true"
+           title="Profile module will be implemented later">
+
+            <i class="bi bi-person-circle"></i>
+            <span>My Profile</span>
+            <small>Soon</small>
+
+        </a>
+
+    </nav>
+
+
+    <div class="admin-sidebar-footer">
+
+        @if (isAuthenticated)
+        {
+            <form method="post"
+                  action="/Account/Logout"
+                  class="admin-logout-form">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="admin-logout-button"
+                        title="Sign out of your account">
+
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+
+                </button>
+
+            </form>
+        }
+
+    </div>
+
+</aside>
+
+
+<div class="admin-content">
+
+    <header class="admin-header">
+
+        <nav class="admin-navbar"
+             aria-label="Administrator navigation">
+
+
+            <div class="admin-search">
+
+                <i class="bi bi-search"></i>
+
+                <input type="text"
+                       placeholder="Search…"
+                       aria-label="Search" />
+
+            </div>
+
+
+            <div class="admin-nav-actions">
+
+                <button type="button"
+                        class="admin-icon-btn"
+                        title="Notifications"
+                        aria-label="Notifications">
+
+                    <i class="bi bi-bell"></i>
+
+                </button>
+
+
+                <button type="button"
+                        class="admin-icon-btn"
+                        title="Fullscreen"
+                        aria-label="Fullscreen"
+                        id="adminFullscreenButton">
+
+                    <i class="bi bi-arrows-fullscreen"></i>
+
+                </button>
+
+
+                <button type="button"
+                        class="admin-icon-btn"
+                        title="Settings"
+                        aria-label="Settings">
+
+                    <i class="bi bi-gear"></i>
+
+                </button>
+
+
+                <button type="button"
+                        class="admin-icon-btn"
+                        title="Help"
+                        aria-label="Help">
+
+                    <i class="bi bi-question-circle"></i>
+
+                </button>
+
+
+                <span class="admin-breadcrumb">
+
+                    <i class="bi bi-house-door"></i>
+
+                    Components / Dashboard
+
+                </span>
+
+
+                <span class="admin-nav-avatar"
+                      title="@userName">
+
+                    <i class="bi bi-person-fill"></i>
+
+                </span>
+
+
+                <button type="button"
+                        class="admin-mobile-toggle"
+                        id="adminMobileToggle"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false"
+                        aria-controls="adminSidebar">
+
+                    <i class="bi bi-list"></i>
+
+                </button>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <main class="admin-main">
+
+        @RenderBody()
+
+    </main>
+
+</div>
+
+
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"
+        asp-append-version="true"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+        asp-append-version="true"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const toggle = document.getElementById("adminMobileToggle");
+        const sidebar = document.getElementById("adminSidebar");
+        const fullscreenButton = document.getElementById("adminFullscreenButton");
+
+        if (toggle && sidebar) {
+
+            const icon = toggle.querySelector("i");
+
+
+            function openSidebar() {
+
+                sidebar.classList.add("open");
+
+                toggle.setAttribute("aria-expanded", "true");
+                toggle.setAttribute("aria-label", "Close navigation menu");
+
+                if (icon) {
+                    icon.classList.remove("bi-list");
+                    icon.classList.add("bi-x-lg");
+                }
+
+            }
+
+
+            function closeSidebar() {
+
+                sidebar.classList.remove("open");
+
+                toggle.setAttribute("aria-expanded", "false");
+                toggle.setAttribute("aria-label", "Open navigation menu");
+
+                if (icon) {
+                    icon.classList.remove("bi-x-lg");
+                    icon.classList.add("bi-list");
+                }
+
+            }
+
+
+            toggle.addEventListener("click", function () {
+
+                if (sidebar.classList.contains("open")) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+
+            });
+
+
+            document.addEventListener("click", function (event) {
+
+                if (
+                    sidebar.classList.contains("open") &&
+                    !sidebar.contains(event.target) &&
+                    !toggle.contains(event.target)
+                ) {
+                    closeSidebar();
+                }
+
+            });
+
+
+            window.addEventListener("resize", function () {
+
+                if (window.innerWidth > 900) {
+                    closeSidebar();
+                }
+
+            });
+
+
+            document
+                .querySelectorAll(".admin-sidebar-link:not(.admin-sidebar-link-disabled)")
+                .forEach(function (link) {
+
+                    link.addEventListener("click", function () {
+
+                        if (window.innerWidth <= 900) {
+                            closeSidebar();
+                        }
+
+                    });
+
+                });
+
+        }
+
+
+        if (fullscreenButton) {
+
+            fullscreenButton.addEventListener("click", function () {
+
+                if (!document.fullscreenElement) {
+
+                    document.documentElement
+                        .requestFullscreen()
+                        .catch(function () { });
+
+                } else {
+
+                    document.exitFullscreen()
+                        .catch(function () { });
+
+                }
+
+            });
+
+        }
+
+
+        document
+            .querySelectorAll(".admin-sidebar-link-disabled")
+            .forEach(function (link) {
+
+                link.addEventListener("click", function (event) {
+
+                    event.preventDefault();
+
+                });
+
+            });
+
+    });
+</script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

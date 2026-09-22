@@ -16,12 +16,9 @@ public static class DbInitializer
         const string defaultPassword = "M00del!!";
 
         var studentHasher = new PasswordHasher<Student>();
-        var classRepresentativeHasher =
-            new PasswordHasher<ClassRepresentative>();
-        var administratorHasher =
-            new PasswordHasher<Administrator>();
-        var lecturerHasher =
-            new PasswordHasher<Lecturer>();
+        var classRepresentativeHasher = new PasswordHasher<ClassRepresentative>();
+        var administratorHasher = new PasswordHasher<Administrator>();
+        var lecturerHasher = new PasswordHasher<Lecturer>();
 
         // =========================================================
         // STUDENTS — 20 RECORDS
@@ -77,12 +74,23 @@ public static class DbInitializer
 
                 db.Students.Add(student);
             }
-            else if (string.IsNullOrWhiteSpace(student.PasswordHash))
+            else
             {
-                student.PasswordHash =
-                    studentHasher.HashPassword(
-                        student,
-                        defaultPassword);
+                student.FullName = item.Item2;
+                student.Email = item.Item3;
+                student.Department = "CIS";
+                student.Program = "Computer Information Systems";
+                student.Level = "Year 4";
+                student.StudySession = StudySession.Day;
+                student.IsActive = true;
+
+                if (string.IsNullOrWhiteSpace(student.PasswordHash))
+                {
+                    student.PasswordHash =
+                        studentHasher.HashPassword(
+                            student,
+                            defaultPassword);
+                }
             }
         }
 
@@ -142,13 +150,22 @@ public static class DbInitializer
 
                 db.ClassRepresentatives.Add(representative);
             }
-            else if (string.IsNullOrWhiteSpace(
-                representative.PasswordHash))
+            else
             {
-                representative.PasswordHash =
-                    classRepresentativeHasher.HashPassword(
-                        representative,
-                        defaultPassword);
+                representative.FullName = item.Item2;
+                representative.Email = item.Item3;
+                representative.Department = "CIS";
+                representative.StudySession = StudySession.Day;
+                representative.IsActive = true;
+
+                if (string.IsNullOrWhiteSpace(
+                    representative.PasswordHash))
+                {
+                    representative.PasswordHash =
+                        classRepresentativeHasher.HashPassword(
+                            representative,
+                            defaultPassword);
+                }
             }
         }
 
@@ -208,13 +225,22 @@ public static class DbInitializer
 
                 db.Administrators.Add(administrator);
             }
-            else if (string.IsNullOrWhiteSpace(
-                administrator.PasswordHash))
+            else
             {
-                administrator.PasswordHash =
-                    administratorHasher.HashPassword(
-                        administrator,
-                        defaultPassword);
+                administrator.FullName = item.Item2;
+                administrator.Email = item.Item3;
+                administrator.Department = "CIS";
+                administrator.Role = item.Item4;
+                administrator.IsActive = true;
+
+                if (string.IsNullOrWhiteSpace(
+                    administrator.PasswordHash))
+                {
+                    administrator.PasswordHash =
+                        administratorHasher.HashPassword(
+                            administrator,
+                            defaultPassword);
+                }
             }
         }
 
@@ -273,13 +299,21 @@ public static class DbInitializer
 
                 db.Lecturers.Add(lecturer);
             }
-            else if (string.IsNullOrWhiteSpace(
-                lecturer.PasswordHash))
+            else
             {
-                lecturer.PasswordHash =
-                    lecturerHasher.HashPassword(
-                        lecturer,
-                        defaultPassword);
+                lecturer.FullName = item.Item2;
+                lecturer.Email = item.Item3;
+                lecturer.Department = "CIS";
+                lecturer.IsActive = true;
+
+                if (string.IsNullOrWhiteSpace(
+                    lecturer.PasswordHash))
+                {
+                    lecturer.PasswordHash =
+                        lecturerHasher.HashPassword(
+                            lecturer,
+                            defaultPassword);
+                }
             }
         }
 
@@ -379,17 +413,10 @@ public static class DbInitializer
         ("CSE406", "Final Year Project", 6, "Planning, development and presentation of a software project.")
     };
 
-        var registrationOpen =
-            DateTime.UtcNow.AddDays(-1);
-
-        var registrationClose =
-            registrationOpen.AddDays(2);
-
-        var courseStart =
-            DateTime.UtcNow.AddDays(-10);
-
-        var courseEnd =
-            DateTime.UtcNow.AddDays(90);
+        var registrationOpen = DateTime.UtcNow.AddDays(-1);
+        var registrationClose = registrationOpen.AddDays(2);
+        var courseStart = DateTime.UtcNow.AddDays(-10);
+        var courseEnd = DateTime.UtcNow.AddDays(90);
 
         for (var i = 0; i < courseData.Length; i++)
         {
@@ -410,14 +437,11 @@ public static class DbInitializer
                     Credits = item.Item3,
                     Status = CourseStatus.Available,
                     StudySession = StudySession.Day,
-                    LecturerId =
-                        lecturers[i % lecturers.Count].Id,
+                    LecturerId = lecturers[i % lecturers.Count].Id,
                     StartDate = courseStart,
                     EndDate = courseEnd,
-                    RegistrationOpenDate =
-                        registrationOpen,
-                    RegistrationCloseDate =
-                        registrationClose,
+                    RegistrationOpenDate = registrationOpen,
+                    RegistrationCloseDate = registrationClose,
                     IsActive = true
                 };
 
@@ -430,14 +454,11 @@ public static class DbInitializer
                 course.Credits = item.Item3;
                 course.Status = CourseStatus.Available;
                 course.StudySession = StudySession.Day;
-                course.LecturerId =
-                    lecturers[i % lecturers.Count].Id;
+                course.LecturerId = lecturers[i % lecturers.Count].Id;
                 course.StartDate = courseStart;
                 course.EndDate = courseEnd;
-                course.RegistrationOpenDate =
-                    registrationOpen;
-                course.RegistrationCloseDate =
-                    registrationClose;
+                course.RegistrationOpenDate = registrationOpen;
+                course.RegistrationCloseDate = registrationClose;
                 course.IsActive = true;
             }
         }
@@ -461,7 +482,7 @@ public static class DbInitializer
                 .ToListAsync();
 
         // =========================================================
-        // SCHEDULE ENTRIES — ORIGINAL 20 RECORDS
+        // SCHEDULE ENTRIES — 20 RECORDS
         // =========================================================
 
         var scheduleSlots = new[]
@@ -502,24 +523,14 @@ public static class DbInitializer
                 })
                 .ToListAsync();
 
-        var existingScheduleCount =
-            existingScheduleKeys.Count;
-
-        if (existingScheduleCount < 20)
+        if (existingScheduleKeys.Count < 20)
         {
             for (var i = 0; i < 20; i++)
             {
-                var course =
-                    courses[i % courses.Count];
-
-                var lecturer =
-                    lecturers[i % lecturers.Count];
-
-                var room =
-                    rooms[i % rooms.Count];
-
-                var slot =
-                    scheduleSlots[i];
+                var course = courses[i % courses.Count];
+                var lecturer = lecturers[i % lecturers.Count];
+                var room = rooms[i % rooms.Count];
+                var slot = scheduleSlots[i];
 
                 var exists =
                     existingScheduleKeys.Any(s =>
@@ -540,8 +551,7 @@ public static class DbInitializer
                             EndTime = slot.Item3,
                             StudySession = StudySession.Day,
                             Status = ScheduleStatus.Active,
-                            Notes =
-                                $"Regular {course.Code} class",
+                            Notes = $"Regular {course.Code} class",
                             IsActive = true
                         });
                 }
@@ -552,7 +562,7 @@ public static class DbInitializer
 
         // =========================================================
         // ADD 2 EXTRA CLASSES FOR TODAY — CLASSROOM TESTING
-        // USING RWANDA TIME (UTC+2)
+        // RWANDA TIME (UTC+2)
         // =========================================================
 
         DateTime testingNow;
@@ -570,227 +580,109 @@ public static class DbInitializer
         }
         catch (TimeZoneNotFoundException)
         {
-            testingNow =
-                DateTime.UtcNow.AddHours(2);
+            testingNow = DateTime.UtcNow.AddHours(2);
         }
         catch (InvalidTimeZoneException)
         {
-            testingNow =
-                DateTime.UtcNow.AddHours(2);
+            testingNow = DateTime.UtcNow.AddHours(2);
         }
 
-        var testingToday =
-            testingNow.DayOfWeek;
+        var testingToday = testingNow.DayOfWeek;
+        var currentTime = TimeOnly.FromDateTime(testingNow);
 
-        var currentTime =
-            TimeOnly.FromDateTime(testingNow);
+        var firstTestingCourse = courses[0];
+        var secondTestingCourse = courses[1];
 
-        var firstTestingCourse =
-            courses[0];
+        var firstTestingLecturer = lecturers[0];
+        var secondTestingLecturer = lecturers[1];
 
-        var secondTestingCourse =
-            courses[1];
+        var firstTestingRoom = rooms[0];
+        var secondTestingRoom = rooms[1];
 
-        var firstTestingLecturer =
-            lecturers[0];
+        var ongoingStart = currentTime.AddMinutes(-30);
+        var ongoingEnd = currentTime.AddMinutes(30);
 
-        var secondTestingLecturer =
-            lecturers[1];
-
-        var firstTestingRoom =
-            rooms[0];
-
-        var secondTestingRoom =
-            rooms[1];
-
-        // ---------------------------------------------------------
-        // ONGOING CLASS
-        // ---------------------------------------------------------
-
-        var ongoingStart =
-            currentTime.AddMinutes(-30);
-
-        var ongoingEnd =
-            currentTime.AddMinutes(30);
-
-        // ---------------------------------------------------------
-        // UPCOMING CLASS
-        // ---------------------------------------------------------
-
-        var upcomingStart =
-            currentTime.AddMinutes(45);
-
-        var upcomingEnd =
-            currentTime.AddMinutes(105);
-
-        // ---------------------------------------------------------
-        // ONGOING TEST CLASS
-        // ---------------------------------------------------------
+        var upcomingStart = currentTime.AddMinutes(45);
+        var upcomingEnd = currentTime.AddMinutes(105);
 
         var existingOngoingTest =
             await db.ScheduleEntries
                 .FirstOrDefaultAsync(s =>
-                    s.Notes ==
-                    "CLASSROOM TEST — ONGOING");
+                    s.Notes == "CLASSROOM TEST — ONGOING");
 
         if (existingOngoingTest == null)
         {
-            existingOngoingTest =
-                new ScheduleEntry
-                {
-                    CourseId =
-                        firstTestingCourse.Id,
+            existingOngoingTest = new ScheduleEntry
+            {
+                CourseId = firstTestingCourse.Id,
+                LecturerId = firstTestingLecturer.Id,
+                RoomId = firstTestingRoom.Id,
+                DayOfWeek = testingToday,
+                StartTime = ongoingStart,
+                EndTime = ongoingEnd,
+                StudySession = StudySession.Day,
+                Status = ScheduleStatus.Active,
+                Notes = "CLASSROOM TEST — ONGOING",
+                IsActive = true
+            };
 
-                    LecturerId =
-                        firstTestingLecturer.Id,
-
-                    RoomId =
-                        firstTestingRoom.Id,
-
-                    DayOfWeek =
-                        testingToday,
-
-                    StartTime =
-                        ongoingStart,
-
-                    EndTime =
-                        ongoingEnd,
-
-                    StudySession =
-                        StudySession.Day,
-
-                    Status =
-                        ScheduleStatus.Active,
-
-                    Notes =
-                        "CLASSROOM TEST — ONGOING",
-
-                    IsActive =
-                        true
-                };
-
-            db.ScheduleEntries.Add(
-                existingOngoingTest);
+            db.ScheduleEntries.Add(existingOngoingTest);
         }
         else
         {
-            existingOngoingTest.CourseId =
-                firstTestingCourse.Id;
-
-            existingOngoingTest.LecturerId =
-                firstTestingLecturer.Id;
-
-            existingOngoingTest.RoomId =
-                firstTestingRoom.Id;
-
-            existingOngoingTest.DayOfWeek =
-                testingToday;
-
-            existingOngoingTest.StartTime =
-                ongoingStart;
-
-            existingOngoingTest.EndTime =
-                ongoingEnd;
-
-            existingOngoingTest.StudySession =
-                StudySession.Day;
-
-            existingOngoingTest.Status =
-                ScheduleStatus.Active;
-
-            existingOngoingTest.Notes =
-                "CLASSROOM TEST — ONGOING";
-
-            existingOngoingTest.IsActive =
-                true;
+            existingOngoingTest.CourseId = firstTestingCourse.Id;
+            existingOngoingTest.LecturerId = firstTestingLecturer.Id;
+            existingOngoingTest.RoomId = firstTestingRoom.Id;
+            existingOngoingTest.DayOfWeek = testingToday;
+            existingOngoingTest.StartTime = ongoingStart;
+            existingOngoingTest.EndTime = ongoingEnd;
+            existingOngoingTest.StudySession = StudySession.Day;
+            existingOngoingTest.Status = ScheduleStatus.Active;
+            existingOngoingTest.Notes = "CLASSROOM TEST — ONGOING";
+            existingOngoingTest.IsActive = true;
         }
-
-        // ---------------------------------------------------------
-        // UPCOMING TEST CLASS
-        // ---------------------------------------------------------
 
         var existingUpcomingTest =
             await db.ScheduleEntries
                 .FirstOrDefaultAsync(s =>
-                    s.Notes ==
-                    "CLASSROOM TEST — UPCOMING");
+                    s.Notes == "CLASSROOM TEST — UPCOMING");
 
         if (existingUpcomingTest == null)
         {
-            existingUpcomingTest =
-                new ScheduleEntry
-                {
-                    CourseId =
-                        secondTestingCourse.Id,
+            existingUpcomingTest = new ScheduleEntry
+            {
+                CourseId = secondTestingCourse.Id,
+                LecturerId = secondTestingLecturer.Id,
+                RoomId = secondTestingRoom.Id,
+                DayOfWeek = testingToday,
+                StartTime = upcomingStart,
+                EndTime = upcomingEnd,
+                StudySession = StudySession.Day,
+                Status = ScheduleStatus.Active,
+                Notes = "CLASSROOM TEST — UPCOMING",
+                IsActive = true
+            };
 
-                    LecturerId =
-                        secondTestingLecturer.Id,
-
-                    RoomId =
-                        secondTestingRoom.Id,
-
-                    DayOfWeek =
-                        testingToday,
-
-                    StartTime =
-                        upcomingStart,
-
-                    EndTime =
-                        upcomingEnd,
-
-                    StudySession =
-                        StudySession.Day,
-
-                    Status =
-                        ScheduleStatus.Active,
-
-                    Notes =
-                        "CLASSROOM TEST — UPCOMING",
-
-                    IsActive =
-                        true
-                };
-
-            db.ScheduleEntries.Add(
-                existingUpcomingTest);
+            db.ScheduleEntries.Add(existingUpcomingTest);
         }
         else
         {
-            existingUpcomingTest.CourseId =
-                secondTestingCourse.Id;
-
-            existingUpcomingTest.LecturerId =
-                secondTestingLecturer.Id;
-
-            existingUpcomingTest.RoomId =
-                secondTestingRoom.Id;
-
-            existingUpcomingTest.DayOfWeek =
-                testingToday;
-
-            existingUpcomingTest.StartTime =
-                upcomingStart;
-
-            existingUpcomingTest.EndTime =
-                upcomingEnd;
-
-            existingUpcomingTest.StudySession =
-                StudySession.Day;
-
-            existingUpcomingTest.Status =
-                ScheduleStatus.Active;
-
-            existingUpcomingTest.Notes =
-                "CLASSROOM TEST — UPCOMING";
-
-            existingUpcomingTest.IsActive =
-                true;
+            existingUpcomingTest.CourseId = secondTestingCourse.Id;
+            existingUpcomingTest.LecturerId = secondTestingLecturer.Id;
+            existingUpcomingTest.RoomId = secondTestingRoom.Id;
+            existingUpcomingTest.DayOfWeek = testingToday;
+            existingUpcomingTest.StartTime = upcomingStart;
+            existingUpcomingTest.EndTime = upcomingEnd;
+            existingUpcomingTest.StudySession = StudySession.Day;
+            existingUpcomingTest.Status = ScheduleStatus.Active;
+            existingUpcomingTest.Notes = "CLASSROOM TEST — UPCOMING";
+            existingUpcomingTest.IsActive = true;
         }
 
         await db.SaveChangesAsync();
 
         // =========================================================
-        // ENROLLMENTS — TEST DATA
+        // ENROLLMENTS — 15 ENROLLED + 5 REJECTED
         // =========================================================
 
         var students =
@@ -814,8 +706,7 @@ public static class DbInitializer
                 })
                 .ToListAsync();
 
-        var enrollmentCount =
-            existingEnrollmentKeys.Count;
+        var enrollmentCount = existingEnrollmentKeys.Count;
 
         if (enrollmentCount < 20)
         {
@@ -832,8 +723,7 @@ public static class DbInitializer
                         break;
                     }
 
-                    var course =
-                        courses[courseIndex];
+                    var course = courses[courseIndex];
 
                     var exists =
                         existingEnrollmentKeys.Any(e =>
@@ -846,37 +736,31 @@ public static class DbInitializer
                     }
 
                     var status =
-                        student.RegNo == "STU001" &&
-                        courseIndex < 5
+                        enrollmentIndex < 15
                             ? EnrollmentStatus.Enrolled
-                            : enrollmentIndex % 3 == 0
-                                ? EnrollmentStatus.Enrolled
-                                : enrollmentIndex % 3 == 1
-                                    ? EnrollmentStatus.Pending
-                                    : EnrollmentStatus.Closed;
+                            : EnrollmentStatus.Closed;
 
                     db.Enrollments.Add(
                         new Enrollment
                         {
-                            StudentId =
-                                student.Id,
-
-                            CourseId =
-                                course.Id,
-
-                            Status =
-                                status,
-
+                            StudentId = student.Id,
+                            CourseId = course.Id,
+                            Status = status,
                             RequestedAt =
                                 DateTime.UtcNow.AddDays(
                                     -(enrollmentIndex + 1)),
-
                             ApprovedAt =
-                                status ==
-                                EnrollmentStatus.Enrolled
+                                status == EnrollmentStatus.Enrolled
                                     ? DateTime.UtcNow.AddDays(
                                         -(enrollmentIndex + 1))
                                     : null
+                        });
+
+                    existingEnrollmentKeys.Add(
+                        new
+                        {
+                            StudentId = student.Id,
+                            CourseId = course.Id
                         });
 
                     enrollmentCount++;
@@ -893,7 +777,44 @@ public static class DbInitializer
         }
 
         // =========================================================
-        // ENSURE STU001 HAS ENROLLED COURSES
+        // NORMALIZE DEVELOPMENT ENROLLMENT DATA
+        // 15 ENROLLED + 5 REJECTED
+        // =========================================================
+
+        var developmentEnrollments =
+            await db.Enrollments
+                .OrderBy(e => e.Id)
+                .Take(20)
+                .ToListAsync();
+
+        for (var i = 0; i < developmentEnrollments.Count; i++)
+        {
+            var enrollment = developmentEnrollments[i];
+
+            if (i < 15)
+            {
+                enrollment.Status =
+                    EnrollmentStatus.Enrolled;
+
+                if (!enrollment.ApprovedAt.HasValue)
+                {
+                    enrollment.ApprovedAt =
+                        DateTime.UtcNow;
+                }
+            }
+            else
+            {
+                enrollment.Status =
+                    EnrollmentStatus.Closed;
+
+                enrollment.ApprovedAt = null;
+            }
+        }
+
+        await db.SaveChangesAsync();
+
+        // =========================================================
+        // ENSURE STU001 HAS 5 ENROLLED COURSES
         // =========================================================
 
         var firstStudent =
@@ -914,28 +835,19 @@ public static class DbInitializer
                 var enrollment =
                     await db.Enrollments
                         .FirstOrDefaultAsync(e =>
-                            e.StudentId ==
-                                firstStudent.Id &&
-                            e.CourseId ==
-                                course.Id);
+                            e.StudentId == firstStudent.Id &&
+                            e.CourseId == course.Id);
 
                 if (enrollment == null)
                 {
                     db.Enrollments.Add(
                         new Enrollment
                         {
-                            StudentId =
-                                firstStudent.Id,
-
-                            CourseId =
-                                course.Id,
-
-                            Status =
-                                EnrollmentStatus.Enrolled,
-
+                            StudentId = firstStudent.Id,
+                            CourseId = course.Id,
+                            Status = EnrollmentStatus.Enrolled,
                             RequestedAt =
                                 DateTime.UtcNow.AddDays(-1),
-
                             ApprovedAt =
                                 DateTime.UtcNow
                         });
@@ -960,8 +872,7 @@ public static class DbInitializer
         // EXAMS — TEST DATA FOR VISUALISATION
         // =========================================================
 
-        var examToday =
-            testingNow.Date;
+        var examToday = testingNow.Date;
 
         var examDefinitions = new[]
         {
@@ -1070,56 +981,146 @@ public static class DbInitializer
                 db.Exams.Add(
                     new Exam
                     {
-                        CourseId =
-                            course.Id,
-
-                        RoomId =
-                            room.Id,
-
-                        ExamType =
-                            definition.ExamType,
-
-                        ExamDate =
-                            examDate,
-
-                        StartTime =
-                            definition.StartTime,
-
-                        EndTime =
-                            definition.EndTime,
-
-                        IsActive =
-                            true,
-
+                        CourseId = course.Id,
+                        RoomId = room.Id,
+                        ExamType = definition.ExamType,
+                        ExamDate = examDate,
+                        StartTime = definition.StartTime,
+                        EndTime = definition.EndTime,
+                        IsActive = true,
                         Notes =
                             $"{definition.ExamType} examination for {course.Code}",
-
-                        CreatedAt =
-                            DateTime.UtcNow
+                        CreatedAt = DateTime.UtcNow
                     });
             }
             else
             {
-                existingExam.RoomId =
-                    room.Id;
-
-                existingExam.ExamDate =
-                    examDate;
-
-                existingExam.StartTime =
-                    definition.StartTime;
-
-                existingExam.EndTime =
-                    definition.EndTime;
-
-                existingExam.IsActive =
-                    true;
-
+                existingExam.RoomId = room.Id;
+                existingExam.ExamDate = examDate;
+                existingExam.StartTime = definition.StartTime;
+                existingExam.EndTime = definition.EndTime;
+                existingExam.IsActive = true;
                 existingExam.Notes =
                     $"{definition.ExamType} examination for {course.Code}";
+                existingExam.UpdatedAt = DateTime.UtcNow;
+            }
+        }
 
-                existingExam.UpdatedAt =
-                    DateTime.UtcNow;
+        await db.SaveChangesAsync();
+
+        // =========================================================
+        // SUPPORT TICKETS — 8 RECORDS
+        // =========================================================
+
+        var supportTicketData = new[]
+        {
+        (
+            TicketNumber: "SUP-A1B2C3",
+            StudentRegNo: "STU001",
+            Subject: "Cannot access my account",
+            Category: SupportCategory.AccountAccess,
+            Description: "The student cannot log in using the registered credentials.",
+            Status: SupportTicketStatus.Open
+        ),
+        (
+            TicketNumber: "SUP-D4E5F6",
+            StudentRegNo: "STU002",
+            Subject: "Schedule showing incorrect time",
+            Category: SupportCategory.CourseSchedule,
+            Description: "A scheduled class appears at the wrong time on the student timetable.",
+            Status: SupportTicketStatus.InProgress
+        ),
+        (
+            TicketNumber: "SUP-G7H8I9",
+            StudentRegNo: "STU003",
+            Subject: "Unable to view course",
+            Category: SupportCategory.CourseSchedule,
+            Description: "The student cannot see one of the courses assigned to the class.",
+            Status: SupportTicketStatus.Resolved
+        ),
+        (
+            TicketNumber: "SUP-J1K2L3",
+            StudentRegNo: "STU004",
+            Subject: "Examination timetable issue",
+            Category: SupportCategory.Examination,
+            Description: "The student reported an issue with the examination date displayed.",
+            Status: SupportTicketStatus.Closed
+        ),
+        (
+            TicketNumber: "SUP-M4N5O6",
+            StudentRegNo: "STU005",
+            Subject: "Enrollment information missing",
+            Category: SupportCategory.Enrollment,
+            Description: "An enrolled course is not appearing correctly in the student's enrollment list.",
+            Status: SupportTicketStatus.Open
+        ),
+        (
+            TicketNumber: "SUP-P7Q8R9",
+            StudentRegNo: "STU006",
+            Subject: "Password reset request",
+            Category: SupportCategory.AccountAccess,
+            Description: "The student requested assistance with resetting the account password.",
+            Status: SupportTicketStatus.InProgress
+        ),
+        (
+            TicketNumber: "SUP-S1T2U3",
+            StudentRegNo: "STU007",
+            Subject: "System page not loading",
+            Category: SupportCategory.TechnicalIssue,
+            Description: "The student reported that a system page fails to load correctly.",
+            Status: SupportTicketStatus.Resolved
+        ),
+        (
+            TicketNumber: "SUP-V4W5X6",
+            StudentRegNo: "STU008",
+            Subject: "General system assistance",
+            Category: SupportCategory.Other,
+            Description: "The student requested general assistance using the academic awareness system.",
+            Status: SupportTicketStatus.Closed
+        )
+    };
+
+        foreach (var item in supportTicketData)
+        {
+            var student =
+                await db.Students
+                    .FirstOrDefaultAsync(
+                        s => s.RegNo == item.StudentRegNo);
+
+            if (student == null)
+            {
+                continue;
+            }
+
+            var ticket =
+                await db.SupportTickets
+                    .FirstOrDefaultAsync(
+                        t => t.TicketNumber == item.TicketNumber);
+
+            if (ticket == null)
+            {
+                ticket = new SupportTicket
+                {
+                    TicketNumber = item.TicketNumber,
+                    StudentId = student.Id,
+                    Subject = item.Subject,
+                    Category = item.Category,
+                    Description = item.Description,
+                    Status = item.Status,
+                    CreatedAt = DateTime.UtcNow.AddDays(-4),
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                db.SupportTickets.Add(ticket);
+            }
+            else
+            {
+                ticket.StudentId = student.Id;
+                ticket.Subject = item.Subject;
+                ticket.Category = item.Category;
+                ticket.Description = item.Description;
+                ticket.Status = item.Status;
+                ticket.UpdatedAt = DateTime.UtcNow;
             }
         }
 

@@ -1,0 +1,322 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.DashboardModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var firstName =
+        Model.WelcomeName
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .FirstOrDefault()
+        ?? "Administrator";
+
+    var today = DateTime.Now.ToString("dddd, dd MMMM yyyy");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/Dashboard.css" asp-append-version="true" />
+}
+
+<div class="admin-dashboard-page">
+
+    <!-- ============ HERO / HEADER ============ -->
+    <section class="admin-dashboard-header">
+
+        <div class="admin-dashboard-heading">
+            <span class="admin-eyebrow">Administration</span>
+            <h1>Good morning, @firstName</h1>
+            <p>Monitor the academic activities and resources of CSAS from one central dashboard.</p>
+        </div>
+
+        <div class="admin-dashboard-date">
+            <div class="admin-date-icon">
+                <i class="bi bi-calendar3"></i>
+            </div>
+            <div>
+                <span>Today</span>
+                <strong>@today</strong>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============ STATS ============ -->
+    <section class="admin-stat-grid">
+
+        <article class="admin-stat-card">
+            <div class="admin-stat-content">
+                <span class="admin-stat-label">Total Students</span>
+                <strong class="admin-stat-value">@Model.TotalStudents</strong>
+                <span class="admin-stat-description">Active student accounts</span>
+            </div>
+            <div class="admin-stat-icon students">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <div class="admin-stat-content">
+                <span class="admin-stat-label">Total Lecturers</span>
+                <strong class="admin-stat-value">@Model.TotalLecturers</strong>
+                <span class="admin-stat-description">Active teaching staff</span>
+            </div>
+            <div class="admin-stat-icon lecturers">
+                <i class="bi bi-person-video3"></i>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <div class="admin-stat-content">
+                <span class="admin-stat-label">Total Courses</span>
+                <strong class="admin-stat-value">@Model.TotalCourses</strong>
+                <span class="admin-stat-description">Active academic courses</span>
+            </div>
+            <div class="admin-stat-icon courses">
+                <i class="bi bi-journal-bookmark-fill"></i>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <div class="admin-stat-content">
+                <span class="admin-stat-label">Active Classes</span>
+                <strong class="admin-stat-value">@Model.TotalClasses</strong>
+                <span class="admin-stat-description">Scheduled active classes</span>
+            </div>
+            <div class="admin-stat-icon classes">
+                <i class="bi bi-calendar2-week-fill"></i>
+            </div>
+        </article>
+
+    </section>
+
+    <!-- ============ MAIN GRID ============ -->
+    <section class="admin-overview-grid">
+
+        <!-- Enrollment panel -->
+        <div class="admin-panel admin-enrollment-panel">
+
+            <div class="admin-panel-header">
+                <div>
+                    <span class="admin-panel-eyebrow">Academic Overview</span>
+                    <h2>Enrollment by Course</h2>
+                    <p>Number of currently enrolled students in each active course.</p>
+                </div>
+                <div class="admin-panel-summary">
+                    <span>Total enrolled</span>
+                    <strong>@Model.TotalEnrollments</strong>
+                </div>
+            </div>
+
+            @if (Model.CourseEnrollments.Any())
+            {
+                <div class="admin-course-table-wrapper">
+                    <table class="admin-course-table">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Lecturer</th>
+                                <th>Credits</th>
+                                <th>Students</th>
+                                <th>Enrollment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var course in Model.CourseEnrollments)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="admin-course-name">
+                                            <div class="admin-course-code">@course.CourseCode</div>
+                                            <div>
+                                                <strong>@course.CourseName</strong>
+                                                <span>Course ID #@course.CourseId</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="admin-lecturer-cell">
+                                            <div class="admin-avatar">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                            <span>@course.LecturerName</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="admin-credit-badge">
+                                            @course.Credits
+                                            @(course.Credits == 1 ? "Credit" : "Credits")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <strong class="admin-enrollment-number">
+                                            @course.EnrollmentCount
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <div class="admin-enrollment-bar">
+                                            <div class="admin-progress-track">
+                                                <span style="width:@Math.Min(course.EnrollmentCount * 5, 100)%;"></span>
+                                            </div>
+                                            <small>@course.EnrollmentCount enrolled</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="admin-empty-state">
+                    <div class="admin-empty-icon">
+                        <i class="bi bi-journal-x"></i>
+                    </div>
+                    <h3>No courses found</h3>
+                    <p>There are currently no active courses in the database.</p>
+                </div>
+            }
+
+        </div>
+
+        <!-- Side column -->
+        <aside class="admin-side-column">
+
+            <div class="admin-panel admin-resource-panel">
+                <div class="admin-panel-header compact">
+                    <div>
+                        <span class="admin-panel-eyebrow">Resources</span>
+                        <h2>Campus Resources</h2>
+                    </div>
+                    <i class="bi bi-building"></i>
+                </div>
+
+                <div class="admin-resource-list">
+                    <div class="admin-resource-item">
+                        <div class="admin-resource-icon rooms">
+                            <i class="bi bi-door-open-fill"></i>
+                        </div>
+                        <div>
+                            <strong>@Model.TotalRooms</strong>
+                            <span>Total rooms</span>
+                        </div>
+                    </div>
+
+                    <div class="admin-resource-item">
+                        <div class="admin-resource-icon available">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                        <div>
+                            <strong>@Model.AvailableRooms</strong>
+                            <span>Available rooms</span>
+                        </div>
+                    </div>
+
+                    <div class="admin-resource-item">
+                        <div class="admin-resource-icon enrollment">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div>
+                            <strong>@Model.TotalEnrollments</strong>
+                            <span>Active enrollments</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-panel admin-status-panel">
+                <div class="admin-status-heading">
+                    <div class="admin-live-indicator"><span></span></div>
+                    <div>
+                        <strong>System Overview</strong>
+                        <span>Live database statistics</span>
+                    </div>
+                </div>
+                <div class="admin-status-divider"></div>
+                <div class="admin-status-row">
+                    <span>Database records</span>
+                    <strong>Live</strong>
+                </div>
+                <div class="admin-status-row">
+                    <span>Last refreshed</span>
+                    <strong>@Model.LastUpdated.ToString("HH:mm")</strong>
+                </div>
+            </div>
+
+        </aside>
+
+    </section>
+
+    <!-- ============ TODAY'S CLASSES ============ -->
+    <section class="admin-panel admin-today-panel">
+
+        <div class="admin-panel-header">
+            <div>
+                <span class="admin-panel-eyebrow">Daily Schedule</span>
+                <h2>Today's Classes</h2>
+                <p>Active classes scheduled for @DateTime.Now.ToString("dddd").</p>
+            </div>
+            <div class="admin-today-count">
+                <strong>@Model.TodayClasses.Count</strong>
+                <span>@(Model.TodayClasses.Count == 1 ? "class" : "classes")</span>
+            </div>
+        </div>
+
+        @if (Model.TodayClasses.Any())
+        {
+            <div class="admin-schedule-list">
+                @foreach (var classItem in Model.TodayClasses)
+                {
+                    var statusClass = classItem.Status.ToLowerInvariant();
+
+                    <article class="admin-schedule-item">
+                        <div class="admin-schedule-time">
+                            <strong>@classItem.StartTime.ToString("HH:mm")</strong>
+                            <span>@classItem.EndTime.ToString("HH:mm")</span>
+                        </div>
+
+                        <div class="admin-schedule-line">
+                            <span></span>
+                        </div>
+
+                        <div class="admin-schedule-main">
+                            <div class="admin-schedule-title">
+                                <div>
+                                    <strong>@classItem.CourseCode</strong>
+                                    <span>@classItem.CourseName</span>
+                                </div>
+                                <span class="admin-class-status @statusClass">
+                                    @classItem.Status
+                                </span>
+                            </div>
+
+                            <div class="admin-schedule-meta">
+                                <span>
+                                    <i class="bi bi-person-fill"></i> @classItem.LecturerName
+                                </span>
+                                <span>
+                                    <i class="bi bi-geo-alt-fill"></i> @classItem.Room
+                                </span>
+                                <span>
+                                    <i class="bi bi-clock-fill"></i> @classItem.StudySession
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="admin-empty-state schedule-empty">
+                <div class="admin-empty-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <h3>No classes scheduled today</h3>
+                <p>There are no active classes recorded for today.</p>
+            </div>
+        }
+
+    </section>
+
+</div>

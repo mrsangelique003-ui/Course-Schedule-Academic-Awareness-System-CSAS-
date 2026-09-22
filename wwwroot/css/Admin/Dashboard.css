@@ -1,0 +1,894 @@
+/* =========================================================
+   DASHBOARD — DESIGN TOKENS (local overrides)
+   ========================================================= */
+.admin-dashboard-page {
+    --dash-radius: 14px;
+    --dash-radius-sm: 10px;
+    --dash-gap: 20px;
+    --dash-pad: 24px;
+    --dash-border: #eef2f7;
+    --dash-border-strong: #e2e8f0;
+    --dash-surface: #ffffff;
+    --dash-surface-soft: #f8fafc;
+    --dash-ink: #0b2545;
+    --dash-ink-soft: #475569;
+    --dash-muted: #94a3b8;
+    --dash-accent: #1d4e89;
+    --dash-accent-soft: #eaf1f9;
+    --dash-shadow: 0 1px 2px rgba(15, 52, 96, 0.04), 0 8px 24px rgba(15, 52, 96, 0.05);
+    --dash-shadow-hover: 0 1px 2px rgba(15, 52, 96, 0.05), 0 14px 32px rgba(15, 52, 96, 0.08);
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-bottom: 48px;
+    color: var(--dash-ink);
+    font-feature-settings: "cv11", "ss01";
+}
+
+/* =========================================================
+   HEADER / HERO
+   ========================================================= */
+.admin-dashboard-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 28px;
+    padding-bottom: 4px;
+}
+
+.admin-dashboard-heading {
+    min-width: 0;
+}
+
+.admin-eyebrow,
+.admin-panel-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--dash-accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.admin-dashboard-heading h1 {
+    margin: 0;
+    color: var(--dash-ink);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: clamp(1.55rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+.admin-dashboard-heading p {
+    margin: 8px 0 0;
+    max-width: 560px;
+    color: #64748b;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.admin-dashboard-date {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    padding: 12px 18px;
+    background: var(--dash-surface);
+    border: 1px solid var(--dash-border-strong);
+    border-radius: var(--dash-radius-sm);
+    box-shadow: var(--dash-shadow);
+}
+
+.admin-date-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--dash-radius-sm);
+    background: var(--dash-accent-soft);
+    color: var(--dash-accent);
+    font-size: 1rem;
+}
+
+.admin-dashboard-date span {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--dash-muted);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.admin-dashboard-date strong {
+    display: block;
+    color: var(--dash-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+/* =========================================================
+   STATS
+   ========================================================= */
+.admin-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.admin-stat-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 132px;
+    padding: 22px 22px 20px;
+    background: var(--dash-surface);
+    border: 1px solid var(--dash-border);
+    border-radius: var(--dash-radius);
+    box-shadow: var(--dash-shadow);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+    .admin-stat-card:hover {
+        box-shadow: var(--dash-shadow-hover);
+        transform: translateY(-1px);
+    }
+
+.admin-stat-content {
+    min-width: 0;
+}
+
+.admin-stat-label {
+    display: block;
+    margin-bottom: 10px;
+    color: #64748b;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.admin-stat-value {
+    display: block;
+    color: var(--dash-ink);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.admin-stat-description {
+    display: block;
+    margin-top: 10px;
+    color: var(--dash-muted);
+    font-size: 0.68rem;
+}
+
+.admin-stat-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 12px;
+    font-size: 1.15rem;
+}
+
+    .admin-stat-icon.students {
+        background: #eaf1f9;
+        color: #1d4e89;
+    }
+
+    .admin-stat-icon.lecturers {
+        background: #e9f6f2;
+        color: #2a7f5e;
+    }
+
+    .admin-stat-icon.courses {
+        background: #f1edfb;
+        color: #6952a5;
+    }
+
+    .admin-stat-icon.classes {
+        background: #fff5e8;
+        color: #b87519;
+    }
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
+.admin-overview-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--dash-gap);
+    align-items: start;
+    margin-bottom: var(--dash-gap);
+}
+
+.admin-panel {
+    background: var(--dash-surface);
+    border: 1px solid var(--dash-border);
+    border-radius: var(--dash-radius);
+    box-shadow: var(--dash-shadow);
+    overflow: hidden;
+}
+
+.admin-enrollment-panel {
+    min-width: 0;
+}
+
+.admin-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: var(--dash-pad) var(--dash-pad) 18px;
+}
+
+    .admin-panel-header.compact {
+        padding-bottom: 14px;
+    }
+
+    .admin-panel-header h2 {
+        margin: 0;
+        color: var(--dash-ink);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.02rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+    }
+
+    .admin-panel-header p {
+        margin: 6px 0 0;
+        color: var(--dash-muted);
+        font-size: 0.75rem;
+        line-height: 1.5;
+    }
+
+.admin-panel-summary {
+    flex-shrink: 0;
+    text-align: right;
+    padding: 8px 12px;
+    border-radius: var(--dash-radius-sm);
+    background: var(--dash-surface-soft);
+}
+
+    .admin-panel-summary span {
+        display: block;
+        margin-bottom: 2px;
+        color: var(--dash-muted);
+        font-size: 0.64rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .admin-panel-summary strong {
+        color: var(--dash-ink);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+    }
+
+/* =========================================================
+   COURSE TABLE
+   ========================================================= */
+.admin-course-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-course-table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: collapse;
+}
+
+    .admin-course-table th {
+        padding: 12px 22px;
+        background: var(--dash-surface-soft);
+        border-top: 1px solid var(--dash-border);
+        border-bottom: 1px solid var(--dash-border);
+        color: #64748b;
+        font-size: 0.66rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-align: left;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .admin-course-table td {
+        padding: 16px 22px;
+        border-bottom: 1px solid var(--dash-border);
+        color: var(--dash-ink-soft);
+        font-size: 0.78rem;
+        vertical-align: middle;
+    }
+
+    .admin-course-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .admin-course-table tbody tr {
+        transition: background 0.15s ease;
+    }
+
+        .admin-course-table tbody tr:hover {
+            background: #fafcff;
+        }
+
+.admin-course-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 220px;
+}
+
+.admin-course-code {
+    min-width: 62px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    background: var(--dash-accent-soft);
+    color: var(--dash-accent);
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 0.02em;
+}
+
+.admin-course-name strong {
+    display: block;
+    color: var(--dash-ink);
+    font-size: 0.79rem;
+    font-weight: 700;
+}
+
+.admin-course-name span {
+    display: block;
+    margin-top: 3px;
+    color: var(--dash-muted);
+    font-size: 0.66rem;
+}
+
+.admin-lecturer-cell {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 150px;
+}
+
+.admin-avatar {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--dash-surface-soft);
+    color: #64748b;
+    font-size: 0.7rem;
+}
+
+.admin-credit-badge {
+    display: inline-flex;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: var(--dash-surface-soft);
+    color: #64748b;
+    font-size: 0.64rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-enrollment-number {
+    color: var(--dash-ink);
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.admin-enrollment-bar {
+    min-width: 130px;
+}
+
+.admin-progress-track {
+    width: 100%;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #edf2f7;
+}
+
+    .admin-progress-track span {
+        display: block;
+        height: 100%;
+        min-width: 2px;
+        border-radius: inherit;
+        background: var(--dash-accent);
+        transition: width 0.4s ease;
+    }
+
+.admin-enrollment-bar small {
+    display: block;
+    margin-top: 6px;
+    color: var(--dash-muted);
+    font-size: 0.62rem;
+}
+
+/* =========================================================
+   SIDE COLUMN
+   ========================================================= */
+.admin-side-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--dash-gap);
+    position: sticky;
+    top: 20px;
+}
+
+.admin-panel-header.compact > i {
+    color: var(--dash-accent);
+    font-size: 1.05rem;
+}
+
+.admin-resource-list {
+    padding: 0 20px 18px;
+}
+
+.admin-resource-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 1px solid var(--dash-border);
+}
+
+    .admin-resource-item:first-child {
+        border-top: 0;
+    }
+
+.admin-resource-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: var(--dash-radius-sm);
+    font-size: 0.9rem;
+}
+
+    .admin-resource-icon.rooms {
+        background: #eaf1f9;
+        color: #1d4e89;
+    }
+
+    .admin-resource-icon.available {
+        background: #e9f6f2;
+        color: #2a7f5e;
+    }
+
+    .admin-resource-icon.enrollment {
+        background: #fff5e8;
+        color: #b87519;
+    }
+
+.admin-resource-item strong {
+    display: block;
+    color: var(--dash-ink);
+    font-size: 0.98rem;
+    font-weight: 800;
+}
+
+.admin-resource-item span {
+    display: block;
+    margin-top: 2px;
+    color: var(--dash-muted);
+    font-size: 0.68rem;
+}
+
+.admin-status-panel {
+    padding: 20px;
+}
+
+.admin-status-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-live-indicator {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--dash-radius-sm);
+    background: #e9f6f2;
+}
+
+    .admin-live-indicator span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #2a7f5e;
+        box-shadow: 0 0 0 4px rgba(42, 127, 94, 0.12);
+        animation: admin-pulse 1.8s ease-in-out infinite;
+    }
+
+@keyframes admin-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 0.75;
+    }
+}
+
+.admin-status-heading strong {
+    display: block;
+    color: var(--dash-ink);
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.admin-status-heading span {
+    display: block;
+    margin-top: 2px;
+    color: var(--dash-muted);
+    font-size: 0.64rem;
+}
+
+.admin-status-divider {
+    height: 1px;
+    margin: 16px 0 4px;
+    background: var(--dash-border);
+}
+
+.admin-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 9px 0;
+}
+
+    .admin-status-row span {
+        color: #64748b;
+        font-size: 0.7rem;
+    }
+
+    .admin-status-row strong {
+        color: #2a7f5e;
+        font-size: 0.7rem;
+        font-weight: 800;
+    }
+
+/* =========================================================
+   TODAY'S CLASSES
+   ========================================================= */
+.admin-today-count {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    flex-shrink: 0;
+    padding: 8px 12px;
+    border-radius: var(--dash-radius-sm);
+    background: var(--dash-surface-soft);
+}
+
+    .admin-today-count strong {
+        color: var(--dash-ink);
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .admin-today-count span {
+        color: var(--dash-muted);
+        font-size: 0.65rem;
+    }
+
+.admin-schedule-list {
+    border-top: 1px solid var(--dash-border);
+}
+
+.admin-schedule-item {
+    display: grid;
+    grid-template-columns: 82px 16px minmax(0, 1fr);
+    gap: 16px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--dash-border);
+    transition: background 0.15s ease;
+}
+
+    .admin-schedule-item:hover {
+        background: #fafcff;
+    }
+
+    .admin-schedule-item:last-child {
+        border-bottom: 0;
+    }
+
+.admin-schedule-time {
+    padding-top: 2px;
+    text-align: right;
+}
+
+    .admin-schedule-time strong {
+        display: block;
+        color: var(--dash-ink);
+        font-size: 0.78rem;
+        font-weight: 800;
+    }
+
+    .admin-schedule-time span {
+        display: block;
+        margin-top: 3px;
+        color: var(--dash-muted);
+        font-size: 0.67rem;
+    }
+
+.admin-schedule-line {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+    .admin-schedule-line::before {
+        content: "";
+        position: absolute;
+        top: 6px;
+        bottom: -24px;
+        width: 1px;
+        background: var(--dash-border-strong);
+    }
+
+.admin-schedule-item:last-child .admin-schedule-line::before {
+    display: none;
+}
+
+.admin-schedule-line span {
+    position: relative;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    margin-top: 4px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background: var(--dash-accent);
+    box-shadow: 0 0 0 2px #dbe7f2;
+}
+
+.admin-schedule-main {
+    min-width: 0;
+}
+
+.admin-schedule-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+    .admin-schedule-title strong {
+        display: block;
+        color: var(--dash-accent);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+    }
+
+    .admin-schedule-title span:not(.admin-class-status) {
+        display: block;
+        margin-top: 3px;
+        color: var(--dash-ink);
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+.admin-class-status {
+    display: inline-flex;
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+    .admin-class-status.ongoing {
+        background: #e9f6f2;
+        color: #2a7f5e;
+    }
+
+    .admin-class-status.upcoming {
+        background: #eaf1f9;
+        color: #1d4e89;
+    }
+
+    .admin-class-status.completed {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+.admin-schedule-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+    .admin-schedule-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--dash-muted);
+        font-size: 0.67rem;
+    }
+
+    .admin-schedule-meta i {
+        color: #64748b;
+    }
+
+/* =========================================================
+   EMPTY STATES
+   ========================================================= */
+.admin-empty-state {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 230px;
+    padding: 30px;
+    text-align: center;
+}
+
+    .admin-empty-state.schedule-empty {
+        min-height: 210px;
+    }
+
+.admin-empty-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    border-radius: var(--dash-radius-sm);
+    background: var(--dash-surface-soft);
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.admin-empty-state h3 {
+    margin: 0;
+    color: var(--dash-ink);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.admin-empty-state p {
+    margin: 6px 0 0;
+    color: var(--dash-muted);
+    font-size: 0.72rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 1250px) {
+    .admin-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-overview-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-side-column {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 850px) {
+    .admin-dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .admin-dashboard-date {
+        width: 100%;
+    }
+
+    .admin-side-column {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .admin-dashboard-page {
+        --dash-pad: 18px;
+        --dash-gap: 16px;
+    }
+
+    .admin-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-panel-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .admin-panel-summary,
+    .admin-today-count {
+        align-self: flex-start;
+        text-align: left;
+    }
+
+    .admin-schedule-item {
+        grid-template-columns: 68px 12px minmax(0, 1fr);
+        gap: 10px;
+        padding: 16px 18px;
+    }
+
+    .admin-schedule-title {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .admin-schedule-meta {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 450px) {
+    .admin-stat-card {
+        min-height: 118px;
+        padding: 18px;
+    }
+
+    .admin-stat-value {
+        font-size: 1.6rem;
+    }
+
+    .admin-stat-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .admin-dashboard-heading h1 {
+        font-size: 1.4rem;
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    .admin-stat-card,
+    .admin-progress-track span,
+    .admin-live-indicator span,
+    .admin-schedule-item {
+        transition: none !important;
+        animation: none !important;
+    }
+}

@@ -1,0 +1,293 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.StudentsModel
+
+@{
+ViewData["Title"] = "Students";
+}
+
+<link rel="stylesheet" href="~/css/Admin/Students.css" asp-append-version="true" />
+
+<div class="admin-students-page">
+
+
+<div class="students-page-header">
+    <div>
+        <div class="students-breadcrumb">
+            <span>Administration</span>
+            <i class="bi bi-chevron-right"></i>
+            <span>Students</span>
+        </div>
+
+        <h1>Students</h1>
+        <p>Manage and monitor student academic records across the university.</p>
+    </div>
+
+    <div class="students-header-actions">
+        <button type="button" class="students-export-btn">
+            <i class="bi bi-download"></i>
+            <span>Export</span>
+        </button>
+    </div>
+</div>
+
+<div class="students-stat-grid">
+
+    <div class="students-stat-card">
+        <div class="students-stat-icon students-stat-icon-blue">
+            <i class="bi bi-people"></i>
+        </div>
+        <div class="students-stat-content">
+            <span>Total Students</span>
+            <strong>@Model.TotalStudents</strong>
+            <small>Registered students</small>
+        </div>
+    </div>
+
+    <div class="students-stat-card">
+        <div class="students-stat-icon students-stat-icon-green">
+            <i class="bi bi-person-check"></i>
+        </div>
+        <div class="students-stat-content">
+            <span>Active Students</span>
+            <strong>@Model.ActiveStudents</strong>
+            <small>Currently active</small>
+        </div>
+    </div>
+
+    <div class="students-stat-card">
+        <div class="students-stat-icon students-stat-icon-orange">
+            <i class="bi bi-person-dash"></i>
+        </div>
+        <div class="students-stat-content">
+            <span>Inactive Students</span>
+            <strong>@Model.InactiveStudents</strong>
+            <small>Inactive records</small>
+        </div>
+    </div>
+
+    <div class="students-stat-card">
+        <div class="students-stat-icon students-stat-icon-purple">
+            <i class="bi bi-journal-check"></i>
+        </div>
+        <div class="students-stat-content">
+            <span>With Enrollments</span>
+            <strong>@Model.StudentsWithEnrollments</strong>
+            <small>Students with courses</small>
+        </div>
+    </div>
+
+</div>
+
+<div class="students-content-card">
+
+    <div class="students-card-header">
+        <div>
+            <h2>Student Directory</h2>
+            <p>View student profiles, academic information and course enrollment.</p>
+        </div>
+    </div>
+
+    <form method="get" class="students-filter-bar">
+
+        <div class="students-search-box">
+            <i class="bi bi-search"></i>
+            <input
+                type="search"
+                name="Search"
+                value="@Model.Search"
+                placeholder="Search by registration number, name, email, department..."
+                autocomplete="off" />
+        </div>
+
+        <div class="students-status-filter">
+            <label for="status">Status</label>
+            <select id="status" name="Status" onchange="this.form.submit()">
+                <option value="All" selected="@(Model.Status == "All")">All Students</option>
+                <option value="Active" selected="@(Model.Status == "Active")">Active</option>
+                <option value="Inactive" selected="@(Model.Status == "Inactive")">Inactive</option>
+            </select>
+        </div>
+
+        <button type="submit" class="students-filter-btn">
+            <i class="bi bi-funnel"></i>
+            Filter
+        </button>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Search) || Model.Status != "All")
+        {
+            <a asp-page="/Admin/Students" class="students-clear-btn">
+                Clear
+            </a>
+        }
+
+    </form>
+
+    <div class="students-results-bar">
+        <span>
+            Showing <strong>@Model.Students.Count</strong> student@(Model.Students.Count == 1 ? "" : "s")
+        </span>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Search))
+        {
+            <span class="students-search-result">
+                Search: <strong>@Model.Search</strong>
+            </span>
+        }
+    </div>
+
+    <div class="students-table-wrapper">
+
+        @if (Model.Students.Count > 0)
+        {
+            <table class="students-table">
+
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Registration No.</th>
+                        <th>Academic Information</th>
+                        <th>Session</th>
+                        <th>Enrollments</th>
+                        <th>Status</th>
+                        <th class="students-action-column">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var student in Model.Students)
+                    {
+                        var initials = string.Join(
+                            "",
+                            student.FullName
+                                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                .Take(2)
+                                .Select(x => x[0])
+                        ).ToUpper();
+
+                        <tr>
+
+                            <td>
+                                <div class="student-person">
+                                    <div class="student-avatar">
+                                        @initials
+                                    </div>
+
+                                    <div class="student-person-info">
+                                        <strong>@student.FullName</strong>
+
+                                        @if (!string.IsNullOrWhiteSpace(student.Email))
+                                        {
+                                            <span>@student.Email</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="student-muted">No email provided</span>
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="student-regno">
+                                    @student.RegNo
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="student-academic">
+                                    <strong>@student.Department</strong>
+
+                                    @if (!string.IsNullOrWhiteSpace(student.Program))
+                                    {
+                                        <span>@student.Program</span>
+                                    }
+
+                                    @if (!string.IsNullOrWhiteSpace(student.Level))
+                                    {
+                                        <small>@student.Level</small>
+                                    }
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="student-session">
+                                    @student.StudySession
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="student-enrollment-count">
+                                    <strong>@student.EnrollmentCount</strong>
+                                    <span>course@(student.EnrollmentCount == 1 ? "" : "s")</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                @if (student.IsActive)
+                                {
+                                    <span class="student-status student-status-active">
+                                        <span></span>
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="student-status student-status-inactive">
+                                        <span></span>
+                                        Inactive
+                                    </span>
+                                }
+                            </td>
+
+                            <td class="students-action-column">
+                                <a asp-page="/Admin/StudentDetails"
+                                   asp-route-id="@student.Id"
+                                   class="admin-student-action"
+                                   title="View student details"
+                                   aria-label="View @student.FullName details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <div class="students-empty-state">
+
+                <div class="students-empty-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+
+                <h3>No students found</h3>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Search) || Model.Status != "All")
+                {
+                    <p>
+                        No students match the current search or filter.
+                    </p>
+
+                    <a asp-page="/Admin/Students" class="students-empty-btn">
+                        Clear Filters
+                    </a>
+                }
+                else
+                {
+                    <p>
+                        There are currently no student records available.
+                    </p>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+</div>

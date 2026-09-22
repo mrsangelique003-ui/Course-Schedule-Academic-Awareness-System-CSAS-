@@ -117,7 +117,7 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     ExpiresUtc = DateTimeOffset.UtcNow.AddHours(8)
                 });
 
-            return RedirectToPage("/Dashboard");
+            return RedirectToPage("/Admin/Dashboard");
         }
 
         private async Task<AccountMatch?> CheckAdministratorAsync(
