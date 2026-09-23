@@ -6,113 +6,229 @@
     ViewData["Title"] = "CP Dashboard";
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-2">
 
-    <div class="mb-4">
-        <h1 class="h3 mb-1">Class Representative Dashboard</h1>
-
-        @if (Model.CurrentCp != null)
-        {
-            <p class="text-muted mb-0">
-                Welcome, @Model.CurrentCp.FullName
-            </p>
-        }
+    <!-- ── PAGE HEADER ── -->
+    <div class="cp-page-header">
+        <div>
+            <h1 class="cp-page-header-title">Class Representative Dashboard</h1>
+            @if (Model.CurrentCp != null)
+            {
+                <p class="cp-page-header-sub">
+                    <span>Welcome back,&nbsp;<strong>@Model.CurrentCp.FullName</strong></span>
+                    <span class="cp-badge">
+                        <i class="bi bi-person-badge-fill"></i>
+                        Class Representative
+                    </span>
+                </p>
+            }
+        </div>
+        <div class="cp-page-header-date">
+            <i class="bi bi-calendar3"></i>
+            <span>@DateTime.Now.ToString("dddd, MMMM d, yyyy")</span>
+        </div>
     </div>
 
-    <div class="row g-4">
 
-        <!-- Courses -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
+    <!-- ── STAT CARDS ── -->
+    <div class="row g-3 g-md-4">
+
+        <!-- Represented Courses -->
+        <div class="col-6 col-xl-3">
+            <div class="card cp-stat-card cp-stat-card--courses">
                 <div class="card-body">
-                    <h6 class="text-muted">Represented Courses</h6>
-                    <h2 class="mb-0">@Model.TotalCourses</h2>
+                    <div class="cp-stat-card-top">
+                        <div>
+                            <p class="cp-stat-label">Represented Courses</p>
+                            <p class="cp-stat-value">@Model.TotalCourses</p>
+                        </div>
+                        <div class="cp-stat-icon cp-stat-icon--courses">
+                            <i class="bi bi-journal-bookmark-fill"></i>
+                        </div>
+                    </div>
+                    <div class="cp-stat-footer">
+                        <i class="bi bi-info-circle"></i>
+                        <span>Courses you represent</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Groups -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
+        <!-- Active Class Groups -->
+        <div class="col-6 col-xl-3">
+            <div class="card cp-stat-card cp-stat-card--groups">
                 <div class="card-body">
-                    <h6 class="text-muted">Active Class Groups</h6>
-                    <h2 class="mb-0">@Model.TotalGroups</h2>
+                    <div class="cp-stat-card-top">
+                        <div>
+                            <p class="cp-stat-label">Active Class Groups</p>
+                            <p class="cp-stat-value">@Model.TotalGroups</p>
+                        </div>
+                        <div class="cp-stat-icon cp-stat-icon--groups">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                    </div>
+                    <div class="cp-stat-footer">
+                        <i class="bi bi-circle-fill" style="color:#14b8a6; font-size:8px;"></i>
+                        <span>Currently active</span>
+                        <a asp-page="/CP/ClassGroups/ClassGroups" class="cp-stat-footer-link">
+                            View <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Completions -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
+        <!-- Pending Sign-Off -->
+        <div class="col-6 col-xl-3">
+            <div class="card cp-stat-card cp-stat-card--signoff">
                 <div class="card-body">
-                    <h6 class="text-muted">Pending Sign-Off</h6>
-                    <h2 class="mb-0">@Model.PendingCompletions</h2>
+                    <div class="cp-stat-card-top">
+                        <div>
+                            <p class="cp-stat-label">Pending Sign-Off</p>
+                            <p class="cp-stat-value">@Model.PendingCompletions</p>
+                        </div>
+                        <div class="cp-stat-icon cp-stat-icon--signoff">
+                            <i class="bi bi-clipboard2-check-fill"></i>
+                        </div>
+                    </div>
+                    <div class="cp-stat-footer">
+                        @if (Model.PendingCompletions > 0)
+                        {
+                            <i class="bi bi-exclamation-circle" style="color:#b45309;"></i>
+                            <span>Awaiting your review</span>
+                        }
+                        else
+                        {
+                            <i class="bi bi-check-circle" style="color:#0f766e;"></i>
+                            <span>All up to date</span>
+                        }
+                        <a asp-page="/CP/SignOff" class="cp-stat-footer-link">
+                            View <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Messages -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card shadow-sm h-100">
+        <!-- Unread Messages -->
+        <div class="col-6 col-xl-3">
+            <div class="card cp-stat-card cp-stat-card--messages">
                 <div class="card-body">
-                    <h6 class="text-muted">Unread Messages</h6>
-                    <h2 class="mb-0">@Model.UnreadMessages</h2>
+                    <div class="cp-stat-card-top">
+                        <div>
+                            <p class="cp-stat-label">Unread Messages</p>
+                            <p class="cp-stat-value">@Model.UnreadMessages</p>
+                        </div>
+                        <div class="cp-stat-icon cp-stat-icon--messages">
+                            <i class="bi bi-chat-dots-fill"></i>
+                        </div>
+                    </div>
+                    <div class="cp-stat-footer">
+                        @if (Model.UnreadMessages > 0)
+                        {
+                            <i class="bi bi-bell-fill" style="color:#7c3aed; font-size:11px;"></i>
+                            <span>New from HOD</span>
+                        }
+                        else
+                        {
+                            <i class="bi bi-check-circle" style="color:#0f766e;"></i>
+                            <span>No new messages</span>
+                        }
+                        <a asp-page="/CP/Chat" class="cp-stat-footer-link">
+                            Open <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <div class="row g-4 mt-2">
 
-        <div class="col-md-6">
-            <div class="card shadow-sm">
+    <!-- ── QUICK ACTIONS SECTION ── -->
+    <div class="cp-section-divider">
+        <span class="cp-section-divider-title">Quick Actions</span>
+        <span class="cp-section-divider-line"></span>
+    </div>
+
+    <div class="row g-3 g-md-4">
+
+        <!-- Class Groups -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card cp-action-card">
                 <div class="card-body">
-                    <h5>Class Groups</h5>
-                    <p class="text-muted">
-                        Create and manage your class communication groups.
+                    <div class="cp-action-card-icon-wrap cp-action-card-icon--groups">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h5 class="cp-action-card-title">Class Groups</h5>
+                    <p class="cp-action-card-desc">
+                        Create and manage your class communication groups. Keep students organised and informed.
                     </p>
-
                     <a asp-page="/CP/ClassGroups/ClassGroups"
-                       class="btn btn-primary">
+                       class="cp-action-card-btn cp-action-btn--primary">
+                        <i class="bi bi-people"></i>
                         Manage Groups
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="card shadow-sm">
+        <!-- Course Sign-Off -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card cp-action-card">
                 <div class="card-body">
-                    <h5>Course Sign-Off</h5>
-                    <p class="text-muted">
-                        Review and submit course completion information.
+                    <div class="cp-action-card-icon-wrap cp-action-card-icon--signoff">
+                        <i class="bi bi-clipboard2-check-fill"></i>
+                    </div>
+                    <h5 class="cp-action-card-title">Course Sign-Off</h5>
+                    <p class="cp-action-card-desc">
+                        Review and submit course completion details. Confirm lectures are delivered as planned.
                     </p>
-
                     <a asp-page="/CP/SignOff"
-                       class="btn btn-primary">
+                       class="cp-action-card-btn cp-action-btn--amber">
+                        <i class="bi bi-check2-square"></i>
                         View Sign-Off
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="card shadow-sm">
+        <!-- HOD Messages -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card cp-action-card">
                 <div class="card-body">
-                    <h5>HOD Messages</h5>
-                    <p class="text-muted">
-                        Communicate with the Head of Department.
+                    <div class="cp-action-card-icon-wrap cp-action-card-icon--messages">
+                        <i class="bi bi-chat-dots-fill"></i>
+                    </div>
+                    <h5 class="cp-action-card-title">HOD Messages</h5>
+                    <p class="cp-action-card-desc">
+                        Read messages from the Head of Department and stay up to date with department announcements.
                     </p>
-
                     <a asp-page="/CP/Chat"
-                       class="btn btn-primary">
+                       class="cp-action-card-btn cp-action-btn--violet">
+                        <i class="bi bi-chat-dots"></i>
                         Open Chat
                     </a>
                 </div>
             </div>
         </div>
 
+    </div>
+
+
+    <!-- ── QUICK TIPS ── -->
+    <div class="cp-tips-panel">
+        <p class="cp-tips-panel-title">
+            <i class="bi bi-lightbulb-fill" style="color:#f59e0b;"></i>
+            CP Responsibilities
+        </p>
+        <ul class="cp-tips-list">
+            <li><i class="bi bi-check2-circle"></i> Track course attendance</li>
+            <li><i class="bi bi-check2-circle"></i> Submit sign-off on time</li>
+            <li><i class="bi bi-check2-circle"></i> Keep class groups active</li>
+            <li><i class="bi bi-check2-circle"></i> Monitor HOD messages regularly</li>
+            <li><i class="bi bi-check2-circle"></i> Represent your classmates fairly</li>
+        </ul>
     </div>
 
 </div>

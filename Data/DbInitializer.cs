@@ -100,29 +100,30 @@ public static class DbInitializer
         // CLASS REPRESENTATIVES — 20 RECORDS
         // =========================================================
 
+        // (RegNo, FullName, Email, Phone, Nationality)
         var classRepresentativeData = new[]
         {
-        ("CP001", "Bob Nkurunziza", "bob@unilak.ac.rw"),
-        ("CP002", "Clarisse Uwimana", "clarisse@unilak.ac.rw"),
-        ("CP003", "Derrick Niyonsenga", "derrick@unilak.ac.rw"),
-        ("CP004", "Emmanuel Habimana", "emmanuel@unilak.ac.rw"),
-        ("CP005", "Florence Mukamana", "florence@unilak.ac.rw"),
-        ("CP006", "Gaspard Bizimana", "gaspard@unilak.ac.rw"),
-        ("CP007", "Hope Uwamahoro", "hope@unilak.ac.rw"),
-        ("CP008", "Ivan Nshimiyimana", "ivan@unilak.ac.rw"),
-        ("CP009", "Josiane Ingabire", "josiane@unilak.ac.rw"),
-        ("CP010", "Kenneth Mugisha", "kenneth@unilak.ac.rw"),
-        ("CP011", "Lydia Uwase", "lydia@unilak.ac.rw"),
-        ("CP012", "Michel Ndayisenga", "michel@unilak.ac.rw"),
-        ("CP013", "Nathalie Mukeshimana", "nathalie@unilak.ac.rw"),
-        ("CP014", "Oscar Tuyisenge", "oscar@unilak.ac.rw"),
-        ("CP015", "Patricia Uwamariya", "patricia@unilak.ac.rw"),
-        ("CP016", "Robert Niyomugabo", "robert@unilak.ac.rw"),
-        ("CP017", "Sandrine Mukamana", "sandrine@unilak.ac.rw"),
-        ("CP018", "Theoneste Habimana", "theoneste@unilak.ac.rw"),
-        ("CP019", "Valerie Ingabire", "valerie@unilak.ac.rw"),
-        ("CP020", "William Nkurunziza", "william@unilak.ac.rw")
-    };
+            ("CP001", "Bob Nkurunziza",       "bob@unilak.ac.rw",       "+250 788 100 001", "Rwandan"),
+            ("CP002", "Clarisse Uwimana",     "clarisse@unilak.ac.rw",  "+250 788 100 002", "Rwandan"),
+            ("CP003", "Derrick Niyonsenga",   "derrick@unilak.ac.rw",   "+250 788 100 003", "Rwandan"),
+            ("CP004", "Emmanuel Habimana",    "emmanuel@unilak.ac.rw",  "+250 788 100 004", "Rwandan"),
+            ("CP005", "Florence Mukamana",    "florence@unilak.ac.rw",  "+250 788 100 005", "Rwandan"),
+            ("CP006", "Gaspard Bizimana",     "gaspard@unilak.ac.rw",   "+250 788 100 006", "Rwandan"),
+            ("CP007", "Hope Uwamahoro",       "hope@unilak.ac.rw",      "+250 788 100 007", "Rwandan"),
+            ("CP008", "Ivan Nshimiyimana",    "ivan@unilak.ac.rw",      "+250 788 100 008", "Rwandan"),
+            ("CP009", "Josiane Ingabire",     "josiane@unilak.ac.rw",   "+250 788 100 009", "Rwandan"),
+            ("CP010", "Kenneth Mugisha",      "kenneth@unilak.ac.rw",   "+250 788 100 010", "Ugandan"),
+            ("CP011", "Lydia Uwase",          "lydia@unilak.ac.rw",     "+250 788 100 011", "Rwandan"),
+            ("CP012", "Michel Ndayisenga",    "michel@unilak.ac.rw",    "+250 788 100 012", "Rwandan"),
+            ("CP013", "Nathalie Mukeshimana", "nathalie@unilak.ac.rw",  "+250 788 100 013", "Rwandan"),
+            ("CP014", "Oscar Tuyisenge",      "oscar@unilak.ac.rw",     "+250 788 100 014", "Congolese"),
+            ("CP015", "Patricia Uwamariya",   "patricia@unilak.ac.rw",  "+250 788 100 015", "Rwandan"),
+            ("CP016", "Robert Niyomugabo",    "robert@unilak.ac.rw",    "+250 788 100 016", "Rwandan"),
+            ("CP017", "Sandrine Mukamana",    "sandrine@unilak.ac.rw",  "+250 788 100 017", "Burundian"),
+            ("CP018", "Theoneste Habimana",   "theoneste@unilak.ac.rw", "+250 788 100 018", "Rwandan"),
+            ("CP019", "Valerie Ingabire",     "valerie@unilak.ac.rw",   "+250 788 100 019", "Rwandan"),
+            ("CP020", "William Nkurunziza",   "william@unilak.ac.rw",   "+250 788 100 020", "Kenyan"),
+        };
 
         foreach (var item in classRepresentativeData)
         {
@@ -135,12 +136,14 @@ public static class DbInitializer
             {
                 representative = new ClassRepresentative
                 {
-                    RegNo = item.Item1,
-                    FullName = item.Item2,
-                    Email = item.Item3,
-                    Department = "CIS",
+                    RegNo        = item.Item1,
+                    FullName     = item.Item2,
+                    Email        = item.Item3,
+                    PhoneNumber  = item.Item4,
+                    Nationality  = item.Item5,
+                    Department   = "CIS",
                     StudySession = StudySession.Day,
-                    IsActive = true
+                    IsActive     = true
                 };
 
                 representative.PasswordHash =
@@ -152,14 +155,15 @@ public static class DbInitializer
             }
             else
             {
-                representative.FullName = item.Item2;
-                representative.Email = item.Item3;
-                representative.Department = "CIS";
+                representative.FullName     = item.Item2;
+                representative.Email        = item.Item3;
+                representative.PhoneNumber  = item.Item4;
+                representative.Nationality  = item.Item5;
+                representative.Department   = "CIS";
                 representative.StudySession = StudySession.Day;
-                representative.IsActive = true;
+                representative.IsActive     = true;
 
-                if (string.IsNullOrWhiteSpace(
-                    representative.PasswordHash))
+                if (string.IsNullOrWhiteSpace(representative.PasswordHash))
                 {
                     representative.PasswordHash =
                         classRepresentativeHasher.HashPassword(

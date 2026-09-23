@@ -1,0 +1,129 @@
+@page
+@model CourseScheduleSystem.Web.Pages.CP.CisCps.IndexModel
+
+@{
+    Layout = "/Pages/Shared/_CPLayout.cshtml";
+    ViewData["Title"] = "CIS Class Representatives";
+}
+
+<div class="container-fluid py-2">
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="cp-page-header">
+        <div>
+            <h1 class="cp-page-header-title">CIS Class Representatives</h1>
+            <p class="cp-page-header-sub">
+                <span>Active representatives in the Computer &amp; Information Science department.</span>
+                @if (Model.Representatives.Any())
+                {
+                    <span class="cp-badge">
+                        <i class="bi bi-people-fill"></i>
+                        @Model.Representatives.Count active
+                    </span>
+                }
+            </p>
+        </div>
+        <div class="cp-page-header-date">
+            <i class="bi bi-building"></i>
+            <span>CIS Department</span>
+        </div>
+    </div>
+
+    <!-- ── EMPTY STATE ── -->
+    @if (!Model.Representatives.Any())
+    {
+        <div class="cp-empty-state">
+            <div class="cp-empty-state-icon">
+                <i class="bi bi-person-vcard"></i>
+            </div>
+            <h5 class="cp-empty-state-title">No representatives found</h5>
+            <p class="cp-empty-state-desc">
+                There are currently no active Class Representatives in the CIS department.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3 g-md-4">
+            @foreach (var cp in Model.Representatives)
+            {
+                var initials = string.Concat(
+                    cp.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                               .Take(2)
+                               .Select(p => char.ToUpper(p[0])));
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="cp-profile-card">
+
+                        <!-- Top colour strip -->
+                        <div class="cp-profile-card-top">
+                            <div class="cp-profile-avatar">@initials</div>
+                            <div class="cp-profile-active-badge">
+                                <i class="bi bi-circle-fill"></i> Active
+                            </div>
+                        </div>
+
+                        <!-- Identity -->
+                        <div class="cp-profile-identity">
+                            <h5 class="cp-profile-name">@cp.FullName</h5>
+                            <span class="cp-profile-regno">
+                                <i class="bi bi-person-badge"></i>
+                                @cp.RegNo
+                            </span>
+                        </div>
+
+                        <!-- Meta grid -->
+                        <div class="cp-profile-meta-grid">
+                            <div class="cp-profile-meta-item">
+                                <span class="cp-profile-meta-label">Department</span>
+                                <span class="cp-profile-meta-value">@cp.Department</span>
+                            </div>
+                            <div class="cp-profile-meta-item">
+                                <span class="cp-profile-meta-label">Level</span>
+                                <span class="cp-profile-meta-value">@cp.Level</span>
+                            </div>
+                            <div class="cp-profile-meta-item">
+                                <span class="cp-profile-meta-label">Intake</span>
+                                <span class="cp-profile-meta-value">@cp.Intake</span>
+                            </div>
+                            <div class="cp-profile-meta-item">
+                                <span class="cp-profile-meta-label">Session</span>
+                                <span class="cp-profile-meta-value">@cp.StudySession</span>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(cp.Nationality))
+                            {
+                                <div class="cp-profile-meta-item">
+                                    <span class="cp-profile-meta-label">Nationality</span>
+                                    <span class="cp-profile-meta-value">@cp.Nationality</span>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Contact row -->
+                        @if (!string.IsNullOrWhiteSpace(cp.Email) || !string.IsNullOrWhiteSpace(cp.PhoneNumber))
+                        {
+                            <div class="cp-profile-contact">
+                                @if (!string.IsNullOrWhiteSpace(cp.Email))
+                                {
+                                    <a href="mailto:@cp.Email" class="cp-profile-contact-item" title="Send email">
+                                        <i class="bi bi-envelope"></i>
+                                        <span>@cp.Email</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(cp.PhoneNumber))
+                                {
+                                    <a href="tel:@cp.PhoneNumber" class="cp-profile-contact-item" title="Call">
+                                        <i class="bi bi-telephone"></i>
+                                        <span>@cp.PhoneNumber</span>
+                                    </a>
+                                }
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>

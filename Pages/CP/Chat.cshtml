@@ -1,71 +1,196 @@
 @page
 @model CourseScheduleSystem.Web.Pages.CP.Chat.IndexModel
+@using CourseScheduleSystem.Web.Models
 
 @{
     Layout = "/Pages/Shared/_CPLayout.cshtml";
     ViewData["Title"] = "HOD Chat";
+    DateTime? chatLastDate = null;
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-2">
 
-    <div class="mb-4">
-        <h1 class="h3 mb-1">HOD Chat</h1>
-        <p class="text-muted mb-0">
-            Messages between you and the Head of Department.
-        </p>
+    <!-- ── PAGE HEADER ── -->
+    <div class="cp-page-header">
+        <div>
+            <h1 class="cp-page-header-title">HOD Chat</h1>
+            <p class="cp-page-header-sub">
+                <span>Your private conversation with the Head of Department.</span>
+                @if (Model.UnreadCount > 0)
+                {
+                    <span class="cp-badge" style="background:rgba(124,58,237,.12);color:#7c3aed;">
+                        <i class="bi bi-bell-fill"></i>
+                        @Model.UnreadCount new
+                    </span>
+                }
+                else
+                {
+                    <span class="cp-badge" style="background:rgba(15,118,110,.1);color:#0f766e;">
+                        <i class="bi bi-check2-all"></i>
+                        All read
+                    </span>
+                }
+            </p>
+        </div>
+        <div class="cp-page-header-date">
+            <i class="bi bi-lock-fill" style="color:var(--accent);"></i>
+            <span>Private channel</span>
+        </div>
     </div>
 
-    <div class="card shadow-sm">
+    <!-- ── CHAT WINDOW ── -->
+    <div class="cp-chat-window">
 
-        <div class="card-header bg-white">
-            <i class="bi bi-chat-dots me-2"></i>
-            Conversation
+        <!-- Window header -->
+        <div class="cp-chat-header">
+            <div class="cp-chat-header-avatar">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+            <div class="cp-chat-header-info">
+                <div class="cp-chat-header-name">Head of Department</div>
+                <div class="cp-chat-header-sub">CIS Department · UNILAK</div>
+            </div>
+            <div class="cp-chat-header-badge">
+                <i class="bi bi-lock-fill"></i>
+                Private
+            </div>
         </div>
 
-        <div class="card-body">
+        <!-- Message feed -->
+        <div class="cp-chat-feed" id="chatFeed">
 
             @if (!Model.Messages.Any())
             {
-                <div class="text-center py-5">
-                    <i class="bi bi-chat-square-text display-5 text-muted"></i>
-
-                    <h5 class="mt-3">No messages yet</h5>
-
-                    <p class="text-muted mb-0">
-                        Your HOD messages will appear here.
-                    </p>
+                <div class="cp-chat-empty">
+                    <div class="cp-chat-empty-icon">
+                        <i class="bi bi-chat-square-dots"></i>
+                    </div>
+                    <div class="cp-chat-empty-title">No messages yet</div>
+                    <div class="cp-chat-empty-sub">
+                        Your HOD will send you messages here. You can reply too.
+                    </div>
                 </div>
             }
             else
             {
-                <div class="d-flex flex-column gap-3">
+                @foreach (var msg in Model.Messages)
+                {
+                    var msgDate = msg.SentAt.ToLocalTime().Date;
 
-                    @foreach (var message in Model.Messages)
+                    if (chatLastDate == null || chatLastDate != msgDate)
                     {
-                        <div class="border rounded p-3">
+                        chatLastDate = msgDate;
+                        var label = msgDate == DateTime.Today
+                            ? "Today"
+                            : msgDate == DateTime.Today.AddDays(-1)
+                                ? "Yesterday"
+                                : msgDate.ToString("dddd, MMMM d, yyyy");
 
-                            <div class="d-flex justify-content-between mb-2">
-                                <strong>
-                                    HOD
-                                </strong>
-
-                                <small class="text-muted">
-                                    @message.SentAt.ToLocalTime()
-                                        .ToString("dd MMM yyyy HH:mm")
-                                </small>
-                            </div>
-
-                            <div>
-                                @message.Message
-                            </div>
-
-                        </div>
+                        <div class="cp-chat-date-divider"><span>@label</span></div>
                     }
 
-                </div>
+                    @if (msg.SenderType == MessageSenderType.Hod)
+                    {
+                        <!-- HOD bubble — left aligned (received) -->
+                        <div class="cp-chat-bubble cp-chat-bubble--hod @(!msg.IsRead ? "cp-chat-bubble--unread" : "")">
+                            <div class="cp-chat-bubble-avatar">
+                                <i class="bi bi-person-workspace"></i>
+                            </div>
+                            <div class="cp-chat-bubble-content cp-chat-bubble-content--hod">
+                                <div class="cp-chat-bubble-header">
+                                    <span class="cp-chat-bubble-sender">HOD</span>
+                                    @if (!msg.IsRead)
+                                    {
+                                        <span class="cp-chat-unread-dot"></span>
+                                    }
+                                    <span class="cp-chat-bubble-time">
+                                        @msg.SentAt.ToLocalTime().ToString("HH:mm")
+                                    </span>
+                                </div>
+                                <div class="cp-chat-bubble-text">@msg.Message</div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- CP bubble — right aligned (sent by me) -->
+                        <div class="cp-chat-bubble cp-chat-bubble--cp">
+                            <div class="cp-chat-bubble-content cp-chat-bubble-content--cp">
+                                <div class="cp-chat-bubble-text">@msg.Message</div>
+                                <div class="cp-chat-bubble-footer">
+                                    <span class="cp-chat-bubble-time">
+                                        @msg.SentAt.ToLocalTime().ToString("HH:mm")
+                                    </span>
+                                    @if (msg.IsRead)
+                                    {
+                                        <i class="bi bi-check2-all" title="Seen by HOD" style="color:#4ade80; font-size:12px;"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-check2" title="Delivered" style="font-size:12px; opacity:.7;"></i>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             }
 
+        </div><!-- /cp-chat-feed -->
+
+        <!-- Reply compose box -->
+        <div class="cp-chat-compose">
+            <form method="post" asp-page-handler="Reply" novalidate>
+                <div asp-validation-summary="ModelOnly" class="cp-chat-compose-error"></div>
+                <div class="cp-chat-compose-row">
+                    <textarea asp-for="Input.Message"
+                              class="cp-chat-compose-input"
+                              rows="1"
+                              maxlength="2000"
+                              placeholder="Reply to HOD…"
+                              id="cpChatInput"
+                              required></textarea>
+                    <button type="submit" class="cp-chat-compose-send" title="Send (Ctrl+Enter)">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+                <div class="cp-chat-compose-hint">
+                    <span asp-validation-for="Input.Message" class="cp-field-error"></span>
+                    <span class="cp-chat-char-count" id="cpCharCount">0 / 2000</span>
+                </div>
+            </form>
         </div>
 
-    </div>
+    </div><!-- /cp-chat-window -->
+
 </div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const feed = document.getElementById("chatFeed");
+    if (feed) feed.scrollTop = feed.scrollHeight;
+
+    const textarea = document.getElementById("cpChatInput");
+    const charCount = document.getElementById("cpCharCount");
+
+    if (textarea) {
+        function resize() {
+            textarea.style.height = "auto";
+            textarea.style.height = Math.min(textarea.scrollHeight, 130) + "px";
+        }
+        textarea.addEventListener("input", function () {
+            resize();
+            if (charCount) charCount.textContent = textarea.value.length + " / 2000";
+        });
+        resize();
+        textarea.addEventListener("keydown", function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+                textarea.closest("form").submit();
+            }
+        });
+    }
+});
+</script>
+}

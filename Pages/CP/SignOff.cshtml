@@ -7,159 +7,220 @@
     ViewData["Title"] = "Course Sign-Off";
 }
 
-<div class="container-fluid py-4">
+@{
+    var submitted  = Model.Completions.Count(c => c.Status == CourseCompletionStatus.Submitted);
+    var confirmed  = Model.Completions.Count(c => c.Status == CourseCompletionStatus.Confirmed);
+    var returned   = Model.Completions.Count(c => c.Status == CourseCompletionStatus.Returned);
+}
 
-    <div class="mb-4">
-        <h1 class="h3 mb-1">Course Sign-Off</h1>
-        <p class="text-muted mb-0">
-            Review course completion submissions from lecturers.
-        </p>
+<div class="container-fluid py-2">
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="cp-page-header">
+        <div>
+            <h1 class="cp-page-header-title">Course Sign-Off</h1>
+            <p class="cp-page-header-sub">
+                <span>Review and confirm course completion submissions from lecturers.</span>
+                @if (submitted > 0)
+                {
+                    <span class="cp-badge" style="background:rgba(245,158,11,.12); color:#b45309;">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        @submitted pending
+                    </span>
+                }
+            </p>
+        </div>
+        <div class="cp-page-header-date">
+            <i class="bi bi-calendar3"></i>
+            <span>@DateTime.Now.ToString("dd MMM yyyy")</span>
+        </div>
     </div>
 
+    <!-- ── SUMMARY STRIP (only when there are records) ── -->
+    @if (Model.Completions.Any())
+    {
+        <div class="cp-signoff-summary">
+            <div class="cp-signoff-summary-item cp-signoff-summary-item--pending">
+                <span class="cp-signoff-summary-num">@submitted</span>
+                <span class="cp-signoff-summary-label">Pending</span>
+            </div>
+            <div class="cp-signoff-summary-sep"></div>
+            <div class="cp-signoff-summary-item cp-signoff-summary-item--confirmed">
+                <span class="cp-signoff-summary-num">@confirmed</span>
+                <span class="cp-signoff-summary-label">Confirmed</span>
+            </div>
+            <div class="cp-signoff-summary-sep"></div>
+            <div class="cp-signoff-summary-item cp-signoff-summary-item--returned">
+                <span class="cp-signoff-summary-num">@returned</span>
+                <span class="cp-signoff-summary-label">Returned</span>
+            </div>
+        </div>
+    }
+
+    <!-- ── EMPTY STATE ── -->
     @if (!Model.Completions.Any())
     {
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center py-5">
-
-                <i class="bi bi-clipboard-check display-5 text-muted"></i>
-
-                <h5 class="mt-3">No course submissions</h5>
-
-                <p class="text-muted mb-0">
-                    Course completion submissions will appear here.
-                </p>
-
+        <div class="cp-empty-state">
+            <div class="cp-empty-state-icon" style="background:rgba(245,158,11,.1); color:#b45309;">
+                <i class="bi bi-clipboard-check"></i>
             </div>
+            <h5 class="cp-empty-state-title">No submissions yet</h5>
+            <p class="cp-empty-state-desc">
+                Course completion submissions from lecturers will appear here for your review.
+            </p>
         </div>
     }
     else
     {
-        <div class="row g-4">
+        <!-- ── SUBMISSION CARDS ── -->
+        <div class="cp-section-divider">
+            <span class="cp-section-divider-title">All Submissions</span>
+            <span class="cp-section-divider-line"></span>
+        </div>
+
+        <div class="d-flex flex-column gap-3">
 
             @foreach (var completion in Model.Completions)
             {
-                <div class="col-12">
+                <div class="cp-signoff-card cp-signoff-card--@(completion.Status.ToString().ToLower())">
 
-                    <div class="card shadow-sm border-0">
+                    <!-- ── CARD HEADER ── -->
+                    <div class="cp-signoff-card-header">
+                        <div class="cp-signoff-card-icon">
+                            @if (completion.Status == CourseCompletionStatus.Confirmed)
+                            {
+                                <i class="bi bi-patch-check-fill"></i>
+                            }
+                            else if (completion.Status == CourseCompletionStatus.Returned)
+                            {
+                                <i class="bi bi-arrow-return-left"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-clipboard2-check"></i>
+                            }
+                        </div>
 
-                        <div class="card-body">
-
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-
-                                <div>
-                                    <h5 class="mb-1">
-                                        @completion.Course.Name
-                                    </h5>
-
-                                    <div class="text-muted">
-                                        Lecturer:
-                                        @completion.Lecturer.FullName
-                                    </div>
-                                </div>
-
-                                @if (completion.Status == CourseCompletionStatus.Submitted)
+                        <div class="cp-signoff-card-info">
+                            <h5 class="cp-signoff-card-title">@completion.Course.Name</h5>
+                            <div class="cp-signoff-card-meta">
+                                <span>
+                                    <i class="bi bi-person-workspace"></i>
+                                    @completion.Lecturer.FullName
+                                </span>
+                                @if (completion.SubmittedAt.HasValue)
                                 {
-                                    <span class="badge bg-warning text-dark">
-                                        Submitted
+                                    <span>
+                                        <i class="bi bi-clock"></i>
+                                        Submitted @completion.SubmittedAt.Value.ToLocalTime().ToString("dd MMM yyyy, HH:mm")
                                     </span>
                                 }
-                                else if (completion.Status == CourseCompletionStatus.Confirmed)
+                                @if (completion.ConfirmedAt.HasValue)
                                 {
-                                    <span class="badge bg-success">
-                                        Confirmed
+                                    <span>
+                                        <i class="bi bi-check-circle"></i>
+                                        Confirmed @completion.ConfirmedAt.Value.ToLocalTime().ToString("dd MMM yyyy, HH:mm")
                                     </span>
                                 }
-                                else if (completion.Status == CourseCompletionStatus.Returned)
-                                {
-                                    <span class="badge bg-danger">
-                                        Returned
-                                    </span>
-                                }
-
                             </div>
+                        </div>
 
-                            @if (completion.SubmittedAt.HasValue)
-                            {
-                                <p class="text-muted small">
-                                    Submitted:
-                                    @completion.SubmittedAt.Value.ToLocalTime().ToString("dd MMM yyyy, HH:mm")
-                                </p>
-                            }
-
-                            @if (!string.IsNullOrWhiteSpace(completion.Remarks))
-                            {
-                                <div class="alert alert-secondary">
-                                    <strong>Remarks:</strong>
-                                    @completion.Remarks
-                                </div>
-                            }
-
+                        <div class="ms-auto flex-shrink-0">
                             @if (completion.Status == CourseCompletionStatus.Submitted)
                             {
-                                <div class="d-flex gap-2">
-
-                                    <form method="post"
-                                          asp-page-handler="Confirm">
-
-                                        <input type="hidden"
-                                               name="id"
-                                               value="@completion.Id" />
-
-                                        <button type="submit"
-                                                class="btn btn-success">
-                                            <i class="bi bi-check-lg"></i>
-                                            Confirm
-                                        </button>
-
-                                    </form>
-
-                                    <button type="button"
-                                            class="btn btn-outline-danger"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#return-@completion.Id">
-                                        <i class="bi bi-arrow-return-left"></i>
-                                        Return
-                                    </button>
-
-                                </div>
-
-                                <div class="collapse mt-3"
-                                     id="return-@completion.Id">
-
-                                    <form method="post"
-                                          asp-page-handler="Return">
-
-                                        <input type="hidden"
-                                               name="id"
-                                               value="@completion.Id" />
-
-                                        <div class="mb-3">
-                                            <label class="form-label fw-semibold">
-                                                Return Remarks
-                                            </label>
-
-                                            <textarea name="remarks"
-                                                      class="form-control"
-                                                      rows="3"
-                                                      maxlength="1000"
-                                                      placeholder="Explain why the course completion is being returned..."
-                                                      required></textarea>
-                                        </div>
-
-                                        <button type="submit"
-                                                class="btn btn-danger">
-                                            <i class="bi bi-arrow-return-left"></i>
-                                            Return Submission
-                                        </button>
-
-                                    </form>
-
-                                </div>
+                                <span class="cp-signoff-status cp-signoff-status--submitted">
+                                    <i class="bi bi-hourglass-split"></i> Pending Review
+                                </span>
                             }
+                            else if (completion.Status == CourseCompletionStatus.Confirmed)
+                            {
+                                <span class="cp-signoff-status cp-signoff-status--confirmed">
+                                    <i class="bi bi-check2-circle"></i> Confirmed
+                                </span>
+                            }
+                            else if (completion.Status == CourseCompletionStatus.Returned)
+                            {
+                                <span class="cp-signoff-status cp-signoff-status--returned">
+                                    <i class="bi bi-arrow-return-left"></i> Returned
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- ── REMARKS BLOCK (for returned items) ── -->
+                    @if (!string.IsNullOrWhiteSpace(completion.Remarks))
+                    {
+                        <div class="cp-signoff-remarks">
+                            <div class="cp-signoff-remarks-label">
+                                <i class="bi bi-chat-square-text"></i> Remarks
+                            </div>
+                            <p class="cp-signoff-remarks-text">@completion.Remarks</p>
+                        </div>
+                    }
+
+                    <!-- ── ACTIONS (only for Submitted status) ── -->
+                    @if (completion.Status == CourseCompletionStatus.Submitted)
+                    {
+                        <div class="cp-signoff-actions">
+
+                            <!-- Confirm button -->
+                            <form method="post" asp-page-handler="Confirm">
+                                <input type="hidden" name="id" value="@completion.Id" />
+                                <button type="submit" class="cp-action-card-btn cp-action-btn--confirm">
+                                    <i class="bi bi-check-lg"></i>
+                                    Confirm Completion
+                                </button>
+                            </form>
+
+                            <!-- Return toggle -->
+                            <button type="button"
+                                    class="cp-action-card-btn cp-action-btn--return-toggle"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#return-panel-@completion.Id"
+                                    aria-expanded="false">
+                                <i class="bi bi-arrow-return-left"></i>
+                                Return
+                            </button>
 
                         </div>
 
-                    </div>
+                        <!-- Return remarks panel -->
+                        <div class="collapse" id="return-panel-@completion.Id">
+                            <div class="cp-signoff-return-panel">
+
+                                <div class="cp-signoff-return-panel-header">
+                                    <i class="bi bi-arrow-return-left"></i>
+                                    Return this submission
+                                </div>
+
+                                <form method="post" asp-page-handler="Return">
+                                    <input type="hidden" name="id" value="@completion.Id" />
+                                    <div class="cp-field mb-0">
+                                        <label class="cp-field-label">
+                                            <i class="bi bi-chat-square-text"></i> Reason for returning
+                                        </label>
+                                        <textarea name="remarks"
+                                                  class="cp-field-input cp-field-textarea"
+                                                  rows="3"
+                                                  maxlength="1000"
+                                                  placeholder="Explain clearly why this submission is being returned..."
+                                                  required></textarea>
+                                        <span class="cp-field-hint">
+                                            <i class="bi bi-info-circle"></i>
+                                            This message will be visible to the lecturer. Max 1000 characters.
+                                        </span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button type="submit" class="cp-action-card-btn cp-action-btn--danger">
+                                            <i class="bi bi-arrow-return-left"></i>
+                                            Confirm Return
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    }
 
                 </div>
             }

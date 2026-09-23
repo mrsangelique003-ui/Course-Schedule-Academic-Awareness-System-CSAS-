@@ -6,159 +6,164 @@
     ViewData["Title"] = "Create Class Group";
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-2">
 
-    <div class="d-flex align-items-center mb-4">
-        <a asp-page="/CP/ClassGroups"
-           class="btn btn-outline-secondary me-3">
-            <i class="bi bi-arrow-left"></i>
-            Back
-        </a>
-
-        <div>
-            <h1 class="h3 mb-1">Create Class Group</h1>
-            <p class="text-muted mb-0">
-                Create a communication group for one of your represented courses.
-            </p>
+    <!-- ── PAGE HEADER ── -->
+    <div class="cp-page-header">
+        <div class="d-flex align-items-center gap-3">
+            <a asp-page="/CP/ClassGroups/ClassGroups" class="cp-back-btn" title="Back to Class Groups">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="cp-page-header-title">Create Class Group</h1>
+                <p class="cp-page-header-sub">
+                    Set up a new communication group for one of your courses.
+                </p>
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-8 col-xl-7">
+        <div class="col-lg-7 col-xl-6">
 
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4">
+            <!-- ── FORM CARD ── -->
+            <div class="cp-form-card">
 
-                    <form method="post">
+                <!-- Card title bar -->
+                <div class="cp-form-card-header">
+                    <div class="cp-form-card-header-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <div class="cp-form-card-header-title">Group Details</div>
+                        <div class="cp-form-card-header-sub">All fields are required</div>
+                    </div>
+                </div>
 
-                        <div asp-validation-summary="ModelOnly"
-                             class="alert alert-danger"
-                             role="alert">
-                        </div>
+                <div class="cp-form-card-body">
+                    <form method="post" novalidate>
+
+                        <!-- Validation summary -->
+                        <div asp-validation-summary="ModelOnly" class="cp-alert cp-alert--danger" role="alert"></div>
 
                         <!-- Course -->
-                        <div class="mb-3">
-                            <label asp-for="Input.CourseId"
-                                   class="form-label fw-semibold">
-                                Course
+                        <div class="cp-field">
+                            <label asp-for="Input.CourseId" class="cp-field-label">
+                                <i class="bi bi-journal-bookmark"></i> Course
                             </label>
-
-                            <select asp-for="Input.CourseId"
-                                    class="form-select">
-
-                                <option value="0">
-                                    -- Select Course --
-                                </option>
-
+                            <select asp-for="Input.CourseId" class="cp-field-select">
+                                <option value="0">— Select a course —</option>
                                 @foreach (var course in Model.AvailableCourses)
                                 {
-                                    <option value="@course.Id">
-                                        @course.Name
-                                    </option>
+                                    <option value="@course.Id">@course.Name</option>
                                 }
-
                             </select>
-
-                            <span asp-validation-for="Input.CourseId"
-                                  class="text-danger">
-                            </span>
+                            <span asp-validation-for="Input.CourseId" class="cp-field-error"></span>
                         </div>
 
                         <!-- Group Name -->
-                        <div class="mb-3">
-                            <label asp-for="Input.GroupName"
-                                   class="form-label fw-semibold">
-                                Group Name
+                        <div class="cp-field">
+                            <label asp-for="Input.GroupName" class="cp-field-label">
+                                <i class="bi bi-tag"></i> Group Name
                             </label>
-
                             <input asp-for="Input.GroupName"
-                                   class="form-control"
-                                   placeholder="e.g. CIS Level 3 Day Group A"
+                                   class="cp-field-input"
+                                   placeholder="e.g. CIS Level 3 Day — Group A"
                                    maxlength="100" />
-
-                            <span asp-validation-for="Input.GroupName"
-                                  class="text-danger">
-                            </span>
+                            <span asp-validation-for="Input.GroupName" class="cp-field-error"></span>
                         </div>
 
-                        <!-- Intake -->
-                        <div class="mb-3">
-                            <label asp-for="Input.Intake"
-                                   class="form-label fw-semibold">
-                                Intake
-                            </label>
-
-                            <input asp-for="Input.Intake"
-                                   class="form-control"
-                                   placeholder="e.g. 2025/2026"
-                                   maxlength="100" />
-
-                            <span asp-validation-for="Input.Intake"
-                                  class="text-danger">
-                            </span>
-                        </div>
-
-                        <!-- Level -->
-                        <div class="mb-3">
-                            <label asp-for="Input.Level"
-                                   class="form-label fw-semibold">
-                                Level
-                            </label>
-
-                            <input asp-for="Input.Level"
-                                   class="form-control"
-                                   placeholder="e.g. Level 3"
-                                   maxlength="50" />
-
-                            <span asp-validation-for="Input.Level"
-                                  class="text-danger">
-                            </span>
+                        <!-- Intake + Level side by side -->
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="cp-field">
+                                    <label asp-for="Input.Intake" class="cp-field-label">
+                                        <i class="bi bi-calendar2"></i> Intake
+                                    </label>
+                                    <input asp-for="Input.Intake"
+                                           class="cp-field-input"
+                                           placeholder="e.g. 2025/2026"
+                                           maxlength="100" />
+                                    <span asp-validation-for="Input.Intake" class="cp-field-error"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="cp-field">
+                                    <label asp-for="Input.Level" class="cp-field-label">
+                                        <i class="bi bi-mortarboard"></i> Level
+                                    </label>
+                                    <input asp-for="Input.Level"
+                                           class="cp-field-input"
+                                           placeholder="e.g. Level 3"
+                                           maxlength="50" />
+                                    <span asp-validation-for="Input.Level" class="cp-field-error"></span>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Group Link -->
-                        <div class="mb-4">
-                            <label asp-for="Input.GroupLink"
-                                   class="form-label fw-semibold">
-                                Group Link
+                        <div class="cp-field">
+                            <label asp-for="Input.GroupLink" class="cp-field-label">
+                                <i class="bi bi-link-45deg"></i> Group Link
                             </label>
-
                             <input asp-for="Input.GroupLink"
                                    type="url"
-                                   class="form-control"
-                                   placeholder="https://..."
+                                   class="cp-field-input"
+                                   placeholder="https://chat.whatsapp.com/..."
                                    maxlength="500" />
-
-                            <div class="form-text">
-                                Enter the link students will use to join the group.
-                            </div>
-
-                            <span asp-validation-for="Input.GroupLink"
-                                  class="text-danger">
+                            <span class="cp-field-hint">
+                                <i class="bi bi-info-circle"></i>
+                                Paste the invite link students will use to join the group.
                             </span>
+                            <span asp-validation-for="Input.GroupLink" class="cp-field-error"></span>
                         </div>
 
                         <!-- Actions -->
-                        <div class="d-flex gap-2">
-
-                            <button type="submit"
-                                    class="btn btn-primary">
+                        <div class="cp-form-actions">
+                            <button type="submit" class="cp-action-card-btn cp-action-btn--primary">
                                 <i class="bi bi-check-lg"></i>
                                 Create Group
                             </button>
-
-                            <a asp-page="/CP/ClassGroups"
-                               class="btn btn-outline-secondary">
+                            <a asp-page="/CP/ClassGroups/ClassGroups" class="cp-action-card-btn cp-action-btn--ghost">
                                 Cancel
                             </a>
-
                         </div>
 
                     </form>
-
                 </div>
+
             </div>
 
         </div>
+
+        <!-- ── TIPS SIDEBAR ── -->
+        <div class="col-lg-5 col-xl-6 mt-4 mt-lg-0">
+            <div class="cp-tips-panel">
+                <p class="cp-tips-panel-title">
+                    <i class="bi bi-lightbulb-fill" style="color:#f59e0b;"></i>
+                    Tips for creating a group
+                </p>
+                <ul class="cp-tips-list" style="flex-direction:column; gap:8px;">
+                    <li style="border-radius:var(--radius-sm); padding:10px 14px;">
+                        <i class="bi bi-1-circle-fill" style="color:var(--accent);"></i>
+                        Use a clear, descriptive name so students know exactly which group it is.
+                    </li>
+                    <li style="border-radius:var(--radius-sm); padding:10px 14px;">
+                        <i class="bi bi-2-circle-fill" style="color:var(--accent);"></i>
+                        Include the intake year so groups from different cohorts are easy to tell apart.
+                    </li>
+                    <li style="border-radius:var(--radius-sm); padding:10px 14px;">
+                        <i class="bi bi-3-circle-fill" style="color:var(--accent);"></i>
+                        Make sure the group link is correct and working before saving.
+                    </li>
+                    <li style="border-radius:var(--radius-sm); padding:10px 14px;">
+                        <i class="bi bi-4-circle-fill" style="color:var(--accent);"></i>
+                        Groups are saved as drafts first — publish when ready.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 
 </div>

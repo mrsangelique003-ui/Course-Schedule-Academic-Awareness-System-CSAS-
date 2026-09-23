@@ -1,0 +1,1775 @@
+/* =========================================================
+   CSAS — CP (CLASS REPRESENTATIVE) MODULE STYLES
+   Palette inherits from Layout.css custom properties
+   ========================================================= */
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.cp-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.cp-page-header-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.02em;
+    margin: 0 0 4px;
+    line-height: 1.2;
+}
+
+.cp-page-header-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cp-page-header-sub .cp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.cp-page-header-date {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+
+/* =========================================================
+   STAT CARDS
+   ========================================================= */
+
+.cp-stat-card {
+    position: relative;
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: var(--shadow-sm) !important;
+    background: var(--surface) !important;
+    overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.cp-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md) !important;
+}
+
+.cp-stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+/* Per-card accent strip colors */
+.cp-stat-card--courses::before  { background: linear-gradient(90deg, #0b2545, #1d4e89); }
+.cp-stat-card--groups::before   { background: linear-gradient(90deg, #0f766e, #14b8a6); }
+.cp-stat-card--signoff::before  { background: linear-gradient(90deg, #b45309, #f59e0b); }
+.cp-stat-card--messages::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+
+.cp-stat-card .card-body {
+    padding: 22px 22px 20px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cp-stat-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.cp-stat-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 20px;
+}
+
+.cp-stat-icon--courses  { background: var(--accent-light);                color: var(--accent); }
+.cp-stat-icon--groups   { background: rgba(20, 184, 166, 0.1);            color: #0f766e; }
+.cp-stat-icon--signoff  { background: rgba(245, 158, 11, 0.1);            color: #b45309; }
+.cp-stat-icon--messages { background: rgba(124, 58, 237, 0.1);            color: #7c3aed; }
+
+.cp-stat-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.cp-stat-value {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0;
+}
+
+.cp-stat-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-light);
+    padding-top: 12px;
+    margin-top: 2px;
+}
+
+.cp-stat-footer i {
+    font-size: 13px;
+}
+
+.cp-stat-footer-link {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    transition: color 0.18s ease;
+}
+
+.cp-stat-footer-link:hover {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   SECTION DIVIDER
+   ========================================================= */
+
+.cp-section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 18px;
+}
+
+.cp-section-divider-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cp-section-divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+
+/* =========================================================
+   ACTION CARDS
+   ========================================================= */
+
+.cp-action-card {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: var(--shadow-sm) !important;
+    background: var(--surface) !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    height: 100%;
+}
+
+.cp-action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md) !important;
+}
+
+.cp-action-card .card-body {
+    padding: 24px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: 100%;
+}
+
+.cp-action-card-icon-wrap {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    font-size: 24px;
+}
+
+.cp-action-card-icon--groups   { background: var(--accent-light);              color: var(--accent); }
+.cp-action-card-icon--signoff  { background: rgba(245, 158, 11, 0.1);          color: #b45309; }
+.cp-action-card-icon--messages { background: rgba(124, 58, 237, 0.1);          color: #7c3aed; }
+
+.cp-action-card-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15.5px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+}
+
+.cp-action-card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0 0 20px;
+    flex: 1;
+}
+
+.cp-action-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    align-self: flex-start;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.cp-action-card-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(11, 37, 69, 0.18);
+    text-decoration: none;
+}
+
+/* Button colour variants */
+.cp-action-btn--primary {
+    background: var(--primary);
+    color: #ffffff;
+}
+.cp-action-btn--primary:hover {
+    background: var(--primary-light);
+    color: #ffffff;
+}
+
+.cp-action-btn--amber {
+    background: rgba(245, 158, 11, 0.12);
+    color: #b45309;
+}
+.cp-action-btn--amber:hover {
+    background: rgba(245, 158, 11, 0.22);
+    color: #92400e;
+}
+
+.cp-action-btn--violet {
+    background: rgba(124, 58, 237, 0.10);
+    color: #7c3aed;
+}
+.cp-action-btn--violet:hover {
+    background: rgba(124, 58, 237, 0.18);
+    color: #5b21b6;
+}
+
+
+/* =========================================================
+   QUICK TIPS PANEL
+   ========================================================= */
+
+.cp-tips-panel {
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+    border: 1px solid rgba(29, 78, 137, 0.12);
+    padding: 20px 22px;
+    margin-top: 32px;
+}
+
+.cp-tips-panel-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.cp-tips-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cp-tips-list li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: 30px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.cp-tips-list li i {
+    color: var(--accent);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   RESPONSIVE OVERRIDES
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .cp-stat-value {
+        font-size: 28px;
+    }
+
+    .cp-page-header-date {
+        display: none;
+    }
+
+    .cp-action-card .card-body {
+        padding: 18px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .cp-stat-card .card-body {
+        padding: 16px !important;
+    }
+
+    .cp-stat-value {
+        font-size: 26px;
+    }
+
+    .cp-tips-list li {
+        font-size: 11px;
+        padding: 6px 11px;
+    }
+}
+
+
+/* =========================================================
+   CP MODULE — PAGE-LEVEL SHARED COMPONENTS
+   (ClassGroups, Create, SignOff)
+   ========================================================= */
+
+/* ── HEADER BUTTON (Create Group / primary CTA in header) ── */
+
+.cp-header-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    flex-shrink: 0;
+    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.cp-header-btn:hover {
+    background: var(--primary-light);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(11, 37, 69, 0.2);
+    text-decoration: none;
+}
+
+.cp-header-btn:active {
+    transform: translateY(0);
+}
+
+/* ── BACK BUTTON ── */
+
+.cp-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 16px;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    text-decoration: none;
+}
+
+.cp-back-btn:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* ── EMPTY STATE ── */
+
+.cp-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 64px 32px;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.cp-empty-state-icon {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.cp-empty-state-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0 0 8px;
+}
+
+.cp-empty-state-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 340px;
+    line-height: 1.6;
+    margin: 0 0 24px;
+}
+
+/* ── EXTRA BUTTON VARIANTS (used across all CP pages) ── */
+
+.cp-action-btn--ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.cp-action-btn--ghost:hover {
+    background: var(--surface-soft);
+    color: var(--text);
+    border-color: var(--border);
+    box-shadow: none;
+}
+
+.cp-action-btn--confirm {
+    background: rgba(15, 118, 110, 0.1);
+    color: #0f766e;
+}
+
+.cp-action-btn--confirm:hover {
+    background: rgba(15, 118, 110, 0.18);
+    color: #065f46;
+}
+
+.cp-action-btn--danger {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+}
+
+.cp-action-btn--danger:hover {
+    background: rgba(220, 38, 38, 0.18);
+    color: #991b1b;
+}
+
+.cp-action-btn--return-toggle {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.cp-action-btn--return-toggle:hover {
+    background: rgba(220, 38, 38, 0.07);
+    color: #dc2626;
+    border-color: rgba(220, 38, 38, 0.3);
+    box-shadow: none;
+}
+
+/* ── ALERT ── */
+
+.cp-alert {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.cp-alert--danger {
+    background: rgba(220, 38, 38, 0.06);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    color: #991b1b;
+}
+
+/* hide the alert wrapper when it's empty (no errors) */
+.cp-alert:empty {
+    display: none;
+}
+
+
+/* =========================================================
+   CLASS GROUPS — GROUP CARD
+   ========================================================= */
+
+.cp-group-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.cp-group-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Teal top strip */
+.cp-group-card::before {
+    content: "";
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #0f766e, #14b8a6);
+    flex-shrink: 0;
+}
+
+.cp-group-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px 0;
+}
+
+.cp-group-card-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: rgba(20, 184, 166, 0.1);
+    color: #0f766e;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* Published / Draft badges */
+.cp-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.cp-status-badge--published {
+    background: rgba(15, 118, 110, 0.1);
+    color: #0f766e;
+}
+
+.cp-status-badge--draft {
+    background: var(--surface-soft);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.cp-group-card-body {
+    padding: 14px 18px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cp-group-card-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+
+.cp-group-course-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.cp-group-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 2px;
+}
+
+.cp-group-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+}
+
+.cp-group-meta-item i {
+    font-size: 13px;
+    color: var(--text-light);
+    width: 14px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.cp-group-card-footer {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border-light);
+    background: var(--surface-soft);
+}
+
+.cp-group-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    transition: background 0.18s ease, color 0.18s ease;
+    text-decoration: none;
+}
+
+.cp-group-link-btn:hover {
+    background: var(--accent);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.cp-group-link-empty {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+
+/* =========================================================
+   CREATE GROUP — FORM CARD
+   ========================================================= */
+
+.cp-form-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.cp-form-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--surface-soft);
+}
+
+.cp-form-card-header-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 20px;
+}
+
+.cp-form-card-header-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.cp-form-card-header-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.cp-form-card-body {
+    padding: 26px 24px;
+}
+
+/* ── FORM FIELDS ── */
+
+.cp-field {
+    margin-bottom: 20px;
+}
+
+.cp-field-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 7px;
+    letter-spacing: 0.01em;
+}
+
+.cp-field-label i {
+    font-size: 13px;
+    color: var(--accent);
+}
+
+.cp-field-input,
+.cp-field-select,
+.cp-field-textarea {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-size: 13.5px;
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.cp-field-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.cp-field-textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.cp-field-input:focus,
+.cp-field-select:focus,
+.cp-field-textarea:focus {
+    border-color: var(--accent);
+    background: #fafcff;
+    box-shadow: 0 0 0 3px rgba(29, 78, 137, 0.1);
+}
+
+.cp-field-input::placeholder,
+.cp-field-textarea::placeholder {
+    color: var(--text-light);
+}
+
+/* Client-side validation states */
+.cp-field-input.input-validation-error,
+.cp-field-select.input-validation-error,
+.cp-field-textarea.input-validation-error {
+    border-color: #dc2626;
+    background: #fff9f9;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+.cp-field-error {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #dc2626;
+}
+
+.cp-field-hint {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.cp-field-hint i {
+    font-size: 13px;
+    color: var(--text-light);
+    flex-shrink: 0;
+}
+
+.cp-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 8px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   COURSE SIGN-OFF — SUMMARY STRIP
+   ========================================================= */
+
+.cp-signoff-summary {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 28px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.cp-signoff-summary-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 12px;
+    gap: 4px;
+}
+
+.cp-signoff-summary-sep {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+    flex-shrink: 0;
+}
+
+.cp-signoff-summary-num {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.cp-signoff-summary-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.cp-signoff-summary-item--pending  .cp-signoff-summary-num   { color: #b45309; }
+.cp-signoff-summary-item--pending  .cp-signoff-summary-label { color: #b45309; }
+.cp-signoff-summary-item--confirmed .cp-signoff-summary-num  { color: #0f766e; }
+.cp-signoff-summary-item--confirmed .cp-signoff-summary-label{ color: #0f766e; }
+.cp-signoff-summary-item--returned  .cp-signoff-summary-num  { color: #dc2626; }
+.cp-signoff-summary-item--returned  .cp-signoff-summary-label{ color: #dc2626; }
+
+
+/* =========================================================
+   COURSE SIGN-OFF — SUBMISSION CARD
+   ========================================================= */
+
+.cp-signoff-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+}
+
+.cp-signoff-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Left-edge colour strip per status */
+.cp-signoff-card--submitted  { border-left: 4px solid #f59e0b; }
+.cp-signoff-card--confirmed  { border-left: 4px solid #14b8a6; }
+.cp-signoff-card--returned   { border-left: 4px solid #ef4444; }
+
+.cp-signoff-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 22px;
+    flex-wrap: wrap;
+}
+
+.cp-signoff-card-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    font-size: 20px;
+}
+
+.cp-signoff-card--submitted  .cp-signoff-card-icon { background: rgba(245, 158, 11, 0.1); color: #b45309; }
+.cp-signoff-card--confirmed  .cp-signoff-card-icon { background: rgba(20, 184, 166, 0.1);  color: #0f766e; }
+.cp-signoff-card--returned   .cp-signoff-card-icon { background: rgba(239, 68, 68, 0.1);   color: #dc2626; }
+
+.cp-signoff-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cp-signoff-card-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15.5px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+}
+
+.cp-signoff-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+}
+
+.cp-signoff-card-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cp-signoff-card-meta i {
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+/* Status pill */
+.cp-signoff-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    align-self: flex-start;
+}
+
+.cp-signoff-status--submitted  { background: rgba(245, 158, 11, 0.1);  color: #b45309; }
+.cp-signoff-status--confirmed  { background: rgba(20, 184, 166, 0.1);  color: #0f766e; }
+.cp-signoff-status--returned   { background: rgba(239, 68, 68, 0.1);   color: #dc2626; }
+
+/* Remarks block */
+.cp-signoff-remarks {
+    margin: 0 22px 16px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-soft);
+    border: 1px solid var(--border-light);
+}
+
+.cp-signoff-remarks-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.cp-signoff-remarks-text {
+    font-size: 13.5px;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* Action row */
+.cp-signoff-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 22px 20px;
+    flex-wrap: wrap;
+}
+
+/* Return panel */
+.cp-signoff-return-panel {
+    margin: 0 22px 20px;
+    padding: 18px 20px;
+    border-radius: var(--radius-sm);
+    background: rgba(220, 38, 38, 0.04);
+    border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.cp-signoff-return-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 14px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .cp-signoff-summary-num {
+        font-size: 22px;
+    }
+
+    .cp-signoff-card-header {
+        padding: 16px;
+    }
+
+    .cp-signoff-actions {
+        padding: 0 16px 16px;
+    }
+
+    .cp-signoff-return-panel {
+        margin: 0 16px 16px;
+    }
+
+    .cp-signoff-remarks {
+        margin: 0 16px 14px;
+    }
+
+    .cp-form-card-body {
+        padding: 18px 16px;
+    }
+
+    .cp-form-card-header {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cp-signoff-summary-item {
+        padding: 14px 8px;
+    }
+
+    .cp-signoff-summary-num {
+        font-size: 20px;
+    }
+
+    .cp-signoff-summary-label {
+        font-size: 10px;
+    }
+
+    .cp-group-card-body {
+        padding: 12px 14px;
+    }
+
+    .cp-group-card-header {
+        padding: 14px 14px 0;
+    }
+
+    .cp-group-card-footer {
+        padding: 10px 14px;
+    }
+}
+
+
+/* =========================================================
+   CP MODULE — HOD CHAT PAGE
+   ========================================================= */
+
+/* ── Chat window shell ── */
+.cp-chat-window {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    /* Fill remaining viewport height under the page header */
+    height: calc(100vh - var(--header-h) - 160px);
+    min-height: 420px;
+}
+
+/* ── Chat window top bar ── */
+.cp-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-soft);
+    flex-shrink: 0;
+}
+
+.cp-chat-header-avatar {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.cp-chat-header-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cp-chat-header-name {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+}
+
+.cp-chat-header-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.cp-chat-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* ── Message feed ── */
+.cp-chat-feed {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.cp-chat-feed::-webkit-scrollbar { width: 6px; }
+.cp-chat-feed::-webkit-scrollbar-track { background: transparent; }
+.cp-chat-feed::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* ── Date dividers ── */
+.cp-chat-date-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 10px;
+}
+
+.cp-chat-date-divider::before,
+.cp-chat-date-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.cp-chat-date-divider span {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+/* ── Message bubble (HOD = left-aligned) ── */
+.cp-chat-bubble {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 78%;
+}
+
+.cp-chat-bubble--hod {
+    align-self: flex-start;
+}
+
+.cp-chat-bubble--unread .cp-chat-bubble-content {
+    background: #f0f7ff;
+    border-color: rgba(29, 78, 137, 0.18);
+}
+
+.cp-chat-bubble-avatar {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.cp-chat-bubble-content {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 4px 14px 14px 14px;
+    padding: 10px 14px;
+    min-width: 60px;
+    max-width: 100%;
+}
+
+.cp-chat-bubble-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+}
+
+.cp-chat-bubble-sender {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.01em;
+}
+
+.cp-chat-unread-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #7c3aed;
+    flex-shrink: 0;
+}
+
+.cp-chat-bubble-time {
+    margin-left: auto;
+    font-size: 10.5px;
+    color: var(--text-light);
+}
+
+.cp-chat-bubble-text {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.58;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ── Empty state inside feed ── */
+.cp-chat-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    gap: 10px;
+}
+
+.cp-chat-empty-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(124, 58, 237, 0.08);
+    color: #7c3aed;
+    font-size: 26px;
+    margin-bottom: 6px;
+}
+
+.cp-chat-empty-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.cp-chat-empty-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 300px;
+    line-height: 1.55;
+}
+
+/* ── Read-only compose notice ── */
+.cp-chat-compose-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 22px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-soft);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.cp-chat-compose-notice i {
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+
+/* =========================================================
+   CP MODULE — PROFILE / CIS REPRESENTATIVES PAGE
+   ========================================================= */
+
+.cp-profile-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    height: 100%;
+}
+
+.cp-profile-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Navy gradient top bar */
+.cp-profile-card-top {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    padding: 22px 20px 14px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.cp-profile-avatar {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+}
+
+.cp-profile-active-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.cp-profile-active-badge i {
+    font-size: 7px;
+    color: #4ade80;
+}
+
+/* Identity block */
+.cp-profile-identity {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.cp-profile-name {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15.5px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0 0 5px;
+    letter-spacing: -0.01em;
+}
+
+.cp-profile-regno {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+/* Meta 2-column grid */
+.cp-profile-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border-light);
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.cp-profile-meta-item {
+    background: var(--surface);
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cp-profile-meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+}
+
+.cp-profile-meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* Contact footer */
+.cp-profile-contact {
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.cp-profile-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    transition: color 0.18s ease;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.cp-profile-contact-item:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.cp-profile-contact-item i {
+    font-size: 14px;
+    color: var(--text-light);
+    flex-shrink: 0;
+    width: 16px;
+    text-align: center;
+}
+
+.cp-profile-contact-item span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CHAT + PROFILE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .cp-chat-window {
+        height: calc(100vh - var(--header-h) - 130px);
+    }
+
+    .cp-chat-bubble {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 600px) {
+    .cp-chat-window {
+        height: calc(100vh - var(--header-h) - 110px);
+        border-radius: var(--radius-sm);
+    }
+
+    .cp-chat-feed {
+        padding: 14px 14px;
+    }
+
+    .cp-chat-header {
+        padding: 12px 14px;
+    }
+
+    .cp-chat-header-badge {
+        display: none;
+    }
+
+    .cp-chat-bubble {
+        max-width: 95%;
+    }
+
+    .cp-profile-meta-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =========================================================
+   CP CHAT — TWO-WAY UPDATES
+   ========================================================= */
+
+/* CP bubble — right aligned (sent by this CP) */
+.cp-chat-bubble--cp {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+    gap: 0;
+}
+
+.cp-chat-bubble-content--cp {
+    background: var(--primary);
+    border: none;
+    border-radius: 14px 4px 14px 14px;
+    padding: 10px 14px;
+    min-width: 60px;
+    max-width: 100%;
+}
+
+.cp-chat-bubble-content--cp .cp-chat-bubble-text {
+    color: #ffffff;
+}
+
+.cp-chat-bubble-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.cp-chat-bubble-content--cp .cp-chat-bubble-time {
+    color: rgba(255, 255, 255, 0.55);
+    margin-left: 0;
+}
+
+/* HOD bubble content variant */
+.cp-chat-bubble-content--hod {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 4px 14px 14px 14px;
+}
+
+/* Replace the old read-only notice with the compose box */
+.cp-chat-compose {
+    padding: 12px 18px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-soft);
+    flex-shrink: 0;
+}
+
+.cp-chat-compose-error {
+    font-size: 12.5px;
+    color: #dc2626;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.cp-chat-compose-error:empty {
+    display: none;
+}
+
+.cp-chat-compose-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.cp-chat-compose-input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-family: "Inter", sans-serif;
+    font-size: 13.5px;
+    color: var(--text);
+    resize: none;
+    overflow-y: hidden;
+    min-height: 42px;
+    max-height: 130px;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    line-height: 1.5;
+}
+
+.cp-chat-compose-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(29, 78, 137, 0.1);
+    background: #fafcff;
+}
+
+.cp-chat-compose-input::placeholder {
+    color: var(--text-light);
+}
+
+.cp-chat-compose-send {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cp-chat-compose-send:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(11, 37, 69, 0.22);
+}
+
+.cp-chat-compose-send:active {
+    transform: translateY(0);
+}
+
+.cp-chat-compose-hint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+    padding: 0 2px;
+}
+
+.cp-chat-char-count {
+    font-size: 11px;
+    color: var(--text-light);
+    font-weight: 600;
+    margin-left: auto;
+}

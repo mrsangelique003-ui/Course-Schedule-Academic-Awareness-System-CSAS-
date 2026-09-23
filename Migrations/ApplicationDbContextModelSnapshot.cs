@@ -425,6 +425,9 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("SenderType")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClassRepresentativeId");
