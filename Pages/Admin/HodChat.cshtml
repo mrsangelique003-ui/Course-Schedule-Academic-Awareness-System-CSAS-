@@ -1,0 +1,243 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.HodChatModel
+@using CourseScheduleSystem.Web.Models
+
+@{
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "HOD Chat";
+    DateTime? hodLastDate = null;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Admin/HodChat.css" asp-append-version="true" />
+}
+
+<div class="hod-chat-shell">
+
+    <!-- ═══════════════════════════════════════════════
+         LEFT PANEL — CP list grouped by intake
+    ════════════════════════════════════════════════ -->
+    <aside class="hod-cp-list">
+
+        <div class="hod-cp-list-header">
+            <h2 class="hod-cp-list-title">
+                <i class="bi bi-people-fill"></i>
+                Class Representatives
+            </h2>
+            <span class="hod-cp-list-count">@Model.TotalCps</span>
+        </div>
+
+        @if (!Model.IntakeGroups.Any())
+        {
+            <div class="hod-cp-list-empty">
+                <i class="bi bi-person-x"></i>
+                <span>No active CPs found.</span>
+            </div>
+        }
+        else
+        {
+            <div class="hod-cp-list-items">
+
+                @foreach (var group in Model.IntakeGroups)
+                {
+                    <!-- Intake group label -->
+                    <div class="hod-intake-group-label">
+                        <i class="bi bi-calendar2-week"></i>
+                        @group.Intake intake
+                    </div>
+
+                    @foreach (var cp in group.Representatives)
+                    {
+                        var isSelected = Model.SelectedCp?.Id == cp.Id;
+                        var cpInitials = string.Concat(
+                            cp.FullName.Split(' ').Take(2).Select(w => char.ToUpper(w[0])));
+                        var unread = Model.UnreadByCp.GetValueOrDefault(cp.Id, 0);
+
+                        <a href="?cpId=@cp.Id"
+                           class="hod-cp-item @(isSelected ? "hod-cp-item--active" : "")">
+                            <div class="hod-cp-item-avatar">@cpInitials</div>
+                            <div class="hod-cp-item-info">
+                                <div class="hod-cp-item-name">@cp.FullName</div>
+                                <div class="hod-cp-item-meta">
+                                    @cp.RegNo · @cp.Level
+                                </div>
+                            </div>
+                            @if (unread > 0)
+                            {
+                                <span class="hod-cp-item-unread">@unread</span>
+                            }
+                        </a>
+                    }
+                }
+
+            </div>
+        }
+
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════
+         RIGHT PANEL — Private conversation
+    ════════════════════════════════════════════════ -->
+    <section class="hod-conversation">
+
+        @if (Model.SelectedCp == null)
+        {
+            <div class="hod-conversation-placeholder">
+                <div class="hod-conversation-placeholder-icon">
+                    <i class="bi bi-chat-dots"></i>
+                </div>
+                <h3 class="hod-conversation-placeholder-title">Select a Class Representative</h3>
+                <p class="hod-conversation-placeholder-sub">
+                    Pick a CP from the left panel to open your private conversation.
+                    Each conversation is visible only to you and that CP.
+                </p>
+            </div>
+        }
+        else
+        {
+            var selInitials = string.Concat(
+                Model.SelectedCp.FullName.Split(' ').Take(2).Select(w => char.ToUpper(w[0])));
+
+            <!-- ── Conversation header ── -->
+            <div class="hod-conv-header">
+                <div class="hod-conv-header-avatar">@selInitials</div>
+                <div class="hod-conv-header-info">
+                    <div class="hod-conv-header-name">@Model.SelectedCp.FullName</div>
+                    <div class="hod-conv-header-meta">
+                        <span><i class="bi bi-person-badge"></i> @Model.SelectedCp.RegNo</span>
+                        <span><i class="bi bi-mortarboard"></i> @Model.SelectedCp.Level</span>
+                        <span><i class="bi bi-calendar2"></i> @Model.SelectedCp.Intake intake</span>
+                        <span><i class="bi bi-building"></i> @Model.SelectedCp.Department</span>
+                    </div>
+                </div>
+                <div class="hod-conv-header-badge">
+                    <i class="bi bi-lock-fill"></i> Private
+                </div>
+            </div>
+
+            <!-- ── Message feed ── -->
+            <div class="hod-conv-feed" id="hodFeed">
+
+                @if (!Model.Conversation.Any())
+                {
+                    <div class="hod-conv-empty">
+                        <i class="bi bi-chat-square-text"></i>
+                        <span>No messages yet. Send the first one below.</span>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var msg in Model.Conversation)
+                    {
+                        var msgDate = msg.SentAt.ToLocalTime().Date;
+
+                        if (hodLastDate == null || hodLastDate != msgDate)
+                        {
+                            hodLastDate = msgDate;
+                            var label = msgDate == DateTime.Today
+                                ? "Today"
+                                : msgDate == DateTime.Today.AddDays(-1)
+                                    ? "Yesterday"
+                                    : msgDate.ToString("dddd, d MMMM yyyy");
+
+                            <div class="hod-conv-date-divider"><span>@label</span></div>
+                        }
+
+                        @if (msg.SenderType == MessageSenderType.Hod)
+                        {
+                            <!-- HOD bubble — right aligned (sent by me) -->
+                            <div class="hod-conv-bubble hod-conv-bubble--hod">
+                                <div class="hod-conv-bubble-body hod-conv-bubble-body--hod">
+                                    <div class="hod-conv-bubble-text">@msg.Message</div>
+                                    <div class="hod-conv-bubble-meta">
+                                        <span>@msg.SentAt.ToLocalTime().ToString("HH:mm")</span>
+                                        @if (msg.IsRead)
+                                        {
+                                            <i class="bi bi-check2-all" title="Read by CP" style="color:#4ade80;"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-check2" title="Delivered"></i>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- CP bubble — left aligned (received) -->
+                            <div class="hod-conv-bubble hod-conv-bubble--cp">
+                                <div class="hod-conv-bubble-avatar-sm">@selInitials</div>
+                                <div class="hod-conv-bubble-body hod-conv-bubble-body--cp">
+                                    <div class="hod-conv-bubble-sender-label">@Model.SelectedCp.FullName</div>
+                                    <div class="hod-conv-bubble-text">@msg.Message</div>
+                                    <div class="hod-conv-bubble-meta hod-conv-bubble-meta--cp">
+                                        <span>@msg.SentAt.ToLocalTime().ToString("HH:mm")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+
+            </div><!-- /hod-conv-feed -->
+
+            <!-- ── Compose box ── -->
+            <div class="hod-compose">
+                <form method="post" asp-page-handler="Send" novalidate>
+                    <input type="hidden" asp-for="Input.CpId" value="@Model.SelectedCp.Id" />
+                    <div asp-validation-summary="ModelOnly" class="hod-compose-error"></div>
+                    <div class="hod-compose-row">
+                        <textarea asp-for="Input.Message"
+                                  class="hod-compose-input"
+                                  rows="1"
+                                  maxlength="2000"
+                                  placeholder="Message @Model.SelectedCp.FullName privately…"
+                                  id="hodComposeInput"
+                                  required></textarea>
+                        <button type="submit" class="hod-compose-send" title="Send (Ctrl+Enter)">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </div>
+                    <div class="hod-compose-hint">
+                        <span asp-validation-for="Input.Message" class="text-danger" style="font-size:12px;"></span>
+                        <span class="hod-compose-char" id="hodCharCount">0 / 2000</span>
+                    </div>
+                </form>
+            </div>
+
+        }
+
+    </section>
+
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const feed = document.getElementById("hodFeed");
+    if (feed) feed.scrollTop = feed.scrollHeight;
+
+    const textarea = document.getElementById("hodComposeInput");
+    const charCount = document.getElementById("hodCharCount");
+
+    if (textarea) {
+        function resize() {
+            textarea.style.height = "auto";
+            textarea.style.height = Math.min(textarea.scrollHeight, 140) + "px";
+        }
+        textarea.addEventListener("input", function () {
+            resize();
+            if (charCount) charCount.textContent = textarea.value.length + " / 2000";
+        });
+        resize();
+        textarea.addEventListener("keydown", function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+                textarea.closest("form").submit();
+            }
+        });
+    }
+});
+</script>
+}

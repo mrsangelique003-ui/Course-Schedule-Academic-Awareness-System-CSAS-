@@ -6,89 +6,124 @@
     ViewData["Title"] = "Class Groups";
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-2">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- ── PAGE HEADER ── -->
+    <div class="cp-page-header">
         <div>
-            <h1 class="h3 mb-1">Class Groups</h1>
-            <p class="text-muted mb-0">
-                Manage the communication groups for your courses.
+            <h1 class="cp-page-header-title">Class Groups</h1>
+            <p class="cp-page-header-sub">
+                <span>Manage communication groups for your represented courses.</span>
+                @if (Model.Groups.Any())
+                {
+                    <span class="cp-badge">
+                        <i class="bi bi-people-fill"></i>
+                        @Model.Groups.Count active @(Model.Groups.Count == 1 ? "group" : "groups")
+                    </span>
+                }
             </p>
         </div>
-<a href="/CP/ClassGroups/Create"
-   class="btn btn-primary">
-    <i class="bi bi-plus-lg"></i>
-    Create Group
-</a>
+        <a href="/CP/ClassGroups/Create" class="cp-header-btn">
+            <i class="bi bi-plus-lg"></i>
+            <span>Create Group</span>
+        </a>
     </div>
 
+    <!-- ── EMPTY STATE ── -->
     @if (!Model.Groups.Any())
     {
-        <div class="card shadow-sm">
-            <div class="card-body text-center py-5">
-                <i class="bi bi-people display-5 text-muted"></i>
-
-                <h5 class="mt-3">No class groups yet</h5>
-
-                <p class="text-muted mb-0">
-                    Your active class groups will appear here.
-                </p>
+        <div class="cp-empty-state">
+            <div class="cp-empty-state-icon">
+                <i class="bi bi-people"></i>
             </div>
+            <h5 class="cp-empty-state-title">No class groups yet</h5>
+            <p class="cp-empty-state-desc">
+                Create your first group to start organising your class communication.
+            </p>
+            <a href="/CP/ClassGroups/Create" class="cp-action-card-btn cp-action-btn--primary">
+                <i class="bi bi-plus-lg"></i>
+                Create Your First Group
+            </a>
         </div>
     }
     else
     {
-        <div class="row g-4">
+        <!-- ── GROUP CARDS ── -->
+        <div class="row g-3 g-md-4">
             @foreach (var group in Model.Groups)
             {
                 <div class="col-md-6 col-xl-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
+                    <div class="cp-group-card">
 
-                            <div class="d-flex justify-content-between">
-                                <h5 class="card-title">
-                                    @group.GroupName
-                                </h5>
-
+                        <!-- Card top stripe -->
+                        <div class="cp-group-card-header">
+                            <div class="cp-group-card-icon">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                            <div class="cp-group-card-status">
                                 @if (group.IsPublished)
                                 {
-                                    <span class="badge bg-success">
-                                        Published
+                                    <span class="cp-status-badge cp-status-badge--published">
+                                        <i class="bi bi-broadcast"></i> Published
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">
-                                        Draft
+                                    <span class="cp-status-badge cp-status-badge--draft">
+                                        <i class="bi bi-pencil-square"></i> Draft
                                     </span>
                                 }
                             </div>
+                        </div>
 
-                            <p class="text-muted mb-1">
+                        <!-- Card body -->
+                        <div class="cp-group-card-body">
+                            <h5 class="cp-group-card-title">@group.GroupName</h5>
+                            <span class="cp-group-course-chip">
+                                <i class="bi bi-journal-bookmark"></i>
                                 @group.Course.Name
-                            </p>
+                            </span>
 
-                            <p class="mb-2">
-                                <strong>Intake:</strong> @group.Intake
-                                <br />
-                                <strong>Level:</strong> @group.Level
-                            </p>
+                            <div class="cp-group-meta">
+                                <div class="cp-group-meta-item">
+                                    <i class="bi bi-mortarboard"></i>
+                                    <span><strong>Level:</strong> @group.Level</span>
+                                </div>
+                                <div class="cp-group-meta-item">
+                                    <i class="bi bi-calendar2"></i>
+                                    <span><strong>Intake:</strong> @group.Intake</span>
+                                </div>
+                                <div class="cp-group-meta-item">
+                                    <i class="bi bi-clock"></i>
+                                    <span>Created @group.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</span>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- Card footer -->
+                        <div class="cp-group-card-footer">
                             @if (!string.IsNullOrWhiteSpace(group.GroupLink))
                             {
                                 <a href="@group.GroupLink"
                                    target="_blank"
                                    rel="noopener noreferrer"
-                                   class="btn btn-outline-primary btn-sm">
+                                   class="cp-group-link-btn">
                                     <i class="bi bi-box-arrow-up-right"></i>
                                     Open Group
                                 </a>
                             }
-
+                            else
+                            {
+                                <span class="cp-group-link-empty">
+                                    <i class="bi bi-link-45deg"></i> No link set
+                                </span>
+                            }
                         </div>
+
                     </div>
                 </div>
             }
         </div>
     }
+
 </div>

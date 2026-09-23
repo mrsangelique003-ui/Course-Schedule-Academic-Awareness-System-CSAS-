@@ -232,6 +232,15 @@ var initials = string.IsNullOrWhiteSpace(userName)
         </span>
 
 
+        <a asp-page="/Admin/HodChat"
+           class="admin-sidebar-link @(currentPage == "/Admin/HodChat" ? "active" : "")">
+
+            <i class="bi bi-chat-dots-fill"></i>
+            <span>HOD Chat</span>
+
+        </a>
+
+
         <a href="#"
            class="admin-sidebar-link admin-sidebar-link-disabled"
            aria-disabled="true"

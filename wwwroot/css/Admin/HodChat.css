@@ -1,0 +1,682 @@
+/* =========================================================
+   CSAS — ADMIN HOD CHAT PAGE
+   Two-panel layout: CP list (left) + conversation (right)
+   Inherits --admin-* variables from Admin/Layout.css
+   ========================================================= */
+
+/* ── Two-panel shell ── */
+.hod-chat-shell {
+    display: flex;
+    gap: 0;
+    height: calc(100vh - var(--admin-header-h) - 48px);
+    min-height: 500px;
+    border-radius: var(--admin-radius-md);
+    border: 1px solid var(--admin-border);
+    background: var(--admin-surface);
+    box-shadow: var(--admin-shadow-sm);
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   LEFT PANEL — CP list
+   ========================================================= */
+
+.hod-cp-list {
+    flex: 0 0 300px;
+    width: 300px;
+    border-right: 1px solid var(--admin-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--admin-surface-soft);
+}
+
+.hod-cp-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid var(--admin-border);
+    flex-shrink: 0;
+}
+
+.hod-cp-list-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--admin-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+}
+
+.hod-cp-list-title i {
+    color: var(--admin-accent);
+    font-size: 15px;
+}
+
+.hod-cp-list-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    border-radius: 20px;
+    background: var(--admin-accent-light);
+    color: var(--admin-accent);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.hod-cp-list-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 40px 20px;
+    color: var(--admin-text-muted);
+    font-size: 13px;
+    text-align: center;
+}
+
+.hod-cp-list-empty i {
+    font-size: 28px;
+    color: var(--admin-text-light);
+}
+
+/* Scrollable CP list */
+.hod-cp-list-items {
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.hod-cp-list-items::-webkit-scrollbar { width: 5px; }
+.hod-cp-list-items::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* Individual CP row */
+.hod-cp-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: var(--admin-radius-sm);
+    text-decoration: none;
+    transition: background 0.18s ease, color 0.18s ease;
+    cursor: pointer;
+}
+
+.hod-cp-item:hover {
+    background: var(--admin-surface);
+    text-decoration: none;
+}
+
+.hod-cp-item--active {
+    background: var(--admin-primary) !important;
+}
+
+.hod-cp-item-avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--admin-accent-light);
+    color: var(--admin-accent);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.hod-cp-item--active .hod-cp-item-avatar {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+}
+
+.hod-cp-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.hod-cp-item-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--admin-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.18s ease;
+}
+
+.hod-cp-item--active .hod-cp-item-name {
+    color: #ffffff;
+}
+
+.hod-cp-item-meta {
+    font-size: 11.5px;
+    color: var(--admin-text-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.18s ease;
+}
+
+.hod-cp-item--active .hod-cp-item-meta {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+
+/* =========================================================
+   RIGHT PANEL — Conversation
+   ========================================================= */
+
+.hod-conversation {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* No CP selected placeholder */
+.hod-conversation-placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 32px;
+    gap: 12px;
+}
+
+.hod-conversation-placeholder-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--admin-accent-light);
+    color: var(--admin-accent);
+    font-size: 34px;
+    margin-bottom: 6px;
+}
+
+.hod-conversation-placeholder-title {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--admin-primary);
+    margin: 0;
+}
+
+.hod-conversation-placeholder-sub {
+    font-size: 13.5px;
+    color: var(--admin-text-muted);
+    max-width: 340px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ── Conversation header ── */
+.hod-conv-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--admin-border);
+    background: var(--admin-surface-soft);
+    flex-shrink: 0;
+}
+
+.hod-conv-header-avatar {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--admin-primary), var(--admin-accent));
+    color: #ffffff;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.hod-conv-header-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.hod-conv-header-name {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--admin-primary);
+}
+
+.hod-conv-header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--admin-text-muted);
+}
+
+.hod-conv-header-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.hod-conv-header-meta i {
+    font-size: 12px;
+    color: var(--admin-text-light);
+}
+
+.hod-conv-header-count {
+    flex-shrink: 0;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--admin-accent-light);
+    color: var(--admin-accent);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ── Message feed ── */
+.hod-conv-feed {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.hod-conv-feed::-webkit-scrollbar { width: 6px; }
+.hod-conv-feed::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.hod-conv-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--admin-text-muted);
+    font-size: 13.5px;
+    text-align: center;
+    padding: 40px;
+}
+
+.hod-conv-empty i {
+    font-size: 32px;
+    color: var(--admin-text-light);
+}
+
+/* Date divider */
+.hod-conv-date-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0 10px;
+}
+
+.hod-conv-date-divider::before,
+.hod-conv-date-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--admin-border);
+}
+
+.hod-conv-date-divider span {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--admin-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+/* Message bubbles — HOD = right-aligned (sent by this user) */
+.hod-conv-bubble {
+    display: flex;
+    max-width: 72%;
+}
+
+.hod-conv-bubble--hod {
+    align-self: flex-end;
+}
+
+.hod-conv-bubble-body {
+    background: var(--admin-primary);
+    color: #ffffff;
+    border-radius: 14px 4px 14px 14px;
+    padding: 10px 14px;
+    min-width: 60px;
+}
+
+.hod-conv-bubble-text {
+    font-size: 13.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #ffffff;
+}
+
+.hod-conv-bubble-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 5px;
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── Compose box ── */
+.hod-compose {
+    padding: 14px 20px 16px;
+    border-top: 1px solid var(--admin-border);
+    background: var(--admin-surface-soft);
+    flex-shrink: 0;
+}
+
+.hod-compose-error {
+    font-size: 12.5px;
+    color: #dc2626;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.hod-compose-error:empty {
+    display: none;
+}
+
+.hod-compose-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.hod-compose-input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: var(--admin-radius-sm);
+    border: 1.5px solid var(--admin-border);
+    background: var(--admin-surface);
+    font-family: "Inter", sans-serif;
+    font-size: 13.5px;
+    color: var(--admin-text);
+    resize: none;
+    overflow-y: hidden;
+    min-height: 42px;
+    max-height: 140px;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    line-height: 1.5;
+}
+
+.hod-compose-input:focus {
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 3px rgba(29, 78, 137, 0.1);
+    background: #fafcff;
+}
+
+.hod-compose-input::placeholder {
+    color: var(--admin-text-light);
+}
+
+.hod-compose-send {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--admin-radius-sm);
+    background: var(--admin-primary);
+    color: #ffffff;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.hod-compose-send:hover {
+    background: var(--admin-primary-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(11, 37, 69, 0.22);
+}
+
+.hod-compose-send:active {
+    transform: translateY(0);
+}
+
+.hod-compose-hint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 6px;
+    padding: 0 2px;
+}
+
+.hod-compose-char {
+    font-size: 11px;
+    color: var(--admin-text-light);
+    font-weight: 600;
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .hod-chat-shell {
+        flex-direction: column;
+        height: auto;
+        min-height: 0;
+    }
+
+    .hod-cp-list {
+        flex: 0 0 auto;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--admin-border);
+        max-height: 220px;
+    }
+
+    .hod-cp-list-items {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .hod-cp-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+        padding: 10px 14px;
+        flex-shrink: 0;
+    }
+
+    .hod-cp-item-info {
+        display: none;
+    }
+
+    .hod-conversation {
+        height: calc(100vh - var(--admin-header-h) - 280px);
+        min-height: 340px;
+    }
+
+    .hod-conv-bubble {
+        max-width: 88%;
+    }
+}
+
+@media (max-width: 600px) {
+    .hod-conv-header {
+        padding: 12px 14px;
+    }
+
+    .hod-conv-header-meta {
+        gap: 6px;
+        font-size: 11px;
+    }
+
+    .hod-compose {
+        padding: 10px 14px 12px;
+    }
+
+    .hod-conv-feed {
+        padding: 14px;
+    }
+}
+
+
+/* =========================================================
+   HOD CHAT — TWO-WAY UPDATES
+   ========================================================= */
+
+/* Intake group label inside CP list */
+.hod-intake-group-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--admin-text-light);
+    border-top: 1px solid var(--admin-border-light);
+    margin-top: 6px;
+}
+
+.hod-intake-group-label:first-child {
+    border-top: none;
+    margin-top: 0;
+}
+
+.hod-intake-group-label i {
+    font-size: 12px;
+    color: var(--admin-accent);
+}
+
+/* Unread count badge on CP list item */
+.hod-cp-item-unread {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 20px;
+    background: #7c3aed;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Private badge in conv header */
+.hod-conv-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--admin-accent-light);
+    color: var(--admin-accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* CP bubble — left aligned, received */
+.hod-conv-bubble--cp {
+    align-self: flex-start;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.hod-conv-bubble-avatar-sm {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--admin-accent-light);
+    color: var(--admin-accent);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    margin-top: 2px;
+}
+
+.hod-conv-bubble-body--cp {
+    background: var(--admin-surface-soft);
+    border: 1px solid var(--admin-border);
+    border-radius: 4px 14px 14px 14px;
+    color: var(--admin-text);
+}
+
+.hod-conv-bubble-body--cp .hod-conv-bubble-text {
+    color: var(--admin-text);
+}
+
+/* HOD bubble — right aligned, sent */
+.hod-conv-bubble-body--hod {
+    background: var(--admin-primary);
+    border-radius: 14px 4px 14px 14px;
+    color: #ffffff;
+}
+
+.hod-conv-bubble-sender-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--admin-accent);
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+}
+
+.hod-conv-bubble-meta--cp {
+    color: var(--admin-text-muted);
+    justify-content: flex-start;
+}
