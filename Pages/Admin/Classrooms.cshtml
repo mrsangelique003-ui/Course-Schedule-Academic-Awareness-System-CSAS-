@@ -1,0 +1,1141 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.ClassroomsModel
+
+@{
+    ViewData["Title"] = "Classrooms";
+}
+
+<link rel="stylesheet" href="~/css/Admin/Classrooms.css" />
+
+<div class="admin-page">
+
+    <div class="page-header">
+        <div>
+            <div class="breadcrumb">
+                <span>Administration</span>
+                <i class="bi bi-chevron-right"></i>
+                <span>Classrooms</span>
+            </div>
+
+            <h1>Classroom Management</h1>
+            <p>Manage classrooms, learning spaces and class assignments.</p>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-building"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-label">Total Classrooms</span>
+                <strong>@Model.TotalClassrooms</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon available">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-label">Available</span>
+                <strong>@Model.AvailableClassrooms</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon unavailable">
+                <i class="bi bi-x-circle"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-label">Unavailable</span>
+                <strong>@Model.UnavailableClassrooms</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon capacity">
+                <i class="bi bi-people"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-label">Total Capacity</span>
+                <strong>@Model.TotalCapacity</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="content-panel">
+
+        <div class="panel-toolbar">
+
+            <div class="availability-filter">
+                <button type="button"
+                        class="filter-btn active"
+                        data-filter="all">
+                    All
+                </button>
+
+                <button type="button"
+                        class="filter-btn"
+                        data-filter="available">
+                    <i class="bi bi-check-circle"></i>
+                    Available
+                </button>
+
+                <button type="button"
+                        class="filter-btn"
+                        data-filter="unavailable">
+                    <i class="bi bi-x-circle"></i>
+                    Unavailable
+                </button>
+            </div>
+
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text"
+                       id="classroomSearch"
+                       placeholder="Search classrooms..." />
+            </div>
+
+        </div>
+
+        <div class="table-info">
+            <span>
+                Showing <strong id="resultCount">@Model.Classrooms.Count</strong>
+                classrooms
+            </span>
+
+            <button type="button"
+                    id="clearFilters"
+                    class="clear-filter-btn">
+                Clear filters
+            </button>
+        </div>
+
+        <div class="classroom-table-wrapper">
+
+            <table class="classroom-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Room</th>
+                        <th>Building</th>
+                        <th>Room Type</th>
+                        <th>Capacity</th>
+                        <th>Availability</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="classroomTableBody">
+
+                    @for (var i = 0; i < Model.Classrooms.Count; i++)
+                    {
+                        var room = Model.Classrooms[i];
+
+                        <tr data-room-id="@room.Id"
+                            data-availability="@(room.IsAvailable ? "available" : "unavailable")">
+
+                            <td class="number-cell">
+                                @(i + 1)
+                            </td>
+
+                            <td>
+                                <div class="room-cell">
+                                    <div class="room-icon">
+                                        <i class="bi bi-door-open"></i>
+                                    </div>
+
+                                    <div class="room-info">
+                                        <strong>@room.RoomNumber</strong>
+                                        <span>Room ID: @room.Id</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="building-name">
+                                    @room.Building
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="room-type">
+                                    @room.RoomType
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="capacity-cell">
+                                    <i class="bi bi-people"></i>
+                                    <span>@room.Capacity</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                @if (room.IsAvailable)
+                                {
+                                    <span class="status-badge available">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Available
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge unavailable">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        Unavailable
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                <div class="action-buttons">
+
+                                    <button type="button"
+                                            class="action-btn view-btn"
+                                            onclick="openViewModal(
+                                                '@room.Id',
+                                                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.RoomNumber))',
+                                                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.Building))',
+                                                '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.RoomType))',
+                                                '@room.Capacity',
+                                                '@room.IsAvailable.ToString().ToLower()'
+                                            )">
+                                        <i class="bi bi-eye"></i>
+                                        View
+                                    </button>
+
+                                    @if (room.IsAvailable)
+                                    {
+                                        <button type="button"
+                                                class="action-btn assign-btn"
+                                                onclick="openAssignModal('@room.Id', '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.RoomNumber))')">
+                                            <i class="bi bi-calendar-plus"></i>
+                                            Assign Class
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button"
+                                                class="action-btn disabled-btn"
+                                                disabled>
+                                            <i class="bi bi-lock"></i>
+                                            Assigned
+                                        </button>
+                                    }
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <div id="emptyState" class="empty-state" style="display:none;">
+                <div class="empty-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+
+                <h3>No classrooms found</h3>
+
+                <p>
+                    Try changing your search or availability filter.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="assignModal" class="modal-overlay">
+
+    <div class="modal-card assign-modal">
+
+        <div class="modal-header">
+            <div>
+                <span class="modal-kicker">Classroom Assignment</span>
+                <h2>Assign Class</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    onclick="closeAssignModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="selected-room">
+            <div class="selected-room-icon">
+                <i class="bi bi-building"></i>
+            </div>
+
+            <div>
+                <span>Selected Classroom</span>
+                <strong id="assignRoomName">—</strong>
+            </div>
+        </div>
+
+        <form id="assignClassForm">
+
+            <div class="form-grid">
+
+                <div class="form-group full-width">
+                    <label for="courseSelect">
+                        Course
+                    </label>
+
+                    <select id="courseSelect"
+                            class="form-control"
+                            required>
+
+                        <option value="">
+                            Select course
+                        </option>
+
+                        @foreach (var course in Model.Courses)
+                        {
+                            <option value="@course.Id"
+                                    data-course-name="@course.Name"
+                                    data-course-code="@course.Code"
+                                    data-lecturer-id="@course.LecturerId">
+                                @course.Code — @course.Name
+                            </option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="lecturerDisplay">
+                        Lecturer
+                    </label>
+
+                    <div class="readonly-field">
+                        <i class="bi bi-person"></i>
+
+                        <span id="lecturerDisplay">
+                            Select a course
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="intakeSelect">
+                        Intake
+                    </label>
+
+                    <select id="intakeSelect"
+                            class="form-control"
+                            required>
+
+                        <option value="">
+                            Select intake
+                        </option>
+
+                        <option value="January">
+                            January
+                        </option>
+
+                        <option value="March">
+                            March
+                        </option>
+
+                        <option value="September">
+                            September
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">
+                        Start Date
+                    </label>
+
+                    <input type="date"
+                           id="startDate"
+                           class="form-control"
+                           required />
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">
+                        End Date
+                    </label>
+
+                    <input type="date"
+                           id="endDate"
+                           class="form-control"
+                           required />
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="cpSelect">
+                        Class Representative
+                    </label>
+
+                    <select id="cpSelect"
+                            class="form-control"
+                            required>
+
+                        <option value="">
+                            Select class representative
+                        </option>
+
+                        @foreach (var cp in Model.ClassRepresentatives)
+                        {
+                            <option value="@cp.Id"
+                                    data-regno="@cp.RegNo"
+                                    data-name="@cp.FullName">
+                                @cp.RegNo — @cp.FullName
+                            </option>
+                        }
+
+                    </select>
+                </div>
+
+                <div id="cpPreview"
+                     class="cp-preview full-width"
+                     style="display:none;">
+
+                    <div class="cp-preview-icon">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+
+                    <div class="cp-preview-content">
+                        <span>Class Representative</span>
+
+                        <strong id="cpPreviewName">
+                            —
+                        </strong>
+
+                        <small id="cpPreviewRegNo">
+                            —
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button type="button"
+                        class="secondary-btn"
+                        onclick="closeAssignModal()">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="primary-btn">
+                    <i class="bi bi-check-lg"></i>
+                    Assign Classroom
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div id="viewModal" class="modal-overlay">
+
+    <div class="modal-card view-modal">
+
+        <div class="modal-header">
+            <div>
+                <span class="modal-kicker">Classroom Details</span>
+                <h2 id="viewRoomTitle">Classroom</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    onclick="closeViewModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="room-detail-card">
+
+            <div class="room-detail-icon">
+                <i class="bi bi-building"></i>
+            </div>
+
+            <div class="room-detail-main">
+
+                <span class="room-detail-label">
+                    Classroom
+                </span>
+
+                <h3 id="viewRoomName">
+                    —
+                </h3>
+
+                <span id="viewRoomBuilding">
+                    —
+                </span>
+
+            </div>
+
+            <div id="viewRoomStatus"
+                 class="status-badge">
+                —
+            </div>
+
+        </div>
+
+        <div class="room-information-grid">
+
+            <div class="detail-item">
+                <span>Building</span>
+                <strong id="viewBuilding">—</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Room Type</span>
+                <strong id="viewRoomType">—</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Capacity</span>
+                <strong id="viewCapacity">—</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Availability</span>
+                <strong id="viewAvailability">—</strong>
+            </div>
+
+        </div>
+
+        <div class="assignment-details">
+
+            <div class="assignment-title">
+                <div>
+                    <i class="bi bi-calendar3"></i>
+                </div>
+
+                <div>
+                    <span>Class Assignment</span>
+                    <strong>Current Assignment</strong>
+                </div>
+            </div>
+
+            <div id="viewAssignmentContent"
+                 class="assignment-empty">
+
+                <i class="bi bi-calendar-x"></i>
+
+                <span>
+                    No class assignment has been made for this classroom.
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button type="button"
+                    class="secondary-btn"
+                    onclick="closeViewModal()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="successToast"
+     class="success-toast">
+
+    <div class="toast-icon">
+        <i class="bi bi-check-lg"></i>
+    </div>
+
+    <div>
+        <strong>Assignment Saved</strong>
+        <span>The classroom has been assigned successfully.</span>
+    </div>
+
+</div>
+
+
+<script>
+    const lecturers = @Html.Raw(
+        System.Text.Json.JsonSerializer.Serialize(
+            Model.Lecturers.Select(l => new
+            {
+                id = l.Id,
+                name = l.FullName,
+                staffId = l.StaffId,
+                department = l.Department
+            })
+        )
+    );
+
+    let selectedRoomId = null;
+
+    const assignments = {};
+
+    const assignModal = document.getElementById("assignModal");
+    const viewModal = document.getElementById("viewModal");
+
+    const courseSelect = document.getElementById("courseSelect");
+    const lecturerDisplay = document.getElementById("lecturerDisplay");
+    const cpSelect = document.getElementById("cpSelect");
+
+    const startDate = document.getElementById("startDate");
+    const endDate = document.getElementById("endDate");
+
+    const intakeSelect = document.getElementById("intakeSelect");
+
+    const cpPreview = document.getElementById("cpPreview");
+    const cpPreviewName = document.getElementById("cpPreviewName");
+    const cpPreviewRegNo = document.getElementById("cpPreviewRegNo");
+
+    const assignClassForm = document.getElementById("assignClassForm");
+
+    function openAssignModal(roomId, roomName) {
+        selectedRoomId = roomId;
+
+        document.getElementById("assignRoomName").textContent = roomName;
+
+        assignClassForm.reset();
+
+        lecturerDisplay.textContent = "Select a course";
+
+        cpPreview.style.display = "none";
+
+        const assignment = assignments[roomId];
+
+        if (assignment) {
+            courseSelect.value = assignment.courseId;
+            intakeSelect.value = assignment.intake;
+            startDate.value = assignment.startDate;
+            endDate.value = assignment.endDate;
+            cpSelect.value = assignment.cpId;
+
+            updateLecturer();
+            updateClassRepresentative();
+        }
+
+        assignModal.classList.add("show");
+
+        document.body.classList.add("modal-open");
+    }
+
+    function closeAssignModal() {
+        assignModal.classList.remove("show");
+
+        document.body.classList.remove("modal-open");
+    }
+
+    function openViewModal(
+        roomId,
+        roomName,
+        building,
+        roomType,
+        capacity,
+        isAvailable
+    ) {
+        document.getElementById("viewRoomTitle").textContent = roomName;
+
+        document.getElementById("viewRoomName").textContent = roomName;
+
+        document.getElementById("viewRoomBuilding").textContent = building;
+
+        document.getElementById("viewBuilding").textContent = building;
+
+        document.getElementById("viewRoomType").textContent = roomType;
+
+        document.getElementById("viewCapacity").textContent = capacity;
+
+        const available = isAvailable === "true";
+
+        document.getElementById("viewAvailability").textContent =
+            available ? "Available" : "Unavailable";
+
+        const status = document.getElementById("viewRoomStatus");
+
+        status.className = "status-badge " +
+            (available ? "available" : "unavailable");
+
+        status.innerHTML = available
+            ? '<i class="bi bi-check-circle-fill"></i> Available'
+            : '<i class="bi bi-x-circle-fill"></i> Unavailable';
+
+        const assignmentContent =
+            document.getElementById("viewAssignmentContent");
+
+        const assignment = assignments[roomId];
+
+        if (!assignment) {
+
+            assignmentContent.className = "assignment-empty";
+
+            assignmentContent.innerHTML = `
+                <i class="bi bi-calendar-x"></i>
+                <span>
+                    No class assignment has been made for this classroom.
+                </span>
+            `;
+
+        } else {
+
+            assignmentContent.className = "assignment-content";
+
+            assignmentContent.innerHTML = `
+                <div class="assignment-grid">
+
+                    <div>
+                        <span>Course</span>
+                        <strong>
+                            ${assignment.courseCode} — ${assignment.courseName}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Lecturer</span>
+                        <strong>
+                            ${assignment.lecturer}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Intake</span>
+                        <strong>
+                            ${assignment.intake}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Start Date</span>
+                        <strong>
+                            ${assignment.startDate}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>End Date</span>
+                        <strong>
+                            ${assignment.endDate}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Class Representative</span>
+                        <strong>
+                            ${assignment.cp}
+                        </strong>
+                    </div>
+
+                </div>
+            `;
+        }
+
+        viewModal.classList.add("show");
+
+        document.body.classList.add("modal-open");
+    }
+
+    function closeViewModal() {
+        viewModal.classList.remove("show");
+
+        document.body.classList.remove("modal-open");
+    }
+
+    function updateLecturer() {
+
+        const selectedOption =
+            courseSelect.options[courseSelect.selectedIndex];
+
+        if (!selectedOption || !selectedOption.value) {
+            lecturerDisplay.textContent = "Select a course";
+            return;
+        }
+
+        const lecturerId =
+            Number(selectedOption.dataset.lecturerId);
+
+        const lecturer =
+            lecturers.find(l => l.id === lecturerId);
+
+        if (!lecturer) {
+            lecturerDisplay.textContent =
+                "No lecturer assigned";
+            return;
+        }
+
+        lecturerDisplay.textContent =
+            `${lecturer.fullName ?? lecturer.name} (${lecturer.staffId})`;
+    }
+
+    function updateClassRepresentative() {
+
+        const selectedOption =
+            cpSelect.options[cpSelect.selectedIndex];
+
+        if (!selectedOption || !selectedOption.value) {
+
+            cpPreview.style.display = "none";
+
+            return;
+        }
+
+        cpPreviewName.textContent =
+            selectedOption.dataset.name;
+
+        cpPreviewRegNo.textContent =
+            selectedOption.dataset.regno;
+
+        cpPreview.style.display = "flex";
+    }
+
+    courseSelect.addEventListener(
+        "change",
+        updateLecturer
+    );
+
+    cpSelect.addEventListener(
+        "change",
+        updateClassRepresentative
+    );
+
+    assignClassForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+            const selectedCourse =
+                courseSelect.options[courseSelect.selectedIndex];
+
+            const selectedLecturerId =
+                Number(selectedCourse.dataset.lecturerId);
+
+            const lecturer =
+                lecturers.find(
+                    l => l.id === selectedLecturerId
+                );
+
+            const selectedCp =
+                cpSelect.options[cpSelect.selectedIndex];
+
+            assignments[selectedRoomId] = {
+
+                courseId: courseSelect.value,
+
+                courseCode:
+                    selectedCourse.dataset.courseCode,
+
+                courseName:
+                    selectedCourse.dataset.courseName,
+
+                lecturer:
+                    lecturer
+                        ? `${lecturer.fullName ?? lecturer.name} (${lecturer.staffId})`
+                        : "No lecturer assigned",
+
+                intake:
+                    intakeSelect.value,
+
+                startDate:
+                    startDate.value,
+
+                endDate:
+                    endDate.value,
+
+                cpId:
+                    cpSelect.value,
+
+                cp:
+                    `${selectedCp.dataset.regno} — ${selectedCp.dataset.name}`
+            };
+
+            closeAssignModal();
+
+            showSuccessToast();
+
+            refreshRoomAvailability(
+                selectedRoomId
+            );
+        }
+    );
+
+    function refreshRoomAvailability(roomId) {
+
+        const row =
+            document.querySelector(
+                `tr[data-room-id="${roomId}"]`
+            );
+
+        if (!row) {
+            return;
+        }
+
+        row.dataset.availability = "unavailable";
+
+        const statusCell =
+            row.querySelector(".status-badge");
+
+        if (statusCell) {
+
+            statusCell.className =
+                "status-badge unavailable";
+
+            statusCell.innerHTML =
+                '<i class="bi bi-x-circle-fill"></i> Unavailable';
+        }
+
+        const actionButtons =
+            row.querySelector(".action-buttons");
+
+        if (actionButtons) {
+
+            actionButtons.innerHTML = `
+                <button type="button"
+                        class="action-btn view-btn"
+                        onclick="openViewModalFromRow('${roomId}')">
+                    <i class="bi bi-eye"></i>
+                    View
+                </button>
+
+                <button type="button"
+                        class="action-btn disabled-btn"
+                        disabled>
+                    <i class="bi bi-lock"></i>
+                    Assigned
+                </button>
+            `;
+        }
+
+        applyFilters();
+    }
+
+    function openViewModalFromRow(roomId) {
+
+        const row =
+            document.querySelector(
+                `tr[data-room-id="${roomId}"]`
+            );
+
+        if (!row) {
+            return;
+        }
+
+        const cells = row.children;
+
+        const roomName =
+            cells[1]
+                .querySelector("strong")
+                ?.textContent
+                .trim() ?? "";
+
+        const building =
+            cells[2]
+                .textContent
+                .trim();
+
+        const roomType =
+            cells[3]
+                .textContent
+                .trim();
+
+        const capacity =
+            cells[4]
+                .textContent
+                .trim();
+
+        const available =
+            row.dataset.availability === "available";
+
+        openViewModal(
+            roomId,
+            roomName,
+            building,
+            roomType,
+            capacity,
+            available.toString()
+        );
+    }
+
+    const searchInput =
+        document.getElementById("classroomSearch");
+
+    const filterButtons =
+        document.querySelectorAll(".filter-btn");
+
+    let activeFilter = "all";
+
+    function applyFilters() {
+
+        const search =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        const rows =
+            document.querySelectorAll(
+                "#classroomTableBody tr"
+            );
+
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+
+            const rowText =
+                row.textContent.toLowerCase();
+
+            const availability =
+                row.dataset.availability;
+
+            const matchesSearch =
+                !search ||
+                rowText.includes(search);
+
+            const matchesFilter =
+                activeFilter === "all" ||
+                availability === activeFilter;
+
+            const visible =
+                matchesSearch &&
+                matchesFilter;
+
+            row.style.display =
+                visible ? "" : "none";
+
+            if (visible) {
+                visibleCount++;
+            }
+        });
+
+        document.getElementById(
+            "resultCount"
+        ).textContent = visibleCount;
+
+        document.getElementById(
+            "emptyState"
+        ).style.display =
+            visibleCount === 0
+                ? "flex"
+                : "none";
+    }
+
+    searchInput.addEventListener(
+        "input",
+        applyFilters
+    );
+
+    filterButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                filterButtons.forEach(
+                    btn =>
+                        btn.classList.remove("active")
+                );
+
+                this.classList.add("active");
+
+                activeFilter =
+                    this.dataset.filter;
+
+                applyFilters();
+            }
+        );
+    });
+
+    document
+        .getElementById("clearFilters")
+        .addEventListener(
+            "click",
+            function () {
+
+                searchInput.value = "";
+
+                activeFilter = "all";
+
+                filterButtons.forEach(
+                    btn =>
+                        btn.classList.remove("active")
+                );
+
+                document
+                    .querySelector(
+                        '.filter-btn[data-filter="all"]'
+                    )
+                    .classList.add("active");
+
+                applyFilters();
+            }
+        );
+
+    function showSuccessToast() {
+
+        const toast =
+            document.getElementById(
+                "successToast"
+            );
+
+        toast.classList.add("show");
+
+        setTimeout(
+            () => {
+                toast.classList.remove("show");
+            },
+            3500
+        );
+    }
+
+    assignModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === assignModal) {
+                closeAssignModal();
+            }
+        }
+    );
+
+    viewModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === viewModal) {
+                closeViewModal();
+            }
+        }
+    );
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeAssignModal();
+
+                closeViewModal();
+            }
+        }
+    );
+</script>

@@ -1,0 +1,329 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.CoursesModel
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<link rel="stylesheet" href="~/css/Admin/Courses.css" asp-append-version="true" />
+
+<div class="courses-page">
+
+    <div class="page-header">
+
+        <div>
+            <span class="page-eyebrow">
+                ACADEMIC MANAGEMENT
+            </span>
+
+            <h1>Course Management</h1>
+
+            <p>
+                Manage courses, assigned lecturers, credits and study sessions.
+            </p>
+        </div>
+
+        <div class="page-header-icon">
+            <i class="bi bi-book-fill"></i>
+        </div>
+
+    </div>
+
+    <div class="course-stat-grid">
+
+        <div class="course-stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-book"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>Total Courses</span>
+                <strong>@Model.TotalCourses</strong>
+            </div>
+
+        </div>
+
+        <div class="course-stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>Active Courses</span>
+                <strong>@Model.ActiveCourses</strong>
+            </div>
+
+        </div>
+
+        <div class="course-stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-award"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>Total Credits</span>
+                <strong>@Model.TotalCredits</strong>
+            </div>
+
+        </div>
+
+        <div class="course-stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>Lecturers</span>
+                <strong>@Model.Lecturers.Count</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="course-panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h2>Courses</h2>
+
+                <span>
+                    @Model.TotalCourses courses registered in the system
+                </span>
+            </div>
+
+            <div class="panel-search">
+
+                <i class="bi bi-search"></i>
+
+                <input type="search"
+                       id="courseSearch"
+                       placeholder="Search courses..." />
+
+            </div>
+
+        </div>
+
+        @if (Model.Courses.Any())
+        {
+            <div class="course-table-wrapper">
+
+                <table class="course-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Course</th>
+                            <th>Course Code</th>
+                            <th>Assigned Lecturer</th>
+                            <th>Credits</th>
+                            <th>Study Session</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="courseTableBody">
+
+                        @foreach (var course in Model.Courses.Select((value, index) => new { value, index }))
+                        {
+                            var assignedLecturer = Model.Lecturers
+                                .FirstOrDefault(l => l.Id == course.value.LecturerId);
+
+                            <tr class="course-row">
+
+                                <td class="course-number">
+                                    @(course.index + 1)
+                                </td>
+
+                                <td>
+
+                                    <div class="course-cell">
+
+                                        <div class="course-icon">
+                                            <i class="bi bi-book"></i>
+                                        </div>
+
+                                        <div class="course-info">
+
+                                            <strong>
+                                                @course.value.Name
+                                            </strong>
+
+                                            @if (!string.IsNullOrWhiteSpace(course.value.Description))
+                                            {
+                                                <span>
+                                                    @course.value.Description
+                                                </span>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <span class="course-code">
+                                        @course.value.Code
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    @if (assignedLecturer != null)
+                                    {
+                                        <div class="lecturer-cell">
+
+                                            <div class="lecturer-avatar">
+                                                @{
+                                                    var lecturerParts = assignedLecturer.FullName
+                                                        .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                                                    var lecturerInitials =
+                                                        lecturerParts.Length >= 2
+                                                            ? $"{lecturerParts[0][0]}{lecturerParts[^1][0]}".ToUpper()
+                                                            : assignedLecturer.FullName.Length >= 2
+                                                                ? assignedLecturer.FullName[..2].ToUpper()
+                                                                : assignedLecturer.FullName.ToUpper();
+                                                }
+
+                                                @lecturerInitials
+                                            </div>
+
+                                            <div class="lecturer-info">
+
+                                                <strong>
+                                                    @assignedLecturer.FullName
+                                                </strong>
+
+                                                <span>
+                                                    @assignedLecturer.StaffId
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="lecturer-unassigned">
+
+                                            <i class="bi bi-person-x"></i>
+
+                                            <span>
+                                                Not assigned
+                                            </span>
+
+                                        </div>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    <span class="credits-badge">
+                                        @course.value.Credits
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <span class="session-badge">
+                                        <i class="bi bi-clock"></i>
+                                        @course.value.StudySession
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    @if (course.value.IsActive)
+                                    {
+                                        <span class="status-badge status-active">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-inactive">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    <i class="bi bi-book"></i>
+                </div>
+
+                <h3>No Courses Found</h3>
+
+                <p>
+                    There are currently no courses registered in the system.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput = document.getElementById("courseSearch");
+        const rows = document.querySelectorAll(".course-row");
+
+        if (!searchInput) {
+            return;
+        }
+
+        searchInput.addEventListener("input", function () {
+
+            const query = searchInput.value
+                .trim()
+                .toLowerCase();
+
+            rows.forEach(function (row) {
+
+                const text = row.textContent.toLowerCase();
+
+                row.style.display =
+                    text.includes(query)
+                        ? ""
+                        : "none";
+
+            });
+
+        });
+
+    });
+
+</script>
