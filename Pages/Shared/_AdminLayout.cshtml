@@ -88,10 +88,6 @@ if (!string.IsNullOrWhiteSpace(userName))
 <div class="admin-shell">
 
 
-<!-- =====================================================
-     SIDEBAR
-     ===================================================== -->
-
 <aside class="admin-sidebar" id="adminSidebar">
 
     <div class="admin-sidebar-header">
@@ -131,7 +127,6 @@ if (!string.IsNullOrWhiteSpace(userName))
 
     </div>
 
-
     <nav class="admin-navigation">
 
         <a asp-page="/Admin/Dashboard"
@@ -147,7 +142,6 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         </a>
 
-
         <a asp-page="/Admin/Students"
            class="admin-nav-link @(currentPage == "/Admin/Students" ? "active" : "")">
 
@@ -160,7 +154,6 @@ if (!string.IsNullOrWhiteSpace(userName))
             </span>
 
         </a>
-
 
         <a asp-page="/Admin/Lecturers"
            class="admin-nav-link @(currentPage == "/Admin/Lecturers" ? "active" : "")">
@@ -175,7 +168,6 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         </a>
 
-
         <a asp-page="/Admin/ClassRepresentatives"
            class="admin-nav-link @(currentPage == "/Admin/ClassRepresentatives" ? "active" : "")">
 
@@ -188,7 +180,6 @@ if (!string.IsNullOrWhiteSpace(userName))
             </span>
 
         </a>
-
 
         <a asp-page="/Admin/Courses"
            class="admin-nav-link @(currentPage == "/Admin/Courses" ? "active" : "")">
@@ -203,9 +194,8 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         </a>
 
-
         <a asp-page="/Admin/ClassroomManagement"
-           class="admin-nav-link @(currentPage == "/Admin/Classrooms" ? "active" : "")">
+           class="admin-nav-link @(currentPage == "/Admin/ClassroomManagement" ? "active" : "")">
 
             <span class="nav-icon">
                 <i class="bi bi-building-fill"></i>
@@ -217,107 +207,13 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         </a>
 
-
-        <a asp-page="/Admin/Schedules"
-           class="admin-nav-link @(currentPage == "/Admin/Schedules" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-calendar3"></i>
-            </span>
-
-            <span class="nav-label">
-                Schedules
-            </span>
-
-        </a>
-
-
-        <a asp-page="/Admin/Enrollments"
-           class="admin-nav-link @(currentPage == "/Admin/Enrollments" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-journal-check"></i>
-            </span>
-
-            <span class="nav-label">
-                Enrollments
-            </span>
-
-        </a>
-
-
-        <a asp-page="/Admin/Examinations"
-           class="admin-nav-link @(currentPage == "/Admin/Examinations" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-file-earmark-text-fill"></i>
-            </span>
-
-            <span class="nav-label">
-                Examinations
-            </span>
-
-        </a>
-
-
-        <a asp-page="/Admin/Support"
-           class="admin-nav-link @(currentPage == "/Admin/Support" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-headset"></i>
-            </span>
-
-            <span class="nav-label">
-                Support
-            </span>
-
-        </a>
-
-
-        <a asp-page="/Admin/Profile"
-           class="admin-nav-link @(currentPage == "/Admin/Profile" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-person-circle"></i>
-            </span>
-
-            <span class="nav-label">
-                My Profile
-            </span>
-
-        </a>
-
     </nav>
 
-
-    <div class="admin-sidebar-footer">
-
-        <a asp-page="/Account/Logout"
-           class="admin-logout-link">
-
-            <span class="nav-icon">
-                <i class="bi bi-box-arrow-left"></i>
-            </span>
-
-            <span class="nav-label">
-                Sign Out
-            </span>
-
-        </a>
-
-    </div>
-
 </aside>
-
 
 <div class="admin-sidebar-overlay"
      id="sidebarOverlay">
 </div>
-
-
-<!-- =====================================================
-     CONTENT
-     ===================================================== -->
 
 <div class="admin-content">
 
@@ -333,7 +229,6 @@ if (!string.IsNullOrWhiteSpace(userName))
                 <i class="bi bi-list"></i>
 
             </button>
-
 
             <div class="topbar-breadcrumb">
 
@@ -351,11 +246,9 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         </div>
 
-
         <div class="topbar-right">
 
-            <a asp-page="/Admin/Profile"
-               class="topbar-profile">
+            <div class="topbar-profile">
 
                 <div class="topbar-profile-avatar">
                     @initials
@@ -373,19 +266,35 @@ if (!string.IsNullOrWhiteSpace(userName))
 
                 </div>
 
-            </a>
+            </div>
+
+            <form method="post"
+                  asp-page="/Account/Logout"
+                  class="topbar-logout-form">
+
+                <button type="submit"
+                        class="topbar-logout"
+                        aria-label="Sign out">
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+                    <span>
+                        Sign Out
+                    </span>
+
+                </button>
+
+            </form>
 
         </div>
 
     </header>
-
 
     <main class="admin-main">
 
         @RenderBody()
 
     </main>
-
 
     <footer class="admin-footer">
 
@@ -424,7 +333,6 @@ if (!string.IsNullOrWhiteSpace(userName))
         const closeBtn =
             document.getElementById("sidebarCloseBtn");
 
-
         function openSidebar() {
 
             if (!sidebar) {
@@ -439,7 +347,6 @@ if (!string.IsNullOrWhiteSpace(userName))
 
             document.body.classList.add("sidebar-active");
         }
-
 
         function closeSidebar() {
 
@@ -456,7 +363,6 @@ if (!string.IsNullOrWhiteSpace(userName))
             document.body.classList.remove("sidebar-active");
         }
 
-
         if (toggleBtn) {
 
             toggleBtn.addEventListener(
@@ -465,7 +371,6 @@ if (!string.IsNullOrWhiteSpace(userName))
             );
 
         }
-
 
         if (closeBtn) {
 
@@ -476,7 +381,6 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         }
 
-
         if (overlay) {
 
             overlay.addEventListener(
@@ -486,7 +390,6 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         }
 
-
         document
             .querySelectorAll(".admin-nav-link")
             .forEach(function (link) {
@@ -495,7 +398,7 @@ if (!string.IsNullOrWhiteSpace(userName))
                     "click",
                     function () {
 
-                        if (window.innerWidth <= 991) {
+                        if (window.innerWidth <= 900) {
                             closeSidebar();
                         }
 
@@ -504,12 +407,11 @@ if (!string.IsNullOrWhiteSpace(userName))
 
             });
 
-
         window.addEventListener(
             "resize",
             function () {
 
-                if (window.innerWidth > 991) {
+                if (window.innerWidth > 900) {
                     closeSidebar();
                 }
 
