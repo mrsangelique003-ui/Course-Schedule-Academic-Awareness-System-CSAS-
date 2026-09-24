@@ -254,26 +254,50 @@ img {
 
 
 /* =========================================================
-   MAIN  (fills remaining space, no overflow)
+   MAIN  — slideshow background handled by JS, card right
    ========================================================= */
 
 .login-main {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background: linear-gradient(180deg, #f8fafc 0%, #f7f9fc 100%);
+    justify-content: flex-end;
+    padding: 24px 80px 24px 24px;
     overflow: hidden;
+    position: relative;
 }
 
+/* Slides sit behind everything */
+.login-bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 0;
+}
 
-/* =========================================================
-   LOGIN CARD  (fits in the viewport)
-   ========================================================= */
+.login-bg-slide.active {
+    opacity: 1;
+}
 
+/* Dark overlay — always on top of slides */
+.login-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 37, 69, 0.48);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Card above everything */
 .login-card {
-    width: min(100%, 560px);
+    position: relative;
+    z-index: 2;
+    width: min(100%, 480px);
     max-height: 100%;
     padding: 40px 52px 34px;
     border: 1px solid var(--border);
@@ -284,6 +308,7 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow-y: auto;
 }
 
 
@@ -561,7 +586,11 @@ img {
     .mobile-menu-toggle {
         display: flex;
     }
-}
+
+    .login-main {
+        justify-content: center;
+        padding: 24px;
+    }
 
 
 /* =========================================================
@@ -740,4 +769,6 @@ img {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
     }
+}
+
 }
