@@ -1,8 +1,42 @@
 @page
 @model CourseScheduleSystem.Web.Pages.Admin.ClassroomsModel
 
+@using System.Text.Json
+@using CourseScheduleSystem.Web.Models
+
 @{
 ViewData["Title"] = "Classrooms";
+
+
+var scheduleData = Model.ScheduleEntries.Select(s => new
+{
+    id = s.Id,
+    roomId = s.RoomId,
+    courseCode = s.Course?.Code ?? "",
+    courseName = s.Course?.Name ?? "",
+    lecturerId = s.LecturerId,
+    lecturerName = s.Lecturer?.FullName ?? "",
+    lecturerStaffId = s.Lecturer?.StaffId ?? "",
+    representativeId = s.ClassRepresentativeId,
+    representativeName = s.ClassRepresentative?.FullName ?? "",
+    representativeRegNo = s.ClassRepresentative?.RegNo ?? "",
+    representativePhone = s.ClassRepresentative?.PhoneNumber ?? "",
+    representativeEmail = s.ClassRepresentative?.Email ?? "",
+    representativeIntake = s.ClassRepresentative?.Intake ?? "",
+    representativeLevel = s.ClassRepresentative?.Level ?? "",
+    dayOfWeek = s.DayOfWeek.ToString(),
+    startTime = s.StartTime.ToString("HH:mm"),
+    endTime = s.EndTime.ToString("HH:mm"),
+    startDate = s.StartDate.ToString("yyyy-MM-dd"),
+    endDate = s.EndDate.ToString("yyyy-MM-dd"),
+    studySession = s.StudySession.ToString(),
+    status = s.Status.ToString(),
+    notes = s.Notes ?? ""
+});
+
+var scheduleJson = JsonSerializer.Serialize(scheduleData);
+
+
 }
 
 <link rel="stylesheet" href="~/css/Admin/Classrooms.css" />
@@ -10,64 +44,83 @@ ViewData["Title"] = "Classrooms";
 <div class="admin-page">
 
 
-<div class="page-header">
-    <div>
-        <div class="breadcrumb">
-            <span>Administration</span>
-            <i class="bi bi-chevron-right"></i>
-            <span>Classrooms</span>
-        </div>
-
-        <h1>Classroom Management</h1>
-        <p>Manage classrooms, learning spaces and class assignments.</p>
+<header class="page-header">
+    <div class="breadcrumb">
+        <a asp-page="/Admin/Dashboard">
+            <i class="bi bi-grid-1x2"></i>
+            Dashboard
+        </a>
+        <i class="bi bi-chevron-right"></i>
+        <span>Classrooms</span>
     </div>
-</div>
 
-<div class="stats-grid">
+    <div class="page-heading">
+        <div>
+            <h1>Classroom Management</h1>
+            <p>
+                Manage classrooms, monitor availability and view scheduled classes.
+            </p>
+        </div>
+    </div>
+</header>
 
-    <div class="stat-card">
-        <div class="stat-icon">
+@if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+{
+    <div class="server-message success-message">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>@Model.SuccessMessage</span>
+    </div>
+}
+
+<section class="stats-grid">
+
+    <article class="stat-card">
+        <div class="stat-icon blue">
             <i class="bi bi-building"></i>
         </div>
+
         <div class="stat-content">
             <span class="stat-label">Total Classrooms</span>
             <strong>@Model.TotalClassrooms</strong>
         </div>
-    </div>
+    </article>
 
-    <div class="stat-card">
-        <div class="stat-icon available">
-            <i class="bi bi-check-circle"></i>
+    <article class="stat-card">
+        <div class="stat-icon green">
+            <i class="bi bi-door-open"></i>
         </div>
+
         <div class="stat-content">
             <span class="stat-label">Available</span>
             <strong>@Model.AvailableClassrooms</strong>
         </div>
-    </div>
+    </article>
 
-    <div class="stat-card">
-        <div class="stat-icon unavailable">
-            <i class="bi bi-x-circle"></i>
+    <article class="stat-card">
+        <div class="stat-icon orange">
+            <i class="bi bi-door-closed"></i>
         </div>
+
         <div class="stat-content">
             <span class="stat-label">Unavailable</span>
             <strong>@Model.UnavailableClassrooms</strong>
         </div>
-    </div>
+    </article>
 
-    <div class="stat-card">
-        <div class="stat-icon capacity">
+    <article class="stat-card">
+        <div class="stat-icon purple">
             <i class="bi bi-people"></i>
         </div>
+
         <div class="stat-content">
             <span class="stat-label">Total Capacity</span>
             <strong>@Model.TotalCapacity</strong>
         </div>
-    </div>
+    </article>
 
-</div>
+</section>
 
-<div class="content-panel">
+<section class="content-panel">
 
     <div class="panel-toolbar">
 
@@ -81,165 +134,162 @@ ViewData["Title"] = "Classrooms";
             <button type="button"
                     class="filter-btn"
                     data-filter="available">
-                <i class="bi bi-check-circle"></i>
                 Available
             </button>
 
             <button type="button"
                     class="filter-btn"
                     data-filter="unavailable">
-                <i class="bi bi-x-circle"></i>
                 Unavailable
             </button>
         </div>
 
-        <div class="search-box">
-            <i class="bi bi-search"></i>
-            <input type="text"
-                   id="classroomSearch"
-                   placeholder="Search classrooms..." />
+        <div class="toolbar-right">
+
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="search"
+                       id="classroomSearch"
+                       placeholder="Search classrooms..."
+                       autocomplete="off" />
+            </div>
+
+            <button type="button"
+                    class="clear-filter-btn"
+                    id="clearFilters">
+                <i class="bi bi-arrow-counterclockwise"></i>
+                <span>Clear</span>
+            </button>
+
         </div>
 
     </div>
 
     <div class="table-info">
         <span>
-            Showing <strong id="resultCount">@Model.Classrooms.Count</strong>
-            classrooms
+            Showing <strong id="visibleCount">@Model.Classrooms.Count</strong>
+            of <strong>@Model.Classrooms.Count</strong> classrooms
         </span>
 
-        <button type="button"
-                id="clearFilters"
-                class="clear-filter-btn">
-            Clear filters
-        </button>
+        <span class="table-hint">
+            <i class="bi bi-info-circle"></i>
+            Select a classroom to view its scheduled classes
+        </span>
     </div>
 
-    <div class="classroom-table-wrapper">
+    @if (Model.Classrooms.Count > 0)
+    {
+        <div class="table-wrapper">
 
-        <table class="classroom-table">
+            <table class="classroom-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Classroom</th>
+                        <th>Building</th>
+                        <th>Room Type</th>
+                        <th>Capacity</th>
+                        <th>Availability</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Room</th>
-                    <th>Building</th>
-                    <th>Room Type</th>
-                    <th>Capacity</th>
-                    <th>Availability</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+                <tbody id="classroomTableBody">
 
-            <tbody id="classroomTableBody">
+                    @for (var i = 0; i < Model.Classrooms.Count; i++)
+                    {
+                        var classroom = Model.Classrooms[i];
 
-                @for (var i = 0; i < Model.Classrooms.Count; i++)
-                {
-                    var room = Model.Classrooms[i];
+                        <tr class="classroom-row"
+                            data-room-number="@classroom.RoomNumber.ToLowerInvariant()"
+                            data-building="@classroom.Building.ToLowerInvariant()"
+                            data-room-type="@(classroom.RoomType ?? "").ToLowerInvariant()"
+                            data-availability="@(classroom.IsAvailable ? "available" : "unavailable")"
+                            data-room-id="@classroom.Id">
 
-                    <tr data-room-id="@room.Id"
-                        data-availability="@(room.IsAvailable ? "available" : "unavailable")">
+                            <td class="row-number">
+                                @(i + 1)
+                            </td>
 
-                        <td class="number-cell">
-                            @(i + 1)
-                        </td>
+                            <td>
+                                <div class="room-cell">
+                                    <div class="room-icon">
+                                        <i class="bi bi-door-open"></i>
+                                    </div>
 
-                        <td>
-                            <div class="room-cell">
-                                <div class="room-icon">
-                                    <i class="bi bi-door-open"></i>
+                                    <div>
+                                        <strong>@classroom.RoomNumber</strong>
+                                        <span>Room ID: @classroom.Id</span>
+                                    </div>
                                 </div>
+                            </td>
 
-                                <div class="room-info">
-                                    <strong>@room.RoomNumber</strong>
-                                    <span>Room ID: @room.Id</span>
-                                </div>
-                            </div>
-                        </td>
-
-                        <td>
-                            <span class="building-name">
-                                @room.Building
-                            </span>
-                        </td>
-
-                        <td>
-                            <span class="room-type">
-                                @room.RoomType
-                            </span>
-                        </td>
-
-                        <td>
-                            <div class="capacity-cell">
-                                <i class="bi bi-people"></i>
-                                <span>@room.Capacity</span>
-                            </div>
-                        </td>
-
-                        <td>
-                            @if (room.IsAvailable)
-                            {
-                                <span class="status-badge available">
-                                    <i class="bi bi-check-circle-fill"></i>
-                                    Available
+                            <td>
+                                <span class="building-name">
+                                    @classroom.Building
                                 </span>
-                            }
-                            else
-                            {
-                                <span class="status-badge unavailable">
-                                    <i class="bi bi-x-circle-fill"></i>
-                                    Unavailable
+                            </td>
+
+                            <td>
+                                <span class="room-type">
+                                    @(string.IsNullOrWhiteSpace(classroom.RoomType)
+                                        ? "General Classroom"
+                                        : classroom.RoomType)
                                 </span>
-                            }
-                        </td>
+                            </td>
 
-                        <td>
-                            <div class="action-buttons">
+                            <td>
+                                <span class="capacity-value">
+                                    <i class="bi bi-people"></i>
+                                    @classroom.Capacity
+                                </span>
+                            </td>
 
-                                <button type="button"
-                                        class="action-btn view-btn"
-                                        onclick="openViewModal(
-                                            '@room.Id',
-                                            '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.RoomNumber))',
-                                            '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.Building))',
-                                            '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.RoomType))',
-                                            '@room.Capacity',
-                                            '@room.IsAvailable.ToString().ToLower()'
-                                        )">
-                                    <i class="bi bi-eye"></i>
-                                    View
-                                </button>
-
-                                @if (room.IsAvailable)
+                            <td>
+                                @if (classroom.IsAvailable)
                                 {
-                                    <button type="button"
-                                            class="action-btn assign-btn"
-                                            onclick="openAssignModal('@room.Id', '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(room.RoomNumber))')">
-                                        <i class="bi bi-calendar-plus"></i>
-                                        Assign Class
-                                    </button>
+                                    <span class="status-badge available">
+                                        <span class="status-dot"></span>
+                                        Available
+                                    </span>
                                 }
                                 else
                                 {
-                                    <button type="button"
-                                            class="action-btn disabled-btn"
-                                            disabled>
-                                        <i class="bi bi-lock"></i>
-                                        Assigned
-                                    </button>
+                                    <span class="status-badge unavailable">
+                                        <span class="status-dot"></span>
+                                        Unavailable
+                                    </span>
                                 }
+                            </td>
 
-                            </div>
-                        </td>
+                            <td>
+                                <div class="action-buttons">
 
-                    </tr>
-                }
+                                    <button type="button"
+                                            class="action-btn view-btn"
+                                            data-view-room="@classroom.Id">
+                                        <i class="bi bi-eye"></i>
+                                        <span>View</span>
+                                    </button>
 
-            </tbody>
+                                    <a asp-page="/Admin/AssignClass"
+                                       class="action-btn assign-btn">
+                                        <i class="bi bi-calendar-plus"></i>
+                                        <span>Assign Class</span>
+                                    </a>
 
-        </table>
+                                </div>
+                            </td>
 
-        <div id="emptyState" class="empty-state" style="display:none;">
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="filtered-empty" id="filteredEmpty">
             <div class="empty-icon">
                 <i class="bi bi-search"></i>
             </div>
@@ -247,318 +297,127 @@ ViewData["Title"] = "Classrooms";
             <h3>No classrooms found</h3>
 
             <p>
-                Try changing your search or availability filter.
+                No classrooms match your current search or availability filter.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-building-x"></i>
+            </div>
+
+            <h3>No classrooms available</h3>
+
+            <p>
+                There are currently no classrooms registered in the system.
+            </p>
+        </div>
+    }
+
+</section>
+
+
+</div>
+
+<div class="modal-overlay"
+     id="viewClassroomModal"
+     aria-hidden="true">
+
+
+<div class="modal-card view-modal"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="viewClassroomTitle">
+
+    <div class="modal-header">
+
+        <div>
+            <span class="modal-eyebrow">Classroom Details</span>
+
+            <h2 id="viewClassroomTitle">Classroom</h2>
+
+            <p id="viewClassroomSubtitle">
+                Classroom information and scheduled classes.
             </p>
         </div>
 
-    </div>
-
-</div>
-
-
-</div>
-
-<div id="assignModal" class="modal-overlay">
-
-
-<div class="modal-card assign-modal">
-
-    <div class="modal-header">
-        <div>
-            <span class="modal-kicker">Classroom Assignment</span>
-            <h2>Assign Class</h2>
-        </div>
-
         <button type="button"
                 class="modal-close"
-                onclick="closeAssignModal()">
+                data-close-modal
+                aria-label="Close">
             <i class="bi bi-x-lg"></i>
         </button>
-    </div>
-
-    <div class="selected-room">
-        <div class="selected-room-icon">
-            <i class="bi bi-building"></i>
-        </div>
-
-        <div>
-            <span>Selected Classroom</span>
-            <strong id="assignRoomName">—</strong>
-        </div>
-    </div>
-
-    <form id="assignClassForm">
-
-        <div class="form-grid">
-
-            <div class="form-group full-width">
-                <label for="courseSelect">
-                    Course
-                </label>
-
-                <select id="courseSelect"
-                        class="form-control"
-                        required>
-
-                    <option value="">
-                        Select course
-                    </option>
-
-                    @foreach (var course in Model.Courses)
-                    {
-                        <option value="@course.Id"
-                                data-course-name="@course.Name"
-                                data-course-code="@course.Code"
-                                data-lecturer-id="@course.LecturerId">
-                            @course.Code — @course.Name
-                        </option>
-                    }
-
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="lecturerDisplay">
-                    Lecturer
-                </label>
-
-                <div class="readonly-field">
-                    <i class="bi bi-person"></i>
-
-                    <span id="lecturerDisplay">
-                        Select a course
-                    </span>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="intakeSelect">
-                    Intake
-                </label>
-
-                <select id="intakeSelect"
-                        class="form-control"
-                        required>
-
-                    <option value="">
-                        Select intake
-                    </option>
-
-                    <option value="January">
-                        January
-                    </option>
-
-                    <option value="March">
-                        March
-                    </option>
-
-                    <option value="September">
-                        September
-                    </option>
-
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="startDate">
-                    Start Date
-                </label>
-
-                <input type="date"
-                       id="startDate"
-                       class="form-control"
-                       required />
-            </div>
-
-            <div class="form-group">
-                <label for="endDate">
-                    End Date
-                </label>
-
-                <input type="date"
-                       id="endDate"
-                       class="form-control"
-                       readonly
-                       required />
-            </div>
-
-            <div class="form-group full-width">
-                <label for="cpSelect">
-                    Class Representative
-                </label>
-
-                <select id="cpSelect"
-                        class="form-control"
-                        required>
-
-                    <option value="">
-                        Select class representative
-                    </option>
-
-                    @foreach (var cp in Model.ClassRepresentatives)
-                    {
-                        <option value="@cp.Id"
-                                data-regno="@cp.RegNo"
-                                data-name="@cp.FullName">
-                            @cp.RegNo — @cp.FullName
-                        </option>
-                    }
-
-                </select>
-            </div>
-
-            <div id="cpPreview"
-                 class="cp-preview full-width"
-                 style="display:none;">
-
-                <div class="cp-preview-icon">
-                    <i class="bi bi-person-badge"></i>
-                </div>
-
-                <div class="cp-preview-content">
-                    <span>Class Representative</span>
-
-                    <strong id="cpPreviewName">
-                        —
-                    </strong>
-
-                    <small id="cpPreviewRegNo">
-                        —
-                    </small>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="modal-actions">
-
-            <button type="button"
-                    class="secondary-btn"
-                    onclick="closeAssignModal()">
-                Cancel
-            </button>
-
-            <button type="submit"
-                    class="primary-btn">
-                <i class="bi bi-check-lg"></i>
-                Assign Classroom
-            </button>
-
-        </div>
-
-    </form>
-
-</div>
-
-
-</div>
-
-<div id="viewModal" class="modal-overlay">
-
-
-<div class="modal-card view-modal">
-
-    <div class="modal-header">
-        <div>
-            <span class="modal-kicker">Classroom Details</span>
-            <h2 id="viewRoomTitle">Classroom</h2>
-        </div>
-
-        <button type="button"
-                class="modal-close"
-                onclick="closeViewModal()">
-            <i class="bi bi-x-lg"></i>
-        </button>
-    </div>
-
-    <div class="room-detail-card">
-
-        <div class="room-detail-icon">
-            <i class="bi bi-building"></i>
-        </div>
-
-        <div class="room-detail-main">
-
-            <span class="room-detail-label">
-                Classroom
-            </span>
-
-            <h3 id="viewRoomName">
-                —
-            </h3>
-
-            <span id="viewRoomBuilding">
-                —
-            </span>
-
-        </div>
-
-        <div id="viewRoomStatus"
-             class="status-badge">
-            —
-        </div>
 
     </div>
 
-    <div class="room-information-grid">
+    <div class="classroom-detail-grid">
 
-        <div class="detail-item">
+        <div class="detail-card">
+            <span>Room Number</span>
+            <strong id="detailRoomNumber">—</strong>
+        </div>
+
+        <div class="detail-card">
             <span>Building</span>
-            <strong id="viewBuilding">—</strong>
+            <strong id="detailBuilding">—</strong>
         </div>
 
-        <div class="detail-item">
+        <div class="detail-card">
             <span>Room Type</span>
-            <strong id="viewRoomType">—</strong>
+            <strong id="detailRoomType">—</strong>
         </div>
 
-        <div class="detail-item">
+        <div class="detail-card">
             <span>Capacity</span>
-            <strong id="viewCapacity">—</strong>
-        </div>
-
-        <div class="detail-item">
-            <span>Availability</span>
-            <strong id="viewAvailability">—</strong>
+            <strong id="detailCapacity">—</strong>
         </div>
 
     </div>
 
-    <div class="assignment-details">
+    <div class="availability-detail">
+        <span>Current Availability</span>
+        <span id="detailAvailability"
+              class="status-badge available">
+            <span class="status-dot"></span>
+            Available
+        </span>
+    </div>
 
-        <div class="assignment-title">
+    <section class="assignment-section">
+
+        <div class="section-heading">
             <div>
-                <i class="bi bi-calendar3"></i>
+                <span class="section-eyebrow">Schedule</span>
+                <h3>Scheduled Classes</h3>
             </div>
 
-            <div>
-                <span>Class Assignment</span>
-                <strong>Current Assignment</strong>
-            </div>
-        </div>
-
-        <div id="viewAssignmentContent"
-             class="assignment-empty">
-
-            <i class="bi bi-calendar-x"></i>
-
-            <span>
-                No class assignment has been made for this classroom.
+            <span class="schedule-count"
+                  id="scheduleCount">
+                0 classes
             </span>
-
         </div>
 
-    </div>
+        <div class="assignment-details"
+             id="assignmentDetails">
+        </div>
+
+    </section>
 
     <div class="modal-actions">
-
         <button type="button"
                 class="secondary-btn"
-                onclick="closeViewModal()">
+                data-close-modal>
+            <i class="bi bi-x"></i>
             Close
         </button>
 
+        <a asp-page="/Admin/AssignClass"
+           class="primary-btn">
+            <i class="bi bi-calendar-plus"></i>
+            Assign New Class
+        </a>
     </div>
 
 </div>
@@ -566,757 +425,434 @@ ViewData["Title"] = "Classrooms";
 
 </div>
 
-<div id="successToast"
-     class="success-toast">
+<div class="toast-container">
+    <div class="success-toast"
+         id="successToast">
 
 
-<div class="toast-icon">
-    <i class="bi bi-check-lg"></i>
-</div>
+    <div class="toast-icon">
+        <i class="bi bi-check-lg"></i>
+    </div>
 
-<div>
-    <strong>Assignment Saved</strong>
-    <span>The classroom has been assigned successfully.</span>
+    <div class="toast-content">
+        <strong>Success</strong>
+        <span id="toastMessage">Operation completed successfully.</span>
+    </div>
+
+    <button type="button"
+            id="closeToast"
+            aria-label="Close notification">
+        <i class="bi bi-x"></i>
+    </button>
+
 </div>
 
 
 </div>
 
 <script>
-    const lecturers = @Html.Raw(
-        System.Text.Json.JsonSerializer.Serialize(
-            Model.Lecturers.Select(l => new
+    const classrooms = @Html.Raw(
+        JsonSerializer.Serialize(
+            Model.Classrooms.Select(r => new
             {
-                id = l.Id,
-                name = l.FullName,
-                staffId = l.StaffId,
-                department = l.Department
+                id = r.Id,
+                roomNumber = r.RoomNumber,
+                building = r.Building,
+                roomType = r.RoomType ?? "General Classroom",
+                capacity = r.Capacity,
+                isAvailable = r.IsAvailable
             })
         )
     );
 
-    let selectedRoomId = null;
-
-    const assignments = {};
-
-    const assignModal = document.getElementById("assignModal");
-    const viewModal = document.getElementById("viewModal");
-
-    const courseSelect = document.getElementById("courseSelect");
-    const lecturerDisplay = document.getElementById("lecturerDisplay");
-    const cpSelect = document.getElementById("cpSelect");
-
-    const startDate = document.getElementById("startDate");
-    const endDate = document.getElementById("endDate");
-
-    const intakeSelect = document.getElementById("intakeSelect");
-
-    const cpPreview = document.getElementById("cpPreview");
-    const cpPreviewName = document.getElementById("cpPreviewName");
-    const cpPreviewRegNo = document.getElementById("cpPreviewRegNo");
-
-    const assignClassForm = document.getElementById("assignClassForm");
-
-    function calculateEndDate() {
-
-        if (!startDate.value) {
-            endDate.value = "";
-            return;
-        }
-
-        const selectedDate =
-            new Date(startDate.value + "T00:00:00");
-
-        selectedDate.setDate(
-            selectedDate.getDate() + 14
-        );
-
-        const year =
-            selectedDate.getFullYear();
-
-        const month =
-            String(selectedDate.getMonth() + 1)
-                .padStart(2, "0");
-
-        const day =
-            String(selectedDate.getDate())
-                .padStart(2, "0");
-
-        endDate.value =
-            `${year}-${month}-${day}`;
-    }
-
-    startDate.addEventListener(
-        "change",
-        calculateEndDate
-    );
-
-    function openAssignModal(roomId, roomName) {
-
-        selectedRoomId = roomId;
-
-        document.getElementById(
-            "assignRoomName"
-        ).textContent = roomName;
-
-        assignClassForm.reset();
-
-        lecturerDisplay.textContent =
-            "Select a course";
-
-        cpPreview.style.display =
-            "none";
-
-        endDate.value = "";
-
-        const assignment =
-            assignments[roomId];
-
-        if (assignment) {
-
-            courseSelect.value =
-                assignment.courseId;
-
-            intakeSelect.value =
-                assignment.intake;
-
-            startDate.value =
-                assignment.startDate;
-
-            endDate.value =
-                assignment.endDate;
-
-            cpSelect.value =
-                assignment.cpId;
-
-            updateLecturer();
-            updateClassRepresentative();
-
-        }
-
-        assignModal.classList.add("show");
-
-        document.body.classList.add("modal-open");
-    }
-
-    function closeAssignModal() {
-
-        assignModal.classList.remove("show");
-
-        document.body.classList.remove("modal-open");
-    }
-
-    function openViewModal(
-        roomId,
-        roomName,
-        building,
-        roomType,
-        capacity,
-        isAvailable
-    ) {
-
-        document.getElementById(
-            "viewRoomTitle"
-        ).textContent = roomName;
-
-        document.getElementById(
-            "viewRoomName"
-        ).textContent = roomName;
-
-        document.getElementById(
-            "viewRoomBuilding"
-        ).textContent = building;
-
-        document.getElementById(
-            "viewBuilding"
-        ).textContent = building;
-
-        document.getElementById(
-            "viewRoomType"
-        ).textContent = roomType;
-
-        document.getElementById(
-            "viewCapacity"
-        ).textContent = capacity;
-
-        const available =
-            isAvailable === "true";
-
-        document.getElementById(
-            "viewAvailability"
-        ).textContent =
-            available
-                ? "Available"
-                : "Unavailable";
-
-        const status =
-            document.getElementById(
-                "viewRoomStatus"
-            );
-
-        status.className =
-            "status-badge " +
-            (
-                available
-                    ? "available"
-                    : "unavailable"
-            );
-
-        status.innerHTML =
-            available
-                ? '<i class="bi bi-check-circle-fill"></i> Available'
-                : '<i class="bi bi-x-circle-fill"></i> Unavailable';
-
-        const assignmentContent =
-            document.getElementById(
-                "viewAssignmentContent"
-            );
-
-        const assignment =
-            assignments[roomId];
-
-        if (!assignment) {
-
-            assignmentContent.className =
-                "assignment-empty";
-
-            assignmentContent.innerHTML = `
-                <i class="bi bi-calendar-x"></i>
-                <span>
-                    No class assignment has been made for this classroom.
-                </span>
-            `;
-
-        } else {
-
-            assignmentContent.className =
-                "assignment-content";
-
-            assignmentContent.innerHTML = `
-                <div class="assignment-grid">
-
-                    <div>
-                        <span>Course</span>
-                        <strong>
-                            ${assignment.courseCode} — ${assignment.courseName}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>Lecturer</span>
-                        <strong>
-                            ${assignment.lecturer}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>Intake</span>
-                        <strong>
-                            ${assignment.intake}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>Start Date</span>
-                        <strong>
-                            ${assignment.startDate}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>End Date</span>
-                        <strong>
-                            ${assignment.endDate}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>Class Representative</span>
-                        <strong>
-                            ${assignment.cp}
-                        </strong>
-                    </div>
-
-                </div>
-            `;
-        }
-
-        viewModal.classList.add("show");
-
-        document.body.classList.add("modal-open");
-    }
-
-    function closeViewModal() {
-
-        viewModal.classList.remove("show");
-
-        document.body.classList.remove("modal-open");
-    }
-
-    function updateLecturer() {
-
-        const selectedOption =
-            courseSelect.options[
-                courseSelect.selectedIndex
-            ];
-
-        if (
-            !selectedOption ||
-            !selectedOption.value
-        ) {
-
-            lecturerDisplay.textContent =
-                "Select a course";
-
-            return;
-        }
-
-        const lecturerId =
-            Number(
-                selectedOption.dataset.lecturerId
-            );
-
-        const lecturer =
-            lecturers.find(
-                l => l.id === lecturerId
-            );
-
-        if (!lecturer) {
-
-            lecturerDisplay.textContent =
-                "No lecturer assigned";
-
-            return;
-        }
-
-        lecturerDisplay.textContent =
-            `${lecturer.name} (${lecturer.staffId})`;
-    }
-
-    function updateClassRepresentative() {
-
-        const selectedOption =
-            cpSelect.options[
-                cpSelect.selectedIndex
-            ];
-
-        if (
-            !selectedOption ||
-            !selectedOption.value
-        ) {
-
-            cpPreview.style.display =
-                "none";
-
-            return;
-        }
-
-        cpPreviewName.textContent =
-            selectedOption.dataset.name;
-
-        cpPreviewRegNo.textContent =
-            selectedOption.dataset.regno;
-
-        cpPreview.style.display =
-            "flex";
-    }
-
-    courseSelect.addEventListener(
-        "change",
-        updateLecturer
-    );
-
-    cpSelect.addEventListener(
-        "change",
-        updateClassRepresentative
-    );
-
-    assignClassForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-            const selectedCourse =
-                courseSelect.options[
-                    courseSelect.selectedIndex
-                ];
-
-            if (
-                !selectedCourse ||
-                !selectedCourse.value
-            ) {
-                return;
-            }
-
-            calculateEndDate();
-
-            const selectedLecturerId =
-                Number(
-                    selectedCourse.dataset.lecturerId
-                );
-
-            const lecturer =
-                lecturers.find(
-                    l => l.id === selectedLecturerId
-                );
-
-            const selectedCp =
-                cpSelect.options[
-                    cpSelect.selectedIndex
-                ];
-
-            if (
-                !selectedCp ||
-                !selectedCp.value
-            ) {
-                return;
-            }
-
-            assignments[selectedRoomId] = {
-
-                courseId:
-                    courseSelect.value,
-
-                courseCode:
-                    selectedCourse.dataset.courseCode,
-
-                courseName:
-                    selectedCourse.dataset.courseName,
-
-                lecturer:
-                    lecturer
-                        ? `${lecturer.name} (${lecturer.staffId})`
-                        : "No lecturer assigned",
-
-                intake:
-                    intakeSelect.value,
-
-                startDate:
-                    startDate.value,
-
-                endDate:
-                    endDate.value,
-
-                cpId:
-                    cpSelect.value,
-
-                cp:
-                    `${selectedCp.dataset.regno} — ${selectedCp.dataset.name}`
-            };
-
-            closeAssignModal();
-
-            showSuccessToast();
-
-            refreshRoomAvailability(
-                selectedRoomId
-            );
-        }
-    );
-
-    function refreshRoomAvailability(roomId) {
-
-        const row =
-            document.querySelector(
-                `tr[data-room-id="${roomId}"]`
-            );
-
-        if (!row) {
-            return;
-        }
-
-        row.dataset.availability =
-            "unavailable";
-
-        const statusCell =
-            row.querySelector(
-                ".status-badge"
-            );
-
-        if (statusCell) {
-
-            statusCell.className =
-                "status-badge unavailable";
-
-            statusCell.innerHTML =
-                '<i class="bi bi-x-circle-fill"></i> Unavailable';
-        }
-
-        const actionButtons =
-            row.querySelector(
-                ".action-buttons"
-            );
-
-        if (actionButtons) {
-
-            actionButtons.innerHTML = `
-                <button type="button"
-                        class="action-btn view-btn"
-                        onclick="openViewModalFromRow('${roomId}')">
-                    <i class="bi bi-eye"></i>
-                    View
-                </button>
-
-                <button type="button"
-                        class="action-btn disabled-btn"
-                        disabled>
-                    <i class="bi bi-lock"></i>
-                    Assigned
-                </button>
-            `;
-        }
-
-        applyFilters();
-    }
-
-    function openViewModalFromRow(roomId) {
-
-        const row =
-            document.querySelector(
-                `tr[data-room-id="${roomId}"]`
-            );
-
-        if (!row) {
-            return;
-        }
-
-        const cells =
-            row.children;
-
-        const roomName =
-            cells[1]
-                .querySelector("strong")
-                ?.textContent
-                .trim() ?? "";
-
-        const building =
-            cells[2]
-                .textContent
-                .trim();
-
-        const roomType =
-            cells[3]
-                .textContent
-                .trim();
-
-        const capacity =
-            cells[4]
-                .textContent
-                .trim();
-
-        const available =
-            row.dataset.availability ===
-            "available";
-
-        openViewModal(
-            roomId,
-            roomName,
-            building,
-            roomType,
-            capacity,
-            available.toString()
-        );
-    }
-
-    const searchInput =
-        document.getElementById(
-            "classroomSearch"
-        );
-
-    const filterButtons =
-        document.querySelectorAll(
-            ".filter-btn"
-        );
-
-    let activeFilter =
-        "all";
+    const scheduleEntries = @Html.Raw(scheduleJson);
+
+    const searchInput = document.getElementById("classroomSearch");
+    const clearFiltersButton = document.getElementById("clearFilters");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const classroomRows = document.querySelectorAll(".classroom-row");
+    const visibleCount = document.getElementById("visibleCount");
+    const filteredEmpty = document.getElementById("filteredEmpty");
+
+    let activeFilter = "all";
 
     function applyFilters() {
+        const searchTerm = (searchInput?.value || "").trim().toLowerCase();
+        let count = 0;
 
-        const search =
-            searchInput.value
-                .trim()
-                .toLowerCase();
-
-        const rows =
-            document.querySelectorAll(
-                "#classroomTableBody tr"
-            );
-
-        let visibleCount =
-            0;
-
-        rows.forEach(row => {
-
-            const rowText =
-                row.textContent
-                    .toLowerCase();
-
-            const availability =
-                row.dataset.availability;
+        classroomRows.forEach(row => {
+            const roomNumber = row.dataset.roomNumber || "";
+            const building = row.dataset.building || "";
+            const roomType = row.dataset.roomType || "";
+            const availability = row.dataset.availability || "";
 
             const matchesSearch =
-                !search ||
-                rowText.includes(search);
+                !searchTerm ||
+                roomNumber.includes(searchTerm) ||
+                building.includes(searchTerm) ||
+                roomType.includes(searchTerm);
 
             const matchesFilter =
                 activeFilter === "all" ||
                 availability === activeFilter;
 
-            const visible =
-                matchesSearch &&
-                matchesFilter;
+            const visible = matchesSearch && matchesFilter;
 
-            row.style.display =
-                visible
-                    ? ""
-                    : "none";
+            row.style.display = visible ? "" : "none";
 
             if (visible) {
-                visibleCount++;
+                count++;
             }
         });
 
-        document.getElementById(
-            "resultCount"
-        ).textContent =
-            visibleCount;
+        if (visibleCount) {
+            visibleCount.textContent = count;
+        }
 
-        document.getElementById(
-            "emptyState"
-        ).style.display =
-            visibleCount === 0
-                ? "flex"
-                : "none";
+        if (filteredEmpty) {
+            filteredEmpty.classList.toggle(
+                "show",
+                count === 0 && classroomRows.length > 0
+            );
+        }
     }
-
-    searchInput.addEventListener(
-        "input",
-        applyFilters
-    );
 
     filterButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            filterButtons.forEach(item => item.classList.remove("active"));
 
-        button.addEventListener(
-            "click",
-            function () {
+            button.classList.add("active");
 
-                filterButtons.forEach(
-                    btn =>
-                        btn.classList.remove(
-                            "active"
-                        )
-                );
+            activeFilter = button.dataset.filter || "all";
 
-                this.classList.add(
-                    "active"
-                );
-
-                activeFilter =
-                    this.dataset.filter;
-
-                applyFilters();
-            }
-        );
+            applyFilters();
+        });
     });
 
-    document
-        .getElementById(
-            "clearFilters"
-        )
-        .addEventListener(
-            "click",
-            function () {
+    searchInput?.addEventListener("input", applyFilters);
 
-                searchInput.value =
-                    "";
+    clearFiltersButton?.addEventListener("click", () => {
+        if (searchInput) {
+            searchInput.value = "";
+        }
 
-                activeFilter =
-                    "all";
+        activeFilter = "all";
 
-                filterButtons.forEach(
-                    btn =>
-                        btn.classList.remove(
-                            "active"
-                        )
-                );
-
-                document
-                    .querySelector(
-                        '.filter-btn[data-filter="all"]'
-                    )
-                    .classList.add(
-                        "active"
-                    );
-
-                applyFilters();
-            }
-        );
-
-    function showSuccessToast() {
-
-        const toast =
-            document.getElementById(
-                "successToast"
+        filterButtons.forEach(button => {
+            button.classList.toggle(
+                "active",
+                button.dataset.filter === "all"
             );
+        });
 
-        toast.classList.add(
-            "show"
-        );
+        applyFilters();
+    });
 
-        setTimeout(
-            () => {
-                toast.classList.remove(
-                    "show"
-                );
-            },
-            3500
-        );
+    const viewModal = document.getElementById("viewClassroomModal");
+    const assignmentDetails = document.getElementById("assignmentDetails");
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
     }
 
-    assignModal.addEventListener(
-        "click",
-        function (event) {
+    function getClassroom(roomId) {
+        return classrooms.find(room => Number(room.id) === Number(roomId));
+    }
 
-            if (
-                event.target ===
-                assignModal
-            ) {
-                closeAssignModal();
-            }
+    function getRoomSchedule(roomId) {
+        return scheduleEntries
+            .filter(item => Number(item.roomId) === Number(roomId))
+            .sort((a, b) => {
+                const dayOrder = {
+                    Sunday: 0,
+                    Monday: 1,
+                    Tuesday: 2,
+                    Wednesday: 3,
+                    Thursday: 4,
+                    Friday: 5,
+                    Saturday: 6
+                };
+
+                const dayDifference =
+                    (dayOrder[a.dayOfWeek] ?? 99) -
+                    (dayOrder[b.dayOfWeek] ?? 99);
+
+                if (dayDifference !== 0) {
+                    return dayDifference;
+                }
+
+                return (a.startTime || "").localeCompare(b.startTime || "");
+            });
+    }
+
+    function formatSession(session) {
+        const value = String(session || "").toUpperCase();
+
+        if (value === "DAY") {
+            return "DAY";
         }
-    );
 
-    viewModal.addEventListener(
-        "click",
-        function (event) {
-
-            if (
-                event.target ===
-                viewModal
-            ) {
-                closeViewModal();
-            }
+        if (value === "EVENING") {
+            return "EVENING";
         }
-    );
 
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key ===
-                "Escape"
-            ) {
-
-                closeAssignModal();
-
-                closeViewModal();
-            }
+        if (value === "WEEKEND") {
+            return "WEEKEND";
         }
-    );
+
+        return value || "—";
+    }
+
+    function formatDateRange(startDate, endDate) {
+        if (!startDate && !endDate) {
+            return "No date range";
+        }
+
+        if (startDate && endDate && startDate === endDate) {
+            return startDate;
+        }
+
+        return `${startDate || "—"} to ${endDate || "—"}`;
+    }
+
+    function openViewModal(roomId) {
+        const room = getClassroom(roomId);
+
+        if (!room || !viewModal) {
+            return;
+        }
+
+        document.getElementById("viewClassroomTitle").textContent =
+            room.roomNumber;
+
+        document.getElementById("viewClassroomSubtitle").textContent =
+            `${room.building} · Classroom ID ${room.id}`;
+
+        document.getElementById("detailRoomNumber").textContent =
+            room.roomNumber;
+
+        document.getElementById("detailBuilding").textContent =
+            room.building;
+
+        document.getElementById("detailRoomType").textContent =
+            room.roomType || "General Classroom";
+
+        document.getElementById("detailCapacity").textContent =
+            `${room.capacity} seats`;
+
+        const availabilityElement =
+            document.getElementById("detailAvailability");
+
+        availabilityElement.className =
+            `status-badge ${room.isAvailable ? "available" : "unavailable"}`;
+
+        availabilityElement.innerHTML = `
+            <span class="status-dot"></span>
+            ${room.isAvailable ? "Available" : "Unavailable"}
+        `;
+
+        const roomSchedules = getRoomSchedule(roomId);
+
+        document.getElementById("scheduleCount").textContent =
+            `${roomSchedules.length} ${roomSchedules.length === 1 ? "class" : "classes"}`;
+
+        if (roomSchedules.length === 0) {
+            assignmentDetails.innerHTML = `
+                <div class="assignment-empty">
+                    <div class="assignment-empty-icon">
+                        <i class="bi bi-calendar-x"></i>
+                    </div>
+
+                    <div>
+                        <strong>No classes scheduled</strong>
+                        <p>
+                            This classroom currently has no active scheduled classes.
+                        </p>
+                    </div>
+                </div>
+            `;
+        } else {
+            assignmentDetails.innerHTML = roomSchedules.map(item => {
+
+                const lecturer =
+                    item.lecturerName
+                        ? `${escapeHtml(item.lecturerName)}${item.lecturerStaffId ? ` (${escapeHtml(item.lecturerStaffId)})` : ""}`
+                        : "Unassigned";
+
+                const representative =
+                    item.representativeName
+                        ? `${escapeHtml(item.representativeName)}${item.representativeRegNo ? ` (${escapeHtml(item.representativeRegNo)})` : ""}`
+                        : "Unassigned";
+
+                const representativeContact =
+                    item.representativePhone ||
+                    item.representativeEmail
+                        ? `${escapeHtml(item.representativePhone || "No phone")}${item.representativeEmail ? ` · ${escapeHtml(item.representativeEmail)}` : ""}`
+                        : "No contact information";
+
+                return `
+                    <article class="assignment-card">
+
+                        <div class="assignment-card-header">
+                            <div>
+                                <span class="assignment-code">
+                                    ${escapeHtml(item.courseCode || "COURSE")}
+                                </span>
+
+                                <h4>
+                                    ${escapeHtml(item.courseName || "Unnamed Course")}
+                                </h4>
+                            </div>
+
+                            <span class="session-badge">
+                                ${escapeHtml(formatSession(item.studySession))}
+                            </span>
+                        </div>
+
+                        <div class="assignment-grid">
+
+                            <div>
+                                <span>Lecturer</span>
+                                <strong>${lecturer}</strong>
+                            </div>
+
+                            <div>
+                                <span>Class Representative</span>
+                                <strong>${representative}</strong>
+                            </div>
+
+                            <div>
+                                <span>Day</span>
+                                <strong>${escapeHtml(item.dayOfWeek)}</strong>
+                            </div>
+
+                            <div>
+                                <span>Time</span>
+                                <strong>
+                                    ${escapeHtml(item.startTime)}
+                                    –
+                                    ${escapeHtml(item.endTime)}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Date Range</span>
+                                <strong>
+                                    ${escapeHtml(formatDateRange(item.startDate, item.endDate))}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Status</span>
+                                <strong>${escapeHtml(item.status)}</strong>
+                            </div>
+
+                            <div>
+                                <span>CP Contact</span>
+                                <strong>${representativeContact}</strong>
+                            </div>
+
+                            <div>
+                                <span>Intake / Level</span>
+                                <strong>
+                                    ${escapeHtml(
+                                        [item.representativeIntake, item.representativeLevel]
+                                            .filter(Boolean)
+                                            .join(" · ") || "Not available"
+                                    )}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        ${
+                            item.notes
+                                ? `
+                                    <div class="assignment-note">
+                                        <i class="bi bi-sticky"></i>
+                                        <span>${escapeHtml(item.notes)}</span>
+                                    </div>
+                                `
+                                : ""
+                        }
+
+                    </article>
+                `;
+            }).join("");
+        }
+
+        viewModal.classList.add("show");
+        viewModal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+    }
+
+    function closeViewModal() {
+        if (!viewModal) {
+            return;
+        }
+
+        viewModal.classList.remove("show");
+        viewModal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+    }
+
+    document.querySelectorAll("[data-view-room]").forEach(button => {
+        button.addEventListener("click", () => {
+            openViewModal(button.dataset.viewRoom);
+        });
+    });
+
+    document.querySelectorAll("[data-close-modal]").forEach(button => {
+        button.addEventListener("click", closeViewModal);
+    });
+
+    viewModal?.addEventListener("click", event => {
+        if (event.target === viewModal) {
+            closeViewModal();
+        }
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            closeViewModal();
+        }
+    });
+
+    const toast = document.getElementById("successToast");
+    const toastMessage = document.getElementById("toastMessage");
+    const closeToast = document.getElementById("closeToast");
+
+    function showToast(message) {
+        if (!toast) {
+            return;
+        }
+
+        if (toastMessage) {
+            toastMessage.textContent = message;
+        }
+
+        toast.classList.add("show");
+
+        window.setTimeout(() => {
+            toast.classList.remove("show");
+        }, 4500);
+    }
+
+    closeToast?.addEventListener("click", () => {
+        toast?.classList.remove("show");
+    });
+
+    @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+    {
+        <text>
+        showToast(@Html.Raw(JsonSerializer.Serialize(Model.SuccessMessage)));
+        </text>
+    }
+
+    applyFilters();
 </script>
-
-
-

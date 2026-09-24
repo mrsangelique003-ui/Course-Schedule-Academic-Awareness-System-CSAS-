@@ -79,5 +79,8 @@ public class ClassRepresentative
     public ICollection<HodMessage> HodMessages { get; set; } =
         new List<HodMessage>();
 
+    public ICollection<ScheduleEntry> ScheduleEntries { get; set; } =
+        new List<ScheduleEntry>();
+
 
 }

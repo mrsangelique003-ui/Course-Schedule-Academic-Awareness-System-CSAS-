@@ -6,13 +6,18 @@ public class ScheduleEntry
 {
     public int Id { get; set; }
 
-    public int CourseId { get; set; }
+
+public int CourseId { get; set; }
 
     public Course Course { get; set; } = null!;
 
-    public int LecturerId { get; set; }
+    public int? LecturerId { get; set; }
 
-    public Lecturer Lecturer { get; set; } = null!;
+    public Lecturer? Lecturer { get; set; }
+
+    public int? ClassRepresentativeId { get; set; }
+
+    public ClassRepresentative? ClassRepresentative { get; set; }
 
     public int RoomId { get; set; }
 
@@ -23,6 +28,10 @@ public class ScheduleEntry
     public TimeOnly StartTime { get; set; }
 
     public TimeOnly EndTime { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
 
     public StudySession StudySession { get; set; } = StudySession.Day;
 
@@ -36,4 +45,6 @@ public class ScheduleEntry
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; set; }
+
+
 }

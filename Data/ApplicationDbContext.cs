@@ -22,8 +22,6 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
     public DbSet<Exam> Exams => Set<Exam>();
     public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
-
-    // CP module
     public DbSet<ClassGroup> ClassGroups => Set<ClassGroup>();
     public DbSet<CourseCompletion> CourseCompletions => Set<CourseCompletion>();
     public DbSet<HodMessage> HodMessages => Set<HodMessage>();
@@ -42,8 +40,6 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
         ConfigureEnrollment(modelBuilder);
         ConfigureExam(modelBuilder);
         ConfigureSupportTicket(modelBuilder);
-
-        // CP module
         ConfigureClassGroup(modelBuilder);
         ConfigureCourseCompletion(modelBuilder);
         ConfigureHodMessage(modelBuilder);
@@ -86,6 +82,14 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
             entity.HasIndex(cp => cp.RegNo)
                 .IsUnique();
 
+            entity.HasIndex(cp => new
+            {
+                cp.Department,
+                cp.Intake,
+                cp.Level,
+                cp.IsActive
+            });
+
             entity.Property(cp => cp.RegNo)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -95,9 +99,11 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
                 .HasMaxLength(200);
 
             entity.Property(cp => cp.Email)
+                .IsRequired()
                 .HasMaxLength(256);
 
             entity.Property(cp => cp.PhoneNumber)
+                .IsRequired()
                 .HasMaxLength(20);
 
             entity.Property(cp => cp.Nationality)
@@ -132,7 +138,6 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
                 .IsRequired()
                 .HasColumnType("nvarchar(max)");
 
-            // CP module
             entity.Property(cp => cp.Intake)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -160,6 +165,11 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
                 .WithOne(message => message.ClassRepresentative)
                 .HasForeignKey(message => message.ClassRepresentativeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(cp => cp.ScheduleEntries)
+                .WithOne(schedule => schedule.ClassRepresentative)
+                .HasForeignKey(schedule => schedule.ClassRepresentativeId)
+                .OnDelete(DeleteBehavior.SetNull);
         });
     }
 
@@ -201,6 +211,12 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
             entity.HasIndex(l => l.StaffId)
                 .IsUnique();
 
+            entity.HasIndex(l => new
+            {
+                l.Department,
+                l.IsActive
+            });
+
             entity.Property(l => l.StaffId)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -209,9 +225,21 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
                 .IsRequired()
                 .HasMaxLength(200);
 
+            entity.Property(l => l.Email)
+                .HasMaxLength(256);
+
+            entity.Property(l => l.PhoneNumber)
+                .HasMaxLength(20);
+
             entity.Property(l => l.Department)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            entity.Property(l => l.PasswordHash)
+                .IsRequired();
+
+            entity.Property(l => l.IsActive)
+                .IsRequired();
 
             entity.HasMany(l => l.Courses)
                 .WithOne(c => c.Lecturer)
@@ -221,9 +249,8 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
             entity.HasMany(l => l.ScheduleEntries)
                 .WithOne(s => s.Lecturer)
                 .HasForeignKey(s => s.LecturerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
-            // CP module
             entity.HasMany<CourseCompletion>()
                 .WithOne(completion => completion.Lecturer)
                 .HasForeignKey(completion => completion.LecturerId)
@@ -271,7 +298,6 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
                 .HasForeignKey(e => e.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // CP module
             entity.HasMany<ClassGroup>()
                 .WithOne(group => group.Course)
                 .HasForeignKey(group => group.CourseId)
@@ -297,6 +323,12 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
             })
             .IsUnique();
 
+            entity.HasIndex(r => new
+            {
+                r.IsAvailable,
+                r.Building
+            });
+
             entity.Property(r => r.RoomNumber)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -305,8 +337,14 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
                 .IsRequired()
                 .HasMaxLength(100);
 
+            entity.Property(r => r.Capacity)
+                .IsRequired();
+
             entity.Property(r => r.RoomType)
                 .HasMaxLength(100);
+
+            entity.Property(r => r.IsAvailable)
+                .IsRequired();
         });
     }
 
@@ -317,13 +355,79 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
         {
             entity.HasKey(s => s.Id);
 
+            entity.HasIndex(s => new
+            {
+                s.RoomId,
+                s.DayOfWeek,
+                s.StartTime,
+                s.EndTime,
+                s.IsActive
+            });
+
+            entity.HasIndex(s => new
+            {
+                s.LecturerId,
+                s.DayOfWeek,
+                s.StartTime,
+                s.EndTime,
+                s.IsActive
+            });
+
+            entity.HasIndex(s => new
+            {
+                s.ClassRepresentativeId,
+                s.IsActive
+            });
+
+            entity.HasIndex(s => new
+            {
+                s.CourseId,
+                s.IsActive
+            });
+
             entity.HasOne(s => s.Room)
                 .WithMany(r => r.ScheduleEntries)
                 .HasForeignKey(s => s.RoomId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            entity.HasOne(s => s.Lecturer)
+                .WithMany(l => l.ScheduleEntries)
+                .HasForeignKey(s => s.LecturerId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(s => s.ClassRepresentative)
+                .WithMany(cp => cp.ScheduleEntries)
+                .HasForeignKey(s => s.ClassRepresentativeId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.Property(s => s.StartDate)
+                .IsRequired()
+                .HasColumnType("date");
+
+            entity.Property(s => s.EndDate)
+                .IsRequired()
+                .HasColumnType("date");
+
+            entity.Property(s => s.StudySession)
+                .HasConversion<string>()
+                .IsRequired()
+                .HasMaxLength(20);
+
+            entity.Property(s => s.Status)
+                .HasConversion<string>()
+                .IsRequired()
+                .HasMaxLength(30);
+
             entity.Property(s => s.Notes)
                 .HasMaxLength(500);
+
+            entity.Property(s => s.IsActive)
+                .IsRequired();
+
+            entity.Property(s => s.CreatedAt)
+                .IsRequired();
+
+            entity.Property(s => s.UpdatedAt);
         });
     }
 
@@ -402,10 +506,6 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
         });
     }
 
-    // ============================================================
-    // CP MODULE CONFIGURATION
-    // ============================================================
-
     private static void ConfigureClassGroup(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ClassGroup>(entity =>
@@ -431,8 +531,6 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
             entity.Property(g => g.CreatedAt)
                 .IsRequired();
 
-            // Prevent duplicate groups for the same course,
-            // CP, intake and level.
             entity.HasIndex(g => new
             {
                 g.CourseId,
@@ -457,8 +555,6 @@ public DbSet<Administrator> Administrators => Set<Administrator>();
             entity.Property(c => c.Remarks)
                 .HasMaxLength(1000);
 
-            // A CP can have only one completion record
-            // for a particular course.
             entity.HasIndex(c => new
             {
                 c.CourseId,

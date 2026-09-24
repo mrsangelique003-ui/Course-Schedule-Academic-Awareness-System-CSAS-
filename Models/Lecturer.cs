@@ -6,7 +6,8 @@ public class Lecturer
 {
     public int Id { get; set; }
 
-    [Required]
+
+[Required]
     [StringLength(50)]
     public string StaffId { get; set; } = string.Empty;
 
@@ -36,4 +37,6 @@ public class Lecturer
 
     public ICollection<ScheduleEntry> ScheduleEntries { get; set; } =
         new List<ScheduleEntry>();
+
+
 }
