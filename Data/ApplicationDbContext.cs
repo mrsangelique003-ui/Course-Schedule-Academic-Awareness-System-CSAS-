@@ -6,12 +6,13 @@ namespace CourseScheduleSystem.Web.Data;
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(
-        DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+    DbContextOptions<ApplicationDbContext> options)
+    : base(options)
     {
     }
 
-    public DbSet<Administrator> Administrators => Set<Administrator>();
+
+public DbSet<Administrator> Administrators => Set<Administrator>();
     public DbSet<ClassRepresentative> ClassRepresentatives => Set<ClassRepresentative>();
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Lecturer> Lecturers => Set<Lecturer>();
@@ -93,9 +94,43 @@ public class ApplicationDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(200);
 
+            entity.Property(cp => cp.Email)
+                .HasMaxLength(256);
+
+            entity.Property(cp => cp.PhoneNumber)
+                .HasMaxLength(20);
+
+            entity.Property(cp => cp.Nationality)
+                .HasMaxLength(100);
+
+            entity.Property(cp => cp.Faculty)
+                .IsRequired()
+                .HasMaxLength(100);
+
             entity.Property(cp => cp.Department)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            entity.Property(cp => cp.Year)
+                .IsRequired();
+
+            entity.Property(cp => cp.StudySession)
+                .HasConversion<string>()
+                .IsRequired()
+                .HasMaxLength(20);
+
+            entity.Property(cp => cp.IsActive)
+                .IsRequired();
+
+            entity.Property(cp => cp.PasswordHash)
+                .IsRequired();
+
+            entity.Property(cp => cp.AssignedAt)
+                .IsRequired();
+
+            entity.Property(cp => cp.SignatureImageData)
+                .IsRequired()
+                .HasColumnType("nvarchar(max)");
 
             // CP module
             entity.Property(cp => cp.Intake)
@@ -437,8 +472,7 @@ public class ApplicationDbContext : DbContext
         });
     }
 
-    private static void ConfigureHodMessage(
-        ModelBuilder modelBuilder)
+    private static void ConfigureHodMessage(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<HodMessage>(entity =>
         {
@@ -455,4 +489,6 @@ public class ApplicationDbContext : DbContext
                 .IsRequired();
         });
     }
+
+
 }

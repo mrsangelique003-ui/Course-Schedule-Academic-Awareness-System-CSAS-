@@ -1,0 +1,707 @@
+:root {
+    --register-cp-primary: #0b2545;
+    --register-cp-primary-dark: #061a33;
+    --register-cp-primary-light: #163b68;
+    --register-cp-accent: #2a7f5e;
+    --register-cp-accent-dark: #216449;
+    --register-cp-background: #f5f7fa;
+    --register-cp-surface: #ffffff;
+    --register-cp-surface-soft: #f8fafc;
+    --register-cp-surface-muted: #f1f5f9;
+    --register-cp-border: #e2e8f0;
+    --register-cp-border-strong: #cbd5e1;
+    --register-cp-text: #1e293b;
+    --register-cp-text-muted: #64748b;
+    --register-cp-text-soft: #94a3b8;
+    --register-cp-danger: #dc3545;
+    --register-cp-danger-dark: #b42333;
+    --register-cp-danger-soft: #fef2f2;
+    --register-cp-danger-border: #fecaca;
+    --register-cp-success: #198754;
+    --register-cp-success-soft: #f0fdf4;
+    --register-cp-success-border: #bbf7d0;
+    --register-cp-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --register-cp-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+    --register-cp-shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.14);
+    --register-cp-radius-sm: 8px;
+    --register-cp-radius: 12px;
+    --register-cp-radius-lg: 16px;
+    --register-cp-transition: 0.2s ease;
+   
+}
+
+.register-cp-page {
+    min-height: 100%;
+    background: var(--register-cp-background);
+    padding: 28px;
+}
+
+.register-cp-container {
+    width: 100%;
+    max-width: 1450px;
+    margin: 0 auto;
+}
+
+.register-cp-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.register-cp-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--register-cp-text-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+    .register-cp-breadcrumb a {
+        color: var(--register-cp-primary);
+        text-decoration: none;
+        transition: color var(--register-cp-transition);
+    }
+
+        .register-cp-breadcrumb a:hover {
+            color: var(--register-cp-accent);
+        }
+
+    .register-cp-breadcrumb i {
+        font-size: 11px;
+        color: var(--register-cp-text-soft);
+    }
+
+.register-cp-heading {
+    margin: 0;
+    color: var(--register-cp-primary);
+    font-size: clamp(25px, 2.5vw, 34px);
+    line-height: 1.2;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+}
+
+.register-cp-subtitle {
+    margin: 8px 0 0;
+    color: var(--register-cp-text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.register-cp-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid var(--register-cp-border);
+    border-radius: var(--register-cp-radius-sm);
+    background: var(--register-cp-surface);
+    color: var(--register-cp-primary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: var(--register-cp-shadow-sm);
+    transition: background var(--register-cp-transition), border-color var(--register-cp-transition), color var(--register-cp-transition), transform var(--register-cp-transition);
+}
+
+    .register-cp-back:hover {
+        border-color: var(--register-cp-primary);
+        background: var(--register-cp-primary);
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+.register-cp-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding: 16px 18px;
+    border-radius: var(--register-cp-radius);
+}
+
+.register-cp-alert-danger {
+    border: 1px solid var(--register-cp-danger-border);
+    background: var(--register-cp-danger-soft);
+    color: #7f1d1d;
+}
+
+.register-cp-validation-alert {
+    box-shadow: var(--register-cp-shadow-sm);
+}
+
+.register-cp-alert-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: var(--register-cp-danger);
+    font-size: 18px;
+}
+
+.register-cp-alert-content {
+    min-width: 0;
+    padding-top: 1px;
+}
+
+    .register-cp-alert-content > strong {
+        display: block;
+        margin-bottom: 7px;
+        color: #991b1b;
+        font-size: 14px;
+        font-weight: 750;
+    }
+
+.register-cp-error-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+    .register-cp-error-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        color: #991b1b;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+        .register-cp-error-list li i {
+            flex: 0 0 auto;
+            margin-top: 3px;
+            font-size: 11px;
+        }
+
+.register-cp-validation-fallback {
+    color: #991b1b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.register-cp-card {
+    overflow: hidden;
+    border: 1px solid var(--register-cp-border);
+    border-radius: var(--register-cp-radius-lg);
+    background: var(--register-cp-surface);
+    box-shadow: var(--register-cp-shadow);
+}
+
+.register-cp-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--register-cp-border);
+    background: linear-gradient( 180deg, #ffffff 0%, #fbfcfe 100% );
+}
+
+.register-cp-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: #eaf1f9;
+    color: var(--register-cp-primary);
+    font-size: 20px;
+}
+
+.register-cp-card-title {
+    margin: 0;
+    color: var(--register-cp-text);
+    font-size: 18px;
+    font-weight: 750;
+}
+
+.register-cp-card-description {
+    margin: 4px 0 0;
+    color: var(--register-cp-text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.register-cp-form {
+    padding: 0 24px 26px;
+}
+
+.register-cp-validation-summary {
+    display: none;
+    margin: 20px 0 0;
+    padding: 14px 16px;
+    border: 1px solid var(--register-cp-danger-border);
+    border-radius: var(--register-cp-radius);
+    background: var(--register-cp-danger-soft);
+    color: #991b1b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+    .register-cp-validation-summary:not(:empty) {
+        display: block;
+    }
+
+    .register-cp-validation-summary ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .register-cp-validation-summary li {
+        margin: 3px 0;
+    }
+
+    .register-cp-validation-summary a {
+        color: #991b1b;
+        font-weight: 600;
+    }
+
+.register-cp-section {
+    padding: 26px 0;
+    border-bottom: 1px solid var(--register-cp-border);
+}
+
+    .register-cp-section:last-of-type {
+        border-bottom: 0;
+    }
+
+.register-cp-section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 18px;
+    color: var(--register-cp-primary);
+    font-size: 15px;
+    font-weight: 750;
+}
+
+    .register-cp-section-title i {
+        color: var(--register-cp-accent);
+        font-size: 16px;
+    }
+
+.register-cp-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.register-cp-field {
+    min-width: 0;
+}
+
+.register-cp-field-full {
+    grid-column: 1 / -1;
+}
+
+.register-cp-label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--register-cp-text);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.register-cp-required {
+    color: var(--register-cp-danger);
+    font-weight: 800;
+}
+
+.register-cp-input,
+.register-cp-select {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 13px;
+    border: 1px solid var(--register-cp-border-strong);
+    border-radius: var(--register-cp-radius-sm);
+    outline: none;
+    background: #ffffff;
+    color: var(--register-cp-text);
+    font: inherit;
+    font-size: 13px;
+    transition: border-color var(--register-cp-transition), box-shadow var(--register-cp-transition), background var(--register-cp-transition);
+}
+
+    .register-cp-input::placeholder {
+        color: var(--register-cp-text-soft);
+    }
+
+    .register-cp-input:hover,
+    .register-cp-select:hover {
+        border-color: #94a3b8;
+    }
+
+    .register-cp-input:focus,
+    .register-cp-select:focus {
+        border-color: var(--register-cp-primary);
+        box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
+    }
+
+    .register-cp-input[readonly] {
+        background: var(--register-cp-surface-muted);
+        color: var(--register-cp-text-muted);
+        cursor: default;
+    }
+
+    .register-cp-input.input-validation-error,
+    .register-cp-select.input-validation-error {
+        border-color: var(--register-cp-danger);
+        background: #fffafa;
+    }
+
+        .register-cp-input.input-validation-error:focus,
+        .register-cp-select.input-validation-error:focus {
+            border-color: var(--register-cp-danger);
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+        }
+
+.register-cp-validation {
+    display: block;
+    min-height: 18px;
+    margin-top: 5px;
+    color: var(--register-cp-danger);
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 600;
+}
+
+.register-cp-password-notice {
+    display: none;
+}
+
+.register-cp-signature-description {
+    max-width: 850px;
+    margin: -6px 0 16px;
+    color: var(--register-cp-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.register-cp-signature-wrapper {
+    width: 100%;
+    max-width: 900px;
+}
+
+.register-cp-signature-box {
+    position: relative;
+    width: 100%;
+    height: 230px;
+    overflow: hidden;
+    border: 1px solid var(--register-cp-border-strong);
+    border-radius: var(--register-cp-radius);
+    background: linear-gradient( rgba(248, 250, 252, 0.75), rgba(248, 250, 252, 0.75) ), repeating-linear-gradient( 0deg, transparent, transparent 39px, rgba(148, 163, 184, 0.13) 40px );
+    box-shadow: var(--register-cp-shadow-sm);
+    transition: border-color var(--register-cp-transition), box-shadow var(--register-cp-transition);
+}
+
+    .register-cp-signature-box:focus-within {
+        border-color: var(--register-cp-primary);
+        box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.08);
+    }
+
+.register-cp-signature-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+    cursor: crosshair;
+}
+
+.register-cp-signature-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: none;
+    color: var(--register-cp-text-soft);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+    .register-cp-signature-placeholder i {
+        font-size: 17px;
+    }
+
+.register-cp-signature-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 11px;
+}
+
+.register-cp-signature-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--register-cp-text-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+    .register-cp-signature-status i {
+        color: var(--register-cp-text-soft);
+    }
+
+    .register-cp-signature-status.is-signed {
+        color: var(--register-cp-success);
+    }
+
+        .register-cp-signature-status.is-signed i {
+            color: var(--register-cp-success);
+        }
+
+.register-cp-signature-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 13px;
+    border: 1px solid var(--register-cp-border-strong);
+    border-radius: var(--register-cp-radius-sm);
+    background: #ffffff;
+    color: var(--register-cp-text-muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    transition: border-color var(--register-cp-transition), color var(--register-cp-transition), background var(--register-cp-transition);
+}
+
+    .register-cp-signature-clear:hover {
+        border-color: var(--register-cp-danger);
+        background: var(--register-cp-danger-soft);
+        color: var(--register-cp-danger);
+    }
+
+.register-cp-signature-error {
+    display: none;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--register-cp-danger-border);
+    border-radius: var(--register-cp-radius-sm);
+    background: var(--register-cp-danger-soft);
+    color: #991b1b;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+    .register-cp-signature-error.is-visible {
+        display: flex;
+    }
+
+    .register-cp-signature-error i {
+        flex: 0 0 auto;
+        margin-top: 2px;
+    }
+
+.register-cp-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+}
+
+.register-cp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: var(--register-cp-radius-sm);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: background var(--register-cp-transition), border-color var(--register-cp-transition), color var(--register-cp-transition), box-shadow var(--register-cp-transition), transform var(--register-cp-transition);
+}
+
+.register-cp-btn-secondary {
+    border: 1px solid var(--register-cp-border-strong);
+    background: #ffffff;
+    color: var(--register-cp-text-muted);
+}
+
+    .register-cp-btn-secondary:hover {
+        border-color: var(--register-cp-primary);
+        background: var(--register-cp-surface-soft);
+        color: var(--register-cp-primary);
+    }
+
+.register-cp-btn-primary {
+    border: 1px solid var(--register-cp-primary);
+    background: var(--register-cp-primary);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(11, 37, 69, 0.14);
+}
+
+    .register-cp-btn-primary:hover {
+        border-color: var(--register-cp-primary-dark);
+        background: var(--register-cp-primary-dark);
+        color: #ffffff;
+        box-shadow: 0 6px 14px rgba(11, 37, 69, 0.2);
+        transform: translateY(-1px);
+    }
+
+.register-cp-btn:focus-visible,
+.register-cp-back:focus-visible,
+.register-cp-signature-clear:focus-visible {
+    outline: 3px solid rgba(42, 127, 94, 0.25);
+    outline-offset: 2px;
+}
+
+.register-cp-footer-note {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    margin: 13px 0 0;
+    color: var(--register-cp-text-soft);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+    .register-cp-footer-note i {
+        font-size: 12px;
+    }
+
+@media (max-width: 900px) {
+    .register-cp-page {
+        padding: 22px 18px;
+    }
+
+   
+    .register-cp-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .register-cp-back {
+        width: 100%;
+    }
+
+    .register-cp-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .register-cp-field-full {
+        grid-column: auto;
+    }
+
+    .register-cp-signature-wrapper {
+        max-width: none;
+    }
+
+   
+}
+
+@media (max-width: 600px) {
+    .register-cp-page {
+        padding: 16px 12px;
+    }
+
+   
+    .register-cp-header {
+        margin-bottom: 18px;
+    }
+
+    .register-cp-heading {
+        font-size: 25px;
+    }
+
+    .register-cp-subtitle {
+        font-size: 13px;
+    }
+
+    .register-cp-card {
+        border-radius: 12px;
+    }
+
+    .register-cp-card-header {
+        padding: 18px;
+    }
+
+    .register-cp-card-icon {
+        flex-basis: 42px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .register-cp-form {
+        padding: 0 16px 20px;
+    }
+
+    .register-cp-section {
+        padding: 22px 0;
+    }
+
+    .register-cp-grid {
+        gap: 15px;
+    }
+
+    .register-cp-signature-box {
+        height: 200px;
+    }
+
+    .register-cp-signature-controls {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .register-cp-signature-clear {
+        width: 100%;
+    }
+
+    .register-cp-form-footer {
+        flex-direction: column-reverse;
+    }
+
+    .register-cp-btn {
+        width: 100%;
+    }
+
+    .register-cp-footer-note {
+        justify-content: flex-start;
+    }
+
+    .register-cp-alert {
+        padding: 13px;
+    }
+
+   
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .register-cp-back,
+    .register-cp-btn,
+    .register-cp-input,
+    .register-cp-select,
+    .register-cp-signature-box,
+    .register-cp-signature-clear {
+        transition: none;
+    }
+}

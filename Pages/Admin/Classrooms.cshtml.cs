@@ -11,7 +11,8 @@ public class ClassroomsModel : PageModel
 {
     private readonly ApplicationDbContext _context;
 
-    public ClassroomsModel(ApplicationDbContext context)
+
+public ClassroomsModel(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -60,10 +61,15 @@ public class ClassroomsModel : PageModel
 
         TotalClassrooms = Classrooms.Count;
 
-        AvailableClassrooms = Classrooms.Count(r => r.IsAvailable);
+        AvailableClassrooms =
+            Classrooms.Count(r => r.IsAvailable);
 
-        UnavailableClassrooms = Classrooms.Count(r => !r.IsAvailable);
+        UnavailableClassrooms =
+            Classrooms.Count(r => !r.IsAvailable);
 
-        TotalCapacity = Classrooms.Sum(r => r.Capacity);
+        TotalCapacity =
+            Classrooms.Sum(r => r.Capacity);
     }
+
+
 }

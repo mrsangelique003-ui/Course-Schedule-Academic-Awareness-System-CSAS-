@@ -1,0 +1,395 @@
+@model CourseScheduleSystem.Web.Pages.Admin.ClassRepresentativesModel
+
+@*
+Partial view for displaying the class representatives table.
+*@
+
+@if (Model.ClassRepresentatives.Count == 0)
+{
+@* Empty state shown when there are no representatives to display. *@ <div class="cp-empty-state">
+
+
+    <div class="cp-empty-icon">
+        <i class="bi bi-people"></i>
+    </div>
+
+    <h3>
+        @(Model.IsFiltered
+            ? "No representatives found"
+            : "No class representatives yet")
+    </h3>
+
+    <p>
+        @(Model.IsFiltered
+            ? "Try adjusting your search or status filter."
+            : "Register a class representative to see them here.")
+    </p>
+
+    @* Show the registration button only when no filters are active. *@
+    @if (!Model.IsFiltered)
+    {
+        <a asp-page="/Admin/RegisterClassRepresentative"
+           class="cp-primary-button">
+            <i class="bi bi-person-plus-fill"></i>
+            Register Representative
+        </a>
+    }
+
+</div>
+
+
+}
+else
+{
+@* Main representatives table. *@ <div class="cp-table-wrapper">
+
+
+    <table class="cp-table">
+
+        <thead>
+            <tr>
+                <th>Representative</th>
+                <th>Reg. No.</th>
+                <th>Academic Information</th>
+                <th>Intake</th>
+                <th>Session</th>
+                <th>Status</th>
+                <th class="cp-action-column">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @* Render each class representative as a table row. *@
+            @foreach (var representative in Model.ClassRepresentatives)
+            {
+                <tr data-status="@(representative.IsActive ? "active" : "inactive")">
+
+                    @* Representative name, avatar, email, and phone number. *@
+                    <td>
+                        <div class="cp-representative">
+
+                            <div class="cp-avatar">
+
+                                @*
+                                    Generate initials from the first two words
+                                    of the representative's full name.
+                                *@
+                                @{
+                                    var initials = string.Join(
+                                        "",
+                                        representative.FullName
+                                            .Split(
+                                                ' ',
+                                                StringSplitOptions.RemoveEmptyEntries)
+                                            .Take(2)
+                                            .Select(x => x[0]))
+                                            .ToUpperInvariant();
+                                }
+
+                                @initials
+
+                            </div>
+
+                            <div class="cp-representative-info">
+
+                                <strong>
+                                    @representative.FullName
+                                </strong>
+
+                                @* Display email when available. *@
+                                @if (!string.IsNullOrWhiteSpace(representative.Email))
+                                {
+                                    <span>
+                                        <i class="bi bi-envelope"></i>
+                                        @representative.Email
+                                    </span>
+                                }
+
+                                @* Display phone number when available. *@
+                                @if (!string.IsNullOrWhiteSpace(representative.PhoneNumber))
+                                {
+                                    <span>
+                                        <i class="bi bi-telephone"></i>
+                                        @representative.PhoneNumber
+                                    </span>
+                                }
+
+                            </div>
+
+                        </div>
+                    </td>
+
+                    @* Registration number. *@
+                    <td>
+                        <span class="cp-reg-number">
+                            @representative.RegNo
+                        </span>
+                    </td>
+
+                    @* Department, faculty, and academic level. *@
+                    <td>
+                        <div class="cp-academic-info">
+
+                            <strong>
+                                @representative.Department
+                            </strong>
+
+                            <span>
+                                @representative.Faculty
+                            </span>
+
+                            <small>
+                                @representative.Level
+                            </small>
+
+                        </div>
+                    </td>
+
+                    @* Intake information. *@
+                    <td>
+                        <span class="cp-info-badge cp-intake-badge">
+                            <i class="bi bi-calendar3"></i>
+                            @representative.Intake
+                        </span>
+                    </td>
+
+                    @* Study session information. *@
+                    <td>
+                        <span class="cp-info-badge">
+                            <i class="bi bi-clock"></i>
+                            @representative.StudySession
+                        </span>
+                    </td>
+
+                    @* Active or inactive account status. *@
+                    <td>
+                        @if (representative.IsActive)
+                        {
+                            <span class="cp-status-badge cp-status-active">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Active
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="cp-status-badge cp-status-inactive">
+                                <i class="bi bi-x-circle-fill"></i>
+                                Inactive
+                            </span>
+                        }
+                    </td>
+
+                    @* View, edit, and delete actions. *@
+                    <td>
+
+                        <div class="cp-actions">
+
+                            @* View representative details. *@
+                            <a asp-page="/Admin/ClassRepresentativeDetails"
+                               asp-route-id="@representative.Id"
+                               class="cp-action-button cp-action-view"
+                               title="View details"
+                               aria-label="View @representative.FullName">
+                                <i class="bi bi-eye"></i>
+                            </a>
+
+                            @* Open the edit modal and pass representative data through data attributes. *@
+                            <button type="button"
+                                    class="cp-action-button cp-action-edit"
+                                    title="Edit representative"
+                                    aria-label="Edit @representative.FullName"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editRepresentativeModal"
+                                    data-id="@representative.Id"
+                                    data-regno="@representative.RegNo"
+                                    data-fullname="@representative.FullName"
+                                    data-email="@representative.Email"
+                                    data-phone="@representative.PhoneNumber"
+                                    data-department="@representative.Department"
+                                    data-intake="@representative.Intake"
+                                    data-level="@representative.Level"
+                                    data-session="@representative.StudySession"
+                                    data-faculty="@representative.Faculty">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+                            @* Submit a POST request to delete the representative. *@
+                            <form method="post"
+                                  asp-page-handler="Delete"
+                                  asp-route-id="@representative.Id"
+                                  class="cp-delete-form">
+
+                                @* Preserve the current search filter. *@
+                                <input type="hidden"
+                                       name="Search"
+                                       value="@Model.Search" />
+
+                                @* Preserve the current status filter. *@
+                                <input type="hidden"
+                                       name="Status"
+                                       value="@Model.Status" />
+
+                                @* Preserve the current pagination page. *@
+                                <input type="hidden"
+                                       name="PageNumber"
+                                       value="@Model.PageNumber" />
+
+                                <button type="submit"
+                                        class="cp-action-button cp-action-delete"
+                                        title="Delete representative"
+                                        aria-label="Delete @representative.FullName">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+@* Table footer containing record count and pagination. *@
+<div class="cp-table-footer">
+
+    @* Display the number of records currently shown. *@
+    <div class="cp-pagination-info"
+         data-record-count="@($"{Model.TotalRepresentatives} record{(Model.TotalRepresentatives == 1 ? "" : "s")}")">
+
+        Showing
+        <strong>@Model.ClassRepresentatives.Count</strong>
+        of
+        <strong>@Model.TotalRepresentatives</strong>
+        representatives
+
+    </div>
+
+    @* Pagination is displayed only when there is more than one page. *@
+    @if (Model.TotalPages > 1)
+    {
+        <nav class="cp-pagination"
+             aria-label="Class representative pages">
+
+            @* Previous page button. *@
+            @if (Model.HasPreviousPage)
+            {
+                <a asp-page="/Admin/ClassRepresentatives"
+                   asp-route-Search="@Model.Search"
+                   asp-route-Status="@Model.Status"
+                   asp-route-PageNumber="@(Model.PageNumber - 1)"
+                   class="cp-page-button"
+                   aria-label="Previous page">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            }
+            else
+            {
+                <span class="cp-page-button disabled"
+                      aria-disabled="true">
+                    <i class="bi bi-chevron-left"></i>
+                </span>
+            }
+
+            @* Calculate the range of page numbers surrounding the current page. *@
+            @{
+                var startPage = Math.Max(1, Model.PageNumber - 2);
+                var endPage = Math.Min(Model.TotalPages, Model.PageNumber + 2);
+            }
+
+            @* Display the first page and an ellipsis when necessary. *@
+            @if (startPage > 1)
+            {
+                <a asp-page="/Admin/ClassRepresentatives"
+                   asp-route-Search="@Model.Search"
+                   asp-route-Status="@Model.Status"
+                   asp-route-PageNumber="1"
+                   class="cp-page-button">
+                    1
+                </a>
+
+                @if (startPage > 2)
+                {
+                    <span class="cp-pagination-dots">
+                        ...
+                    </span>
+                }
+            }
+
+            @* Display the calculated page-number range. *@
+            @for (var pageNumber = startPage;
+                  pageNumber <= endPage;
+                  pageNumber++)
+            {
+                @if (pageNumber == Model.PageNumber)
+                {
+                    <span class="cp-page-button active"
+                          aria-current="page">
+                        @pageNumber
+                    </span>
+                }
+                else
+                {
+                    <a asp-page="/Admin/ClassRepresentatives"
+                       asp-route-Search="@Model.Search"
+                       asp-route-Status="@Model.Status"
+                       asp-route-PageNumber="@pageNumber"
+                       class="cp-page-button">
+                        @pageNumber
+                    </a>
+                }
+            }
+
+            @* Display the final page and an ellipsis when necessary. *@
+            @if (endPage < Model.TotalPages)
+            {
+                @if (endPage < Model.TotalPages - 1)
+                {
+                    <span class="cp-pagination-dots">
+                        ...
+                    </span>
+                }
+
+                <a asp-page="/Admin/ClassRepresentatives"
+                   asp-route-Search="@Model.Search"
+                   asp-route-Status="@Model.Status"
+                   asp-route-PageNumber="@Model.TotalPages"
+                   class="cp-page-button">
+                    @Model.TotalPages
+                </a>
+            }
+
+            @* Next page button. *@
+            @if (Model.HasNextPage)
+            {
+                <a asp-page="/Admin/ClassRepresentatives"
+                   asp-route-Search="@Model.Search"
+                   asp-route-Status="@Model.Status"
+                   asp-route-PageNumber="@(Model.PageNumber + 1)"
+                   class="cp-page-button"
+                   aria-label="Next page">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            }
+            else
+            {
+                <span class="cp-page-button disabled"
+                      aria-disabled="true">
+                    <i class="bi bi-chevron-right"></i>
+                </span>
+            }
+
+        </nav>
+    }
+
+</div>
+
+
+}
