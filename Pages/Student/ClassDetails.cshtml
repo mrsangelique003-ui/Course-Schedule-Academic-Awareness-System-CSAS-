@@ -1,0 +1,838 @@
+@page "{id:int}"
+@model CourseScheduleSystem.Web.Pages.Student.ClassDetailsModel
+@using CourseScheduleSystem.Web.Models
+
+@{
+ViewData["Title"] = "Class Details";
+}
+
+<link rel="stylesheet" href="~/css/Student/ClassDetails.css" asp-append-version="true" />
+
+<div class="page-shell">
+
+
+<div class="page-header">
+
+    <a asp-page="/Student/Classrooms" class="back-link">
+        <i class="bi bi-arrow-left"></i>
+        <span>Back to Classrooms</span>
+    </a>
+
+    <div class="header-content">
+
+        <div>
+            <span class="eyebrow">
+                <i class="bi bi-building"></i>
+                Classroom Details
+            </span>
+
+            <h1>
+                @(Model.Room.Building) — @(Model.Room.RoomNumber)
+            </h1>
+
+            <p>
+                View all courses assigned to this classroom, including the
+                weekly timetable, lecturers, class representatives,
+                academic information and WhatsApp class groups.
+            </p>
+        </div>
+
+        @if (Model.Room != null)
+        {
+            <div class="room-status-card">
+
+                <span class="room-status-label">Room Status</span>
+
+                <span class="room-status @(Model.Room.IsAvailable ? "available" : "unavailable")">
+                    <span class="status-dot"></span>
+
+                    @(Model.Room.IsAvailable ? "Available" : "Unavailable")
+                </span>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+@if (Model.Room == null)
+{
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            <i class="bi bi-building-x"></i>
+        </div>
+
+        <h2>Classroom Not Found</h2>
+
+        <p>
+            The classroom you are trying to view does not exist or is no
+            longer available.
+        </p>
+
+        <a asp-page="/Student/Classrooms" class="primary-button">
+            <i class="bi bi-arrow-left"></i>
+            Back to Classrooms
+        </a>
+
+    </div>
+}
+else
+{
+    <section class="room-summary">
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-door-open"></i>
+            </div>
+
+            <div>
+                <span>Room</span>
+                <strong>@Model.Room.RoomNumber</strong>
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-building"></i>
+            </div>
+
+            <div>
+                <span>Building</span>
+                <strong>@Model.Room.Building</strong>
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-people"></i>
+            </div>
+
+            <div>
+                <span>Capacity</span>
+                <strong>@Model.Room.Capacity</strong>
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-grid-3x3-gap"></i>
+            </div>
+
+            <div>
+                <span>Room Type</span>
+                <strong>@(Model.Room.RoomType ?? "General Classroom")</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="filter-panel">
+
+        <div class="filter-panel-header">
+
+            <div>
+                <span class="section-eyebrow">
+                    <i class="bi bi-funnel"></i>
+                    Timetable Filters
+                </span>
+
+                <h2>Find Classes</h2>
+
+                <p>
+                    Filter the classroom timetable without leaving this page.
+                </p>
+            </div>
+
+            <div class="result-counter">
+                <strong id="resultCount">@Model.TotalFilteredClasses</strong>
+                <span>classes</span>
+            </div>
+
+        </div>
+
+        <div class="filter-controls">
+
+            <div class="search-control">
+
+                <label for="classSearch">
+                    Search
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="bi bi-search"></i>
+
+                    <input type="search"
+                           id="classSearch"
+                           placeholder="Course, lecturer, intake, level or CP..."
+                           autocomplete="off" />
+
+                    <button type="button"
+                            id="clearSearch"
+                            class="clear-search"
+                            aria-label="Clear search">
+
+                        <i class="bi bi-x"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="filter-control">
+
+                <label for="sessionFilter">
+                    Study Session
+                </label>
+
+                <select id="sessionFilter">
+
+                    <option value="All">All Sessions</option>
+                    <option value="Day">Day</option>
+                    <option value="Evening">Evening</option>
+                    <option value="Weekend">Weekend</option>
+
+                </select>
+
+            </div>
+
+            <div class="filter-control">
+
+                <label for="dayFilter">
+                    Day
+                </label>
+
+                <select id="dayFilter">
+
+                    <option value="All">All Days</option>
+
+                    @foreach (var day in Model.Days)
+                    {
+                        <option value="@day">@day</option>
+                    }
+
+                </select>
+
+            </div>
+
+            <button type="button"
+                    id="resetFilters"
+                    class="reset-button">
+
+                <i class="bi bi-arrow-counterclockwise"></i>
+                Reset
+
+            </button>
+
+        </div>
+
+        <div class="quick-filters">
+
+            <span>Quick filter:</span>
+
+            <button type="button"
+                    class="quick-filter active"
+                    data-session="All">
+                All
+            </button>
+
+            <button type="button"
+                    class="quick-filter"
+                    data-session="Day">
+                Day
+            </button>
+
+            <button type="button"
+                    class="quick-filter"
+                    data-session="Evening">
+                Evening
+            </button>
+
+            <button type="button"
+                    class="quick-filter"
+                    data-session="Weekend">
+                Weekend
+            </button>
+
+        </div>
+
+    </section>
+
+    <section class="timetable-section">
+
+        <div class="timetable-header">
+
+            <div>
+                <span class="section-eyebrow">
+                    <i class="bi bi-calendar3"></i>
+                    Weekly Timetable
+                </span>
+
+                <h2>
+                    Classes Assigned to @Model.Room.RoomNumber
+                </h2>
+
+                <p id="filterSummary">
+                    Showing all active classes assigned to this classroom.
+                </p>
+            </div>
+
+        </div>
+
+        <div id="timetableResults">
+
+            @foreach (var dayGroup in Model.WeeklyTimetable)
+            {
+                <section class="day-section"
+                         data-day="@dayGroup.DayName">
+
+                    <div class="day-header">
+
+                        <div class="day-title">
+
+                            <div class="day-icon">
+                                <i class="bi bi-calendar-day"></i>
+                            </div>
+
+                            <div>
+                                <span>Day</span>
+                                <h3>@dayGroup.DayName</h3>
+                            </div>
+
+                        </div>
+
+                        <span class="day-class-count">
+                            @dayGroup.Classes.Count
+                            @(dayGroup.Classes.Count == 1 ? "Class" : "Classes")
+                        </span>
+
+                    </div>
+
+                    <div class="classes-list">
+
+                        @foreach (var item in dayGroup.Classes)
+                        {
+                            <article class="class-card"
+                                     data-session="@item.StudySession"
+                                     data-day="@item.DayOfWeek"
+                                     data-search="@string.Join(" ", new[]
+                                     {
+                                         item.CourseCode,
+                                         item.CourseName,
+                                         item.LecturerName,
+                                         item.Intake,
+                                         item.Level,
+                                         item.ClassRepresentativeName,
+                                         item.ClassRepresentativeRegNo,
+                                         item.ClassRepresentativePhoneNumber
+                                     })">
+
+                                <div class="class-time-column">
+
+                                    <strong>
+                                        @item.StartTime.ToString("hh\\:mm")
+                                    </strong>
+
+                                    <span>
+                                        @item.EndTime.ToString("hh\\:mm")
+                                    </span>
+
+                                </div>
+
+                                <div class="class-content">
+
+                                    <div class="class-title-row">
+
+                                        <div>
+
+                                            <span class="course-code">
+                                                @item.CourseCode
+                                            </span>
+
+                                            <h3>
+                                                @item.CourseName
+                                            </h3>
+
+                                        </div>
+
+                                        <span class="session-badge @item.SessionClass">
+                                            @item.StudySession
+                                        </span>
+
+                                    </div>
+
+                                    <div class="class-details-grid">
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-person-video3"></i>
+
+                                            <div>
+                                                <span>Lecturer</span>
+
+                                                <strong>
+                                                    @item.LecturerName
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-person-badge"></i>
+
+                                            <div>
+                                                <span>Class Representative</span>
+
+                                                <strong>
+                                                    @item.ClassRepresentativeName
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-card-text"></i>
+
+                                            <div>
+                                                <span>CP Registration</span>
+
+                                                <strong>
+                                                    @item.ClassRepresentativeRegNo
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-telephone"></i>
+
+                                            <div>
+                                                <span>CP Phone</span>
+
+                                                @if (!string.IsNullOrWhiteSpace(item.ClassRepresentativePhoneNumber) &&
+                                                     item.ClassRepresentativePhoneNumber != "Phone not available")
+                                                {
+                                                    <a href="tel:@item.ClassRepresentativePhoneNumber">
+                                                        @item.ClassRepresentativePhoneNumber
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <strong>Phone not available</strong>
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-calendar3"></i>
+
+                                            <div>
+                                                <span>Intake</span>
+
+                                                <strong>
+                                                    @item.Intake
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-mortarboard"></i>
+
+                                            <div>
+                                                <span>Level</span>
+
+                                                <strong>
+                                                    @item.Level
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-building"></i>
+
+                                            <div>
+                                                <span>Classroom</span>
+
+                                                <strong>
+                                                    @(item.Building) — @(item.RoomNumber)
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="class-detail">
+
+                                            <i class="bi bi-clock"></i>
+
+                                            <div>
+                                                <span>Study Session</span>
+
+                                                <strong>
+                                                    @item.StudySession
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(item.Notes))
+                                    {
+                                        <div class="class-notes">
+
+                                            <i class="bi bi-info-circle"></i>
+
+                                            <span>
+                                                @item.Notes
+                                            </span>
+
+                                        </div>
+                                    }
+
+                                    <div class="class-actions">
+
+                                        @if (!string.IsNullOrWhiteSpace(item.WhatsAppGroupLink))
+                                        {
+                                            <a href="@item.WhatsAppGroupLink"
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               class="whatsapp-button">
+
+                                                <i class="bi bi-whatsapp"></i>
+                                                Join WhatsApp Group
+
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="no-group">
+                                                <i class="bi bi-chat-dots"></i>
+                                                No WhatsApp group available
+                                            </span>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+                        }
+
+                    </div>
+
+                </section>
+            }
+
+        </div>
+
+        <div id="noFilterResults"
+             class="filter-empty"
+             hidden>
+
+            <div class="empty-icon">
+                <i class="bi bi-search"></i>
+            </div>
+
+            <h2>No Matching Classes</h2>
+
+            <p>
+                No classes in this classroom match the selected filters.
+                Try changing the search, session, or day.
+            </p>
+
+            <button type="button"
+                    id="emptyResetFilters"
+                    class="reset-button">
+
+                <i class="bi bi-arrow-counterclockwise"></i>
+                Reset Filters
+
+            </button>
+
+        </div>
+
+    </section>
+}
+
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput = document.getElementById("classSearch");
+        const sessionFilter = document.getElementById("sessionFilter");
+        const dayFilter = document.getElementById("dayFilter");
+        const clearSearch = document.getElementById("clearSearch");
+        const resetFilters = document.getElementById("resetFilters");
+        const emptyResetFilters = document.getElementById("emptyResetFilters");
+
+        const resultCount = document.getElementById("resultCount");
+        const filterSummary = document.getElementById("filterSummary");
+        const noFilterResults = document.getElementById("noFilterResults");
+
+        const classCards = Array.from(
+            document.querySelectorAll(".class-card")
+        );
+
+        const daySections = Array.from(
+            document.querySelectorAll(".day-section")
+        );
+
+        const quickFilters = Array.from(
+            document.querySelectorAll(".quick-filter")
+        );
+
+        function normalize(value) {
+            return (value || "")
+                .toString()
+                .trim()
+                .toLowerCase();
+        }
+
+        function updateQuickFilters() {
+
+            const currentSession = sessionFilter.value;
+
+            quickFilters.forEach(button => {
+
+                const buttonSession =
+                    button.dataset.session || "All";
+
+                button.classList.toggle(
+                    "active",
+                    buttonSession === currentSession
+                );
+
+            });
+        }
+
+        function updateClearButton() {
+
+            const hasSearch =
+                searchInput.value.trim().length > 0;
+
+            clearSearch.classList.toggle(
+                "visible",
+                hasSearch
+            );
+        }
+
+        function updateSummary(count) {
+
+            const session =
+                sessionFilter.value;
+
+            const day =
+                dayFilter.value;
+
+            const search =
+                searchInput.value.trim();
+
+            let summary = "Showing ";
+
+            if (session !== "All") {
+                summary += session.toLowerCase() + " ";
+            }
+
+            if (day !== "All") {
+                summary += day + " ";
+            }
+
+            summary +=
+                count === 1
+                    ? "class"
+                    : "classes";
+
+            summary +=
+                " assigned to this classroom";
+
+            if (search) {
+                summary +=
+                    ` matching "${search}"`;
+            }
+
+            summary += ".";
+
+            filterSummary.textContent = summary;
+        }
+
+        function applyFilters() {
+
+            const search =
+                normalize(searchInput.value);
+
+            const session =
+                sessionFilter.value;
+
+            const day =
+                dayFilter.value;
+
+            let visibleCount = 0;
+
+            classCards.forEach(card => {
+
+                const cardSession =
+                    card.dataset.session || "";
+
+                const cardDay =
+                    card.dataset.day || "";
+
+                const cardSearch =
+                    normalize(card.dataset.search);
+
+                const matchesSession =
+                    session === "All" ||
+                    cardSession === session;
+
+                const matchesDay =
+                    day === "All" ||
+                    cardDay === day;
+
+                const matchesSearch =
+                    !search ||
+                    cardSearch.includes(search);
+
+                const visible =
+                    matchesSession &&
+                    matchesDay &&
+                    matchesSearch;
+
+                card.hidden = !visible;
+
+                if (visible) {
+                    visibleCount++;
+                }
+            });
+
+            daySections.forEach(section => {
+
+                const visibleClasses =
+                    section.querySelectorAll(
+                        ".class-card:not([hidden])"
+                    ).length;
+
+                section.hidden =
+                    visibleClasses === 0;
+
+                const countElement =
+                    section.querySelector(
+                        ".day-class-count"
+                    );
+
+                if (countElement) {
+
+                    countElement.textContent =
+                        visibleClasses +
+                        (visibleClasses === 1
+                            ? " Class"
+                            : " Classes");
+                }
+            });
+
+            resultCount.textContent =
+                visibleCount;
+
+            noFilterResults.hidden =
+                visibleCount !== 0;
+
+            updateClearButton();
+            updateQuickFilters();
+            updateSummary(visibleCount);
+        }
+
+        searchInput.addEventListener(
+            "input",
+            applyFilters
+        );
+
+        sessionFilter.addEventListener(
+            "change",
+            applyFilters
+        );
+
+        dayFilter.addEventListener(
+            "change",
+            applyFilters
+        );
+
+        clearSearch.addEventListener(
+            "click",
+            function () {
+
+                searchInput.value = "";
+
+                applyFilters();
+
+                searchInput.focus();
+            }
+        );
+
+        resetFilters.addEventListener(
+            "click",
+            function () {
+
+                searchInput.value = "";
+                sessionFilter.value = "All";
+                dayFilter.value = "All";
+
+                applyFilters();
+            }
+        );
+
+        if (emptyResetFilters) {
+
+            emptyResetFilters.addEventListener(
+                "click",
+                function () {
+
+                    searchInput.value = "";
+                    sessionFilter.value = "All";
+                    dayFilter.value = "All";
+
+                    applyFilters();
+                }
+            );
+        }
+
+        quickFilters.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const session =
+                        this.dataset.session || "All";
+
+                    sessionFilter.value =
+                        session;
+
+                    applyFilters();
+                }
+            );
+        });
+
+        applyFilters();
+    });
+</script>

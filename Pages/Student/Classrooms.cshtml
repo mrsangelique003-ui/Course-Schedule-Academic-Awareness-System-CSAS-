@@ -31,7 +31,6 @@ ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
 
 </div>
 
-
 <div class="stats-grid">
 
     <div class="stat-card">
@@ -45,7 +44,6 @@ ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
         </div>
     </div>
 
-
     <div class="stat-card">
         <div class="stat-icon">
             <i class="bi bi-door-open"></i>
@@ -57,7 +55,6 @@ ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
         </div>
     </div>
 
-
     <div class="stat-card">
         <div class="stat-icon">
             <i class="bi bi-person-workspace"></i>
@@ -68,7 +65,6 @@ ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
             <strong>@Model.OccupiedClassrooms</strong>
         </div>
     </div>
-
 
     <div class="stat-card">
         <div class="stat-icon">
@@ -82,7 +78,6 @@ ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
     </div>
 
 </div>
-
 
 <div class="toolbar">
 
@@ -103,7 +98,6 @@ ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
         </button>
 
     </div>
-
 
     <div class="filter-group">
 
@@ -134,7 +128,6 @@ ViewData["StudentId"] = Model.CurrentStudent?.RegNo ?? "—";
     </div>
 
 </div>
-
 
 @if (Model.Classrooms.Count == 0)
 {
@@ -205,7 +198,6 @@ else
 
                     </div>
 
-
                     <span class="status-badge @statusClass">
 
                         <span class="status-dot"></span>
@@ -216,7 +208,6 @@ else
 
                 </div>
 
-
                 <div class="classroom-location">
 
                     <i class="bi bi-geo-alt"></i>
@@ -226,7 +217,6 @@ else
                     </span>
 
                 </div>
-
 
                 <div class="classroom-details">
 
@@ -240,7 +230,6 @@ else
                         </div>
 
                     </div>
-
 
                     <div class="detail-item">
 
@@ -259,7 +248,6 @@ else
 
                     </div>
 
-
                     <div class="detail-item">
 
                         <i class="bi bi-calendar-week"></i>
@@ -273,7 +261,6 @@ else
                         </div>
 
                     </div>
-
 
                     <div class="detail-item">
 
@@ -290,7 +277,6 @@ else
                     </div>
 
                 </div>
-
 
                 @if (classroom.CurrentClass != null)
                 {
@@ -309,7 +295,6 @@ else
 
                         </div>
 
-
                         <div class="class-date">
 
                             <i class="bi bi-calendar3"></i>
@@ -321,7 +306,6 @@ else
                             </div>
 
                         </div>
-
 
                         <div class="class-main">
 
@@ -335,7 +319,6 @@ else
 
                         </div>
 
-
                         <div class="class-time">
 
                             <i class="bi bi-clock"></i>
@@ -347,7 +330,6 @@ else
                             </strong>
 
                         </div>
-
 
                         <div class="class-meta">
 
@@ -365,7 +347,6 @@ else
 
                         </div>
 
-
                         <div class="class-academic-details">
 
                             <div class="academic-detail">
@@ -378,7 +359,6 @@ else
 
                             </div>
 
-
                             <div class="academic-detail">
 
                                 <span>Level</span>
@@ -388,7 +368,6 @@ else
                                 </strong>
 
                             </div>
-
 
                             <div class="academic-detail">
 
@@ -401,21 +380,6 @@ else
                             </div>
 
                         </div>
-
-
-                        @if (!string.IsNullOrWhiteSpace(
-                            classroom.CurrentClass.Notes))
-                        {
-                            <div class="class-notes">
-
-                                <i class="bi bi-info-circle"></i>
-
-                                <span>
-                                    @classroom.CurrentClass.Notes
-                                </span>
-
-                            </div>
-                        }
 
                     </div>
                 }
@@ -436,7 +400,6 @@ else
 
                         </div>
 
-
                         <div class="class-date">
 
                             <i class="bi bi-calendar3"></i>
@@ -448,7 +411,6 @@ else
                             </div>
 
                         </div>
-
 
                         <div class="class-main">
 
@@ -462,7 +424,6 @@ else
 
                         </div>
 
-
                         <div class="class-time">
 
                             <i class="bi bi-clock"></i>
@@ -474,7 +435,6 @@ else
                             </strong>
 
                         </div>
-
 
                         <div class="class-meta">
 
@@ -492,7 +452,6 @@ else
 
                         </div>
 
-
                         <div class="class-academic-details">
 
                             <div class="academic-detail">
@@ -505,7 +464,6 @@ else
 
                             </div>
 
-
                             <div class="academic-detail">
 
                                 <span>Level</span>
@@ -515,7 +473,6 @@ else
                                 </strong>
 
                             </div>
-
 
                             <div class="academic-detail">
 
@@ -528,21 +485,6 @@ else
                             </div>
 
                         </div>
-
-
-                        @if (!string.IsNullOrWhiteSpace(
-                            classroom.NextClass.Notes))
-                        {
-                            <div class="class-notes">
-
-                                <i class="bi bi-info-circle"></i>
-
-                                <span>
-                                    @classroom.NextClass.Notes
-                                </span>
-
-                            </div>
-                        }
 
                     </div>
                 }
@@ -558,7 +500,6 @@ else
                             </span>
 
                         </div>
-
 
                         <div class="free-message">
 
@@ -576,94 +517,22 @@ else
                     </div>
                 }
 
+                <div class="classroom-action">
 
-                @if (classroom.ScheduleEntries.Count > 0)
-                {
-                    <div class="weekly-schedule">
+                    <a asp-page="/Student/ClassDetails"
+                       asp-route-id="@classroom.Id"
+                       class="view-details-button">
 
-                        <div class="weekly-schedule-header">
+                        <span>
+                            <i class="bi bi-calendar3"></i>
+                            View Class Details
+                        </span>
 
-                            <span>
-                                <i class="bi bi-calendar-week"></i>
-                                Weekly Schedule
-                            </span>
+                        <i class="bi bi-arrow-right"></i>
 
-                            <strong>
-                                @classroom.ScheduleEntries.Count
-                                @(classroom.ScheduleEntries.Count == 1
-                                    ? "class"
-                                    : "classes")
-                            </strong>
+                    </a>
 
-                        </div>
-
-
-                        <div class="weekly-schedule-list">
-
-                            @foreach (var schedule in classroom.ScheduleEntries)
-                            {
-                                <div class="weekly-class">
-
-                                    <div class="weekly-class-day">
-
-                                        <span>
-                                            @schedule.DayOfWeek
-                                        </span>
-
-                                        <strong>
-                                            @schedule.StartTime.ToString("HH:mm")
-                                            –
-                                            @schedule.EndTime.ToString("HH:mm")
-                                        </strong>
-
-                                    </div>
-
-
-                                    <div class="weekly-class-course">
-
-                                        <strong>
-                                            @schedule.CourseCode
-                                        </strong>
-
-                                        <span>
-                                            @schedule.CourseName
-                                        </span>
-
-                                    </div>
-
-
-                                    <div class="weekly-class-info">
-
-                                        <span>
-                                            <i class="bi bi-person"></i>
-                                            @schedule.LecturerName
-                                        </span>
-
-                                        <span>
-                                            <i class="bi bi-calendar3"></i>
-                                            @schedule.Intake
-                                        </span>
-
-                                        <span>
-                                            <i class="bi bi-mortarboard"></i>
-                                            @schedule.Level
-                                        </span>
-
-                                        <span>
-                                            <i class="bi bi-clock"></i>
-                                            @schedule.StudySession
-                                        </span>
-
-                                    </div>
-
-                                </div>
-                            }
-
-                        </div>
-
-                    </div>
-                }
-
+                </div>
 
                 <div class="classroom-footer">
 
@@ -682,7 +551,6 @@ else
         }
 
     </div>
-
 
     <div class="no-results"
          id="noResults"
@@ -742,7 +610,6 @@ else
 
         let activeFilter = "all";
 
-
         function filterClassrooms() {
 
             const query =
@@ -751,7 +618,6 @@ else
                     .toLowerCase();
 
             let visibleCount = 0;
-
 
             cards.forEach(function (card) {
 
@@ -771,7 +637,6 @@ else
                 const shouldShow =
                     matchesSearch &&
                     matchesFilter;
-
 
                 if (shouldShow) {
 
@@ -799,14 +664,12 @@ else
 
             });
 
-
             if (noResults) {
 
                 noResults.hidden =
                     visibleCount !== 0;
 
             }
-
 
             if (clearSearch) {
 
@@ -819,7 +682,6 @@ else
 
         }
 
-
         if (searchInput) {
 
             searchInput.addEventListener(
@@ -828,7 +690,6 @@ else
             );
 
         }
-
 
         if (clearSearch) {
 
@@ -864,7 +725,6 @@ else
 
         }
 
-
         filterButtons.forEach(
             function (button) {
 
@@ -893,7 +753,6 @@ else
 
             }
         );
-
 
         if (resetSearch) {
 
@@ -928,7 +787,6 @@ else
             );
 
         }
-
 
         filterClassrooms();
 

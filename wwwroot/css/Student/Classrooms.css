@@ -673,123 +673,63 @@
         line-height: 1.5;
     }
 
-.weekly-schedule {
+.classroom-action {
     margin: 0 20px 17px;
-    overflow: hidden;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    background: #fbfcfe;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-light);
 }
 
-.weekly-schedule-header {
+.view-details-button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    padding: 11px 13px;
-    border-bottom: 1px solid var(--border-light);
-}
-
-    .weekly-schedule-header span {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: var(--text-muted);
-        font-size: 9px;
-        font-weight: 800;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-    }
-
-    .weekly-schedule-header i {
-        color: var(--accent);
-    }
-
-    .weekly-schedule-header strong {
-        color: var(--primary);
-        font-size: 9px;
-        font-weight: 800;
-    }
-
-.weekly-schedule-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.weekly-class {
-    display: grid;
-    grid-template-columns: 105px minmax(120px, 1fr);
     gap: 12px;
-    padding: 12px 13px;
-    border-bottom: 1px solid var(--border-light);
+    width: 100%;
+    min-height: 44px;
+    padding: 0 15px;
+    border: 1px solid var(--primary);
+    border-radius: 9px;
+    background: var(--primary);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 750;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-    .weekly-class:last-child {
-        border-bottom: 0;
+    .view-details-button:hover {
+        border-color: var(--primary-dark);
+        background: var(--primary-dark);
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(11, 37, 69, 0.16);
     }
 
-.weekly-class-day {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-    .weekly-class-day span {
-        color: var(--accent);
-        font-size: 9px;
-        font-weight: 800;
-        text-transform: uppercase;
+    .view-details-button:focus-visible {
+        outline: 3px solid rgba(42, 127, 94, 0.22);
+        outline-offset: 2px;
     }
 
-    .weekly-class-day strong {
-        color: var(--primary);
-        font-size: 10px;
-        font-weight: 800;
-    }
-
-.weekly-class-course {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    gap: 2px;
-}
-
-    .weekly-class-course strong {
-        color: var(--primary);
-        font-size: 10px;
-        font-weight: 800;
-    }
-
-    .weekly-class-course span {
-        overflow: hidden;
-        color: var(--text-muted);
-        font-size: 9px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-.weekly-class-info {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-    .weekly-class-info span {
+    .view-details-button span {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        padding: 4px 7px;
-        border-radius: 6px;
-        background: var(--surface-soft);
-        color: var(--text-muted);
-        font-size: 8px;
-        font-weight: 700;
+        gap: 8px;
+        min-width: 0;
     }
 
-    .weekly-class-info i {
-        color: var(--accent);
+        .view-details-button span i {
+            flex: 0 0 auto;
+            font-size: 14px;
+        }
+
+    .view-details-button > i {
+        flex: 0 0 auto;
+        font-size: 14px;
+        transition: transform 0.2s ease;
+    }
+
+    .view-details-button:hover > i {
+        transform: translateX(3px);
     }
 
 .classroom-footer {
@@ -994,6 +934,10 @@
         grid-template-columns: 1fr;
     }
 
+    .view-details-button {
+        min-height: 46px;
+    }
+
     
 }
 
@@ -1032,13 +976,14 @@
         font-size: 9px;
     }
 
-    .weekly-class {
-        grid-template-columns: 1fr;
-        gap: 7px;
+    .classroom-action {
+        margin-right: 14px;
+        margin-left: 14px;
     }
 
-    .weekly-class-info {
-        grid-column: auto;
+    .view-details-button {
+        padding: 0 13px;
+        font-size: 12px;
     }
 
     
@@ -1049,7 +994,8 @@
     .classroom-card.search-visible,
     .stat-card,
     .filter-button,
-    .reset-button {
+    .reset-button,
+    .view-details-button {
         animation: none;
         transition: none;
     }
