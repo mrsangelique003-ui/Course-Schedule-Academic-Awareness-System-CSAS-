@@ -16,12 +16,26 @@ public static class DbInitializer
         const string defaultPassword = "M00del!!";
 
         var studentHasher = new PasswordHasher<Student>();
-        var classRepresentativeHasher = new PasswordHasher<ClassRepresentative>();
+        var classRepresentativeHasher =
+            new PasswordHasher<ClassRepresentative>();
         var administratorHasher = new PasswordHasher<Administrator>();
         var lecturerHasher = new PasswordHasher<Lecturer>();
 
+        var now = DateTime.UtcNow;
+
+        var currentDate = now.Date;
+
+        var daysFromMonday =
+            ((int)currentDate.DayOfWeek + 6) % 7;
+
+        var teachingStart =
+            currentDate.AddDays(-daysFromMonday);
+
+        var teachingEnd =
+            teachingStart.AddDays(13);
+
         // =========================================================
-        // STUDENTS — 20 RECORDS
+        // STUDENTS
         // =========================================================
 
         var studentData = new[]
@@ -50,8 +64,9 @@ public static class DbInitializer
 
         foreach (var item in studentData)
         {
-            var student = await db.Students
-                .FirstOrDefaultAsync(s => s.RegNo == item.Item1);
+            var student =
+                await db.Students
+                    .FirstOrDefaultAsync(s => s.RegNo == item.Item1);
 
             if (student == null)
             {
@@ -81,7 +96,6 @@ public static class DbInitializer
                 student.Department = "CIS";
                 student.Program = "Computer Information Systems";
                 student.Level = "Year 4";
-                student.StudySession = StudySession.Day;
                 student.IsActive = true;
 
                 if (string.IsNullOrWhiteSpace(student.PasswordHash))
@@ -97,253 +111,31 @@ public static class DbInitializer
         await db.SaveChangesAsync();
 
         // =========================================================
-        // CLASS REPRESENTATIVES — 20 RECORDS
+        // CLASS REPRESENTATIVES
         // =========================================================
 
-        // (RegNo, FullName, Email, Phone, Nationality,
-        //  Faculty, Department, Intake, Year, Session)
         var classRepresentativeData = new[]
         {
-        (
-            "CP001",
-            "Bob Nkurunziza",
-            "bob@unilak.ac.rw",
-            "+250 788 100 001",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Information System and Management",
-            "January",
-            1,
-            StudySession.Day
-        ),
-        (
-            "CP002",
-            "Clarisse Uwimana",
-            "clarisse@unilak.ac.rw",
-            "+250 788 100 002",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Information Technology",
-            "March",
-            2,
-            StudySession.Evening
-        ),
-        (
-            "CP003",
-            "Derrick Niyonsenga",
-            "derrick@unilak.ac.rw",
-            "+250 788 100 003",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Software Engineering",
-            "September",
-            3,
-            StudySession.Weekend
-        ),
-        (
-            "CP004",
-            "Emmanuel Habimana",
-            "emmanuel@unilak.ac.rw",
-            "+250 788 100 004",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Networking",
-            "January",
-            2,
-            StudySession.Day
-        ),
-        (
-            "CP005",
-            "Florence Mukamana",
-            "florence@unilak.ac.rw",
-            "+250 788 100 005",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Multimedia",
-            "March",
-            3,
-            StudySession.Evening
-        ),
-        (
-            "CP006",
-            "Gaspard Bizimana",
-            "gaspard@unilak.ac.rw",
-            "+250 788 100 006",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Information System and Management",
-            "September",
-            1,
-            StudySession.Weekend
-        ),
-        (
-            "CP007",
-            "Hope Uwamahoro",
-            "hope@unilak.ac.rw",
-            "+250 788 100 007",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Information Technology",
-            "January",
-            3,
-            StudySession.Day
-        ),
-        (
-            "CP008",
-            "Ivan Nshimiyimana",
-            "ivan@unilak.ac.rw",
-            "+250 788 100 008",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Software Engineering",
-            "March",
-            1,
-            StudySession.Evening
-        ),
-        (
-            "CP009",
-            "Josiane Ingabire",
-            "josiane@unilak.ac.rw",
-            "+250 788 100 009",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Networking",
-            "September",
-            2,
-            StudySession.Weekend
-        ),
-        (
-            "CP010",
-            "Kenneth Mugisha",
-            "kenneth@unilak.ac.rw",
-            "+250 788 100 010",
-            "Ugandan",
-            "Faculty of Computing and Information Technology",
-            "Multimedia",
-            "January",
-            3,
-            StudySession.Day
-        ),
-        (
-            "CP011",
-            "Lydia Uwase",
-            "lydia@unilak.ac.rw",
-            "+250 788 100 011",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Information System and Management",
-            "March",
-            2,
-            StudySession.Evening
-        ),
-        (
-            "CP012",
-            "Michel Ndayisenga",
-            "michel@unilak.ac.rw",
-            "+250 788 100 012",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Information Technology",
-            "September",
-            1,
-            StudySession.Weekend
-        ),
-        (
-            "CP013",
-            "Nathalie Mukeshimana",
-            "nathalie@unilak.ac.rw",
-            "+250 788 100 013",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Software Engineering",
-            "January",
-            2,
-            StudySession.Day
-        ),
-        (
-            "CP014",
-            "Oscar Tuyisenge",
-            "oscar@unilak.ac.rw",
-            "+250 788 100 014",
-            "Congolese",
-            "Faculty of Computing and Information Technology",
-            "Networking",
-            "March",
-            3,
-            StudySession.Evening
-        ),
-        (
-            "CP015",
-            "Patricia Uwamariya",
-            "patricia@unilak.ac.rw",
-            "+250 788 100 015",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Multimedia",
-            "September",
-            1,
-            StudySession.Weekend
-        ),
-        (
-            "CP016",
-            "Robert Niyomugabo",
-            "robert@unilak.ac.rw",
-            "+250 788 100 016",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Information System and Management",
-            "January",
-            3,
-            StudySession.Day
-        ),
-        (
-            "CP017",
-            "Sandrine Mukamana",
-            "sandrine@unilak.ac.rw",
-            "+250 788 100 017",
-            "Burundian",
-            "Faculty of Computing and Information Technology",
-            "Information Technology",
-            "March",
-            2,
-            StudySession.Evening
-        ),
-        (
-            "CP018",
-            "Theoneste Habimana",
-            "theoneste@unilak.ac.rw",
-            "+250 788 100 018",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Software Engineering",
-            "September",
-            1,
-            StudySession.Weekend
-        ),
-        (
-            "CP019",
-            "Valerie Ingabire",
-            "valerie@unilak.ac.rw",
-            "+250 788 100 019",
-            "Rwandan",
-            "Faculty of Computing and Information Technology",
-            "Networking",
-            "January",
-            2,
-            StudySession.Day
-        ),
-        (
-            "CP020",
-            "William Nkurunziza",
-            "william@unilak.ac.rw",
-            "+250 788 100 020",
-            "Kenyan",
-            "Faculty of Computing and Information Technology",
-            "Multimedia",
-            "September",
-            3,
-            StudySession.Evening
-        )
+        ("CP001", "Bob Nkurunziza", "bob@unilak.ac.rw", "0788000001"),
+        ("CP002", "Clarisse Uwimana", "clarisse@unilak.ac.rw", "0788000002"),
+        ("CP003", "Derrick Niyonsenga", "derrick@unilak.ac.rw", "0788000003"),
+        ("CP004", "Emmanuel Habimana", "emmanuel@unilak.ac.rw", "0788000004"),
+        ("CP005", "Florence Mukamana", "florence@unilak.ac.rw", "0788000005"),
+        ("CP006", "Gaspard Bizimana", "gaspard@unilak.ac.rw", "0788000006"),
+        ("CP007", "Hope Uwamahoro", "hope@unilak.ac.rw", "0788000007"),
+        ("CP008", "Ivan Nshimiyimana", "ivan@unilak.ac.rw", "0788000008"),
+        ("CP009", "Josiane Ingabire", "josiane@unilak.ac.rw", "0788000009"),
+        ("CP010", "Kenneth Mugisha", "kenneth@unilak.ac.rw", "0788000010"),
+        ("CP011", "Lydia Uwase", "lydia@unilak.ac.rw", "0788000011"),
+        ("CP012", "Michel Ndayisenga", "michel@unilak.ac.rw", "0788000012"),
+        ("CP013", "Nathalie Mukeshimana", "nathalie@unilak.ac.rw", "0788000013"),
+        ("CP014", "Oscar Tuyisenge", "oscar@unilak.ac.rw", "0788000014"),
+        ("CP015", "Patricia Uwamariya", "patricia@unilak.ac.rw", "0788000015"),
+        ("CP016", "Robert Niyomugabo", "robert@unilak.ac.rw", "0788000016"),
+        ("CP017", "Sandrine Mukamana", "sandrine@unilak.ac.rw", "0788000017"),
+        ("CP018", "Theoneste Habimana", "theoneste@unilak.ac.rw", "0788000018"),
+        ("CP019", "Valerie Ingabire", "valerie@unilak.ac.rw", "0788000019"),
+        ("CP020", "William Nkurunziza", "william@unilak.ac.rw", "0788000020")
     };
 
         foreach (var item in classRepresentativeData)
@@ -351,7 +143,7 @@ public static class DbInitializer
             var representative =
                 await db.ClassRepresentatives
                     .FirstOrDefaultAsync(
-                        c => c.RegNo == item.Item1);
+                        cp => cp.RegNo == item.Item1);
 
             if (representative == null)
             {
@@ -361,15 +153,14 @@ public static class DbInitializer
                     FullName = item.Item2,
                     Email = item.Item3,
                     PhoneNumber = item.Item4,
-                    Nationality = item.Item5,
-                    Faculty = item.Item6,
-                    Department = item.Item7,
-                    Intake = item.Item8,
-                    Year = item.Item9,
-                    Level = $"Year {item.Item9}",
-                    StudySession = item.Item10,
+                    Nationality = "Rwandan",
+                    Department = "Software Engineering",
+                    Faculty = "Information Technology",
+                    Year = 3,
+                    StudySession = StudySession.Day,
                     IsActive = true,
-                    SignatureImageData = string.Empty
+                    Intake = "September",
+                    Level = "Year 3"
                 };
 
                 representative.PasswordHash =
@@ -384,19 +175,14 @@ public static class DbInitializer
                 representative.FullName = item.Item2;
                 representative.Email = item.Item3;
                 representative.PhoneNumber = item.Item4;
-                representative.Nationality = item.Item5;
-                representative.Faculty = item.Item6;
-                representative.Department = item.Item7;
-                representative.Intake = item.Item8;
-                representative.Year = item.Item9;
-                representative.Level = $"Year {item.Item9}";
-                representative.StudySession = item.Item10;
+                representative.Nationality = "Rwandan";
+                representative.Department = "Software Engineering";
+                representative.Faculty = "Information Technology";
+                representative.Year = 3;
+                representative.StudySession = StudySession.Day;
                 representative.IsActive = true;
-
-                if (representative.SignatureImageData == null)
-                {
-                    representative.SignatureImageData = string.Empty;
-                }
+                representative.Intake = "September";
+                representative.Level = "Year 3";
 
                 if (string.IsNullOrWhiteSpace(
                     representative.PasswordHash))
@@ -412,7 +198,7 @@ public static class DbInitializer
         await db.SaveChangesAsync();
 
         // =========================================================
-        // ADMINISTRATORS — 20 RECORDS
+        // ADMINISTRATORS
         // =========================================================
 
         var administratorData = new[]
@@ -487,7 +273,7 @@ public static class DbInitializer
         await db.SaveChangesAsync();
 
         // =========================================================
-        // LECTURERS — 20 RECORDS
+        // LECTURERS
         // =========================================================
 
         var lecturerData = new[]
@@ -528,6 +314,7 @@ public static class DbInitializer
                     StaffId = item.Item1,
                     FullName = item.Item2,
                     Email = item.Item3,
+                    PhoneNumber = $"078811{item.Item1.Substring(3)}",
                     Department = "CIS",
                     IsActive = true
                 };
@@ -543,6 +330,8 @@ public static class DbInitializer
             {
                 lecturer.FullName = item.Item2;
                 lecturer.Email = item.Item3;
+                lecturer.PhoneNumber =
+                    $"078811{item.Item1.Substring(3)}";
                 lecturer.Department = "CIS";
                 lecturer.IsActive = true;
 
@@ -559,8 +348,14 @@ public static class DbInitializer
 
         await db.SaveChangesAsync();
 
+        var lecturers =
+            await db.Lecturers
+                .OrderBy(l => l.Id)
+                .Take(20)
+                .ToListAsync();
+
         // =========================================================
-        // ROOMS — 20 RECORDS
+        // ROOMS
         // =========================================================
 
         var roomData = new[]
@@ -589,20 +384,22 @@ public static class DbInitializer
 
         foreach (var item in roomData)
         {
-            var room = await db.Rooms
-                .FirstOrDefaultAsync(
-                    r => r.RoomNumber == item.Item1);
+            var room =
+                await db.Rooms
+                    .FirstOrDefaultAsync(
+                        r => r.RoomNumber == item.Item1);
 
             if (room == null)
             {
-                db.Rooms.Add(new Room
-                {
-                    RoomNumber = item.Item1,
-                    Building = item.Item2,
-                    Capacity = item.Item3,
-                    RoomType = item.Item4,
-                    IsAvailable = true
-                });
+                db.Rooms.Add(
+                    new Room
+                    {
+                        RoomNumber = item.Item1,
+                        Building = item.Item2,
+                        Capacity = item.Item3,
+                        RoomType = item.Item4,
+                        IsAvailable = true
+                    });
             }
             else
             {
@@ -615,18 +412,14 @@ public static class DbInitializer
 
         await db.SaveChangesAsync();
 
-        // =========================================================
-        // GET LECTURERS FOR COURSE SEEDING
-        // =========================================================
-
-        var lecturers =
-            await db.Lecturers
-                .OrderBy(l => l.Id)
+        var rooms =
+            await db.Rooms
+                .OrderBy(r => r.Id)
                 .Take(20)
                 .ToListAsync();
 
         // =========================================================
-        // COURSES — 20 RECORDS
+        // COURSES
         // =========================================================
 
         var courseData = new[]
@@ -653,14 +446,22 @@ public static class DbInitializer
         ("CSE406", "Final Year Project", 6, "Planning, development and presentation of a software project.")
     };
 
-        var registrationOpen = DateTime.UtcNow.AddDays(-1);
-        var registrationClose = registrationOpen.AddDays(2);
-        var courseStart = DateTime.UtcNow.AddDays(-10);
-        var courseEnd = DateTime.UtcNow.AddDays(90);
+        var registrationOpen =
+            teachingStart.AddDays(-7);
+
+        var registrationClose =
+            teachingStart.AddDays(-1);
 
         for (var i = 0; i < courseData.Length; i++)
         {
             var item = courseData[i];
+
+            var session =
+                i < 7
+                    ? StudySession.Day
+                    : i < 14
+                        ? StudySession.Evening
+                        : StudySession.Weekend;
 
             var course =
                 await db.Courses
@@ -676,10 +477,10 @@ public static class DbInitializer
                     Description = item.Item4,
                     Credits = item.Item3,
                     Status = CourseStatus.Available,
-                    StudySession = StudySession.Day,
-                    LecturerId = lecturers[i % lecturers.Count].Id,
-                    StartDate = courseStart,
-                    EndDate = courseEnd,
+                    StudySession = session,
+                    LecturerId = lecturers[i].Id,
+                    StartDate = teachingStart,
+                    EndDate = teachingEnd,
                     RegistrationOpenDate = registrationOpen,
                     RegistrationCloseDate = registrationClose,
                     IsActive = true
@@ -693,10 +494,10 @@ public static class DbInitializer
                 course.Description = item.Item4;
                 course.Credits = item.Item3;
                 course.Status = CourseStatus.Available;
-                course.StudySession = StudySession.Day;
-                course.LecturerId = lecturers[i % lecturers.Count].Id;
-                course.StartDate = courseStart;
-                course.EndDate = courseEnd;
+                course.StudySession = session;
+                course.LecturerId = lecturers[i].Id;
+                course.StartDate = teachingStart;
+                course.EndDate = teachingEnd;
                 course.RegistrationOpenDate = registrationOpen;
                 course.RegistrationCloseDate = registrationClose;
                 course.IsActive = true;
@@ -705,224 +506,129 @@ public static class DbInitializer
 
         await db.SaveChangesAsync();
 
-        // =========================================================
-        // GET COURSES AND ROOMS
-        // =========================================================
-
         var courses =
             await db.Courses
                 .OrderBy(c => c.Id)
                 .Take(20)
                 .ToListAsync();
 
-        var rooms =
-            await db.Rooms
-                .OrderBy(r => r.Id)
+        var representatives =
+            await db.ClassRepresentatives
+                .OrderBy(cp => cp.Id)
                 .Take(20)
                 .ToListAsync();
 
         // =========================================================
-        // SCHEDULE ENTRIES — 20 RECORDS
+        // SCHEDULES
+        //
+        // 7 DAY
+        // 7 EVENING
+        // 6 WEEKEND
+        //
+        // Every schedule belongs to the same two-week course period.
         // =========================================================
 
-        var scheduleSlots = new[]
+        var scheduleDefinitions = new[]
         {
-        (DayOfWeek.Monday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-        (DayOfWeek.Monday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-        (DayOfWeek.Monday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-        (DayOfWeek.Monday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
+        (0, DayOfWeek.Monday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (1, DayOfWeek.Monday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (2, DayOfWeek.Tuesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (3, DayOfWeek.Tuesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (4, DayOfWeek.Wednesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (5, DayOfWeek.Thursday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (6, DayOfWeek.Friday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
 
-        (DayOfWeek.Tuesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-        (DayOfWeek.Tuesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-        (DayOfWeek.Tuesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-        (DayOfWeek.Tuesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
+        (7, DayOfWeek.Monday, new TimeOnly(17, 0), new TimeOnly(19, 0)),
+        (8, DayOfWeek.Monday, new TimeOnly(19, 0), new TimeOnly(21, 0)),
+        (9, DayOfWeek.Tuesday, new TimeOnly(17, 0), new TimeOnly(19, 0)),
+        (10, DayOfWeek.Tuesday, new TimeOnly(19, 0), new TimeOnly(21, 0)),
+        (11, DayOfWeek.Wednesday, new TimeOnly(17, 0), new TimeOnly(19, 0)),
+        (12, DayOfWeek.Thursday, new TimeOnly(17, 0), new TimeOnly(19, 0)),
+        (13, DayOfWeek.Thursday, new TimeOnly(19, 0), new TimeOnly(21, 0)),
 
-        (DayOfWeek.Wednesday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-        (DayOfWeek.Wednesday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-        (DayOfWeek.Wednesday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-        (DayOfWeek.Wednesday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
-
-        (DayOfWeek.Thursday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-        (DayOfWeek.Thursday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-        (DayOfWeek.Thursday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-        (DayOfWeek.Thursday, new TimeOnly(15, 0), new TimeOnly(17, 0)),
-
-        (DayOfWeek.Friday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
-        (DayOfWeek.Friday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
-        (DayOfWeek.Friday, new TimeOnly(13, 0), new TimeOnly(15, 0)),
-        (DayOfWeek.Friday, new TimeOnly(15, 0), new TimeOnly(17, 0))
+        (14, DayOfWeek.Sunday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (15, DayOfWeek.Sunday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (16, DayOfWeek.Sunday, new TimeOnly(12, 0), new TimeOnly(14, 0)),
+        (17, DayOfWeek.Sunday, new TimeOnly(8, 0), new TimeOnly(10, 0)),
+        (18, DayOfWeek.Sunday, new TimeOnly(10, 0), new TimeOnly(12, 0)),
+        (19, DayOfWeek.Sunday, new TimeOnly(12, 0), new TimeOnly(14, 0))
     };
 
-        var existingScheduleKeys =
+        var existingSchedules =
             await db.ScheduleEntries
-                .Select(s => new
-                {
-                    s.CourseId,
-                    s.DayOfWeek,
-                    s.StartTime
-                })
                 .ToListAsync();
 
-        if (existingScheduleKeys.Count < 20)
+        foreach (var definition in scheduleDefinitions)
         {
-            for (var i = 0; i < 20; i++)
+            var course =
+                courses[definition.Item1];
+
+            var lecturer =
+                lecturers[definition.Item1];
+
+            var representative =
+                representatives[definition.Item1];
+
+            var room =
+                rooms[definition.Item1];
+
+            var expectedSession =
+                definition.Item1 < 7
+                    ? StudySession.Day
+                    : definition.Item1 < 14
+                        ? StudySession.Evening
+                        : StudySession.Weekend;
+
+            var schedule =
+                existingSchedules
+                    .FirstOrDefault(s =>
+                        s.CourseId == course.Id);
+
+            if (schedule == null)
             {
-                var course = courses[i % courses.Count];
-                var lecturer = lecturers[i % lecturers.Count];
-                var room = rooms[i % rooms.Count];
-                var slot = scheduleSlots[i];
-
-                var exists =
-                    existingScheduleKeys.Any(s =>
-                        s.CourseId == course.Id &&
-                        s.DayOfWeek == slot.Item1 &&
-                        s.StartTime == slot.Item2);
-
-                if (!exists)
+                schedule = new ScheduleEntry
                 {
-                    db.ScheduleEntries.Add(
-                        new ScheduleEntry
-                        {
-                            CourseId = course.Id,
-                            LecturerId = lecturer.Id,
-                            RoomId = room.Id,
-                            DayOfWeek = slot.Item1,
-                            StartTime = slot.Item2,
-                            EndTime = slot.Item3,
-                            StudySession = StudySession.Day,
-                            Status = ScheduleStatus.Active,
-                            Notes = $"Regular {course.Code} class",
-                            IsActive = true
-                        });
-                }
+                    CourseId = course.Id,
+                    LecturerId = lecturer.Id,
+                    ClassRepresentativeId = representative.Id,
+                    RoomId = room.Id,
+                    DayOfWeek = definition.Item2,
+                    StartTime = definition.Item3,
+                    EndTime = definition.Item4,
+                    StartDate = teachingStart,
+                    EndDate = teachingEnd,
+                    StudySession = expectedSession,
+                    Status = ScheduleStatus.Active,
+                    Notes = $"Regular {course.Code} class",
+                    IsActive = true,
+                    CreatedAt = now
+                };
+
+                db.ScheduleEntries.Add(schedule);
             }
-
-            await db.SaveChangesAsync();
-        }
-
-        // =========================================================
-        // ADD 2 EXTRA CLASSES FOR TODAY — CLASSROOM TESTING
-        // RWANDA TIME (UTC+2)
-        // =========================================================
-
-        DateTime testingNow;
-
-        try
-        {
-            var rwandaTimeZone =
-                TimeZoneInfo.FindSystemTimeZoneById(
-                    "South Africa Standard Time");
-
-            testingNow =
-                TimeZoneInfo.ConvertTimeFromUtc(
-                    DateTime.UtcNow,
-                    rwandaTimeZone);
-        }
-        catch (TimeZoneNotFoundException)
-        {
-            testingNow = DateTime.UtcNow.AddHours(2);
-        }
-        catch (InvalidTimeZoneException)
-        {
-            testingNow = DateTime.UtcNow.AddHours(2);
-        }
-
-        var testingToday = testingNow.DayOfWeek;
-        var currentTime = TimeOnly.FromDateTime(testingNow);
-
-        var firstTestingCourse = courses[0];
-        var secondTestingCourse = courses[1];
-
-        var firstTestingLecturer = lecturers[0];
-        var secondTestingLecturer = lecturers[1];
-
-        var firstTestingRoom = rooms[0];
-        var secondTestingRoom = rooms[1];
-
-        var ongoingStart = currentTime.AddMinutes(-30);
-        var ongoingEnd = currentTime.AddMinutes(30);
-
-        var upcomingStart = currentTime.AddMinutes(45);
-        var upcomingEnd = currentTime.AddMinutes(105);
-
-        var existingOngoingTest =
-            await db.ScheduleEntries
-                .FirstOrDefaultAsync(s =>
-                    s.Notes == "CLASSROOM TEST — ONGOING");
-
-        if (existingOngoingTest == null)
-        {
-            existingOngoingTest = new ScheduleEntry
+            else
             {
-                CourseId = firstTestingCourse.Id,
-                LecturerId = firstTestingLecturer.Id,
-                RoomId = firstTestingRoom.Id,
-                DayOfWeek = testingToday,
-                StartTime = ongoingStart,
-                EndTime = ongoingEnd,
-                StudySession = StudySession.Day,
-                Status = ScheduleStatus.Active,
-                Notes = "CLASSROOM TEST — ONGOING",
-                IsActive = true
-            };
-
-            db.ScheduleEntries.Add(existingOngoingTest);
-        }
-        else
-        {
-            existingOngoingTest.CourseId = firstTestingCourse.Id;
-            existingOngoingTest.LecturerId = firstTestingLecturer.Id;
-            existingOngoingTest.RoomId = firstTestingRoom.Id;
-            existingOngoingTest.DayOfWeek = testingToday;
-            existingOngoingTest.StartTime = ongoingStart;
-            existingOngoingTest.EndTime = ongoingEnd;
-            existingOngoingTest.StudySession = StudySession.Day;
-            existingOngoingTest.Status = ScheduleStatus.Active;
-            existingOngoingTest.Notes = "CLASSROOM TEST — ONGOING";
-            existingOngoingTest.IsActive = true;
-        }
-
-        var existingUpcomingTest =
-            await db.ScheduleEntries
-                .FirstOrDefaultAsync(s =>
-                    s.Notes == "CLASSROOM TEST — UPCOMING");
-
-        if (existingUpcomingTest == null)
-        {
-            existingUpcomingTest = new ScheduleEntry
-            {
-                CourseId = secondTestingCourse.Id,
-                LecturerId = secondTestingLecturer.Id,
-                RoomId = secondTestingRoom.Id,
-                DayOfWeek = testingToday,
-                StartTime = upcomingStart,
-                EndTime = upcomingEnd,
-                StudySession = StudySession.Day,
-                Status = ScheduleStatus.Active,
-                Notes = "CLASSROOM TEST — UPCOMING",
-                IsActive = true
-            };
-
-            db.ScheduleEntries.Add(existingUpcomingTest);
-        }
-        else
-        {
-            existingUpcomingTest.CourseId = secondTestingCourse.Id;
-            existingUpcomingTest.LecturerId = secondTestingLecturer.Id;
-            existingUpcomingTest.RoomId = secondTestingRoom.Id;
-            existingUpcomingTest.DayOfWeek = testingToday;
-            existingUpcomingTest.StartTime = upcomingStart;
-            existingUpcomingTest.EndTime = upcomingEnd;
-            existingUpcomingTest.StudySession = StudySession.Day;
-            existingUpcomingTest.Status = ScheduleStatus.Active;
-            existingUpcomingTest.Notes = "CLASSROOM TEST — UPCOMING";
-            existingUpcomingTest.IsActive = true;
+                schedule.CourseId = course.Id;
+                schedule.LecturerId = lecturer.Id;
+                schedule.ClassRepresentativeId = representative.Id;
+                schedule.RoomId = room.Id;
+                schedule.DayOfWeek = definition.Item2;
+                schedule.StartTime = definition.Item3;
+                schedule.EndTime = definition.Item4;
+                schedule.StartDate = teachingStart;
+                schedule.EndDate = teachingEnd;
+                schedule.StudySession = expectedSession;
+                schedule.Status = ScheduleStatus.Active;
+                schedule.Notes = $"Regular {course.Code} class";
+                schedule.IsActive = true;
+                schedule.UpdatedAt = now;
+            }
         }
 
         await db.SaveChangesAsync();
 
         // =========================================================
-        // ENROLLMENTS — 15 ENROLLED + 5 REJECTED
+        // ENROLLMENTS
         // =========================================================
 
         var students =
@@ -931,152 +637,81 @@ public static class DbInitializer
                 .Take(20)
                 .ToListAsync();
 
-        courses =
-            await db.Courses
-                .OrderBy(c => c.Id)
-                .Take(20)
-                .ToListAsync();
-
-        var existingEnrollmentKeys =
-            await db.Enrollments
-                .Select(e => new
-                {
-                    e.StudentId,
-                    e.CourseId
-                })
-                .ToListAsync();
-
-        var enrollmentCount = existingEnrollmentKeys.Count;
-
-        if (enrollmentCount < 20)
+        for (var i = 0;
+             i < 20 &&
+             i < students.Count &&
+             i < courses.Count;
+             i++)
         {
-            var enrollmentIndex = 0;
+            var student = students[i];
+            var course = courses[i];
 
-            foreach (var student in students)
+            var enrollment =
+                await db.Enrollments
+                    .FirstOrDefaultAsync(e =>
+                        e.StudentId == student.Id &&
+                        e.CourseId == course.Id);
+
+            var status =
+                i < 15
+                    ? EnrollmentStatus.Enrolled
+                    : EnrollmentStatus.Closed;
+
+            if (enrollment == null)
             {
-                for (var courseIndex = 0;
-                     courseIndex < courses.Count;
-                     courseIndex++)
-                {
-                    if (enrollmentCount >= 20)
+                db.Enrollments.Add(
+                    new Enrollment
                     {
-                        break;
-                    }
-
-                    var course = courses[courseIndex];
-
-                    var exists =
-                        existingEnrollmentKeys.Any(e =>
-                            e.StudentId == student.Id &&
-                            e.CourseId == course.Id);
-
-                    if (exists)
-                    {
-                        continue;
-                    }
-
-                    var status =
-                        enrollmentIndex < 15
-                            ? EnrollmentStatus.Enrolled
-                            : EnrollmentStatus.Closed;
-
-                    db.Enrollments.Add(
-                        new Enrollment
-                        {
-                            StudentId = student.Id,
-                            CourseId = course.Id,
-                            Status = status,
-                            RequestedAt =
-                                DateTime.UtcNow.AddDays(
-                                    -(enrollmentIndex + 1)),
-                            ApprovedAt =
-                                status == EnrollmentStatus.Enrolled
-                                    ? DateTime.UtcNow.AddDays(
-                                        -(enrollmentIndex + 1))
-                                    : null
-                        });
-
-                    existingEnrollmentKeys.Add(
-                        new
-                        {
-                            StudentId = student.Id,
-                            CourseId = course.Id
-                        });
-
-                    enrollmentCount++;
-                    enrollmentIndex++;
-                }
-
-                if (enrollmentCount >= 20)
-                {
-                    break;
-                }
-            }
-
-            await db.SaveChangesAsync();
-        }
-
-        // =========================================================
-        // NORMALIZE DEVELOPMENT ENROLLMENT DATA
-        // 15 ENROLLED + 5 REJECTED
-        // =========================================================
-
-        var developmentEnrollments =
-            await db.Enrollments
-                .OrderBy(e => e.Id)
-                .Take(20)
-                .ToListAsync();
-
-        for (var i = 0; i < developmentEnrollments.Count; i++)
-        {
-            var enrollment = developmentEnrollments[i];
-
-            if (i < 15)
-            {
-                enrollment.Status =
-                    EnrollmentStatus.Enrolled;
-
-                if (!enrollment.ApprovedAt.HasValue)
-                {
-                    enrollment.ApprovedAt =
-                        DateTime.UtcNow;
-                }
+                        StudentId = student.Id,
+                        CourseId = course.Id,
+                        Status = status,
+                        RequestedAt =
+                            now.AddDays(-(i + 1)),
+                        ApprovedAt =
+                            status == EnrollmentStatus.Enrolled
+                                ? now.AddDays(-(i + 1))
+                                : null
+                    });
             }
             else
             {
-                enrollment.Status =
-                    EnrollmentStatus.Closed;
+                enrollment.Status = status;
 
-                enrollment.ApprovedAt = null;
+                enrollment.RequestedAt =
+                    now.AddDays(-(i + 1));
+
+                enrollment.ApprovedAt =
+                    status == EnrollmentStatus.Enrolled
+                        ? now.AddDays(-(i + 1))
+                        : null;
             }
         }
 
-        await db.SaveChangesAsync();
-
-        // =========================================================
-        // ENSURE STU001 HAS 5 ENROLLED COURSES
-        // =========================================================
-
         var firstStudent =
-            await db.Students
-                .FirstOrDefaultAsync(
-                    s => s.RegNo == "STU001");
+            students.FirstOrDefault(
+                s => s.RegNo == "STU001");
 
         if (firstStudent != null)
         {
             var firstFiveCourses =
-                await db.Courses
-                    .OrderBy(c => c.Id)
-                    .Take(5)
-                    .ToListAsync();
+                courses.Take(5).ToList();
 
             foreach (var course in firstFiveCourses)
             {
                 var enrollment =
-                    await db.Enrollments
-                        .FirstOrDefaultAsync(e =>
+                    db.Enrollments.Local
+                        .FirstOrDefault(e =>
                             e.StudentId == firstStudent.Id &&
                             e.CourseId == course.Id);
+
+                if (enrollment == null)
+                {
+                    enrollment =
+                        await db.Enrollments
+                            .FirstOrDefaultAsync(e =>
+                                e.StudentId == firstStudent.Id &&
+                                e.CourseId == course.Id);
+                }
 
                 if (enrollment == null)
                 {
@@ -1086,10 +721,8 @@ public static class DbInitializer
                             StudentId = firstStudent.Id,
                             CourseId = course.Id,
                             Status = EnrollmentStatus.Enrolled,
-                            RequestedAt =
-                                DateTime.UtcNow.AddDays(-1),
-                            ApprovedAt =
-                                DateTime.UtcNow
+                            RequestedAt = now.AddDays(-1),
+                            ApprovedAt = now
                         });
                 }
                 else
@@ -1097,22 +730,20 @@ public static class DbInitializer
                     enrollment.Status =
                         EnrollmentStatus.Enrolled;
 
-                    if (!enrollment.ApprovedAt.HasValue)
-                    {
-                        enrollment.ApprovedAt =
-                            DateTime.UtcNow;
-                    }
+                    enrollment.RequestedAt =
+                        now.AddDays(-1);
+
+                    enrollment.ApprovedAt =
+                        now;
                 }
             }
-
-            await db.SaveChangesAsync();
         }
 
-        // =========================================================
-        // EXAMS — TEST DATA FOR VISUALISATION
-        // =========================================================
+        await db.SaveChangesAsync();
 
-        var examToday = testingNow.Date;
+        // =========================================================
+        // EXAMS
+        // =========================================================
 
         var examDefinitions = new[]
         {
@@ -1207,16 +838,16 @@ public static class DbInitializer
                 rooms[definition.RoomIndex];
 
             var examDate =
-                examToday.AddDays(
+                currentDate.AddDays(
                     definition.DaysFromToday);
 
-            var existingExam =
+            var exam =
                 await db.Exams
                     .FirstOrDefaultAsync(e =>
                         e.CourseId == course.Id &&
                         e.ExamType == definition.ExamType);
 
-            if (existingExam == null)
+            if (exam == null)
             {
                 db.Exams.Add(
                     new Exam
@@ -1230,137 +861,136 @@ public static class DbInitializer
                         IsActive = true,
                         Notes =
                             $"{definition.ExamType} examination for {course.Code}",
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = now
                     });
             }
             else
             {
-                existingExam.RoomId = room.Id;
-                existingExam.ExamDate = examDate;
-                existingExam.StartTime = definition.StartTime;
-                existingExam.EndTime = definition.EndTime;
-                existingExam.IsActive = true;
-                existingExam.Notes =
+                exam.RoomId = room.Id;
+                exam.ExamDate = examDate;
+                exam.StartTime = definition.StartTime;
+                exam.EndTime = definition.EndTime;
+                exam.IsActive = true;
+                exam.Notes =
                     $"{definition.ExamType} examination for {course.Code}";
-                existingExam.UpdatedAt = DateTime.UtcNow;
+                exam.UpdatedAt = now;
             }
         }
 
         await db.SaveChangesAsync();
 
         // =========================================================
-        // SUPPORT TICKETS — 8 RECORDS
+        // SUPPORT TICKETS
         // =========================================================
 
         var supportTicketData = new[]
         {
         (
-            TicketNumber: "SUP-A1B2C3",
-            StudentRegNo: "STU001",
-            Subject: "Cannot access my account",
-            Category: SupportCategory.AccountAccess,
-            Description: "The student cannot log in using the registered credentials.",
-            Status: SupportTicketStatus.Open
+            "SUP-1001",
+            0,
+            "Cannot access my account",
+            SupportCategory.AccountAccess,
+            "I cannot sign in to my CSAS student account even though I am using the correct password.",
+            SupportTicketStatus.Open
         ),
         (
-            TicketNumber: "SUP-D4E5F6",
-            StudentRegNo: "STU002",
-            Subject: "Schedule showing incorrect time",
-            Category: SupportCategory.CourseSchedule,
-            Description: "A scheduled class appears at the wrong time on the student timetable.",
-            Status: SupportTicketStatus.InProgress
+            "SUP-1002",
+            1,
+            "Schedule shows the wrong classroom",
+            SupportCategory.CourseSchedule,
+            "The classroom shown for one of my scheduled classes appears to be different from the room communicated to our class.",
+            SupportTicketStatus.InProgress
         ),
         (
-            TicketNumber: "SUP-G7H8I9",
-            StudentRegNo: "STU003",
-            Subject: "Unable to view course",
-            Category: SupportCategory.CourseSchedule,
-            Description: "The student cannot see one of the courses assigned to the class.",
-            Status: SupportTicketStatus.Resolved
+            "SUP-1003",
+            2,
+            "Unable to view available courses",
+            SupportCategory.CourseSchedule,
+            "The available courses page does not display all courses that should be available to my class.",
+            SupportTicketStatus.Open
         ),
         (
-            TicketNumber: "SUP-J1K2L3",
-            StudentRegNo: "STU004",
-            Subject: "Examination timetable issue",
-            Category: SupportCategory.Examination,
-            Description: "The student reported an issue with the examination date displayed.",
-            Status: SupportTicketStatus.Closed
+            "SUP-1004",
+            3,
+            "Enrollment information is missing",
+            SupportCategory.Enrollment,
+            "One of my enrolled courses is not appearing in my course list.",
+            SupportTicketStatus.Resolved
         ),
         (
-            TicketNumber: "SUP-M4N5O6",
-            StudentRegNo: "STU005",
-            Subject: "Enrollment information missing",
-            Category: SupportCategory.Enrollment,
-            Description: "An enrolled course is not appearing correctly in the student's enrollment list.",
-            Status: SupportTicketStatus.Open
+            "SUP-1005",
+            4,
+            "Exam timetable question",
+            SupportCategory.Examination,
+            "I need help understanding the date and room shown for my upcoming examination.",
+            SupportTicketStatus.Closed
         ),
         (
-            TicketNumber: "SUP-P7Q8R9",
-            StudentRegNo: "STU006",
-            Subject: "Password reset request",
-            Category: SupportCategory.AccountAccess,
-            Description: "The student requested assistance with resetting the account password.",
-            Status: SupportTicketStatus.InProgress
+            "SUP-1006",
+            5,
+            "Profile information needs correction",
+            SupportCategory.AccountAccess,
+            "My student profile contains information that needs to be reviewed and corrected.",
+            SupportTicketStatus.Resolved
         ),
         (
-            TicketNumber: "SUP-S1T2U3",
-            StudentRegNo: "STU007",
-            Subject: "System page not loading",
-            Category: SupportCategory.TechnicalIssue,
-            Description: "The student reported that a system page fails to load correctly.",
-            Status: SupportTicketStatus.Resolved
+            "SUP-1007",
+            6,
+            "Schedule page is not loading",
+            SupportCategory.TechnicalIssue,
+            "The schedule page takes too long to load and sometimes displays an empty page.",
+            SupportTicketStatus.InProgress
         ),
         (
-            TicketNumber: "SUP-V4W5X6",
-            StudentRegNo: "STU008",
-            Subject: "General system assistance",
-            Category: SupportCategory.Other,
-            Description: "The student requested general assistance using the academic awareness system.",
-            Status: SupportTicketStatus.Closed
+            "SUP-1008",
+            7,
+            "General academic support",
+            SupportCategory.Other,
+            "I need assistance understanding where to find academic information in the CSAS portal.",
+            SupportTicketStatus.Open
         )
     };
 
         foreach (var item in supportTicketData)
         {
             var student =
-                await db.Students
-                    .FirstOrDefaultAsync(
-                        s => s.RegNo == item.StudentRegNo);
-
-            if (student == null)
-            {
-                continue;
-            }
+                students[item.Item2 % students.Count];
 
             var ticket =
                 await db.SupportTickets
                     .FirstOrDefaultAsync(
-                        t => t.TicketNumber == item.TicketNumber);
+                        t => t.TicketNumber == item.Item1);
 
             if (ticket == null)
             {
-                ticket = new SupportTicket
-                {
-                    TicketNumber = item.TicketNumber,
-                    StudentId = student.Id,
-                    Subject = item.Subject,
-                    Category = item.Category,
-                    Description = item.Description,
-                    Status = item.Status,
-                    CreatedAt = DateTime.UtcNow.AddDays(-4),
-                    UpdatedAt = DateTime.UtcNow
-                };
-
-                db.SupportTickets.Add(ticket);
+                db.SupportTickets.Add(
+                    new SupportTicket
+                    {
+                        TicketNumber = item.Item1,
+                        StudentId = student.Id,
+                        Subject = item.Item3,
+                        Category = item.Item4,
+                        Description = item.Item5,
+                        Status = item.Item6,
+                        CreatedAt =
+                            now.AddDays(-(item.Item2 + 1)),
+                        UpdatedAt =
+                            item.Item6 == SupportTicketStatus.Open
+                                ? null
+                                : now.AddDays(-item.Item2)
+                    });
             }
             else
             {
                 ticket.StudentId = student.Id;
-                ticket.Subject = item.Subject;
-                ticket.Category = item.Category;
-                ticket.Description = item.Description;
-                ticket.Status = item.Status;
-                ticket.UpdatedAt = DateTime.UtcNow;
+                ticket.Subject = item.Item3;
+                ticket.Category = item.Item4;
+                ticket.Description = item.Item5;
+                ticket.Status = item.Item6;
+                ticket.UpdatedAt =
+                    item.Item6 == SupportTicketStatus.Open
+                        ? null
+                        : now.AddDays(-item.Item2);
             }
         }
 

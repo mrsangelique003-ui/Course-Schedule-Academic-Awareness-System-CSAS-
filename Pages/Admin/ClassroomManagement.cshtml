@@ -1,0 +1,512 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.ClassroomManagementModel
+
+@{
+ViewData["Title"] = "Classroom Management";
+}
+
+<link rel="stylesheet" href="~/css/Admin/ClassroomManagement.css" />
+
+<div class="classroom-page">
+
+
+<div class="page-header">
+    <div class="header-content">
+        <div>
+            <div class="page-eyebrow">
+                <i class="bi bi-building"></i>
+                Academic Administration
+            </div>
+
+            <h1>Classroom Management</h1>
+
+            <p>
+                Manage scheduled classes, rooms, lecturers, and class representatives.
+            </p>
+        </div>
+
+        <div class="header-actions">
+            <a asp-page="/Admin/AssignClass" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i>
+                Assign Class
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="summary-grid">
+
+    <div class="summary-card">
+        <div class="summary-icon">
+            <i class="bi bi-calendar3"></i>
+        </div>
+
+        <div>
+            <span>Total Classes</span>
+            <strong>@Model.TotalClasses</strong>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">
+            <i class="bi bi-person-badge"></i>
+        </div>
+
+        <div>
+            <span>Assigned Lecturers</span>
+            <strong>@Model.AssignedLecturers</strong>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">
+            <i class="bi bi-people"></i>
+        </div>
+
+        <div>
+            <span>Assigned Class Representatives</span>
+            <strong>@Model.AssignedRepresentatives</strong>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-icon">
+            <i class="bi bi-door-open"></i>
+        </div>
+
+        <div>
+            <span>Rooms In Use</span>
+            <strong>@Model.RoomsInUse</strong>
+        </div>
+    </div>
+
+</div>
+
+<div class="toolbar">
+
+    <div class="search-box">
+        <i class="bi bi-search"></i>
+
+        <input
+            type="search"
+            id="classSearch"
+            placeholder="Search by course, lecturer, room, or representative..."
+            autocomplete="off" />
+    </div>
+
+    <div class="filter-group">
+
+        <label for="sessionFilter">Session</label>
+
+        <select id="sessionFilter">
+            <option value="">All Sessions</option>
+            <option value="Day">DAY</option>
+            <option value="Evening">EVENING</option>
+            <option value="Weekend">WEEKEND</option>
+        </select>
+
+    </div>
+
+    <div class="filter-group">
+
+        <label for="availabilityFilter">Availability</label>
+
+        <select id="availabilityFilter">
+            <option value="">All Availability</option>
+            <option value="Available">Available</option>
+            <option value="Occupied">Occupied</option>
+        </select>
+
+    </div>
+
+    <div class="filter-group">
+
+        <label for="statusFilter">Status</label>
+
+        <select id="statusFilter">
+            <option value="">All Statuses</option>
+
+            @foreach (var status in Model.Statuses)
+            {
+                <option value="@status">@status</option>
+            }
+        </select>
+
+    </div>
+
+</div>
+
+@if (Model.Classes.Count == 0)
+{
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="bi bi-calendar-x"></i>
+        </div>
+
+        <h2>No classes scheduled</h2>
+
+        <p>
+            There are currently no scheduled classes in the system.
+        </p>
+
+        <a asp-page="/Admin/AssignClass" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+            Assign First Class
+        </a>
+    </div>
+}
+else
+{
+    <div class="class-grid" id="classGrid">
+
+        @foreach (var item in Model.Classes)
+        {
+            var sessionName = item.StudySession.ToString().ToUpperInvariant();
+            var availabilityClass = item.IsOccupied ? "occupied" : "available";
+            var availabilityText = item.IsOccupied ? "Occupied" : "Available";
+
+            <article
+                class="class-card"
+                data-search="@($"{item.CourseCode} {item.CourseName} {item.LecturerName} {item.LecturerStaffId} {item.RepresentativeName} {item.RepresentativeRegNo} {item.RoomNumber} {item.Building} {item.Intake} {item.Level}")"
+                data-session="@item.StudySession"
+                data-status="@item.Status"
+                data-availability="@availabilityText">
+
+                <div class="class-card-header">
+
+                    <div class="course-info">
+                        <span class="course-code">
+                            @item.CourseCode
+                        </span>
+
+                        <h2>
+                            @item.CourseName
+                        </h2>
+                    </div>
+
+                    <div class="card-badges">
+
+                        <span class="availability-badge availability-@availabilityClass">
+                            <span class="availability-dot"></span>
+                            @availabilityText
+                        </span>
+
+                        <span class="status-badge status-@item.Status.ToString().ToLowerInvariant()">
+                            @item.Status
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="session-banner session-@item.StudySession.ToString().ToLowerInvariant()">
+
+                    <div>
+                        <i class="bi bi-clock-history"></i>
+                        <span>STUDY SESSION</span>
+                    </div>
+
+                    <strong>@sessionName</strong>
+
+                </div>
+
+                <div class="schedule-section">
+
+                    <div class="schedule-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-calendar3"></i>
+                        </div>
+
+                        <div>
+                            <span class="detail-label">Day</span>
+                            <strong>@item.Day</strong>
+                        </div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+
+                        <div>
+                            <span class="detail-label">Time</span>
+
+                            <strong>
+                                @item.StartTime - @item.EndTime
+                            </strong>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="details-grid">
+
+                    <div class="detail-block">
+                        <div class="detail-heading">
+                            <i class="bi bi-person-badge"></i>
+                            Lecturer
+                        </div>
+
+                        @if (item.LecturerId.HasValue)
+                        {
+                            <strong>@item.LecturerName</strong>
+
+                            <span>
+                                Staff ID: @item.LecturerStaffId
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="unassigned">
+                                Lecturer not assigned
+                            </span>
+                        }
+                    </div>
+
+                    <div class="detail-block">
+                        <div class="detail-heading">
+                            <i class="bi bi-people"></i>
+                            Class Representative
+                        </div>
+
+                        @if (item.ClassRepresentativeId.HasValue)
+                        {
+                            <strong>@item.RepresentativeName</strong>
+
+                            <span>
+                                RegNo: @item.RepresentativeRegNo
+                            </span>
+
+                            @if (!string.IsNullOrWhiteSpace(item.RepresentativePhone))
+                            {
+                                <a href="tel:@item.RepresentativePhone">
+                                    <i class="bi bi-telephone"></i>
+                                    @item.RepresentativePhone
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <span class="unassigned">
+                                Class representative not assigned
+                            </span>
+                        }
+                    </div>
+
+                    <div class="detail-block">
+                        <div class="detail-heading">
+                            <i class="bi bi-door-open"></i>
+                            Classroom
+                        </div>
+
+                        <strong>
+                            @item.RoomNumber
+                        </strong>
+
+                        <span>
+                            @item.Building
+                        </span>
+
+                        <span>
+                            Capacity: @item.RoomCapacity
+                        </span>
+                    </div>
+
+                    <div class="detail-block">
+                        <div class="detail-heading">
+                            <i class="bi bi-mortarboard"></i>
+                            Class Details
+                        </div>
+
+                        <strong>
+                            @item.Intake
+                        </strong>
+
+                        <span>
+                            @item.Level
+                        </span>
+                    </div>
+
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(item.Notes))
+                {
+                    <div class="notes">
+                        <i class="bi bi-info-circle"></i>
+
+                        <span>@item.Notes</span>
+                    </div>
+                }
+
+                <div class="card-footer">
+
+                    <span class="active-indicator">
+                        <span class="indicator-dot @(item.IsOccupied ? "occupied-dot" : "")"></span>
+
+                        @(item.IsOccupied ? "Currently occupied" : "Currently available")
+                    </span>
+
+                    <a
+                        asp-page="/Admin/AssignClass"
+                        asp-route-id="@item.Id"
+                        class="btn btn-outline-primary">
+
+                        <i class="bi bi-pencil-square"></i>
+                        Assign / Update
+
+                    </a>
+
+                </div>
+
+            </article>
+        }
+
+    </div>
+
+    <div class="no-results" id="noResults" hidden>
+
+        <div class="no-results-icon">
+            <i class="bi bi-search"></i>
+        </div>
+
+        <h2>No matching classes</h2>
+
+        <p>
+            Try changing your search or filter criteria.
+        </p>
+
+    </div>
+}
+
+
+</div>
+
+@section Scripts {
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput =
+        document.getElementById("classSearch");
+
+    const sessionFilter =
+        document.getElementById("sessionFilter");
+
+    const availabilityFilter =
+        document.getElementById("availabilityFilter");
+
+    const statusFilter =
+        document.getElementById("statusFilter");
+
+    const cards =
+        Array.from(document.querySelectorAll(".class-card"));
+
+    const noResults =
+        document.getElementById("noResults");
+
+
+    function filterClasses() {
+
+        const searchValue =
+            (searchInput?.value || "").trim().toLowerCase();
+
+        const sessionValue =
+            sessionFilter?.value || "";
+
+        const availabilityValue =
+            availabilityFilter?.value || "";
+
+        const statusValue =
+            statusFilter?.value || "";
+
+        let visibleCount = 0;
+
+
+        cards.forEach(card => {
+
+            const searchText =
+                card.dataset.search?.toLowerCase() || "";
+
+            const cardSession =
+                card.dataset.session || "";
+
+            const cardAvailability =
+                card.dataset.availability || "";
+
+            const cardStatus =
+                card.dataset.status || "";
+
+
+            const matchesSearch =
+                !searchValue ||
+                searchText.includes(searchValue);
+
+
+            const matchesSession =
+                !sessionValue ||
+                cardSession === sessionValue;
+
+
+            const matchesAvailability =
+                !availabilityValue ||
+                cardAvailability === availabilityValue;
+
+
+            const matchesStatus =
+                !statusValue ||
+                cardStatus === statusValue;
+
+
+            const visible =
+                matchesSearch &&
+                matchesSession &&
+                matchesAvailability &&
+                matchesStatus;
+
+
+            card.hidden = !visible;
+
+
+            if (visible) {
+                visibleCount++;
+            }
+
+        });
+
+
+        if (noResults) {
+
+            noResults.hidden =
+                visibleCount !== 0;
+
+        }
+
+    }
+
+
+    searchInput?.addEventListener(
+        "input",
+        filterClasses
+    );
+
+    sessionFilter?.addEventListener(
+        "change",
+        filterClasses
+    );
+
+    availabilityFilter?.addEventListener(
+        "change",
+        filterClasses
+    );
+
+    statusFilter?.addEventListener(
+        "change",
+        filterClasses
+    );
+
+});
+
+</script>
+
+}

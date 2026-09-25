@@ -1,64 +1,55 @@
-/* =========================================================
-   CSAS — STUDENT MY SCHEDULE
-   Professional Blue / Black / White Academic UI
-   ========================================================= */
 :root {
-    --schedule-primary: #0b2545;
-    --schedule-primary-dark: #061a33;
-    --schedule-primary-light: #163b68;
-    --schedule-accent: #1d4e89;
-    --schedule-accent-light: #eaf1f9;
-    --schedule-background: #f7f9fc;
-    --schedule-surface: #ffffff;
-    --schedule-surface-soft: #f8fafc;
-    --schedule-text: #172033;
-    --schedule-text-muted: #667085;
-    --schedule-text-light: #98a2b3;
-    --schedule-border: #e4e7ec;
-    --schedule-border-light: #eef1f5;
-    --schedule-success: #15803d;
-    --schedule-success-bg: #ecfdf3;
-    --schedule-warning: #b45309;
-    --schedule-warning-bg: #fffbeb;
-    --schedule-danger: #b42318;
-    --schedule-danger-bg: #fef3f2;
-    --schedule-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
-    --schedule-shadow: 0 4px 16px rgba(16, 24, 40, 0.06);
-    --schedule-shadow-hover: 0 8px 24px rgba(16, 24, 40, 0.08);
-    --schedule-radius-sm: 10px;
-    --schedule-radius: 14px;
-    --schedule-radius-lg: 18px;
+    --student-primary: #0b2545;
+    --student-primary-dark: #071b33;
+    --student-primary-light: #163b68;
+     --student-accent: #2a7f5e;
+    --student-accent-soft: #eaf6f0;
+    --student-blue: #1d4e89;
+    --student-blue-soft: #edf4fb;
+    --student-orange: #c87822;
+    --student-orange-soft: #fff4e6;
+    --student-red: #c2414b;
+    --student-red-soft: #fdf0f1;
+    --student-text: #0f172a;
+    --student-muted: #64748b;
+    --student-light: #94a3b8;
+    --student-border: #e2e8f0;
+    --student-border-light: #edf1f5;
+    --student-background: #f5f7fb;
+    --student-surface: #ffffff;
+    --student-shadow-sm: 0 2px 8px rgba(11, 37, 69, 0.05);
+    --student-shadow-md: 0 8px 24px rgba(11, 37, 69, 0.08);
+    --student-radius-sm: 8px;
+    --student-radius-md: 12px;
+    --student-radius-lg: 16px;
+    --student-radius-xl: 20px;
+    
 }
-
-
-/* =========================================================
-   PAGE
-   ========================================================= */
 
 .schedule-page {
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
-    padding: 32px 24px 40px;
-    box-sizing: border-box;
-    color: var(--schedule-text);
-    font-family: "Inter", "Segoe UI", Arial, sans-serif;
 }
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
+/* ============================================================
+HEADER
+============================================================ */
 
 .schedule-header {
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 
 .schedule-header-content {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: 24px;
+    padding: 28px 30px;
+    background: var(--student-surface);
+    border: 1px solid var(--student-border);
+    border-radius: var(--student-radius-xl);
+    box-shadow: var(--student-shadow-sm);
 }
 
 .page-eyebrow {
@@ -66,365 +57,691 @@
     align-items: center;
     gap: 7px;
     margin-bottom: 8px;
-    color: var(--schedule-accent);
-    font-size: 12px;
-    font-weight: 700;
+    color: var(--student-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
     letter-spacing: 0.08em;
-    line-height: 1.2;
     text-transform: uppercase;
 }
 
-    .page-eyebrow i {
-        font-size: 14px;
-    }
-
 .schedule-header h1 {
     margin: 0;
-    color: var(--schedule-primary);
-    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: 30px;
+    color: var(--student-primary);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1.75rem;
     font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: -0.03em;
 }
 
 .schedule-header p {
-    max-width: 650px;
-    margin: 8px 0 0;
-    color: var(--schedule-text-muted);
-    font-size: 14px;
-    line-height: 1.6;
+    margin: 7px 0 0;
+    color: var(--student-muted);
+    font-size: 0.88rem;
 }
-
-
-/* =========================================================
-   STUDENT BADGE
-   ========================================================= */
 
 .student-badge {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
     min-width: 145px;
-    padding: 10px 14px;
-    background: var(--schedule-surface);
-    border: 1px solid var(--schedule-border);
+    padding: 11px 14px;
+    border: 1px solid var(--student-border);
     border-radius: 12px;
-    box-shadow: var(--schedule-shadow-sm);
+    background: var(--student-blue-soft);
 }
 
 .student-badge-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 36px;
-    width: 36px;
-    height: 36px;
-    color: var(--schedule-primary);
-    background: var(--schedule-accent-light);
+    width: 39px;
+    height: 39px;
+    flex: 0 0 39px;
     border-radius: 10px;
-    font-size: 17px;
+    color: var(--student-primary);
+    background: #fff;
 }
 
 .student-badge-label {
     display: block;
     margin-bottom: 2px;
-    color: var(--schedule-text-light);
-    font-size: 10px;
+    color: var(--student-muted);
+    font-size: 0.66rem;
     font-weight: 700;
-    letter-spacing: 0.07em;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .student-badge strong {
-    display: block;
-    color: var(--schedule-primary);
-    font-size: 13px;
-    font-weight: 700;
+    color: var(--student-primary);
+    font-size: 0.82rem;
+    font-weight: 800;
 }
 
-
-/* =========================================================
-   STATISTICS
-   ========================================================= */
+/* ============================================================
+STATISTICS
+============================================================ */
 
 .schedule-stats {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
     margin-bottom: 24px;
 }
 
 .schedule-stat-card {
     display: flex;
     align-items: center;
-    gap: 14px;
-    min-height: 82px;
-    padding: 16px 18px;
-    background: var(--schedule-surface);
-    border: 1px solid var(--schedule-border);
-    border-radius: var(--schedule-radius);
-    box-shadow: var(--schedule-shadow-sm);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    gap: 13px;
+    padding: 17px 18px;
+    background: var(--student-surface);
+    border: 1px solid var(--student-border);
+    border-radius: var(--student-radius-lg);
+    box-shadow: var(--student-shadow-sm);
 }
-
-    .schedule-stat-card:hover {
-        border-color: #cbd5e1;
-        box-shadow: var(--schedule-shadow);
-        transform: translateY(-1px);
-    }
 
 .schedule-stat-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 44px;
-    width: 44px;
-    height: 44px;
-    color: var(--schedule-primary);
-    background: var(--schedule-accent-light);
+    width: 43px;
+    height: 43px;
+    flex: 0 0 43px;
     border-radius: 11px;
-    font-size: 19px;
+    color: var(--student-primary);
+    background: var(--student-blue-soft);
+    font-size: 1rem;
 }
 
-.schedule-stat-content {
+.schedule-stat-content span {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--student-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.schedule-stat-content strong {
+    color: var(--student-primary);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+/* ============================================================
+TODAY'S SCHEDULE
+============================================================ */
+
+.today-schedule-panel {
+    margin-bottom: 28px;
+    padding: 22px;
+    background: var(--student-surface);
+    border: 1px solid var(--student-border);
+    border-radius: var(--student-radius-xl);
+    box-shadow: var(--student-shadow-sm);
+}
+
+.today-schedule-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--student-border-light);
+}
+
+.section-eyebrow {
+    display: inline-block;
+    margin-bottom: 5px;
+    color: var(--student-accent);
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.today-schedule-header h2 {
+    margin: 0;
+    color: var(--student-primary);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.today-schedule-header p {
+    margin: 4px 0 0;
+    color: var(--student-muted);
+    font-size: 0.75rem;
+}
+
+.live-clock {
+    min-width: 130px;
+    padding: 11px 15px;
+    text-align: center;
+    border-radius: 12px;
+    color: #fff;
+    background: var(--student-primary);
+}
+
+    .live-clock span {
+        display: block;
+        margin-bottom: 3px;
+        opacity: 0.65;
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .live-clock strong {
+        display: block;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+/* ============================================================
+TODAY SUMMARY
+============================================================ */
+
+.today-status-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 18px 0 22px;
+}
+
+.today-status-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--student-border);
+    border-radius: 11px;
+    background: #fff;
+}
+
+.today-status-dot {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.today-status-item.ongoing {
+    color: var(--student-accent);
+}
+
+.today-status-item.upcoming {
+    color: var(--student-orange);
+}
+
+.today-status-item.completed {
+    color: var(--student-blue);
+}
+
+.today-status-item strong {
+    display: block;
+    color: var(--student-primary);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.today-status-item span:not(.today-status-dot) {
+    display: block;
+    color: var(--student-muted);
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+
+/* ============================================================
+TODAY SECTIONS
+============================================================ */
+
+.today-class-section {
+    margin-top: 24px;
+}
+
+.today-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.today-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.today-section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    font-size: 0.85rem;
+}
+
+    .today-section-icon.ongoing {
+        color: var(--student-accent);
+        background: var(--student-accent-soft);
+    }
+
+    .today-section-icon.upcoming {
+        color: var(--student-orange);
+        background: var(--student-orange-soft);
+    }
+
+    .today-section-icon.completed {
+        color: var(--student-blue);
+        background: var(--student-blue-soft);
+    }
+
+.today-section-title h3 {
+    margin: 0;
+    color: var(--student-primary);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.today-section-title p {
+    margin: 2px 0 0;
+    color: var(--student-muted);
+    font-size: 0.68rem;
+}
+
+.today-section-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 27px;
+    height: 27px;
+    padding: 0 8px;
+    border-radius: 999px;
+    color: var(--student-primary);
+    background: #e9eef5;
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+/* ============================================================
+TODAY CLASS CARDS
+============================================================ */
+
+.today-class-list {
+    display: grid;
+    gap: 9px;
+}
+
+.today-class-card {
+    display: grid;
+    grid-template-columns: 105px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    min-height: 105px;
+    padding: 15px 17px;
+    border: 1px solid var(--student-border);
+    border-radius: 13px;
+    background: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+    .today-class-card:hover {
+        transform: translateY(-1px);
+        border-color: #cbd5e1;
+        box-shadow: var(--student-shadow-md);
+    }
+
+.ongoing-card {
+    border-left: 3px solid var(--student-accent);
+}
+
+.upcoming-card {
+    border-left: 3px solid var(--student-orange);
+}
+
+.completed-card {
+    border-left: 3px solid var(--student-blue);
+    opacity: 0.78;
+}
+
+    .completed-card:hover {
+        opacity: 1;
+    }
+
+.today-class-time {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 2px;
+}
+
+    .today-class-time strong {
+        color: var(--student-primary);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 800;
+    }
+
+    .today-class-time > span {
+        color: var(--student-muted);
+        font-size: 0.61rem;
+        font-weight: 700;
+    }
+
+.today-time-line {
+    width: 2px;
+    height: 10px;
+    margin: 2px 0;
+    border-radius: 999px;
+    background: #cbd5e1;
+}
+
+.today-class-information {
     min-width: 0;
 }
 
-    .schedule-stat-content span {
-        display: block;
-        margin-bottom: 4px;
-        color: var(--schedule-text-muted);
-        font-size: 12px;
+.today-course-topline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 3px;
+}
+
+.today-course-code {
+    color: var(--student-accent);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.today-live-badge,
+.today-upcoming-badge,
+.today-completed-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 7px;
+    border-radius: 999px;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.today-live-badge {
+    color: var(--student-accent);
+    background: var(--student-accent-soft);
+}
+
+    .today-live-badge span {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+.today-upcoming-badge {
+    color: var(--student-orange);
+    background: var(--student-orange-soft);
+}
+
+.today-completed-badge {
+    color: var(--student-blue);
+    background: var(--student-blue-soft);
+}
+
+.today-class-information h4 {
+    margin: 0 0 7px;
+    overflow: hidden;
+    color: var(--student-text);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.today-class-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 17px;
+}
+
+    .today-class-details > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--student-muted);
+        font-size: 0.68rem;
         font-weight: 600;
-        line-height: 1.3;
     }
 
-    .schedule-stat-content strong {
-        display: block;
-        color: var(--schedule-primary);
-        font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-        font-size: 22px;
-        font-weight: 800;
-        line-height: 1.1;
+    .today-class-details i {
+        color: var(--student-primary-light);
     }
 
+.today-class-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 86px;
+    padding: 7px 9px;
+    border-radius: 999px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
 
-/* =========================================================
-   MAIN SCHEDULE PANEL
-   ========================================================= */
+    .today-class-status.ongoing {
+        color: var(--student-accent);
+        background: var(--student-accent-soft);
+    }
+
+    .today-class-status.upcoming {
+        color: var(--student-orange);
+        background: var(--student-orange-soft);
+    }
+
+    .today-class-status.completed {
+        color: var(--student-blue);
+        background: var(--student-blue-soft);
+    }
+
+/* ============================================================
+TODAY EMPTY STATE
+============================================================ */
+
+.today-empty-state {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 11px;
+    background: #fafbfc;
+}
+
+.today-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 10px;
+    color: var(--student-primary-light);
+    background: var(--student-blue-soft);
+}
+
+.today-empty-state strong {
+    display: block;
+    color: var(--student-primary);
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+.today-empty-state span {
+    display: block;
+    margin-top: 2px;
+    color: var(--student-muted);
+    font-size: 0.67rem;
+}
+
+/* ============================================================
+WEEKLY SCHEDULE
+============================================================ */
 
 .schedule-panel {
-    overflow: hidden;
-    background: var(--schedule-surface);
-    border: 1px solid var(--schedule-border);
-    border-radius: var(--schedule-radius-lg);
-    box-shadow: var(--schedule-shadow);
+    margin-bottom: 24px;
+    padding: 22px;
+    background: var(--student-surface);
+    border: 1px solid var(--student-border);
+    border-radius: var(--student-radius-xl);
+    box-shadow: var(--student-shadow-sm);
 }
 
 .schedule-panel-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 20px 22px;
-    border-bottom: 1px solid var(--schedule-border-light);
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-.section-eyebrow {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--schedule-text-light);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    line-height: 1.2;
-    text-transform: uppercase;
-}
-
-.schedule-panel-header h2 {
-    margin: 0;
-    color: var(--schedule-primary);
-    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: 19px;
-    font-weight: 800;
-    line-height: 1.3;
-}
+    .schedule-panel-header h2 {
+        margin: 0;
+        color: var(--student-primary);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+    }
 
 .class-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 62px;
-    padding: 7px 11px;
-    color: var(--schedule-accent);
-    background: var(--schedule-accent-light);
-    border-radius: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    white-space: nowrap;
+    min-width: 75px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    color: var(--student-primary);
+    background: var(--student-blue-soft);
+    font-size: 0.68rem;
+    font-weight: 800;
 }
 
-
-/* =========================================================
-   SCHEDULE LIST
-   ========================================================= */
-
 .schedule-list {
-    padding: 8px 22px 22px;
+    display: grid;
+    gap: 22px;
 }
 
 .schedule-day {
-    padding-top: 18px;
+    overflow: hidden;
+    border: 1px solid var(--student-border);
+    border-radius: 14px;
 }
-
-    .schedule-day + .schedule-day {
-        margin-top: 10px;
-        padding-top: 22px;
-        border-top: 1px solid var(--schedule-border-light);
-    }
-
-
-/* =========================================================
-   DAY HEADER
-   ========================================================= */
 
 .schedule-day-header {
     display: flex;
     align-items: center;
     gap: 11px;
-    margin-bottom: 12px;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--student-border);
 }
 
 .day-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 36px;
     width: 36px;
     height: 36px;
-    color: var(--schedule-primary);
-    background: var(--schedule-accent-light);
-    border-radius: 9px;
-    font-size: 16px;
+    flex: 0 0 36px;
+    border-radius: 10px;
+    color: var(--student-primary);
+    background: var(--student-blue-soft);
 }
 
 .schedule-day-header > div:nth-child(2) {
-    flex: 1;
     min-width: 0;
 }
 
-    .schedule-day-header > div:nth-child(2) span {
-        display: block;
-        margin-bottom: 2px;
-        color: var(--schedule-text-light);
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.07em;
-        line-height: 1.2;
-        text-transform: uppercase;
-    }
+.schedule-day-header span {
+    display: block;
+    color: var(--student-muted);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
 
 .schedule-day-header h3 {
-    margin: 0;
-    color: var(--schedule-primary);
-    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: 15px;
+    margin: 1px 0 0;
+    color: var(--student-primary);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 0.88rem;
     font-weight: 800;
-    line-height: 1.3;
 }
 
 .day-class-count {
-    padding: 5px 9px;
-    color: var(--schedule-text-muted);
-    background: var(--schedule-surface-soft);
-    border: 1px solid var(--schedule-border-light);
-    border-radius: 7px;
-    font-size: 10px;
-    font-weight: 600;
-    white-space: nowrap;
+    margin-left: auto;
+    color: var(--student-muted) !important;
+    font-size: 0.66rem !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
 }
-
-
-/* =========================================================
-   DAY ITEMS
-   ========================================================= */
 
 .schedule-day-items {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    gap: 0;
 }
-
-
-/* =========================================================
-   SCHEDULE CARD
-   ========================================================= */
 
 .schedule-card {
     display: grid;
-    grid-template-columns: 115px minmax(0, 1fr) auto;
-    align-items: stretch;
-    gap: 20px;
+    grid-template-columns: 100px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
     padding: 16px;
-    background: var(--schedule-surface);
-    border: 1px solid var(--schedule-border);
-    border-radius: var(--schedule-radius);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    border-bottom: 1px solid var(--student-border-light);
 }
 
-    .schedule-card:hover {
-        border-color: #cbd5e1;
-        box-shadow: var(--schedule-shadow-hover);
-        transform: translateY(-1px);
+    .schedule-card:last-child {
+        border-bottom: 0;
     }
-
-
-/* =========================================================
-   TIME
-   ========================================================= */
 
 .schedule-time {
     display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-content: center;
-    position: relative;
-    padding: 4px 18px 4px 2px;
-    border-right: 1px solid var(--schedule-border-light);
+    gap: 2px;
 }
 
     .schedule-time strong {
-        color: var(--schedule-primary);
-        font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-        font-size: 17px;
+        color: var(--student-primary);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 0.8rem;
         font-weight: 800;
-        line-height: 1.1;
     }
 
     .schedule-time span {
-        margin-top: 2px;
-        color: var(--schedule-text-light);
-        font-size: 9px;
+        color: var(--student-muted);
+        font-size: 0.6rem;
         font-weight: 700;
-        letter-spacing: 0.04em;
-        line-height: 1.2;
-    }
-
-    .schedule-time strong:nth-of-type(2) {
-        margin-top: 9px;
     }
 
 .time-line {
-    width: 1px;
+    width: 2px;
     height: 10px;
-    margin: 4px 0 0 8px;
-    background: var(--schedule-border);
+    margin: 2px 0;
+    border-radius: 999px;
+    background: #cbd5e1;
 }
-
-
-/* =========================================================
-   COURSE CONTENT
-   ========================================================= */
 
 .schedule-course {
     min-width: 0;
@@ -433,530 +750,286 @@
 .course-topline {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 7px;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
 }
 
 .course-code {
-    display: inline-flex;
-    align-items: center;
-    max-width: 100%;
-    padding: 4px 7px;
-    color: var(--schedule-accent);
-    background: var(--schedule-accent-light);
-    border-radius: 6px;
-    font-size: 10px;
+    color: var(--student-accent);
+    font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-    white-space: nowrap;
+    letter-spacing: 0.05em;
 }
 
 .session-badge {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 4px 8px;
-    color: var(--schedule-text-muted);
-    background: var(--schedule-surface-soft);
-    border: 1px solid var(--schedule-border-light);
-    border-radius: 6px;
-    font-size: 9px;
-    font-weight: 700;
-    line-height: 1.2;
-    white-space: nowrap;
+    padding: 4px 7px;
+    border-radius: 999px;
+    color: var(--student-primary);
+    background: var(--student-blue-soft);
+    font-size: 0.58rem;
+    font-weight: 800;
 }
-
-    .session-badge i {
-        font-size: 9px;
-    }
 
 .schedule-course h3 {
-    margin: 0 0 12px;
-    color: var(--schedule-primary);
-    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: 16px;
+    margin: 0 0 9px;
+    color: var(--student-text);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 0.88rem;
     font-weight: 800;
-    line-height: 1.35;
 }
-
-
-/* =========================================================
-   DETAILS
-   ========================================================= */
 
 .schedule-details {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 9px 24px;
 }
 
 .schedule-detail {
     display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    min-width: 150px;
+    align-items: center;
+    gap: 7px;
 }
 
     .schedule-detail > i {
-        flex: 0 0 auto;
-        margin-top: 2px;
-        color: var(--schedule-accent);
-        font-size: 14px;
-    }
-
-    .schedule-detail > div {
-        min-width: 0;
+        color: var(--student-primary-light);
+        font-size: 0.8rem;
     }
 
     .schedule-detail span {
         display: block;
-        margin-bottom: 2px;
-        color: var(--schedule-text-light);
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        line-height: 1.2;
-        text-transform: uppercase;
+        color: var(--student-muted);
+        font-size: 0.6rem;
+        font-weight: 600;
     }
 
     .schedule-detail strong {
         display: block;
-        color: var(--schedule-text);
-        font-size: 11px;
-        font-weight: 650;
-        line-height: 1.4;
-        overflow-wrap: anywhere;
+        margin-top: 1px;
+        color: var(--student-text);
+        font-size: 0.68rem;
+        font-weight: 700;
     }
-
-
-/* =========================================================
-   NOTES
-   ========================================================= */
 
 .schedule-notes {
     display: flex;
     align-items: flex-start;
     gap: 7px;
-    margin-top: 12px;
-    padding-top: 10px;
-    color: var(--schedule-text-muted);
-    border-top: 1px solid var(--schedule-border-light);
-    font-size: 10px;
-    line-height: 1.5;
+    margin-top: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--student-muted);
+    background: #f8fafc;
+    font-size: 0.64rem;
 }
 
     .schedule-notes i {
-        flex: 0 0 auto;
         margin-top: 1px;
-        color: var(--schedule-accent);
+        color: var(--student-primary-light);
     }
 
-
-/* =========================================================
-   STATUS
-   ========================================================= */
-
-.schedule-status {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    min-width: 72px;
+.schedule-status span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 8px;
+    border-radius: 999px;
+    color: var(--student-accent);
+    background: var(--student-accent-soft);
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
-    .schedule-status span {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 6px 8px;
-        color: var(--schedule-success);
-        background: var(--schedule-success-bg);
-        border-radius: 7px;
-        font-size: 9px;
-        font-weight: 700;
-        line-height: 1.2;
-        white-space: nowrap;
-    }
-
-    .schedule-status i {
-        font-size: 9px;
-    }
-
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
+/* ============================================================
+EMPTY WEEKLY STATE
+============================================================ */
 
 .schedule-empty {
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: 64px 24px;
+    justify-content: center;
+    min-height: 260px;
+    margin-bottom: 24px;
+    padding: 35px;
     text-align: center;
-    background: var(--schedule-surface);
-    border: 1px solid var(--schedule-border);
-    border-radius: var(--schedule-radius-lg);
-    box-shadow: var(--schedule-shadow-sm);
+    background: var(--student-surface);
+    border: 1px dashed #cbd5e1;
+    border-radius: var(--student-radius-xl);
 }
 
 .empty-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 68px;
-    height: 68px;
-    margin-bottom: 18px;
-    color: var(--schedule-primary);
-    background: var(--schedule-accent-light);
-    border-radius: 18px;
-    font-size: 28px;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+    color: var(--student-primary-light);
+    background: var(--student-blue-soft);
+    font-size: 1.2rem;
 }
 
 .schedule-empty h2 {
-    margin: 0 0 7px;
-    color: var(--schedule-primary);
-    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: 19px;
+    margin: 0;
+    color: var(--student-primary);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1rem;
     font-weight: 800;
-    line-height: 1.3;
 }
 
 .schedule-empty p {
-    max-width: 470px;
-    margin: 0 0 20px;
-    color: var(--schedule-text-muted);
-    font-size: 13px;
-    line-height: 1.6;
+    max-width: 500px;
+    margin: 6px 0 15px;
+    color: var(--student-muted);
+    font-size: 0.74rem;
 }
 
 .empty-action {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 7px;
-    padding: 10px 14px;
-    color: #ffffff;
-    background: var(--schedule-primary);
-    border: 1px solid var(--schedule-primary);
+    padding: 9px 13px;
     border-radius: 9px;
-    font-size: 11px;
+    color: #fff;
+    background: var(--student-primary);
+    font-size: 0.7rem;
     font-weight: 700;
-    line-height: 1.2;
     text-decoration: none;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
     .empty-action:hover {
-        color: #ffffff;
-        background: var(--schedule-primary-dark);
-        border-color: var(--schedule-primary-dark);
-        box-shadow: 0 4px 12px rgba(6, 26, 51, 0.16);
-        transform: translateY(-1px);
+        color: #fff;
+        background: var(--student-primary-dark);
     }
 
-    .empty-action:focus-visible {
-        outline: 3px solid rgba(29, 78, 137, 0.2);
-        outline-offset: 2px;
-    }
-
-
-/* =========================================================
-   INFORMATION PANEL
-   ========================================================= */
+/* ============================================================
+INFORMATION
+============================================================ */
 
 .schedule-information {
     display: flex;
     align-items: flex-start;
-    gap: 13px;
-    margin-top: 20px;
+    gap: 12px;
     padding: 16px 18px;
-    background: var(--schedule-surface);
-    border: 1px solid var(--schedule-border);
-    border-radius: var(--schedule-radius);
-    box-shadow: var(--schedule-shadow-sm);
+    margin-bottom: 10px;
+    border: 1px solid var(--student-border);
+    border-radius: var(--student-radius-lg);
+    background: var(--student-surface);
 }
 
 .information-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 34px;
-    width: 34px;
-    height: 34px;
-    color: var(--schedule-accent);
-    background: var(--schedule-accent-light);
-    border-radius: 9px;
-    font-size: 15px;
-}
-
-.schedule-information > div:last-child {
-    min-width: 0;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    border-radius: 10px;
+    color: var(--student-accent);
+    background: var(--student-accent-soft);
 }
 
 .schedule-information h3 {
-    margin: 0 0 4px;
-    color: var(--schedule-primary);
-    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
-    font-size: 12px;
+    margin: 0 0 3px;
+    color: var(--student-primary);
+    font-size: 0.78rem;
     font-weight: 800;
-    line-height: 1.3;
 }
 
 .schedule-information p {
-    max-width: 900px;
     margin: 0;
-    color: var(--schedule-text-muted);
-    font-size: 11px;
-    line-height: 1.55;
+    color: var(--student-muted);
+    font-size: 0.67rem;
+    line-height: 1.6;
 }
 
-
-/* =========================================================
-   FOCUS STATES
-   ========================================================= */
-
-.student-badge:focus-within,
-.schedule-stat-card:focus-within {
-    border-color: #b8c7da;
-}
-
-
-/* =========================================================
-   RESPONSIVE — LARGE TABLET
-   ========================================================= */
+/* ============================================================
+RESPONSIVE
+============================================================ */
 
 @media (max-width: 1100px) {
 
-    .schedule-page {
-        padding: 28px 20px 36px;
+    
+    .schedule-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .today-class-card {
+        grid-template-columns: 85px minmax(0, 1fr) auto;
     }
 
     .schedule-card {
-        grid-template-columns: 100px minmax(0, 1fr) auto;
-        gap: 16px;
+        grid-template-columns: 80px minmax(0, 1fr) auto;
     }
 
-    .schedule-details {
-        gap: 14px;
-    }
-
-    .schedule-detail {
-        min-width: 135px;
-    }
+    
 }
 
+@media (max-width: 800px) {
 
-/* =========================================================
-   RESPONSIVE — TABLET
-   ========================================================= */
-
-@media (max-width: 900px) {
-
+    
     .schedule-header-content {
         align-items: flex-start;
         flex-direction: column;
     }
 
     .student-badge {
-        width: fit-content;
+        width: 100%;
+    }
+
+    .today-schedule-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .live-clock {
+        width: 100%;
+    }
+
+    .today-class-card {
+        grid-template-columns: 75px minmax(0, 1fr);
+    }
+
+    .today-class-status {
+        grid-column: 2;
+        justify-self: start;
     }
 
     .schedule-card {
-        grid-template-columns: 90px minmax(0, 1fr);
+        grid-template-columns: 75px minmax(0, 1fr);
     }
 
     .schedule-status {
         grid-column: 2;
-        justify-content: flex-start;
-        margin-top: -4px;
+        justify-self: start;
     }
+
+    
 }
 
+@media (max-width: 600px) {
 
-/* =========================================================
-   RESPONSIVE — MOBILE
-   ========================================================= */
-
-@media (max-width: 720px) {
-
-    .schedule-page {
-        padding: 22px 16px 30px;
+    
+    .schedule-header-content,
+    .today-schedule-panel,
+    .schedule-panel {
+        padding: 17px;
     }
 
     .schedule-header h1 {
-        font-size: 26px;
-    }
-
-    .schedule-header p {
-        font-size: 13px;
+        font-size: 1.4rem;
     }
 
     .schedule-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
-    }
-
-    .schedule-stat-card {
-        min-height: 70px;
-    }
-
-    .schedule-panel-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .schedule-list {
-        padding: 6px 14px 18px;
-    }
-
-    .schedule-day-header {
-        margin-bottom: 10px;
-    }
-
-    .schedule-card {
-        grid-template-columns: 1fr;
-        gap: 12px;
-        padding: 14px;
-    }
-
-    .schedule-time {
-        display: grid;
-        grid-template-columns: auto auto 1fr auto auto;
-        align-items: center;
-        justify-content: initial;
-        gap: 5px;
-        padding: 0 0 10px;
-        border-right: 0;
-        border-bottom: 1px solid var(--schedule-border-light);
-    }
-
-        .schedule-time strong {
-            font-size: 14px;
-        }
-
-            .schedule-time strong:nth-of-type(2) {
-                margin-top: 0;
-            }
-
-        .schedule-time span {
-            margin-top: 0;
-        }
-
-    .time-line {
-        width: 100%;
-        height: 1px;
-        margin: 0 3px;
-        background: var(--schedule-border);
-    }
-
-    .course-topline {
-        align-items: flex-start;
-    }
-
-    .schedule-details {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .schedule-detail {
-        min-width: 0;
-    }
-
-    .schedule-status {
-        grid-column: auto;
-        margin-top: 0;
-    }
-
-    .schedule-information {
-        padding: 14px;
-    }
-}
-
-
-/* =========================================================
-   RESPONSIVE — SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 520px) {
-
-    .schedule-page {
-        padding: 18px 12px 26px;
-    }
-
-    .schedule-header {
-        margin-bottom: 18px;
-    }
-
-        .schedule-header h1 {
-            font-size: 23px;
-        }
-
-    .schedule-panel {
-        border-radius: 14px;
-    }
-
-    .schedule-panel-header {
-        padding: 16px;
-    }
-
-        .schedule-panel-header h2 {
-            font-size: 17px;
-        }
-
-    .schedule-day {
-        padding-top: 14px;
-    }
-
-        .schedule-day + .schedule-day {
-            padding-top: 18px;
-        }
-
-    .schedule-card {
-        padding: 12px;
-        border-radius: 12px;
-    }
-
-    .schedule-course h3 {
-        font-size: 14px;
-    }
-
-    .student-badge {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .day-class-count {
-        display: none;
-    }
-
-    .schedule-time {
-        gap: 4px;
-    }
-
-        .schedule-time strong {
-            font-size: 13px;
-        }
-
-        .schedule-time span {
-            font-size: 8px;
-        }
-}
-
-
-/* =========================================================
-   VERY SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 400px) {
-
-    .schedule-page {
-        padding-right: 10px;
-        padding-left: 10px;
-    }
-
-    .schedule-header h1 {
-        font-size: 21px;
     }
 
     .schedule-stat-card {
@@ -964,80 +1037,130 @@
     }
 
     .schedule-stat-icon {
-        flex-basis: 40px;
-        width: 40px;
-        height: 40px;
+        width: 37px;
+        height: 37px;
+        flex-basis: 37px;
+    }
+
+    .schedule-stat-content span {
+        font-size: 0.64rem;
     }
 
     .schedule-stat-content strong {
-        font-size: 19px;
+        font-size: 1.1rem;
     }
 
-    .course-topline {
-        flex-direction: column;
+    .today-status-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .today-class-card {
+        grid-template-columns: 1fr;
+        gap: 11px;
+        padding: 14px;
+    }
+
+    .today-class-time {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 7px;
+    }
+
+    .today-time-line {
+        width: 12px;
+        height: 2px;
+        margin: 0 2px;
+    }
+
+    .today-class-status {
+        grid-column: auto;
+        justify-self: start;
+    }
+
+    .today-class-information h4 {
+        white-space: normal;
+    }
+
+    .today-class-details {
         align-items: flex-start;
+        flex-direction: column;
         gap: 6px;
     }
 
-    .session-badge {
-        font-size: 8px;
+    .schedule-card {
+        grid-template-columns: 1fr;
+        gap: 11px;
     }
 
-    .schedule-status span {
-        font-size: 8px;
+    .schedule-time {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 7px;
     }
+
+    .time-line {
+        width: 12px;
+        height: 2px;
+        margin: 0 2px;
+    }
+
+    .schedule-status {
+        grid-column: auto;
+    }
+
+    .schedule-details {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    
 }
 
+@media (max-width: 420px) {
 
-/* =========================================================
-   ACCESSIBILITY
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .schedule-card,
-    .schedule-stat-card,
-    .empty-action {
-        transition: none;
-    }
-
-        .schedule-card:hover,
-        .schedule-stat-card:hover,
-        .empty-action:hover {
-            transform: none;
-        }
-}
-
-
-/* =========================================================
-   PRINT
-   ========================================================= */
-
-@media print {
-
-    .schedule-page {
-        max-width: none;
-        padding: 0;
-    }
-
+    
     .schedule-stats {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr;
     }
 
-    .schedule-stat-card,
-    .schedule-card,
-    .schedule-information,
-    .schedule-panel {
-        box-shadow: none;
+    .today-section-heading {
+        align-items: flex-start;
+    }
+
+    .schedule-day-header {
+        padding: 12px;
     }
 
     .schedule-card {
-        break-inside: avoid;
+        padding: 13px;
     }
 
-    .empty-action {
-        display: none;
+    .schedule-information {
+        padding: 14px;
     }
+
+    
 }
 
+/* ============================================================
+PRINT
+============================================================ */
 
+@media print {
+
+    
+    .today-schedule-panel,
+    .schedule-panel,
+    .schedule-header-content,
+    .schedule-stat-card,
+    .schedule-information {
+        box-shadow: none;
+    }
+
+    .today-class-card:hover {
+        transform: none;
+    }
+
+    
+}

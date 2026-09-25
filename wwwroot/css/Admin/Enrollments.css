@@ -1,0 +1,744 @@
+.enrollment-page {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+PAGE HEADER
+============================================================ */
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.page-title-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.page-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: #eaf1f9;
+    color: #1d4e89;
+    font-size: 20px;
+}
+
+.page-eyebrow {
+    margin-bottom: 3px;
+    color: #1d4e89;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.page-header h1 {
+    margin: 0;
+    color: #0b2545;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.page-header p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+/* ============================================================
+ALERT
+============================================================ */
+
+.alert-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+    .alert-message.error {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+    }
+
+/* ============================================================
+STATISTICS
+============================================================ */
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    min-height: 92px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 13px;
+    box-shadow: 0 2px 8px rgba(11, 37, 69, 0.04);
+}
+
+.stat-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+    .stat-icon.blue {
+        background: #edf4fb;
+        color: #1d4e89;
+    }
+
+    .stat-icon.green,
+    .stat-icon.emerald {
+        background: #eaf6f0;
+        color: #2a7f5e;
+    }
+
+    .stat-icon.orange {
+        background: #fff4e8;
+        color: #c87822;
+    }
+
+    .stat-icon.red {
+        background: #fef0f0;
+        color: #c0392b;
+    }
+
+.stat-content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.stat-value {
+    margin-top: 2px;
+    color: #0b2545;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+/* ============================================================
+FILTER PANEL
+============================================================ */
+
+.filter-panel {
+    margin-bottom: 20px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(11, 37, 69, 0.04);
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 16px;
+}
+
+    .filter-header h2 {
+        margin: 0;
+        color: #0b2545;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .filter-header span {
+        display: block;
+        margin-top: 3px;
+        color: #94a3b8;
+        font-size: 10px;
+    }
+
+.result-count {
+    flex: 0 0 auto;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+    .result-count span {
+        display: inline;
+        margin: 0;
+        color: #1d4e89;
+        font-size: inherit;
+    }
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: minmax(250px, 1fr) 180px auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.search-field {
+    position: relative;
+}
+
+    .search-field i {
+        position: absolute;
+        top: 50%;
+        left: 13px;
+        color: #94a3b8;
+        font-size: 13px;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .search-field input,
+    .filter-field select {
+        width: 100%;
+        height: 40px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        outline: none;
+        background: #f8fafc;
+        color: #0f172a;
+        font-size: 11px;
+        transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .search-field input {
+        padding: 0 13px 0 36px;
+    }
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+    .filter-field label {
+        color: #475569;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .filter-field select {
+        padding: 0 11px;
+    }
+
+        .search-field input:focus,
+        .filter-field select:focus {
+            border-color: #1d4e89;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(29, 78, 137, 0.09);
+        }
+
+.clear-filter-btn {
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+    .clear-filter-btn:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        color: #0b2545;
+    }
+
+/* ============================================================
+COURSE LIST
+============================================================ */
+
+.course-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.course-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(11, 37, 69, 0.04);
+}
+
+.course-card-header {
+    min-height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px 18px;
+}
+
+.course-main {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.course-code {
+    min-width: 74px;
+    padding: 8px 9px;
+    border-radius: 8px;
+    background: #edf4fb;
+    color: #1d4e89;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.course-details {
+    min-width: 0;
+}
+
+    .course-details h3 {
+        margin: 0;
+        color: #0f172a;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+.course-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 6px;
+    color: #64748b;
+    font-size: 10px;
+}
+
+    .course-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .course-meta i {
+        color: #94a3b8;
+    }
+
+.muted {
+    color: #94a3b8;
+}
+
+.course-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 0 0 auto;
+}
+
+.course-count {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+    .course-count strong {
+        color: #0b2545;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 17px;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .course-count span {
+        margin-top: 4px;
+        color: #94a3b8;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+.expand-course-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #64748b;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.2s ease;
+}
+
+    .expand-course-btn:hover {
+        background: #edf4fb;
+        color: #1d4e89;
+    }
+
+    .expand-course-btn i {
+        transition: transform 0.2s ease;
+    }
+
+    .expand-course-btn.expanded i {
+        transform: rotate(180deg);
+    }
+
+/* ============================================================
+STUDENT PANEL
+============================================================ */
+
+.course-students-panel {
+    display: none;
+    border-top: 1px solid #edf1f5;
+    background: #f8fafc;
+}
+
+    .course-students-panel.expanded {
+        display: block;
+    }
+
+.students-panel-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+    .students-panel-header h4 {
+        margin: 0;
+        color: #0b2545;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .students-panel-header span {
+        display: block;
+        margin-top: 3px;
+        color: #94a3b8;
+        font-size: 9px;
+    }
+
+.student-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.student-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+}
+
+    .student-table th {
+        padding: 10px 14px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #f1f5f9;
+        color: #64748b;
+        font-size: 8px;
+        font-weight: 800;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+    }
+
+    .student-table td {
+        padding: 11px 14px;
+        border-bottom: 1px solid #edf1f5;
+        color: #475569;
+        font-size: 10px;
+        vertical-align: middle;
+    }
+
+    .student-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .student-table tbody tr:hover {
+        background: #ffffff;
+    }
+
+.student-cell {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.student-avatar {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eaf1f9;
+    color: #1d4e89;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.student-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+    .student-info strong {
+        color: #0f172a;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .student-info span {
+        margin-top: 1px;
+        color: #94a3b8;
+        font-size: 8px;
+    }
+
+.reg-number {
+    color: #1d4e89;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.email-text {
+    color: #64748b;
+    font-size: 9px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    font-size: 8px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.status-dot {
+    width: 5px;
+    height: 5px;
+    flex: 0 0 5px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.status-badge.enrolled {
+    background: #eaf6f0;
+    color: #2a7f5e;
+}
+
+.status-badge.pending {
+    background: #fff4e8;
+    color: #c87822;
+}
+
+.status-badge.closed {
+    background: #fef0f0;
+    color: #c0392b;
+}
+
+/* ============================================================
+EMPTY STATES
+============================================================ */
+
+.course-empty {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 10px;
+}
+
+    .course-empty i {
+        font-size: 14px;
+    }
+
+.empty-state {
+    min-height: 250px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.empty-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #94a3b8;
+    font-size: 18px;
+}
+
+.empty-state h3 {
+    margin: 0;
+    color: #0b2545;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.empty-state p {
+    margin: 5px 0 0;
+    color: #94a3b8;
+    font-size: 10px;
+}
+
+/* ============================================================
+RESPONSIVE
+============================================================ */
+
+@media (max-width: 1200px) {
+
+    
+    .statistics-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    
+}
+
+@media (max-width: 850px) {
+
+    
+    .filter-grid {
+        grid-template-columns: 1fr 160px auto;
+    }
+
+    .course-card-header {
+        align-items: flex-start;
+    }
+
+    
+}
+
+@media (max-width: 700px) {
+
+    
+    .statistics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-field {
+        width: 100%;
+    }
+
+    .clear-filter-btn {
+        width: 100%;
+    }
+
+    .course-card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .course-actions {
+        justify-content: space-between;
+    }
+
+    .course-count {
+        align-items: flex-start;
+    }
+
+    
+}
+
+@media (max-width: 480px) {
+
+    
+    .statistics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-title-area {
+        align-items: flex-start;
+    }
+
+    .page-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        font-size: 17px;
+    }
+
+    .page-header h1 {
+        font-size: 21px;
+    }
+
+    .course-main {
+        align-items: flex-start;
+    }
+
+    .course-code {
+        min-width: 65px;
+    }
+
+    .course-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    
+}

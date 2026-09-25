@@ -164,6 +164,7 @@ namespace CourseScheduleSystem.Web.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -199,6 +200,7 @@ namespace CourseScheduleSystem.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -223,6 +225,8 @@ namespace CourseScheduleSystem.Web.Migrations
 
                     b.HasIndex("RegNo")
                         .IsUnique();
+
+                    b.HasIndex("Department", "Intake", "Level", "IsActive");
 
                     b.ToTable("ClassRepresentatives");
                 });
@@ -492,6 +496,8 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.HasIndex("StaffId")
                         .IsUnique();
 
+                    b.HasIndex("Department", "IsActive");
+
                     b.ToTable("Lecturers");
                 });
 
@@ -528,6 +534,8 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.HasIndex("Building", "RoomNumber")
                         .IsUnique();
 
+                    b.HasIndex("IsAvailable", "Building");
+
                     b.ToTable("Rooms");
                 });
 
@@ -542,6 +550,9 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Property<int?>("AdministratorId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ClassRepresentativeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
@@ -551,13 +562,16 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("date");
+
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LecturerId")
+                    b.Property<int?>("LecturerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
@@ -567,14 +581,21 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
+
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("StudySession")
-                        .HasColumnType("int");
+                    b.Property<string>("StudySession")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -583,11 +604,13 @@ namespace CourseScheduleSystem.Web.Migrations
 
                     b.HasIndex("AdministratorId");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("ClassRepresentativeId", "IsActive");
 
-                    b.HasIndex("LecturerId");
+                    b.HasIndex("CourseId", "IsActive");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("LecturerId", "DayOfWeek", "StartTime", "EndTime", "IsActive");
+
+                    b.HasIndex("RoomId", "DayOfWeek", "StartTime", "EndTime", "IsActive");
 
                     b.ToTable("ScheduleEntries");
                 });
@@ -833,6 +856,11 @@ namespace CourseScheduleSystem.Web.Migrations
                         .WithMany("ManagedSchedules")
                         .HasForeignKey("AdministratorId");
 
+                    b.HasOne("CourseScheduleSystem.Web.Models.ClassRepresentative", "ClassRepresentative")
+                        .WithMany("ScheduleEntries")
+                        .HasForeignKey("ClassRepresentativeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("CourseScheduleSystem.Web.Models.Course", "Course")
                         .WithMany("ScheduleEntries")
                         .HasForeignKey("CourseId")
@@ -842,14 +870,15 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.HasOne("CourseScheduleSystem.Web.Models.Lecturer", "Lecturer")
                         .WithMany("ScheduleEntries")
                         .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("CourseScheduleSystem.Web.Models.Room", "Room")
                         .WithMany("ScheduleEntries")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("ClassRepresentative");
 
                     b.Navigation("Course");
 
@@ -883,6 +912,8 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Navigation("CourseCompletions");
 
                     b.Navigation("HodMessages");
+
+                    b.Navigation("ScheduleEntries");
                 });
 
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.Course", b =>

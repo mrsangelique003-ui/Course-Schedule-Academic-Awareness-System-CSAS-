@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseScheduleSystem.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260918121340_AddLogin")]
-    partial class AddLogin
+    [Migration("20260924161549_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,62 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.ToTable("Administrators");
                 });
 
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.ClassGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassRepresentativeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GroupLink")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Intake")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassRepresentativeId");
+
+                    b.HasIndex("CourseId", "ClassRepresentativeId", "Intake", "Level")
+                        .IsUnique();
+
+                    b.ToTable("ClassGroups");
+                });
+
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.ClassRepresentative", b =>
                 {
                     b.Property<int>("Id")
@@ -111,22 +167,43 @@ namespace CourseScheduleSystem.Web.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Faculty")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("Intake")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Nationality")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -135,13 +212,24 @@ namespace CourseScheduleSystem.Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("StudySession")
+                    b.Property<string>("SignatureImageData")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudySession")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RegNo")
                         .IsUnique();
+
+                    b.HasIndex("Department", "Intake", "Level", "IsActive");
 
                     b.ToTable("ClassRepresentatives");
                 });
@@ -210,6 +298,48 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.CourseCompletion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassRepresentativeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ConfirmedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LecturerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassRepresentativeId");
+
+                    b.HasIndex("LecturerId");
+
+                    b.HasIndex("CourseId", "ClassRepresentativeId")
+                        .IsUnique();
+
+                    b.ToTable("CourseCompletions");
+                });
+
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.Enrollment", b =>
                 {
                     b.Property<int>("Id")
@@ -241,6 +371,89 @@ namespace CourseScheduleSystem.Web.Migrations
                         .IsUnique();
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.Exam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime>("ExamDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ExamType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Exams");
+                });
+
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.HodMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassRepresentativeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HodId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("SenderType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassRepresentativeId");
+
+                    b.ToTable("HodMessages");
                 });
 
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.Lecturer", b =>
@@ -286,6 +499,8 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.HasIndex("StaffId")
                         .IsUnique();
 
+                    b.HasIndex("Department", "IsActive");
+
                     b.ToTable("Lecturers");
                 });
 
@@ -322,6 +537,8 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.HasIndex("Building", "RoomNumber")
                         .IsUnique();
 
+                    b.HasIndex("IsAvailable", "Building");
+
                     b.ToTable("Rooms");
                 });
 
@@ -336,6 +553,9 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Property<int?>("AdministratorId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ClassRepresentativeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
@@ -345,13 +565,16 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("date");
+
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LecturerId")
+                    b.Property<int?>("LecturerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
@@ -361,14 +584,21 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
+
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("StudySession")
-                        .HasColumnType("int");
+                    b.Property<string>("StudySession")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -377,11 +607,13 @@ namespace CourseScheduleSystem.Web.Migrations
 
                     b.HasIndex("AdministratorId");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("ClassRepresentativeId", "IsActive");
 
-                    b.HasIndex("LecturerId");
+                    b.HasIndex("CourseId", "IsActive");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("LecturerId", "DayOfWeek", "StartTime", "EndTime", "IsActive");
+
+                    b.HasIndex("RoomId", "DayOfWeek", "StartTime", "EndTime", "IsActive");
 
                     b.ToTable("ScheduleEntries");
                 });
@@ -446,6 +678,54 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.SupportTicket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TicketNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TicketNumber")
+                        .IsUnique();
+
+                    b.ToTable("SupportTickets");
+                });
+
             modelBuilder.Entity("ClassRepresentativeCourse", b =>
                 {
                     b.HasOne("CourseScheduleSystem.Web.Models.ClassRepresentative", null)
@@ -461,6 +741,25 @@ namespace CourseScheduleSystem.Web.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.ClassGroup", b =>
+                {
+                    b.HasOne("CourseScheduleSystem.Web.Models.ClassRepresentative", "ClassRepresentative")
+                        .WithMany("ClassGroups")
+                        .HasForeignKey("ClassRepresentativeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CourseScheduleSystem.Web.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassRepresentative");
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.Course", b =>
                 {
                     b.HasOne("CourseScheduleSystem.Web.Models.Administrator", "Administrator")
@@ -474,6 +773,33 @@ namespace CourseScheduleSystem.Web.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Administrator");
+
+                    b.Navigation("Lecturer");
+                });
+
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.CourseCompletion", b =>
+                {
+                    b.HasOne("CourseScheduleSystem.Web.Models.ClassRepresentative", "ClassRepresentative")
+                        .WithMany("CourseCompletions")
+                        .HasForeignKey("ClassRepresentativeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CourseScheduleSystem.Web.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CourseScheduleSystem.Web.Models.Lecturer", "Lecturer")
+                        .WithMany()
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassRepresentative");
+
+                    b.Navigation("Course");
 
                     b.Navigation("Lecturer");
                 });
@@ -497,11 +823,46 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.Exam", b =>
+                {
+                    b.HasOne("CourseScheduleSystem.Web.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseScheduleSystem.Web.Models.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.HodMessage", b =>
+                {
+                    b.HasOne("CourseScheduleSystem.Web.Models.ClassRepresentative", "ClassRepresentative")
+                        .WithMany("HodMessages")
+                        .HasForeignKey("ClassRepresentativeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClassRepresentative");
+                });
+
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.ScheduleEntry", b =>
                 {
                     b.HasOne("CourseScheduleSystem.Web.Models.Administrator", null)
                         .WithMany("ManagedSchedules")
                         .HasForeignKey("AdministratorId");
+
+                    b.HasOne("CourseScheduleSystem.Web.Models.ClassRepresentative", "ClassRepresentative")
+                        .WithMany("ScheduleEntries")
+                        .HasForeignKey("ClassRepresentativeId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("CourseScheduleSystem.Web.Models.Course", "Course")
                         .WithMany("ScheduleEntries")
@@ -512,14 +873,15 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.HasOne("CourseScheduleSystem.Web.Models.Lecturer", "Lecturer")
                         .WithMany("ScheduleEntries")
                         .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("CourseScheduleSystem.Web.Models.Room", "Room")
                         .WithMany("ScheduleEntries")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("ClassRepresentative");
 
                     b.Navigation("Course");
 
@@ -528,11 +890,33 @@ namespace CourseScheduleSystem.Web.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.SupportTicket", b =>
+                {
+                    b.HasOne("CourseScheduleSystem.Web.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.Administrator", b =>
                 {
                     b.Navigation("ManagedCourses");
 
                     b.Navigation("ManagedSchedules");
+                });
+
+            modelBuilder.Entity("CourseScheduleSystem.Web.Models.ClassRepresentative", b =>
+                {
+                    b.Navigation("ClassGroups");
+
+                    b.Navigation("CourseCompletions");
+
+                    b.Navigation("HodMessages");
+
+                    b.Navigation("ScheduleEntries");
                 });
 
             modelBuilder.Entity("CourseScheduleSystem.Web.Models.Course", b =>

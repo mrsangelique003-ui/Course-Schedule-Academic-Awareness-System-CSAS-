@@ -3,25 +3,38 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<head>
+
+
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>@ViewData["Title"] - CSAS Administration</title>
 
-<meta name="description" content="Course Schedule & Academic Awareness System Administration" />
+<meta name="description"
+      content="Course Schedule & Academic Awareness System Administration" />
 
-<link rel="icon" type="image/png" href="~/images/PNG_LOGO-_UNILAK-removebg-preview.png" />
+<link rel="icon"
+      type="image/png"
+      href="~/images/PNG_LOGO-_UNILAK-removebg-preview.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet" />
 
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-<link rel="stylesheet" href="~/css/Admin/Layout.css" asp-append-version="true" />
+<link rel="stylesheet"
+      href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+<link rel="stylesheet"
+      href="~/css/Admin/Layout.css"
+      asp-append-version="true" />
 
 @await RenderSectionAsync("Styles", required: false)
 
@@ -31,35 +44,41 @@
 <body>
 
 @{
-var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
+var currentPage =
+ViewContext.RouteData.Values["page"]?.ToString() ?? "";
 
 
-var userName = User.Identity?.Name ?? "Administrator";
+var userName =
+    User.Identity?.Name ?? "Administrator";
 
-var userRole = User.FindFirst(ClaimTypes.Role)?.Value ?? "Administrator";
+var userRole =
+    User.FindFirst(ClaimTypes.Role)?.Value ?? "Administrator";
 
-var staffId = User.FindFirst("StaffId")?.Value
+var staffId =
+    User.FindFirst("StaffId")?.Value
     ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value
     ?? "ADM001";
-
-var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
 
 var initials = "AD";
 
 if (!string.IsNullOrWhiteSpace(userName))
 {
-    var parts = userName
-        .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    var parts =
+        userName.Split(
+            ' ',
+            StringSplitOptions.RemoveEmptyEntries);
 
     if (parts.Length >= 2)
     {
-        initials = $"{parts[0][0]}{parts[^1][0]}".ToUpper();
+        initials =
+            $"{parts[0][0]}{parts[^1][0]}".ToUpper();
     }
     else if (parts.Length == 1)
     {
-        initials = parts[0].Length >= 2
-            ? parts[0][..2].ToUpper()
-            : parts[0].ToUpper();
+        initials =
+            parts[0].Length >= 2
+                ? parts[0][..2].ToUpper()
+                : parts[0].ToUpper();
     }
 }
 
@@ -73,16 +92,26 @@ if (!string.IsNullOrWhiteSpace(userName))
 
     <div class="admin-sidebar-header">
 
-        <a asp-page="/Admin/Dashboard" class="admin-brand">
+        <a asp-page="/Admin/Dashboard"
+           class="admin-brand">
 
             <div class="admin-brand-logo">
+
                 <img src="~/images/PNG_LOGO-_UNILAK-removebg-preview.png"
                      alt="UNILAK Logo" />
+
             </div>
 
             <div class="admin-brand-text">
-                <span class="admin-brand-name">CSAS</span>
-                <span class="admin-brand-subtitle">Administration</span>
+
+                <span class="admin-brand-name">
+                    CSAS
+                </span>
+
+                <span class="admin-brand-subtitle">
+                    Administration
+                </span>
+
             </div>
 
         </a>
@@ -90,47 +119,15 @@ if (!string.IsNullOrWhiteSpace(userName))
         <button type="button"
                 class="sidebar-close-btn"
                 id="sidebarCloseBtn"
-                aria-label="Close sidebar">
+                aria-label="Close navigation">
+
             <i class="bi bi-x-lg"></i>
+
         </button>
 
     </div>
 
-    <div class="admin-user-card">
-
-        <div class="admin-user-avatar">
-            @initials
-        </div>
-
-        <div class="admin-user-info">
-
-            <span class="admin-user-name">
-                @userName
-            </span>
-
-            <span class="admin-user-role">
-                @userRole
-            </span>
-
-            <span class="admin-user-id">
-                @staffId
-            </span>
-
-        </div>
-
-        <a asp-page="/Admin/Profile"
-           class="admin-user-action"
-           title="My Profile">
-            <i class="bi bi-three-dots-vertical"></i>
-        </a>
-
-    </div>
-
     <nav class="admin-navigation">
-
-        <div class="nav-section-title">
-            MAIN
-        </div>
 
         <a asp-page="/Admin/Dashboard"
            class="admin-nav-link @(currentPage == "/Admin/Dashboard" ? "active" : "")">
@@ -144,10 +141,6 @@ if (!string.IsNullOrWhiteSpace(userName))
             </span>
 
         </a>
-
-        <div class="nav-section-title">
-            ACADEMIC MANAGEMENT
-        </div>
 
         <a asp-page="/Admin/Students"
            class="admin-nav-link @(currentPage == "/Admin/Students" ? "active" : "")">
@@ -201,8 +194,21 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         </a>
 
-        <a asp-page="/Admin/Classrooms"
-           class="admin-nav-link @(currentPage == "/Admin/Classrooms" ? "active" : "")">
+        <a asp-page="/Admin/Enrollments"
+           class="admin-nav-link @(currentPage == "/Admin/Enrollments" ? "active" : "")">
+
+            <span class="nav-icon">
+                <i class="bi bi-person-vcard-fill"></i>
+            </span>
+
+            <span class="nav-label">
+                Enrollments
+            </span>
+
+        </a>
+
+        <a asp-page="/Admin/ClassroomManagement"
+           class="admin-nav-link @(currentPage == "/Admin/ClassroomManagement" ? "active" : "")">
 
             <span class="nav-icon">
                 <i class="bi bi-building-fill"></i>
@@ -216,100 +222,19 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         <a asp-page="/Admin/Schedules"
            class="admin-nav-link @(currentPage == "/Admin/Schedules" ? "active" : "")">
-
             <span class="nav-icon">
                 <i class="bi bi-calendar3"></i>
             </span>
-
-            <span class="nav-label">
-                Schedules
-            </span>
-
-        </a>
-
-        <a asp-page="/Admin/Enrollments"
-           class="admin-nav-link @(currentPage == "/Admin/Enrollments" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-journal-check"></i>
-            </span>
-
-            <span class="nav-label">
-                Enrollments
-            </span>
-
-        </a>
-
-        <a asp-page="/Admin/Examinations"
-           class="admin-nav-link @(currentPage == "/Admin/Examinations" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-file-earmark-text-fill"></i>
-            </span>
-
-            <span class="nav-label">
-                Examinations
-            </span>
-
-        </a>
-
-        <div class="nav-section-title">
-            SYSTEM
-        </div>
-
-        <a asp-page="/Admin/Support"
-           class="admin-nav-link @(currentPage == "/Admin/Support" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-headset"></i>
-            </span>
-
-            <span class="nav-label">
-                Support
-            </span>
-
-        </a>
-
-        <a asp-page="/Admin/Profile"
-           class="admin-nav-link @(currentPage == "/Admin/Profile" ? "active" : "")">
-
-            <span class="nav-icon">
-                <i class="bi bi-person-circle"></i>
-            </span>
-
-            <span class="nav-label">
-                My Profile
-            </span>
-
+            <span class="nav-label">Schedules</span>
         </a>
 
     </nav>
 
-    <div class="admin-sidebar-footer">
-
-        <a asp-page="/Account/Logout"
-           class="admin-logout-link">
-
-            <span class="nav-icon">
-                <i class="bi bi-box-arrow-left"></i>
-            </span>
-
-            <span class="nav-label">
-                Sign Out
-            </span>
-
-        </a>
-
-        <div class="admin-version">
-            <span>CSAS</span>
-            <span>v1.0</span>
-        </div>
-
-    </div>
-
 </aside>
 
-<div class="admin-sidebar-overlay" id="sidebarOverlay"></div>
+<div class="admin-sidebar-overlay"
+     id="sidebarOverlay">
+</div>
 
 <div class="admin-content">
 
@@ -344,46 +269,7 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         <div class="topbar-right">
 
-            <div class="topbar-search">
-
-                <i class="bi bi-search"></i>
-
-                <input type="search"
-                       id="adminSearch"
-                       placeholder="Search..."
-                       autocomplete="off" />
-
-            </div>
-
-            <a asp-page="/Admin/Support"
-               class="topbar-action"
-               title="Support">
-
-                <i class="bi bi-headset"></i>
-
-            </a>
-
-            <button type="button"
-                    class="topbar-action"
-                    title="Notifications">
-
-                <i class="bi bi-bell"></i>
-
-                <span class="notification-dot"></span>
-
-            </button>
-
-            <button type="button"
-                    class="topbar-action"
-                    id="fullscreenBtn"
-                    title="Fullscreen">
-
-                <i class="bi bi-fullscreen"></i>
-
-            </button>
-
-            <a asp-page="/Admin/Profile"
-               class="topbar-profile">
+            <div class="topbar-profile">
 
                 <div class="topbar-profile-avatar">
                     @initials
@@ -401,9 +287,25 @@ if (!string.IsNullOrWhiteSpace(userName))
 
                 </div>
 
-                <i class="bi bi-chevron-down"></i>
+            </div>
 
-            </a>
+            <form method="post"
+                  asp-page="/Account/Logout"
+                  class="topbar-logout-form">
+
+                <button type="submit"
+                        class="topbar-logout"
+                        aria-label="Sign out">
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+                    <span>
+                        Sign Out
+                    </span>
+
+                </button>
+
+            </form>
 
         </div>
 
@@ -440,15 +342,23 @@ if (!string.IsNullOrWhiteSpace(userName))
 
     document.addEventListener("DOMContentLoaded", function () {
 
-        const sidebar = document.getElementById("adminSidebar");
-        const overlay = document.getElementById("sidebarOverlay");
-        const toggleBtn = document.getElementById("sidebarToggleBtn");
-        const closeBtn = document.getElementById("sidebarCloseBtn");
-        const fullscreenBtn = document.getElementById("fullscreenBtn");
+        const sidebar =
+            document.getElementById("adminSidebar");
+
+        const overlay =
+            document.getElementById("sidebarOverlay");
+
+        const toggleBtn =
+            document.getElementById("sidebarToggleBtn");
+
+        const closeBtn =
+            document.getElementById("sidebarCloseBtn");
 
         function openSidebar() {
 
-            if (!sidebar) return;
+            if (!sidebar) {
+                return;
+            }
 
             sidebar.classList.add("sidebar-open");
 
@@ -461,7 +371,9 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         function closeSidebar() {
 
-            if (!sidebar) return;
+            if (!sidebar) {
+                return;
+            }
 
             sidebar.classList.remove("sidebar-open");
 
@@ -473,121 +385,59 @@ if (!string.IsNullOrWhiteSpace(userName))
         }
 
         if (toggleBtn) {
-            toggleBtn.addEventListener("click", openSidebar);
+
+            toggleBtn.addEventListener(
+                "click",
+                openSidebar
+            );
+
         }
 
         if (closeBtn) {
-            closeBtn.addEventListener("click", closeSidebar);
+
+            closeBtn.addEventListener(
+                "click",
+                closeSidebar
+            );
+
         }
 
         if (overlay) {
-            overlay.addEventListener("click", closeSidebar);
+
+            overlay.addEventListener(
+                "click",
+                closeSidebar
+            );
+
         }
 
-        document.querySelectorAll(".admin-nav-link").forEach(function (link) {
+        document
+            .querySelectorAll(".admin-nav-link")
+            .forEach(function (link) {
 
-            link.addEventListener("click", function () {
+                link.addEventListener(
+                    "click",
+                    function () {
 
-                if (window.innerWidth <= 991) {
+                        if (window.innerWidth <= 900) {
+                            closeSidebar();
+                        }
+
+                    }
+                );
+
+            });
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (window.innerWidth > 900) {
                     closeSidebar();
                 }
 
-            });
-
-        });
-
-        if (fullscreenBtn) {
-
-            fullscreenBtn.addEventListener("click", function () {
-
-                if (!document.fullscreenElement) {
-
-                    document.documentElement
-                        .requestFullscreen()
-                        .catch(function () {});
-
-                } else {
-
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    }
-
-                }
-
-            });
-
-        }
-
-        document.addEventListener("fullscreenchange", function () {
-
-            if (!fullscreenBtn) return;
-
-            const icon = fullscreenBtn.querySelector("i");
-
-            if (!icon) return;
-
-            if (document.fullscreenElement) {
-
-                icon.className = "bi bi-fullscreen-exit";
-
-                fullscreenBtn.setAttribute(
-                    "title",
-                    "Exit Fullscreen"
-                );
-
-            } else {
-
-                icon.className = "bi bi-fullscreen";
-
-                fullscreenBtn.setAttribute(
-                    "title",
-                    "Fullscreen"
-                );
-
             }
-
-        });
-
-        const searchInput = document.getElementById("adminSearch");
-
-        if (searchInput) {
-
-            searchInput.addEventListener("keydown", function (event) {
-
-                if (event.key !== "Enter") {
-                    return;
-                }
-
-                const query =
-                    searchInput.value.trim().toLowerCase();
-
-                if (!query) {
-                    return;
-                }
-
-                const navigationLinks =
-                    document.querySelectorAll(".admin-nav-link");
-
-                let matched = false;
-
-                navigationLinks.forEach(function (link) {
-
-                    const text =
-                        link.textContent.trim().toLowerCase();
-
-                    if (!matched && text.includes(query)) {
-
-                        matched = true;
-
-                        link.click();
-
-                    }
-
-                });
-
-            });
-
-        }
+        );
 
     });
 
@@ -596,4 +446,5 @@ if (!string.IsNullOrWhiteSpace(userName))
 @await RenderSectionAsync("Scripts", required: false)
 
 </body>
+
 </html>
