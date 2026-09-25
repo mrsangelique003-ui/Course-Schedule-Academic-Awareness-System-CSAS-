@@ -194,6 +194,19 @@ if (!string.IsNullOrWhiteSpace(userName))
 
         </a>
 
+        <a asp-page="/Admin/Enrollments"
+           class="admin-nav-link @(currentPage == "/Admin/Enrollments" ? "active" : "")">
+
+            <span class="nav-icon">
+                <i class="bi bi-person-vcard-fill"></i>
+            </span>
+
+            <span class="nav-label">
+                Enrollments
+            </span>
+
+        </a>
+
         <a asp-page="/Admin/ClassroomManagement"
            class="admin-nav-link @(currentPage == "/Admin/ClassroomManagement" ? "active" : "")">
 
@@ -205,6 +218,14 @@ if (!string.IsNullOrWhiteSpace(userName))
                 Classrooms
             </span>
 
+        </a>
+
+        <a asp-page="/Admin/Schedules"
+           class="admin-nav-link @(currentPage == "/Admin/Schedules" ? "active" : "")">
+            <span class="nav-icon">
+                <i class="bi bi-calendar3"></i>
+            </span>
+            <span class="nav-label">Schedules</span>
         </a>
 
     </nav>

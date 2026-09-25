@@ -12,21 +12,86 @@ public class ScheduleModel : PageModel
 {
     private readonly ApplicationDbContext _db;
 
-    public ScheduleModel(ApplicationDbContext db)
+
+public ScheduleModel(ApplicationDbContext db)
     {
         _db = db;
     }
 
-    public CourseScheduleSystem.Web.Models.Student? CurrentStudent { get; private set; }
+    public CourseScheduleSystem.Web.Models.Student? CurrentStudent
+    {
+        get;
+        private set;
+    }
 
-    public List<ScheduleItem> ScheduleItems { get; private set; } = new();
+    public List<ScheduleItem> ScheduleItems
+    {
+        get;
+        private set;
+    } = new();
 
-    public int TotalClasses { get; private set; }
+    public List<ScheduleItem> TodayScheduleItems
+    {
+        get;
+        private set;
+    } = new();
 
-    public int TotalCourses { get; private set; }
+    public List<ScheduleItem> OngoingClasses
+    {
+        get;
+        private set;
+    } = new();
+
+    public List<ScheduleItem> UpcomingClasses
+    {
+        get;
+        private set;
+    } = new();
+
+    public List<ScheduleItem> CompletedClasses
+    {
+        get;
+        private set;
+    } = new();
+
+    public DateTime Today
+    {
+        get;
+        private set;
+    }
+
+    public TimeOnly CurrentTime
+    {
+        get;
+        private set;
+    }
+
+    public DayOfWeek CurrentDay
+    {
+        get;
+        private set;
+    }
+
+    public int TotalClasses
+    {
+        get;
+        private set;
+    }
+
+    public int TotalCourses
+    {
+        get;
+        private set;
+    }
 
     public async Task OnGetAsync()
     {
+        var now = DateTime.Now;
+
+        Today = now.Date;
+        CurrentTime = TimeOnly.FromDateTime(now);
+        CurrentDay = now.DayOfWeek;
+
         var userIdValue =
             User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -46,74 +111,153 @@ public class ScheduleModel : PageModel
             return;
         }
 
-        var enrolledCourseIds = await _db.Enrollments
-            .AsNoTracking()
-            .Where(e =>
-                e.StudentId == studentId &&
-                e.Status == EnrollmentStatus.Enrolled)
-            .Select(e => e.CourseId)
-            .Distinct()
-            .ToListAsync();
+        var enrolledCourseIds =
+            await _db.Enrollments
+                .AsNoTracking()
+                .Where(e =>
+                    e.StudentId == studentId &&
+                    e.Status == EnrollmentStatus.Enrolled)
+                .Select(e => e.CourseId)
+                .Distinct()
+                .ToListAsync();
 
-        TotalCourses = enrolledCourseIds.Count;
+        TotalCourses =
+            enrolledCourseIds.Count;
 
         if (enrolledCourseIds.Count == 0)
         {
-            ScheduleItems = new List<ScheduleItem>();
+            ScheduleItems = new();
+            TodayScheduleItems = new();
+            OngoingClasses = new();
+            UpcomingClasses = new();
+            CompletedClasses = new();
             TotalClasses = 0;
+
             return;
         }
 
-        ScheduleItems = await _db.ScheduleEntries
-            .AsNoTracking()
-            .Where(s =>
-                s.IsActive &&
-                s.Status == ScheduleStatus.Active &&
-                enrolledCourseIds.Contains(s.CourseId))
-            .OrderBy(s => s.DayOfWeek)
-            .ThenBy(s => s.StartTime)
-            .Select(s => new ScheduleItem
-            {
-                Id = s.Id,
-                CourseId = s.CourseId,
+        ScheduleItems =
+            await _db.ScheduleEntries
+                .AsNoTracking()
+                .Where(s =>
+                    s.IsActive &&
+                    s.Status == ScheduleStatus.Active &&
+                    enrolledCourseIds.Contains(s.CourseId) &&
+                    s.StartDate.Date <= Today &&
+                    s.EndDate.Date >= Today)
+                .OrderBy(s => s.DayOfWeek)
+                .ThenBy(s => s.StartTime)
+                .Select(s => new ScheduleItem
+                {
+                    Id = s.Id,
 
-                CourseCode = s.Course.Code,
+                    CourseId = s.CourseId,
 
-                CourseName = s.Course.Name,
+                    CourseCode =
+                        s.Course.Code,
 
-                LecturerName =
-                    s.Lecturer != null &&
-                    !string.IsNullOrWhiteSpace(s.Lecturer.FullName)
-                        ? s.Lecturer.FullName
-                        : "Lecturer not assigned",
+                    CourseName =
+                        s.Course.Name,
 
-                Building =
-                    s.Room != null &&
-                    !string.IsNullOrWhiteSpace(s.Room.Building)
-                        ? s.Room.Building
-                        : "Building not assigned",
+                    LecturerName =
+                        s.Lecturer != null &&
+                        !string.IsNullOrWhiteSpace(
+                            s.Lecturer.FullName)
+                            ? s.Lecturer.FullName
+                            : "Lecturer not assigned",
 
-                RoomNumber =
-                    s.Room != null &&
-                    !string.IsNullOrWhiteSpace(s.Room.RoomNumber)
-                        ? s.Room.RoomNumber
-                        : "Room not assigned",
+                    Building =
+                        s.Room != null &&
+                        !string.IsNullOrWhiteSpace(
+                            s.Room.Building)
+                            ? s.Room.Building
+                            : "Building not assigned",
 
-                DayOfWeek = s.DayOfWeek,
+                    RoomNumber =
+                        s.Room != null &&
+                        !string.IsNullOrWhiteSpace(
+                            s.Room.RoomNumber)
+                            ? s.Room.RoomNumber
+                            : "Room not assigned",
 
-                StartTime = s.StartTime,
+                    DayOfWeek =
+                        s.DayOfWeek,
 
-                EndTime = s.EndTime,
+                    StartTime =
+                        s.StartTime,
 
-                StudySession = s.StudySession,
+                    EndTime =
+                        s.EndTime,
 
-                Notes = s.Notes,
+                    StudySession =
+                        s.StudySession,
 
-                Status = s.Status
-            })
-            .ToListAsync();
+                    Notes =
+                        s.Notes,
 
-        TotalClasses = ScheduleItems.Count;
+                    Status =
+                        s.Status
+                })
+                .ToListAsync();
+
+        TotalClasses =
+            ScheduleItems.Count;
+
+        TodayScheduleItems =
+            ScheduleItems
+                .Where(s =>
+                    s.DayOfWeek == CurrentDay)
+                .OrderBy(s => s.StartTime)
+                .ToList();
+
+        foreach (var item in TodayScheduleItems)
+        {
+            item.ClassStatus =
+                GetClassStatus(
+                    item.StartTime,
+                    item.EndTime,
+                    CurrentTime);
+        }
+
+        OngoingClasses =
+            TodayScheduleItems
+                .Where(s =>
+                    s.ClassStatus == "Ongoing")
+                .OrderBy(s => s.StartTime)
+                .ToList();
+
+        UpcomingClasses =
+            TodayScheduleItems
+                .Where(s =>
+                    s.ClassStatus == "Upcoming")
+                .OrderBy(s => s.StartTime)
+                .ToList();
+
+        CompletedClasses =
+            TodayScheduleItems
+                .Where(s =>
+                    s.ClassStatus == "Completed")
+                .OrderByDescending(s => s.StartTime)
+                .ToList();
+    }
+
+    private static string GetClassStatus(
+        TimeOnly startTime,
+        TimeOnly endTime,
+        TimeOnly currentTime)
+    {
+        if (startTime <= currentTime &&
+            endTime > currentTime)
+        {
+            return "Ongoing";
+        }
+
+        if (startTime > currentTime)
+        {
+            return "Upcoming";
+        }
+
+        return "Completed";
     }
 
     public class ScheduleItem
@@ -122,15 +266,20 @@ public class ScheduleModel : PageModel
 
         public int CourseId { get; set; }
 
-        public string CourseCode { get; set; } = string.Empty;
+        public string CourseCode { get; set; } =
+            string.Empty;
 
-        public string CourseName { get; set; } = string.Empty;
+        public string CourseName { get; set; } =
+            string.Empty;
 
-        public string LecturerName { get; set; } = string.Empty;
+        public string LecturerName { get; set; } =
+            string.Empty;
 
-        public string Building { get; set; } = string.Empty;
+        public string Building { get; set; } =
+            string.Empty;
 
-        public string RoomNumber { get; set; } = string.Empty;
+        public string RoomNumber { get; set; } =
+            string.Empty;
 
         public DayOfWeek DayOfWeek { get; set; }
 
@@ -143,5 +292,10 @@ public class ScheduleModel : PageModel
         public string? Notes { get; set; }
 
         public ScheduleStatus Status { get; set; }
+
+        public string ClassStatus { get; set; } =
+            string.Empty;
     }
+
+
 }

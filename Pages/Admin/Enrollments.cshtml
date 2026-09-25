@@ -1,0 +1,764 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.EnrollmentsModel
+
+@{
+ViewData["Title"] = "Enrollments";
+}
+
+<link rel="stylesheet"
+      href="~/css/Admin/Enrollments.css"
+      asp-append-version="true" />
+
+<div class="enrollment-page">
+
+
+<section class="page-header">
+
+    <div class="page-header-content">
+
+        <div class="page-title-area">
+
+            <div class="page-icon">
+                <i class="bi bi-person-vcard-fill"></i>
+            </div>
+
+            <div>
+
+                <div class="page-eyebrow">
+                    ACADEMIC MANAGEMENT
+                </div>
+
+                <h1>
+                    Course Enrollments
+                </h1>
+
+                <p>
+                    View enrolled students by course and monitor
+                    course registration details.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert-message error">
+
+        <i class="bi bi-exclamation-circle-fill"></i>
+
+        <span>
+            @Model.ErrorMessage
+        </span>
+
+    </div>
+}
+
+<section class="statistics-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon blue">
+            <i class="bi bi-journal-bookmark-fill"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span class="stat-label">
+                Courses
+            </span>
+
+            <strong class="stat-value">
+                @Model.TotalCourses
+            </strong>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon green">
+            <i class="bi bi-people-fill"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span class="stat-label">
+                Total Enrollments
+            </span>
+
+            <strong class="stat-value">
+                @Model.TotalEnrollments
+            </strong>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon emerald">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span class="stat-label">
+                Enrolled
+            </span>
+
+            <strong class="stat-value">
+                @Model.EnrolledCount
+            </strong>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon orange">
+            <i class="bi bi-clock-fill"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span class="stat-label">
+                Pending
+            </span>
+
+            <strong class="stat-value">
+                @Model.PendingCount
+            </strong>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon red">
+            <i class="bi bi-x-circle-fill"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span class="stat-label">
+                Closed
+            </span>
+
+            <strong class="stat-value">
+                @Model.ClosedCount
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="filter-panel">
+
+    <div class="filter-header">
+
+        <div>
+
+            <h2>
+                Enrollment Directory
+            </h2>
+
+            <span>
+                Browse students registered for each course.
+            </span>
+
+        </div>
+
+        <div class="result-count">
+
+            <span id="visibleCourseCount">
+                @Model.Courses.Count
+            </span>
+
+            courses
+
+        </div>
+
+    </div>
+
+    <div class="filter-grid">
+
+        <div class="search-field">
+
+            <i class="bi bi-search"></i>
+
+            <input type="text"
+                   id="enrollmentSearch"
+                   placeholder="Search course, lecturer, student or registration number..."
+                   autocomplete="off" />
+
+        </div>
+
+        <div class="filter-field">
+
+            <label for="statusFilter">
+                Status
+            </label>
+
+            <select id="statusFilter">
+
+                <option value="all">
+                    All statuses
+                </option>
+
+                <option value="enrolled">
+                    Enrolled
+                </option>
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="closed">
+                    Closed
+                </option>
+
+            </select>
+
+        </div>
+
+        <button type="button"
+                class="clear-filter-btn"
+                id="clearFilters">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+
+            Clear
+
+        </button>
+
+    </div>
+
+</section>
+
+<section class="courses-section">
+
+    <div id="emptyState"
+         class="empty-state"
+         style="display:none;">
+
+        <div class="empty-icon">
+            <i class="bi bi-search"></i>
+        </div>
+
+        <h3>
+            No courses found
+        </h3>
+
+        <p>
+            No courses match the current search or filter.
+        </p>
+
+    </div>
+
+    <div class="course-list"
+         id="courseList">
+
+        @foreach (var course in Model.Courses)
+        {
+            var searchText =
+                $"{course.Code} {course.Name} {course.LecturerName} " +
+                string.Join(" ", course.Students.Select(s =>
+                    $"{s.RegNo} {s.FullName} {s.Email}"));
+
+            <article class="course-card"
+                     data-search="@searchText.ToLowerInvariant()">
+
+                <div class="course-card-header">
+
+                    <div class="course-main">
+
+                        <div class="course-code">
+                            @course.Code
+                        </div>
+
+                        <div class="course-details">
+
+                            <h3>
+                                @course.Name
+                            </h3>
+
+                            <div class="course-meta">
+
+                                <span>
+                                    <i class="bi bi-person-workspace"></i>
+
+                                    @if (!string.IsNullOrWhiteSpace(course.LecturerName))
+                                    {
+                                        @course.LecturerName
+                                    }
+                                    else
+                                    {
+                                        <span class="muted">
+                                            No lecturer assigned
+                                        </span>
+                                    }
+
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-people-fill"></i>
+
+                                    @course.Students.Count
+                                    @(course.Students.Count == 1
+                                        ? "student"
+                                        : "students")
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="course-actions">
+
+                        <div class="course-count">
+
+                            <strong>
+                                @course.EnrolledCount
+                            </strong>
+
+                            <span>
+                                enrolled
+                            </span>
+
+                        </div>
+
+                        <button type="button"
+                                class="expand-course-btn"
+                                data-course-id="@course.Id"
+                                aria-expanded="false"
+                                aria-label="View students">
+
+                            <i class="bi bi-chevron-down"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="course-students-panel"
+                     id="students-@course.Id">
+
+                    <div class="students-panel-header">
+
+                        <div>
+
+                            <h4>
+                                Students in this course
+                            </h4>
+
+                            <span>
+                                @course.Students.Count registered records
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    @if (course.Students.Count > 0)
+                    {
+                        <div class="student-table-wrapper">
+
+                            <table class="student-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Student
+                                        </th>
+
+                                        <th>
+                                            Registration No.
+                                        </th>
+
+                                        <th>
+                                            Email
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Requested
+                                        </th>
+
+                                        <th>
+                                            Approved
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var student in course.Students)
+                                    {
+                                        <tr data-status="@student.Status.ToLowerInvariant()">
+
+                                            <td>
+
+                                                <div class="student-cell">
+
+                                                    <div class="student-avatar">
+
+                                                        @GetInitials(student.FullName)
+
+                                                    </div>
+
+                                                    <div class="student-info">
+
+                                                        <strong>
+                                                            @student.FullName
+                                                        </strong>
+
+                                                        <span>
+                                                            Student
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <span class="reg-number">
+                                                    @student.RegNo
+                                                </span>
+
+                                            </td>
+
+                                            <td>
+
+                                                <span class="email-text">
+                                                    @student.Email
+                                                </span>
+
+                                            </td>
+
+                                            <td>
+
+                                                @if (student.Status == "Enrolled")
+                                                {
+                                                    <span class="status-badge enrolled">
+                                                        <span class="status-dot"></span>
+                                                        Enrolled
+                                                    </span>
+                                                }
+                                                else if (student.Status == "Pending")
+                                                {
+                                                    <span class="status-badge pending">
+                                                        <span class="status-dot"></span>
+                                                        Pending
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="status-badge closed">
+                                                        <span class="status-dot"></span>
+                                                        Closed
+                                                    </span>
+                                                }
+
+                                            </td>
+
+                                            <td>
+                                                @student.RequestedAt.ToLocalTime().ToString("dd MMM yyyy")
+                                            </td>
+
+                                            <td>
+
+                                                @if (student.ApprovedAt.HasValue)
+                                                {
+                                                    @student.ApprovedAt.Value.ToLocalTime().ToString("dd MMM yyyy")
+                                                }
+                                                else
+                                                {
+                                                    <span class="muted">
+                                                        —
+                                                    </span>
+                                                }
+
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="course-empty">
+
+                            <i class="bi bi-people"></i>
+
+                            <span>
+                                No students are registered for this course.
+                            </span>
+
+                        </div>
+                    }
+
+                </div>
+
+            </article>
+        }
+
+    </div>
+
+</section>
+
+
+</div>
+
+@functions {
+
+
+private static string GetInitials(string name)
+{
+    if (string.IsNullOrWhiteSpace(name))
+    {
+        return "ST";
+    }
+
+    var parts =
+        name.Split(
+            ' ',
+            StringSplitOptions.RemoveEmptyEntries);
+
+    if (parts.Length >= 2)
+    {
+        return
+            $"{parts[0][0]}{parts[^1][0]}"
+            .ToUpperInvariant();
+    }
+
+    return parts[0].Length >= 2
+        ? parts[0][..2].ToUpperInvariant()
+        : parts[0].ToUpperInvariant();
+}
+
+
+}
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput =
+            document.getElementById("enrollmentSearch");
+
+        const statusFilter =
+            document.getElementById("statusFilter");
+
+        const clearButton =
+            document.getElementById("clearFilters");
+
+        const courseList =
+            document.getElementById("courseList");
+
+        const emptyState =
+            document.getElementById("emptyState");
+
+        const visibleCourseCount =
+            document.getElementById("visibleCourseCount");
+
+        function applyFilters() {
+
+            const search =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            const status =
+                statusFilter.value;
+
+            const cards =
+                document.querySelectorAll(".course-card");
+
+            let visibleCourses = 0;
+
+            cards.forEach(function (card) {
+
+                const cardSearch =
+                    card.dataset.search || "";
+
+                const searchMatch =
+                    !search ||
+                    cardSearch.includes(search);
+
+                let statusMatch = true;
+
+                if (status !== "all") {
+
+                    const rows =
+                        card.querySelectorAll(
+                            ".student-table tbody tr");
+
+                    let matchingStudent = false;
+
+                    rows.forEach(function (row) {
+
+                        const rowStatus =
+                            row.dataset.status || "";
+
+                        const matches =
+                            rowStatus === status;
+
+                        row.style.display =
+                            matches || status === "all"
+                                ? ""
+                                : "none";
+
+                        if (matches) {
+                            matchingStudent = true;
+                        }
+
+                    });
+
+                    statusMatch = matchingStudent;
+
+                }
+                else {
+
+                    card.querySelectorAll(
+                        ".student-table tbody tr"
+                    ).forEach(function (row) {
+
+                        row.style.display = "";
+
+                    });
+
+                }
+
+                const visible =
+                    searchMatch && statusMatch;
+
+                card.style.display =
+                    visible ? "" : "none";
+
+                if (visible) {
+                    visibleCourses++;
+                }
+
+            });
+
+            visibleCourseCount.textContent =
+                visibleCourses;
+
+            emptyState.style.display =
+                visibleCourses === 0
+                    ? "flex"
+                    : "none";
+
+            courseList.style.display =
+                visibleCourses === 0
+                    ? "none"
+                    : "flex";
+        }
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                applyFilters
+            );
+
+        }
+
+        if (statusFilter) {
+
+            statusFilter.addEventListener(
+                "change",
+                applyFilters
+            );
+
+        }
+
+        if (clearButton) {
+
+            clearButton.addEventListener(
+                "click",
+                function () {
+
+                    searchInput.value = "";
+                    statusFilter.value = "all";
+
+                    applyFilters();
+
+                }
+            );
+
+        }
+
+        document
+            .querySelectorAll(".expand-course-btn")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const courseId =
+                            button.dataset.courseId;
+
+                        const panel =
+                            document.getElementById(
+                                "students-" + courseId);
+
+                        if (!panel) {
+                            return;
+                        }
+
+                        const isOpen =
+                            panel.classList.contains(
+                                "expanded");
+
+                        panel.classList.toggle(
+                            "expanded",
+                            !isOpen);
+
+                        button.classList.toggle(
+                            "expanded",
+                            !isOpen);
+
+                        button.setAttribute(
+                            "aria-expanded",
+                            (!isOpen).toString()
+                        );
+
+                    }
+                );
+
+            });
+
+    });
+
+</script>

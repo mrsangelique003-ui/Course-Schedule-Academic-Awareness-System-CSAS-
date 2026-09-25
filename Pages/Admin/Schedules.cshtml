@@ -1,0 +1,630 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.SchedulesModel
+
+@{
+ViewData["Title"] = "Schedules";
+}
+
+<link rel="stylesheet"
+      href="~/css/Admin/Schedules.css"
+      asp-append-version="true" />
+
+<div class="schedule-page">
+
+
+<section class="page-header">
+
+    <div class="page-header-content">
+
+        <div>
+            <span class="page-eyebrow">
+                <i class="bi bi-calendar3"></i>
+                Daily Academic Schedule
+            </span>
+
+            <h1>Today's Classes</h1>
+
+            <p>
+                Monitor ongoing, upcoming and completed classes
+                for @Model.Today.ToString("dddd, dd MMMM yyyy").
+            </p>
+        </div>
+
+        <div class="current-time-card">
+            <span class="current-time-label">
+                Current Time
+            </span>
+
+            <strong id="currentTime">
+                @Model.CurrentTime.ToString("HH:mm")
+            </strong>
+
+            <span class="current-day">
+                @Model.CurrentDay
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="schedule-stats">
+
+    <div class="stat-card">
+        <div class="stat-icon total">
+            <i class="bi bi-calendar-week"></i>
+        </div>
+
+        <div>
+            <span class="stat-label">Today's Classes</span>
+            <strong>@Model.TotalToday</strong>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon ongoing">
+            <i class="bi bi-broadcast-pin"></i>
+        </div>
+
+        <div>
+            <span class="stat-label">Ongoing</span>
+            <strong>@Model.OngoingCount</strong>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon upcoming">
+            <i class="bi bi-clock"></i>
+        </div>
+
+        <div>
+            <span class="stat-label">Upcoming</span>
+            <strong>@Model.UpcomingCount</strong>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon completed">
+            <i class="bi bi-check2-circle"></i>
+        </div>
+
+        <div>
+            <span class="stat-label">Completed</span>
+            <strong>@Model.CompletedCount</strong>
+        </div>
+    </div>
+
+</section>
+
+<section class="schedule-toolbar">
+
+    <div class="search-box">
+        <i class="bi bi-search"></i>
+
+        <input type="text"
+               id="scheduleSearch"
+               placeholder="Search course, lecturer, room or representative..."
+               autocomplete="off" />
+    </div>
+
+    <div class="toolbar-actions">
+
+        <select id="sessionFilter"
+                class="schedule-select">
+
+            <option value="all">All Sessions</option>
+            <option value="day">Day</option>
+            <option value="evening">Evening</option>
+            <option value="weekend">Weekend</option>
+
+        </select>
+
+        <button type="button"
+                class="clear-filter"
+                id="clearFilters">
+
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Clear
+
+        </button>
+
+    </div>
+
+</section>
+
+<section class="schedule-section">
+
+    <div class="section-heading">
+
+        <div class="section-title">
+
+            <span class="section-status ongoing-status">
+                <span></span>
+            </span>
+
+            <div>
+                <h2>Ongoing Classes</h2>
+
+                <p>
+                    Classes currently in progress
+                </p>
+            </div>
+
+        </div>
+
+        <span class="section-count">
+            @Model.OngoingCount
+        </span>
+
+    </div>
+
+    <div class="schedule-list"
+         id="ongoingList">
+
+        @if (Model.OngoingClasses.Any())
+        {
+            foreach (var item in Model.OngoingClasses)
+            {
+                <article class="schedule-card"
+                         data-course="@item.CourseCode @item.CourseName"
+                         data-lecturer="@item.LecturerName"
+                         data-room="@item.Room"
+                         data-representative="@item.ClassRepresentative"
+                         data-session="@item.StudySession.ToLowerInvariant()">
+
+                    <div class="schedule-card-main">
+
+                        <div class="time-column">
+
+                            <span class="time-start">
+                                @item.StartTime.ToString("HH:mm")
+                            </span>
+
+                            <span class="time-line"></span>
+
+                            <span class="time-end">
+                                @item.EndTime.ToString("HH:mm")
+                            </span>
+
+                        </div>
+
+                        <div class="class-details">
+
+                            <div class="class-topline">
+
+                                <span class="course-code">
+                                    @item.CourseCode
+                                </span>
+
+                                <span class="live-badge">
+                                    <span></span>
+                                    LIVE NOW
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                @item.CourseName
+                            </h3>
+
+                            <div class="class-meta">
+
+                                <span>
+                                    <i class="bi bi-person-workspace"></i>
+                                    @item.LecturerName
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-building"></i>
+                                    @item.Room
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-person-badge"></i>
+                                    @item.ClassRepresentative
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="session-badge">
+                            @item.StudySession
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    <i class="bi bi-broadcast"></i>
+                </div>
+
+                <h3>No ongoing classes</h3>
+
+                <p>
+                    There are no classes currently in progress.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</section>
+
+<section class="schedule-section">
+
+    <div class="section-heading">
+
+        <div class="section-title">
+
+            <span class="section-status upcoming-status">
+                <span></span>
+            </span>
+
+            <div>
+                <h2>Upcoming Classes</h2>
+
+                <p>
+                    Classes scheduled later today
+                </p>
+            </div>
+
+        </div>
+
+        <span class="section-count">
+            @Model.UpcomingCount
+        </span>
+
+    </div>
+
+    <div class="schedule-list"
+         id="upcomingList">
+
+        @if (Model.UpcomingClasses.Any())
+        {
+            foreach (var item in Model.UpcomingClasses)
+            {
+                <article class="schedule-card"
+                         data-course="@item.CourseCode @item.CourseName"
+                         data-lecturer="@item.LecturerName"
+                         data-room="@item.Room"
+                         data-representative="@item.ClassRepresentative"
+                         data-session="@item.StudySession.ToLowerInvariant()">
+
+                    <div class="schedule-card-main">
+
+                        <div class="time-column">
+
+                            <span class="time-start">
+                                @item.StartTime.ToString("HH:mm")
+                            </span>
+
+                            <span class="time-line"></span>
+
+                            <span class="time-end">
+                                @item.EndTime.ToString("HH:mm")
+                            </span>
+
+                        </div>
+
+                        <div class="class-details">
+
+                            <div class="class-topline">
+
+                                <span class="course-code">
+                                    @item.CourseCode
+                                </span>
+
+                                <span class="upcoming-badge">
+                                    UPCOMING
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                @item.CourseName
+                            </h3>
+
+                            <div class="class-meta">
+
+                                <span>
+                                    <i class="bi bi-person-workspace"></i>
+                                    @item.LecturerName
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-building"></i>
+                                    @item.Room
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-person-badge"></i>
+                                    @item.ClassRepresentative
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="session-badge">
+                            @item.StudySession
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+
+                <h3>No upcoming classes</h3>
+
+                <p>
+                    There are no more classes scheduled for today.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</section>
+
+<section class="schedule-section">
+
+    <div class="section-heading">
+
+        <div class="section-title">
+
+            <span class="section-status completed-status">
+                <span></span>
+            </span>
+
+            <div>
+                <h2>Completed Today</h2>
+
+                <p>
+                    Classes that have already finished
+                </p>
+            </div>
+
+        </div>
+
+        <span class="section-count">
+            @Model.CompletedCount
+        </span>
+
+    </div>
+
+    <div class="schedule-list"
+         id="completedList">
+
+        @if (Model.CompletedClasses.Any())
+        {
+            foreach (var item in Model.CompletedClasses)
+            {
+                <article class="schedule-card completed-card"
+                         data-course="@item.CourseCode @item.CourseName"
+                         data-lecturer="@item.LecturerName"
+                         data-room="@item.Room"
+                         data-representative="@item.ClassRepresentative"
+                         data-session="@item.StudySession.ToLowerInvariant()">
+
+                    <div class="schedule-card-main">
+
+                        <div class="time-column">
+
+                            <span class="time-start">
+                                @item.StartTime.ToString("HH:mm")
+                            </span>
+
+                            <span class="time-line"></span>
+
+                            <span class="time-end">
+                                @item.EndTime.ToString("HH:mm")
+                            </span>
+
+                        </div>
+
+                        <div class="class-details">
+
+                            <div class="class-topline">
+
+                                <span class="course-code">
+                                    @item.CourseCode
+                                </span>
+
+                                <span class="completed-badge">
+                                    <i class="bi bi-check2"></i>
+                                    COMPLETED
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                @item.CourseName
+                            </h3>
+
+                            <div class="class-meta">
+
+                                <span>
+                                    <i class="bi bi-person-workspace"></i>
+                                    @item.LecturerName
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-building"></i>
+                                    @item.Room
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-person-badge"></i>
+                                    @item.ClassRepresentative
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="session-badge">
+                            @item.StudySession
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+
+                <h3>No completed classes</h3>
+
+                <p>
+                    No scheduled class has finished yet today.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</section>
+
+
+</div>
+
+@section Scripts {
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput =
+            document.getElementById("scheduleSearch");
+
+        const sessionFilter =
+            document.getElementById("sessionFilter");
+
+        const clearButton =
+            document.getElementById("clearFilters");
+
+        const cards =
+            document.querySelectorAll(".schedule-card");
+
+        function applyFilters() {
+
+            const search =
+                (searchInput?.value || "")
+                    .trim()
+                    .toLowerCase();
+
+            const session =
+                (sessionFilter?.value || "all")
+                    .toLowerCase();
+
+            cards.forEach(function (card) {
+
+                const searchableText =
+                    (
+                        card.dataset.course + " " +
+                        card.dataset.lecturer + " " +
+                        card.dataset.room + " " +
+                        card.dataset.representative
+                    ).toLowerCase();
+
+                const cardSession =
+                    (card.dataset.session || "")
+                        .toLowerCase();
+
+                const matchesSearch =
+                    !search ||
+                    searchableText.includes(search);
+
+                const matchesSession =
+                    session === "all" ||
+                    cardSession === session;
+
+                card.style.display =
+                    matchesSearch && matchesSession
+                        ? ""
+                        : "none";
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener(
+                "input",
+                applyFilters);
+        }
+
+        if (sessionFilter) {
+            sessionFilter.addEventListener(
+                "change",
+                applyFilters);
+        }
+
+        if (clearButton) {
+            clearButton.addEventListener(
+                "click",
+                function () {
+
+                    if (searchInput) {
+                        searchInput.value = "";
+                    }
+
+                    if (sessionFilter) {
+                        sessionFilter.value = "all";
+                    }
+
+                    applyFilters();
+                });
+        }
+
+        function updateClock() {
+
+            const clock =
+                document.getElementById("currentTime");
+
+            if (!clock) {
+                return;
+            }
+
+            const now = new Date();
+
+            const hours =
+                String(now.getHours())
+                    .padStart(2, "0");
+
+            const minutes =
+                String(now.getMinutes())
+                    .padStart(2, "0");
+
+            clock.textContent =
+                `${hours}:${minutes}`;
+        }
+
+        updateClock();
+
+        setInterval(updateClock, 30000);
+    });
+</script>
+
+}

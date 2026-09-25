@@ -83,50 +83,109 @@ public ClassroomsModel(ApplicationDbContext db)
                     {
                         Id = s.Id,
                         CourseId = s.CourseId,
-                        CourseCode = s.Course.Code,
-                        CourseName = s.Course.Name,
+
+                        CourseCode =
+                            s.Course.Code,
+
+                        CourseName =
+                            s.Course.Name,
+
                         LecturerName =
                             s.Lecturer != null &&
                             !string.IsNullOrWhiteSpace(
                                 s.Lecturer.FullName)
                                 ? s.Lecturer.FullName
                                 : "Lecturer not assigned",
-                        DayOfWeek = s.DayOfWeek,
-                        StartTime = s.StartTime,
-                        EndTime = s.EndTime,
-                        StudySession = s.StudySession,
-                        Notes = s.Notes
+
+                        ClassRepresentativeName =
+                            s.ClassRepresentative != null &&
+                            !string.IsNullOrWhiteSpace(
+                                s.ClassRepresentative.FullName)
+                                ? s.ClassRepresentative.FullName
+                                : "Class representative not assigned",
+
+                        Intake =
+                            s.ClassRepresentative != null &&
+                            !string.IsNullOrWhiteSpace(
+                                s.ClassRepresentative.Intake)
+                                ? s.ClassRepresentative.Intake + " Intake"
+                                : "Intake not assigned",
+
+                        Level =
+                            s.ClassRepresentative != null &&
+                            !string.IsNullOrWhiteSpace(
+                                s.ClassRepresentative.Level)
+                                ? s.ClassRepresentative.Level
+                                : "Level not assigned",
+
+                        DayOfWeek =
+                            s.DayOfWeek,
+
+                        StartTime =
+                            s.StartTime,
+
+                        EndTime =
+                            s.EndTime,
+
+                        StudySession =
+                            s.StudySession,
+
+                        Notes =
+                            s.Notes
                     })
                     .ToList()
             })
             .ToListAsync();
 
+
         foreach (var classroom in rooms)
         {
             var todayClasses = classroom.ScheduleEntries
-                .Where(s => s.DayOfWeek == today)
+                .Where(s =>
+                    s.DayOfWeek == today)
                 .OrderBy(s => s.StartTime)
                 .ToList();
 
-            var currentClass = todayClasses
-                .FirstOrDefault(s =>
+            classroom.TodaysClasses =
+                todayClasses.Count;
+
+
+            var currentClass =
+                todayClasses.FirstOrDefault(s =>
                     currentTime >= s.StartTime &&
                     currentTime < s.EndTime);
 
-            var nextClassToday = todayClasses
-                .FirstOrDefault(s =>
+
+            var nextClassToday =
+                todayClasses.FirstOrDefault(s =>
                     s.StartTime > currentTime);
+
 
             if (currentClass != null)
             {
-                classroom.CurrentClass = currentClass;
-                classroom.CurrentClassDate = now.Date;
+                classroom.CurrentClass =
+                    currentClass;
 
-                classroom.NextClass = nextClassToday;
+                classroom.CurrentClassDate =
+                    now.Date;
+
+                classroom.CurrentClassDateLabel =
+                    GetDateLabel(now.Date, now.Date);
+
+
+                classroom.NextClass =
+                    nextClassToday;
+
 
                 if (nextClassToday != null)
                 {
-                    classroom.NextClassDate = now.Date;
+                    classroom.NextClassDate =
+                        now.Date;
+
+                    classroom.NextClassDateLabel =
+                        GetDateLabel(
+                            now.Date,
+                            now.Date);
                 }
                 else
                 {
@@ -144,8 +203,14 @@ public ClassroomsModel(ApplicationDbContext db)
 
                         classroom.NextClassDate =
                             nextScheduledClass.Value.Date;
+
+                        classroom.NextClassDateLabel =
+                            GetDateLabel(
+                                nextScheduledClass.Value.Date,
+                                now.Date);
                     }
                 }
+
 
                 classroom.Status =
                     ClassroomStatus.Occupied;
@@ -155,8 +220,16 @@ public ClassroomsModel(ApplicationDbContext db)
             }
             else if (nextClassToday != null)
             {
-                classroom.NextClass = nextClassToday;
-                classroom.NextClassDate = now.Date;
+                classroom.NextClass =
+                    nextClassToday;
+
+                classroom.NextClassDate =
+                    now.Date;
+
+                classroom.NextClassDateLabel =
+                    GetDateLabel(
+                        now.Date,
+                        now.Date);
 
                 classroom.Status =
                     ClassroomStatus.Upcoming;
@@ -180,6 +253,11 @@ public ClassroomsModel(ApplicationDbContext db)
 
                     classroom.NextClassDate =
                         nextScheduledClass.Value.Date;
+
+                    classroom.NextClassDateLabel =
+                        GetDateLabel(
+                            nextScheduledClass.Value.Date,
+                            now.Date);
 
                     classroom.Status =
                         ClassroomStatus.Upcoming;
@@ -206,6 +284,7 @@ public ClassroomsModel(ApplicationDbContext db)
             }
         }
 
+
         Classrooms = rooms;
 
         TotalClassrooms =
@@ -228,6 +307,46 @@ public ClassroomsModel(ApplicationDbContext db)
         return Page();
     }
 
+
+    private static string GetDateLabel(
+        DateTime scheduledDate,
+        DateTime today)
+    {
+        scheduledDate = scheduledDate.Date;
+        today = today.Date;
+
+        if (scheduledDate == today)
+        {
+            return $"Today — {scheduledDate:dddd, dd MMMM yyyy}";
+        }
+
+        if (scheduledDate == today.AddDays(1))
+        {
+            return $"Tomorrow — {scheduledDate:dddd, dd MMMM yyyy}";
+        }
+
+        var daysUntilSunday =
+            DayOfWeek.Sunday - today.DayOfWeek;
+
+        if (daysUntilSunday < 0)
+        {
+            daysUntilSunday += 7;
+        }
+
+        var endOfWeek =
+            today.AddDays(daysUntilSunday);
+
+        if (scheduledDate > today &&
+            scheduledDate <= endOfWeek)
+        {
+            return $"This week on — {scheduledDate:dddd, dd MMMM yyyy}";
+        }
+
+        return scheduledDate.ToString(
+            "dddd, dd MMMM yyyy");
+    }
+
+
     private static DateTime GetRwandaTime()
     {
         try
@@ -249,6 +368,7 @@ public ClassroomsModel(ApplicationDbContext db)
             return DateTime.UtcNow.AddHours(2);
         }
     }
+
 
     private static (
         ScheduleItem Schedule,
@@ -301,18 +421,23 @@ public ClassroomsModel(ApplicationDbContext db)
         );
     }
 
+
     private static int GetFutureDayOffset(
         DayOfWeek today,
         DayOfWeek scheduledDay)
     {
-        var todayNumber = (int)today;
-        var scheduledDayNumber = (int)scheduledDay;
+        var todayNumber =
+            (int)today;
+
+        var scheduledDayNumber =
+            (int)scheduledDay;
 
         return
             (scheduledDayNumber -
              todayNumber +
              7) % 7;
     }
+
 
     public class ClassroomItem
     {
@@ -339,13 +464,22 @@ public ClassroomsModel(ApplicationDbContext db)
 
         public DateTime? CurrentClassDate { get; set; }
 
+        public string CurrentClassDateLabel { get; set; } =
+            string.Empty;
+
         public ScheduleItem? NextClass { get; set; }
 
         public DateTime? NextClassDate { get; set; }
 
+        public string NextClassDateLabel { get; set; } =
+            string.Empty;
+
+        public int TodaysClasses { get; set; }
+
         public List<ScheduleItem> ScheduleEntries { get; set; } =
             new();
     }
+
 
     public class ScheduleItem
     {
@@ -362,6 +496,15 @@ public ClassroomsModel(ApplicationDbContext db)
         public string LecturerName { get; set; } =
             string.Empty;
 
+        public string ClassRepresentativeName { get; set; } =
+            string.Empty;
+
+        public string Intake { get; set; } =
+            string.Empty;
+
+        public string Level { get; set; } =
+            string.Empty;
+
         public DayOfWeek DayOfWeek { get; set; }
 
         public TimeOnly StartTime { get; set; }
@@ -372,6 +515,7 @@ public ClassroomsModel(ApplicationDbContext db)
 
         public string? Notes { get; set; }
     }
+
 
     public enum ClassroomStatus
     {
