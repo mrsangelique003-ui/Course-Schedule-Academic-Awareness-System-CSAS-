@@ -1,0 +1,159 @@
+@page
+@model CourseScheduleSystem.Web.Pages.CP.MyProfileModel
+
+@{
+    Layout = "/Pages/Shared/_CPLayout.cshtml";
+    ViewData["Title"] = "My Profile";
+
+    var cp = Model.CurrentCp!;
+    var initials = string.Concat(
+        cp.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                   .Take(2)
+                   .Select(p => char.ToUpper(p[0])));
+}
+
+<div class="container-fluid py-2">
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="cp-page-header">
+        <div>
+            <h1 class="cp-page-header-title">My Profile</h1>
+            <p class="cp-page-header-sub">
+                <span>Your Class Representative profile and details.</span>
+                <span class="cp-badge">
+                    <i class="bi bi-person-badge-fill"></i>
+                    Class Representative
+                </span>
+            </p>
+        </div>
+        <div class="cp-page-header-date">
+            <i class="bi bi-calendar3"></i>
+            <span>@DateTime.Now.ToString("dd MMM yyyy")</span>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- ── LEFT: Identity card ── -->
+        <div class="col-lg-4">
+            <div class="cp-myprofile-card">
+
+                <!-- Gradient top with avatar -->
+                <div class="cp-myprofile-hero">
+                    <div class="cp-myprofile-avatar">@initials</div>
+                    <div class="cp-myprofile-active-badge">
+                        <i class="bi bi-circle-fill"></i> Active
+                    </div>
+                </div>
+
+                <!-- Name + RegNo -->
+                <div class="cp-myprofile-identity">
+                    <h4 class="cp-myprofile-name">@cp.FullName</h4>
+                    <span class="cp-profile-regno">
+                        <i class="bi bi-person-badge"></i>
+                        @cp.RegNo
+                    </span>
+                </div>
+
+                <!-- Quick contact -->
+                @if (!string.IsNullOrWhiteSpace(cp.Email) || !string.IsNullOrWhiteSpace(cp.PhoneNumber))
+                {
+                    <div class="cp-profile-contact">
+                        @if (!string.IsNullOrWhiteSpace(cp.Email))
+                        {
+                            <a href="mailto:@cp.Email" class="cp-profile-contact-item">
+                                <i class="bi bi-envelope"></i>
+                                <span>@cp.Email</span>
+                            </a>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(cp.PhoneNumber))
+                        {
+                            <a href="tel:@cp.PhoneNumber" class="cp-profile-contact-item">
+                                <i class="bi bi-telephone"></i>
+                                <span>@cp.PhoneNumber</span>
+                            </a>
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!-- ── RIGHT: Details ── -->
+        <div class="col-lg-8">
+
+            <!-- Academic info -->
+            <div class="cp-myprofile-section">
+                <div class="cp-myprofile-section-title">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    Academic Information
+                </div>
+                <div class="cp-myprofile-details-grid">
+                    <div class="cp-myprofile-detail-item">
+                        <span class="cp-myprofile-detail-label">Department</span>
+                        <span class="cp-myprofile-detail-value">@cp.Department</span>
+                    </div>
+                    <div class="cp-myprofile-detail-item">
+                        <span class="cp-myprofile-detail-label">Level</span>
+                        <span class="cp-myprofile-detail-value">@cp.Level</span>
+                    </div>
+                    <div class="cp-myprofile-detail-item">
+                        <span class="cp-myprofile-detail-label">Intake</span>
+                        <span class="cp-myprofile-detail-value">@cp.Intake</span>
+                    </div>
+                    <div class="cp-myprofile-detail-item">
+                        <span class="cp-myprofile-detail-label">Study Session</span>
+                        <span class="cp-myprofile-detail-value">@cp.StudySession</span>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(cp.Nationality))
+                    {
+                        <div class="cp-myprofile-detail-item">
+                            <span class="cp-myprofile-detail-label">Nationality</span>
+                            <span class="cp-myprofile-detail-value">@cp.Nationality</span>
+                        </div>
+                    }
+                    <div class="cp-myprofile-detail-item">
+                        <span class="cp-myprofile-detail-label">Assigned</span>
+                        <span class="cp-myprofile-detail-value">@cp.AssignedAt.ToLocalTime().ToString("dd MMM yyyy")</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Represented courses -->
+            @if (cp.RepresentedCourses.Any())
+            {
+                <div class="cp-myprofile-section mt-4">
+                    <div class="cp-myprofile-section-title">
+                        <i class="bi bi-journal-bookmark-fill"></i>
+                        Represented Courses
+                    </div>
+                    <div class="cp-myprofile-courses-list">
+                        @foreach (var course in cp.RepresentedCourses)
+                        {
+                            <div class="cp-myprofile-course-item">
+                                <div class="cp-myprofile-course-code">@course.Code</div>
+                                <span class="cp-myprofile-course-name">@course.Name</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Account actions -->
+            <div class="cp-myprofile-section mt-4">
+                <div class="cp-myprofile-section-title">
+                    <i class="bi bi-shield-lock-fill"></i>
+                    Account
+                </div>
+                <div class="d-flex gap-3 flex-wrap mt-2">
+                    <a asp-page="/Account/ChangePassword" class="cp-action-card-btn cp-action-btn--primary">
+                        <i class="bi bi-key"></i>
+                        Change Password
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

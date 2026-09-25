@@ -1,0 +1,599 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.RegisterClassRepresentativeModel
+
+@{
+ViewData["Title"] = "Register Class Representative";
+Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Admin/RegisterClassRepresentative.css" asp-append-version="true" />
+
+<div class="register-cp-page">
+    <div class="register-cp-container">
+
+
+    <div class="register-cp-header">
+        <div>
+            <div class="register-cp-breadcrumb">
+                <a asp-page="/Admin/ClassRepresentatives">
+                    Class Representatives
+                </a>
+                <i class="bi bi-chevron-right"></i>
+                <span>Register</span>
+            </div>
+
+            <h1 class="register-cp-heading">
+                Register Class Representative
+            </h1>
+
+            <p class="register-cp-subtitle">
+                Create a Class Representative account and assign their academic information.
+            </p>
+        </div>
+
+        <a asp-page="/Admin/ClassRepresentatives"
+           class="register-cp-back">
+            <i class="bi bi-arrow-left"></i>
+            <span>Back to Representatives</span>
+        </a>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="register-cp-alert register-cp-alert-danger register-cp-validation-alert">
+            <div class="register-cp-alert-icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+
+            <div class="register-cp-alert-content">
+                <strong>Please correct the following errors:</strong>
+
+                <div class="register-cp-alert-validation-summary">
+                    <div asp-validation-summary="All"
+                         class="register-cp-validation-summary register-cp-validation-summary-top">
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="register-cp-card">
+
+        <div class="register-cp-card-header">
+            <div class="register-cp-card-icon">
+                <i class="bi bi-person-badge-fill"></i>
+            </div>
+
+            <div>
+                <h2 class="register-cp-card-title">
+                    Representative Information
+                </h2>
+
+                <p class="register-cp-card-description">
+                    Enter the official information of the Class Representative.
+                </p>
+            </div>
+        </div>
+
+        <form method="post"
+              class="register-cp-form"
+              id="registerClassRepresentativeForm"
+              novalidate>
+
+            <section class="register-cp-section">
+                <h3 class="register-cp-section-title">
+                    <i class="bi bi-person-fill"></i>
+                    Personal Information
+                </h3>
+
+                <div class="register-cp-grid">
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.RegNo"
+                               class="register-cp-label">
+                            Registration Number
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <input asp-for="Input.RegNo"
+                               class="register-cp-input"
+                               placeholder="e.g. CP021"
+                               autocomplete="off"
+                               maxlength="50"
+                               required />
+
+                        <span asp-validation-for="Input.RegNo"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.FullName"
+                               class="register-cp-label">
+                            Full Name
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <input asp-for="Input.FullName"
+                               class="register-cp-input"
+                               placeholder="Enter full name"
+                               autocomplete="name"
+                               maxlength="200"
+                               required />
+
+                        <span asp-validation-for="Input.FullName"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.Email"
+                               class="register-cp-label">
+                            Email Address
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <input asp-for="Input.Email"
+                               type="email"
+                               class="register-cp-input"
+                               placeholder="example@unilak.ac.rw"
+                               autocomplete="email"
+                               maxlength="256"
+                               required />
+
+                        <span asp-validation-for="Input.Email"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.PhoneNumber"
+                               class="register-cp-label">
+                            Phone Number
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <input asp-for="Input.PhoneNumber"
+                               type="tel"
+                               class="register-cp-input"
+                               placeholder="+250 7XX XXX XXX"
+                               autocomplete="tel"
+                               maxlength="20"
+                               required />
+
+                        <span asp-validation-for="Input.PhoneNumber"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                    <div class="register-cp-field register-cp-field-full">
+                        <label asp-for="Input.Nationality"
+                               class="register-cp-label">
+                            Nationality
+                        </label>
+
+                        <input asp-for="Input.Nationality"
+                               class="register-cp-input"
+                               placeholder="Enter nationality"
+                               autocomplete="country-name"
+                               maxlength="100" />
+
+                        <span asp-validation-for="Input.Nationality"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="register-cp-section">
+                <h3 class="register-cp-section-title">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    Academic Information
+                </h3>
+
+                <div class="register-cp-grid">
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.Department"
+                               class="register-cp-label">
+                            Department
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <select asp-for="Input.Department"
+                                class="register-cp-select"
+                                required>
+                            <option value="">Select department</option>
+
+                            @foreach (var department in Model.Departments)
+                            {
+                                <option value="@department">
+                                    @department
+                                </option>
+                            }
+                        </select>
+
+                        <span asp-validation-for="Input.Department"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.Intake"
+                               class="register-cp-label">
+                            Intake
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <select asp-for="Input.Intake"
+                                class="register-cp-select"
+                                required>
+                            <option value="">Select intake</option>
+
+                            @foreach (var intake in Model.Intakes)
+                            {
+                                <option value="@intake">
+                                    @intake
+                                </option>
+                            }
+                        </select>
+
+                        <span asp-validation-for="Input.Intake"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.Level"
+                               class="register-cp-label">
+                            Level
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <select asp-for="Input.Level"
+                                class="register-cp-select"
+                                required>
+                            <option value="">Select level</option>
+
+                            @foreach (var level in Model.Levels)
+                            {
+                                <option value="@level">
+                                    @level
+                                </option>
+                            }
+                        </select>
+
+                        <span asp-validation-for="Input.Level"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                    <div class="register-cp-field">
+                        <label asp-for="Input.StudySession"
+                               class="register-cp-label">
+                            Study Session
+                            <span class="register-cp-required">*</span>
+                        </label>
+
+                        <select asp-for="Input.StudySession"
+                                class="register-cp-select"
+                                required>
+                            @foreach (var session in Model.StudySessions)
+                            {
+                                <option value="@session">
+                                    @session
+                                </option>
+                            }
+                        </select>
+
+                        <span asp-validation-for="Input.StudySession"
+                              class="register-cp-validation">
+                        </span>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="register-cp-section">
+                <h3 class="register-cp-section-title">
+                    <i class="bi bi-building"></i>
+                    Faculty Assignment
+                </h3>
+
+                <div class="register-cp-grid">
+
+                    <div class="register-cp-field register-cp-field-full">
+                        <label class="register-cp-label">
+                            Faculty
+                        </label>
+
+                        <input type="text"
+                               class="register-cp-input"
+                               value="Faculty of Computing and Information Technology"
+                               readonly />
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="register-cp-section">
+                <h3 class="register-cp-section-title">
+                    <i class="bi bi-pen-fill"></i>
+                    Signature Registration
+                    <span class="register-cp-required">*</span>
+                </h3>
+
+                <p class="register-cp-signature-description">
+                    The Class Representative must provide their official signature.
+                    Draw the signature inside the box below using a mouse, touchpad,
+                    touchscreen, or stylus.
+                </p>
+
+                <div class="register-cp-signature-wrapper">
+
+                    <div class="register-cp-signature-box">
+                        <canvas id="signatureCanvas"
+                                class="register-cp-signature-canvas"
+                                aria-label="Class Representative signature area">
+                        </canvas>
+
+                        <div class="register-cp-signature-placeholder"
+                             id="signaturePlaceholder">
+                            <i class="bi bi-pencil"></i>
+                            <span>Sign here</span>
+                        </div>
+                    </div>
+
+                    <input asp-for="Input.SignatureImageData"
+                           type="hidden"
+                           id="signatureImageData" />
+
+                    <div class="register-cp-signature-controls">
+                        <div class="register-cp-signature-status"
+                             id="signatureStatus">
+                            <i class="bi bi-info-circle"></i>
+                            <span>No signature captured</span>
+                        </div>
+
+                        <button type="button"
+                                class="register-cp-signature-clear"
+                                id="clearSignatureButton">
+                            <i class="bi bi-eraser-fill"></i>
+                            Clear Signature
+                        </button>
+                    </div>
+
+                    <div class="register-cp-signature-error"
+                         id="signatureError"
+                         role="alert"
+                         aria-live="polite">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                        <span>
+                            Please provide the Class Representative's signature before registering.
+                        </span>
+                    </div>
+
+                </div>
+
+                <span asp-validation-for="Input.SignatureImageData"
+                      class="register-cp-validation">
+                </span>
+            </section>
+
+            <div class="register-cp-form-footer">
+                <a asp-page="/Admin/ClassRepresentatives"
+                   class="register-cp-btn register-cp-btn-secondary">
+                    <i class="bi bi-x-lg"></i>
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="register-cp-btn register-cp-btn-primary">
+                    <i class="bi bi-person-plus-fill"></i>
+                    Register Representative
+                </button>
+            </div>
+
+            <p class="register-cp-footer-note">
+                <i class="bi bi-info-circle"></i>
+                Fields marked with <span class="register-cp-required">*</span> are required.
+            </p>
+
+        </form>
+    </div>
+</div>
+
+
+</div>
+
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const canvas = document.getElementById("signatureCanvas");
+        const form = document.getElementById("registerClassRepresentativeForm");
+        const hiddenInput = document.getElementById("signatureImageData");
+        const clearButton = document.getElementById("clearSignatureButton");
+        const placeholder = document.getElementById("signaturePlaceholder");
+        const status = document.getElementById("signatureStatus");
+        const error = document.getElementById("signatureError");
+
+        if (!canvas || !form || !hiddenInput) {
+            return;
+        }
+
+        const context = canvas.getContext("2d");
+
+        if (!context) {
+            return;
+        }
+
+        let drawing = false;
+        let hasSignature = false;
+
+        const existingSignature =
+            @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Input.SignatureImageData ?? string.Empty));
+
+        function configureContext() {
+            context.lineWidth = 2.2;
+            context.lineCap = "round";
+            context.lineJoin = "round";
+            context.strokeStyle = "#0b2545";
+        }
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+            canvas.width = Math.floor(rect.width * ratio);
+            canvas.height = Math.floor(rect.height * ratio);
+
+            context.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+            configureContext();
+        }
+
+        function updateSignatureState(signed) {
+            hasSignature = signed;
+
+            if (signed) {
+                placeholder.style.display = "none";
+
+                status.classList.add("is-signed");
+
+                status.innerHTML =
+                    '<i class="bi bi-check-circle-fill"></i><span>Signature captured</span>';
+
+                error.classList.remove("is-visible");
+            } else {
+                placeholder.style.display = "flex";
+
+                status.classList.remove("is-signed");
+
+                status.innerHTML =
+                    '<i class="bi bi-info-circle"></i><span>No signature captured</span>';
+            }
+        }
+
+        function getCoordinates(event) {
+            const rect = canvas.getBoundingClientRect();
+
+            return {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
+            };
+        }
+
+        function startDrawing(event) {
+            event.preventDefault();
+
+            drawing = true;
+
+            if (canvas.setPointerCapture) {
+                canvas.setPointerCapture(event.pointerId);
+            }
+
+            const position = getCoordinates(event);
+
+            context.beginPath();
+            context.moveTo(position.x, position.y);
+
+            updateSignatureState(true);
+        }
+
+        function draw(event) {
+            if (!drawing) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const position = getCoordinates(event);
+
+            context.lineTo(position.x, position.y);
+            context.stroke();
+        }
+
+        function stopDrawing(event) {
+            if (!drawing) {
+                return;
+            }
+
+            event.preventDefault();
+
+            drawing = false;
+
+            context.closePath();
+
+            hiddenInput.value = canvas.toDataURL("image/png");
+        }
+
+        canvas.addEventListener("pointerdown", startDrawing);
+        canvas.addEventListener("pointermove", draw);
+        canvas.addEventListener("pointerup", stopDrawing);
+        canvas.addEventListener("pointercancel", stopDrawing);
+
+        clearButton.addEventListener("click", function () {
+            const rect = canvas.getBoundingClientRect();
+
+            context.clearRect(
+                0,
+                0,
+                rect.width,
+                rect.height
+            );
+
+            hiddenInput.value = "";
+
+            updateSignatureState(false);
+
+            error.classList.remove("is-visible");
+        });
+
+        form.addEventListener("submit", function (event) {
+            if (!hasSignature) {
+                event.preventDefault();
+
+                error.classList.add("is-visible");
+
+                canvas.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+                return;
+            }
+
+            hiddenInput.value = canvas.toDataURL("image/png");
+        });
+
+        resizeCanvas();
+
+        if (existingSignature &&
+            existingSignature.startsWith("data:image/")) {
+
+            const image = new Image();
+
+            image.onload = function () {
+                const rect = canvas.getBoundingClientRect();
+
+                context.drawImage(
+                    image,
+                    0,
+                    0,
+                    rect.width,
+                    rect.height
+                );
+
+                hiddenInput.value = existingSignature;
+
+                updateSignatureState(true);
+            };
+
+            image.src = existingSignature;
+        } else {
+            updateSignatureState(false);
+        }
+    });
+</script>

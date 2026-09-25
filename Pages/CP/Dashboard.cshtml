@@ -154,7 +154,7 @@
     <div class="row g-3 g-md-4">
 
         <!-- Class Groups -->
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6">
             <div class="card cp-action-card">
                 <div class="card-body">
                     <div class="cp-action-card-icon-wrap cp-action-card-icon--groups">
@@ -174,7 +174,7 @@
         </div>
 
         <!-- Course Sign-Off -->
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6">
             <div class="card cp-action-card">
                 <div class="card-body">
                     <div class="cp-action-card-icon-wrap cp-action-card-icon--signoff">
@@ -193,42 +193,89 @@
             </div>
         </div>
 
-        <!-- HOD Messages -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card cp-action-card">
-                <div class="card-body">
-                    <div class="cp-action-card-icon-wrap cp-action-card-icon--messages">
-                        <i class="bi bi-chat-dots-fill"></i>
-                    </div>
-                    <h5 class="cp-action-card-title">HOD Messages</h5>
-                    <p class="cp-action-card-desc">
-                        Read messages from the Head of Department and stay up to date with department announcements.
-                    </p>
-                    <a asp-page="/CP/Chat"
-                       class="cp-action-card-btn cp-action-btn--violet">
-                        <i class="bi bi-chat-dots"></i>
-                        Open Chat
-                    </a>
-                </div>
+    </div>
+
+
+    <!-- ── CIS CLASS REPRESENTATIVES LIST ── -->
+    <div class="cp-section-divider mt-4">
+        <span class="cp-section-divider-title">CIS Class Representatives</span>
+        <span class="cp-section-divider-line"></span>
+        <a asp-page="/CP/CisCps/CisCps" class="cp-stat-footer-link" style="white-space:nowrap; font-size:12px;">
+            View all
+        </a>
+    </div>
+
+    @if (!Model.CisReps.Any())
+    {
+        <p style="color:var(--text-muted); font-size:13px;">No active CIS representatives found.</p>
+    }
+    else
+    {
+        <div class="cg-list">
+
+            <!-- Header -->
+            <div class="cp-list-header">
+                <div class="cp-list-hcol cp-lc-name">Name</div>
+                <div class="cp-list-hcol cp-lc-dept">Department</div>
+                <div class="cp-list-hcol cp-lc-intake">Intake</div>
+                <div class="cp-list-hcol cp-lc-level">Level</div>
+                <div class="cp-list-hcol cp-lc-nat">Nationality</div>
+                <div class="cp-list-hcol cp-lc-phone">Phone</div>
             </div>
+
+            @foreach (var rep in Model.CisReps)
+            {
+                var initials = string.Concat(
+                    rep.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                .Take(2)
+                                .Select(p => char.ToUpper(p[0])));
+
+                <div class="cp-list-row">
+
+                    <div class="cp-lc-name">
+                        <div class="cp-list-avatar">@initials</div>
+                        <div>
+                            <div class="cp-list-name">@rep.FullName</div>
+                            <div class="cp-list-regno">@rep.RegNo</div>
+                        </div>
+                    </div>
+
+                    <div class="cp-lc-dept">
+                        <span class="cp-list-text">@rep.Department</span>
+                    </div>
+
+                    <div class="cp-lc-intake">
+                        <span class="cp-list-text">@rep.Intake</span>
+                    </div>
+
+                    <div class="cp-lc-level">
+                        <span class="cp-list-text">@rep.Level</span>
+                    </div>
+
+                    <div class="cp-lc-nat">
+                        <span class="cp-list-text">
+                            @(string.IsNullOrWhiteSpace(rep.Nationality) ? "—" : rep.Nationality)
+                        </span>
+                    </div>
+
+                    <div class="cp-lc-phone">
+                        @if (!string.IsNullOrWhiteSpace(rep.PhoneNumber))
+                        {
+                            <a href="tel:@rep.PhoneNumber" class="cp-list-phone-link">
+                                <i class="bi bi-telephone"></i>
+                                @rep.PhoneNumber
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="cp-list-text" style="color:var(--text-light);font-style:italic;">Not set</span>
+                        }
+                    </div>
+
+                </div>
+            }
+
         </div>
-
-    </div>
-
-
-    <!-- ── QUICK TIPS ── -->
-    <div class="cp-tips-panel">
-        <p class="cp-tips-panel-title">
-            <i class="bi bi-lightbulb-fill" style="color:#f59e0b;"></i>
-            CP Responsibilities
-        </p>
-        <ul class="cp-tips-list">
-            <li><i class="bi bi-check2-circle"></i> Track course attendance</li>
-            <li><i class="bi bi-check2-circle"></i> Submit sign-off on time</li>
-            <li><i class="bi bi-check2-circle"></i> Keep class groups active</li>
-            <li><i class="bi bi-check2-circle"></i> Monitor HOD messages regularly</li>
-            <li><i class="bi bi-check2-circle"></i> Represent your classmates fairly</li>
-        </ul>
-    </div>
+    }
 
 </div>

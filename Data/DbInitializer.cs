@@ -100,30 +100,251 @@ public static class DbInitializer
         // CLASS REPRESENTATIVES — 20 RECORDS
         // =========================================================
 
-        // (RegNo, FullName, Email, Phone, Nationality)
+        // (RegNo, FullName, Email, Phone, Nationality,
+        //  Faculty, Department, Intake, Year, Session)
         var classRepresentativeData = new[]
         {
-            ("CP001", "Bob Nkurunziza",       "bob@unilak.ac.rw",       "+250 788 100 001", "Rwandan"),
-            ("CP002", "Clarisse Uwimana",     "clarisse@unilak.ac.rw",  "+250 788 100 002", "Rwandan"),
-            ("CP003", "Derrick Niyonsenga",   "derrick@unilak.ac.rw",   "+250 788 100 003", "Rwandan"),
-            ("CP004", "Emmanuel Habimana",    "emmanuel@unilak.ac.rw",  "+250 788 100 004", "Rwandan"),
-            ("CP005", "Florence Mukamana",    "florence@unilak.ac.rw",  "+250 788 100 005", "Rwandan"),
-            ("CP006", "Gaspard Bizimana",     "gaspard@unilak.ac.rw",   "+250 788 100 006", "Rwandan"),
-            ("CP007", "Hope Uwamahoro",       "hope@unilak.ac.rw",      "+250 788 100 007", "Rwandan"),
-            ("CP008", "Ivan Nshimiyimana",    "ivan@unilak.ac.rw",      "+250 788 100 008", "Rwandan"),
-            ("CP009", "Josiane Ingabire",     "josiane@unilak.ac.rw",   "+250 788 100 009", "Rwandan"),
-            ("CP010", "Kenneth Mugisha",      "kenneth@unilak.ac.rw",   "+250 788 100 010", "Ugandan"),
-            ("CP011", "Lydia Uwase",          "lydia@unilak.ac.rw",     "+250 788 100 011", "Rwandan"),
-            ("CP012", "Michel Ndayisenga",    "michel@unilak.ac.rw",    "+250 788 100 012", "Rwandan"),
-            ("CP013", "Nathalie Mukeshimana", "nathalie@unilak.ac.rw",  "+250 788 100 013", "Rwandan"),
-            ("CP014", "Oscar Tuyisenge",      "oscar@unilak.ac.rw",     "+250 788 100 014", "Congolese"),
-            ("CP015", "Patricia Uwamariya",   "patricia@unilak.ac.rw",  "+250 788 100 015", "Rwandan"),
-            ("CP016", "Robert Niyomugabo",    "robert@unilak.ac.rw",    "+250 788 100 016", "Rwandan"),
-            ("CP017", "Sandrine Mukamana",    "sandrine@unilak.ac.rw",  "+250 788 100 017", "Burundian"),
-            ("CP018", "Theoneste Habimana",   "theoneste@unilak.ac.rw", "+250 788 100 018", "Rwandan"),
-            ("CP019", "Valerie Ingabire",     "valerie@unilak.ac.rw",   "+250 788 100 019", "Rwandan"),
-            ("CP020", "William Nkurunziza",   "william@unilak.ac.rw",   "+250 788 100 020", "Kenyan"),
-        };
+        (
+            "CP001",
+            "Bob Nkurunziza",
+            "bob@unilak.ac.rw",
+            "+250 788 100 001",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Information System and Management",
+            "January",
+            1,
+            StudySession.Day
+        ),
+        (
+            "CP002",
+            "Clarisse Uwimana",
+            "clarisse@unilak.ac.rw",
+            "+250 788 100 002",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Information Technology",
+            "March",
+            2,
+            StudySession.Evening
+        ),
+        (
+            "CP003",
+            "Derrick Niyonsenga",
+            "derrick@unilak.ac.rw",
+            "+250 788 100 003",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Software Engineering",
+            "September",
+            3,
+            StudySession.Weekend
+        ),
+        (
+            "CP004",
+            "Emmanuel Habimana",
+            "emmanuel@unilak.ac.rw",
+            "+250 788 100 004",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Networking",
+            "January",
+            2,
+            StudySession.Day
+        ),
+        (
+            "CP005",
+            "Florence Mukamana",
+            "florence@unilak.ac.rw",
+            "+250 788 100 005",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Multimedia",
+            "March",
+            3,
+            StudySession.Evening
+        ),
+        (
+            "CP006",
+            "Gaspard Bizimana",
+            "gaspard@unilak.ac.rw",
+            "+250 788 100 006",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Information System and Management",
+            "September",
+            1,
+            StudySession.Weekend
+        ),
+        (
+            "CP007",
+            "Hope Uwamahoro",
+            "hope@unilak.ac.rw",
+            "+250 788 100 007",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Information Technology",
+            "January",
+            3,
+            StudySession.Day
+        ),
+        (
+            "CP008",
+            "Ivan Nshimiyimana",
+            "ivan@unilak.ac.rw",
+            "+250 788 100 008",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Software Engineering",
+            "March",
+            1,
+            StudySession.Evening
+        ),
+        (
+            "CP009",
+            "Josiane Ingabire",
+            "josiane@unilak.ac.rw",
+            "+250 788 100 009",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Networking",
+            "September",
+            2,
+            StudySession.Weekend
+        ),
+        (
+            "CP010",
+            "Kenneth Mugisha",
+            "kenneth@unilak.ac.rw",
+            "+250 788 100 010",
+            "Ugandan",
+            "Faculty of Computing and Information Technology",
+            "Multimedia",
+            "January",
+            3,
+            StudySession.Day
+        ),
+        (
+            "CP011",
+            "Lydia Uwase",
+            "lydia@unilak.ac.rw",
+            "+250 788 100 011",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Information System and Management",
+            "March",
+            2,
+            StudySession.Evening
+        ),
+        (
+            "CP012",
+            "Michel Ndayisenga",
+            "michel@unilak.ac.rw",
+            "+250 788 100 012",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Information Technology",
+            "September",
+            1,
+            StudySession.Weekend
+        ),
+        (
+            "CP013",
+            "Nathalie Mukeshimana",
+            "nathalie@unilak.ac.rw",
+            "+250 788 100 013",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Software Engineering",
+            "January",
+            2,
+            StudySession.Day
+        ),
+        (
+            "CP014",
+            "Oscar Tuyisenge",
+            "oscar@unilak.ac.rw",
+            "+250 788 100 014",
+            "Congolese",
+            "Faculty of Computing and Information Technology",
+            "Networking",
+            "March",
+            3,
+            StudySession.Evening
+        ),
+        (
+            "CP015",
+            "Patricia Uwamariya",
+            "patricia@unilak.ac.rw",
+            "+250 788 100 015",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Multimedia",
+            "September",
+            1,
+            StudySession.Weekend
+        ),
+        (
+            "CP016",
+            "Robert Niyomugabo",
+            "robert@unilak.ac.rw",
+            "+250 788 100 016",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Information System and Management",
+            "January",
+            3,
+            StudySession.Day
+        ),
+        (
+            "CP017",
+            "Sandrine Mukamana",
+            "sandrine@unilak.ac.rw",
+            "+250 788 100 017",
+            "Burundian",
+            "Faculty of Computing and Information Technology",
+            "Information Technology",
+            "March",
+            2,
+            StudySession.Evening
+        ),
+        (
+            "CP018",
+            "Theoneste Habimana",
+            "theoneste@unilak.ac.rw",
+            "+250 788 100 018",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Software Engineering",
+            "September",
+            1,
+            StudySession.Weekend
+        ),
+        (
+            "CP019",
+            "Valerie Ingabire",
+            "valerie@unilak.ac.rw",
+            "+250 788 100 019",
+            "Rwandan",
+            "Faculty of Computing and Information Technology",
+            "Networking",
+            "January",
+            2,
+            StudySession.Day
+        ),
+        (
+            "CP020",
+            "William Nkurunziza",
+            "william@unilak.ac.rw",
+            "+250 788 100 020",
+            "Kenyan",
+            "Faculty of Computing and Information Technology",
+            "Multimedia",
+            "September",
+            3,
+            StudySession.Evening
+        )
+    };
 
         foreach (var item in classRepresentativeData)
         {
@@ -136,14 +357,19 @@ public static class DbInitializer
             {
                 representative = new ClassRepresentative
                 {
-                    RegNo        = item.Item1,
-                    FullName     = item.Item2,
-                    Email        = item.Item3,
-                    PhoneNumber  = item.Item4,
-                    Nationality  = item.Item5,
-                    Department   = "CIS",
-                    StudySession = StudySession.Day,
-                    IsActive     = true
+                    RegNo = item.Item1,
+                    FullName = item.Item2,
+                    Email = item.Item3,
+                    PhoneNumber = item.Item4,
+                    Nationality = item.Item5,
+                    Faculty = item.Item6,
+                    Department = item.Item7,
+                    Intake = item.Item8,
+                    Year = item.Item9,
+                    Level = $"Year {item.Item9}",
+                    StudySession = item.Item10,
+                    IsActive = true,
+                    SignatureImageData = string.Empty
                 };
 
                 representative.PasswordHash =
@@ -155,15 +381,25 @@ public static class DbInitializer
             }
             else
             {
-                representative.FullName     = item.Item2;
-                representative.Email        = item.Item3;
-                representative.PhoneNumber  = item.Item4;
-                representative.Nationality  = item.Item5;
-                representative.Department   = "CIS";
-                representative.StudySession = StudySession.Day;
-                representative.IsActive     = true;
+                representative.FullName = item.Item2;
+                representative.Email = item.Item3;
+                representative.PhoneNumber = item.Item4;
+                representative.Nationality = item.Item5;
+                representative.Faculty = item.Item6;
+                representative.Department = item.Item7;
+                representative.Intake = item.Item8;
+                representative.Year = item.Item9;
+                representative.Level = $"Year {item.Item9}";
+                representative.StudySession = item.Item10;
+                representative.IsActive = true;
 
-                if (string.IsNullOrWhiteSpace(representative.PasswordHash))
+                if (representative.SignatureImageData == null)
+                {
+                    representative.SignatureImageData = string.Empty;
+                }
+
+                if (string.IsNullOrWhiteSpace(
+                    representative.PasswordHash))
                 {
                     representative.PasswordHash =
                         classRepresentativeHasher.HashPassword(

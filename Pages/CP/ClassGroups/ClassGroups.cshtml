@@ -18,7 +18,7 @@
                 {
                     <span class="cp-badge">
                         <i class="bi bi-people-fill"></i>
-                        @Model.Groups.Count active @(Model.Groups.Count == 1 ? "group" : "groups")
+                        @Model.Groups.Count @(Model.Groups.Count == 1 ? "group" : "groups")
                     </span>
                 }
             </p>
@@ -48,82 +48,99 @@
     }
     else
     {
-        <!-- ── GROUP CARDS ── -->
-        <div class="row g-3 g-md-4">
+        <!-- ── GROUP TABLE (beautiful list layout) ── -->
+        <div class="cg-list">
+
+            <!-- List header -->
+            <div class="cg-list-header">
+                <div class="cg-list-header-col cg-col-name">Group Name</div>
+                <div class="cg-list-header-col cg-col-course">Course</div>
+                <div class="cg-list-header-col cg-col-meta">Level / Intake</div>
+                <div class="cg-list-header-col cg-col-status">Status</div>
+                <div class="cg-list-header-col cg-col-date">Created</div>
+                <div class="cg-list-header-col cg-col-action">Link</div>
+            </div>
+
+            <!-- List rows -->
             @foreach (var group in Model.Groups)
             {
-                <div class="col-md-6 col-xl-4">
-                    <div class="cp-group-card">
+                <div class="cg-list-row">
 
-                        <!-- Card top stripe -->
-                        <div class="cp-group-card-header">
-                            <div class="cp-group-card-icon">
-                                <i class="bi bi-people-fill"></i>
-                            </div>
-                            <div class="cp-group-card-status">
-                                @if (group.IsPublished)
-                                {
-                                    <span class="cp-status-badge cp-status-badge--published">
-                                        <i class="bi bi-broadcast"></i> Published
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="cp-status-badge cp-status-badge--draft">
-                                        <i class="bi bi-pencil-square"></i> Draft
-                                    </span>
-                                }
-                            </div>
+                    <!-- Icon + Name -->
+                    <div class="cg-col-name">
+                        <div class="cg-row-icon">
+                            <i class="bi bi-people-fill"></i>
                         </div>
-
-                        <!-- Card body -->
-                        <div class="cp-group-card-body">
-                            <h5 class="cp-group-card-title">@group.GroupName</h5>
-                            <span class="cp-group-course-chip">
-                                <i class="bi bi-journal-bookmark"></i>
-                                @group.Course.Name
-                            </span>
-
-                            <div class="cp-group-meta">
-                                <div class="cp-group-meta-item">
-                                    <i class="bi bi-mortarboard"></i>
-                                    <span><strong>Level:</strong> @group.Level</span>
-                                </div>
-                                <div class="cp-group-meta-item">
-                                    <i class="bi bi-calendar2"></i>
-                                    <span><strong>Intake:</strong> @group.Intake</span>
-                                </div>
-                                <div class="cp-group-meta-item">
-                                    <i class="bi bi-clock"></i>
-                                    <span>Created @group.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</span>
-                                </div>
-                            </div>
+                        <div class="cg-row-name-block">
+                            <span class="cg-row-name">@group.GroupName</span>
                         </div>
-
-                        <!-- Card footer -->
-                        <div class="cp-group-card-footer">
-                            @if (!string.IsNullOrWhiteSpace(group.GroupLink))
-                            {
-                                <a href="@group.GroupLink"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   class="cp-group-link-btn">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                    Open Group
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="cp-group-link-empty">
-                                    <i class="bi bi-link-45deg"></i> No link set
-                                </span>
-                            }
-                        </div>
-
                     </div>
+
+                    <!-- Course -->
+                    <div class="cg-col-course">
+                        <span class="cg-course-chip">
+                            <i class="bi bi-journal-bookmark"></i>
+                            @group.Course.Name
+                        </span>
+                    </div>
+
+                    <!-- Level / Intake -->
+                    <div class="cg-col-meta">
+                        <span class="cg-meta-line">
+                            <i class="bi bi-mortarboard"></i>
+                            @group.Level
+                        </span>
+                        <span class="cg-meta-line">
+                            <i class="bi bi-calendar2"></i>
+                            @group.Intake
+                        </span>
+                    </div>
+
+                    <!-- Status badge -->
+                    <div class="cg-col-status">
+                        @if (group.IsPublished)
+                        {
+                            <span class="cp-status-badge cp-status-badge--published">
+                                <i class="bi bi-broadcast"></i> Published
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="cp-status-badge cp-status-badge--draft">
+                                <i class="bi bi-pencil-square"></i> Draft
+                            </span>
+                        }
+                    </div>
+
+                    <!-- Date -->
+                    <div class="cg-col-date">
+                        <span class="cg-date-text">
+                            @group.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
+                        </span>
+                    </div>
+
+                    <!-- Action -->
+                    <div class="cg-col-action">
+                        @if (!string.IsNullOrWhiteSpace(group.GroupLink))
+                        {
+                            <a href="@group.GroupLink"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="cg-open-btn">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                                Open
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="cg-no-link">No link</span>
+                        }
+                    </div>
+
                 </div>
             }
-        </div>
+
+        </div><!-- /cg-list -->
     }
 
 </div>

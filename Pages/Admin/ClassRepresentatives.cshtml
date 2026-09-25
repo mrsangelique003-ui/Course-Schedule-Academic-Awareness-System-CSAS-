@@ -1,0 +1,796 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.ClassRepresentativesModel
+
+@{
+    ViewData["Title"] = "Class Representatives";
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet"
+      href="~/css/Admin/ClassRepresentatives.css"
+      asp-append-version="true" />
+
+<div class="cp-page">
+    <div class="cp-container">
+
+        <div class="cp-page-header">
+            <div>
+                <div class="cp-breadcrumb">
+                    <a asp-page="/Admin/Dashboard">Administration</a>
+                    <i class="bi bi-chevron-right"></i>
+                    <span>Class Representatives</span>
+                </div>
+
+                <h1 class="cp-page-title">Class Representatives</h1>
+
+                <p class="cp-page-subtitle">
+                    Register, manage, and monitor class representatives.
+                </p>
+            </div>
+
+            <a asp-page="/Admin/RegisterClassRepresentative"
+               class="cp-primary-button">
+                <i class="bi bi-person-plus-fill"></i>
+                <span>Register Representative</span>
+            </a>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="cp-alert cp-alert-danger">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                <div>
+                    <strong>Something went wrong</strong>
+                    <span>@Model.ErrorMessage</span>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="cp-alert cp-alert-success">
+                <i class="bi bi-check-circle-fill"></i>
+                <div>
+                    <strong>Success</strong>
+                    <span>@Model.SuccessMessage</span>
+                </div>
+            </div>
+        }
+
+        <div class="cp-stat-grid">
+            <div class="cp-stat-card">
+                <div class="cp-stat-icon cp-stat-icon-blue">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="cp-stat-content">
+                    <span class="cp-stat-label">Representatives</span>
+                    <strong class="cp-stat-value">@Model.TotalRepresentatives</strong>
+                    <span class="cp-stat-description">Matching records</span>
+                </div>
+            </div>
+
+            <div class="cp-stat-card">
+                <div class="cp-stat-icon cp-stat-icon-green">
+                    <i class="bi bi-person-check-fill"></i>
+                </div>
+                <div class="cp-stat-content">
+                    <span class="cp-stat-label">Active</span>
+                    <strong class="cp-stat-value">@Model.ActiveRepresentatives</strong>
+                    <span class="cp-stat-description">Active accounts</span>
+                </div>
+            </div>
+
+            <div class="cp-stat-card">
+                <div class="cp-stat-icon cp-stat-icon-orange">
+                    <i class="bi bi-person-x-fill"></i>
+                </div>
+                <div class="cp-stat-content">
+                    <span class="cp-stat-label">Inactive</span>
+                    <strong class="cp-stat-value">@Model.InactiveRepresentatives</strong>
+                    <span class="cp-stat-description">Inactive accounts</span>
+                </div>
+            </div>
+
+            <div class="cp-stat-card">
+                <div class="cp-stat-icon cp-stat-icon-purple">
+                    <i class="bi bi-diagram-3-fill"></i>
+                </div>
+                <div class="cp-stat-content">
+                    <span class="cp-stat-label">Departments</span>
+                    <strong class="cp-stat-value">@Model.DepartmentCount</strong>
+                    <span class="cp-stat-description">Departments represented</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cp-card" id="cpCard">
+
+            <div class="cp-card-header">
+                <div>
+                    <h2 class="cp-card-title">Representative Directory</h2>
+                    <p class="cp-card-description">
+                        Search and manage registered class representatives.
+                    </p>
+                </div>
+
+                <div class="cp-record-count" id="cpRecordCount">
+                    @Model.TotalRepresentatives record@(Model.TotalRepresentatives == 1 ? "" : "s")
+                </div>
+            </div>
+
+            @* Minimal search — no hint text *@
+            <div class="cp-search-toolbar">
+                <div class="cp-search-wrapper">
+                    <i class="bi bi-search"></i>
+
+                    <input type="search"
+                           id="cpSearch"
+                           class="cp-search-input"
+                           placeholder="Search name, reg no, email, department, level, intake, session, status..."
+                           autocomplete="off" />
+
+                    <button type="button"
+                            id="cpClearSearch"
+                            class="cp-search-clear"
+                            aria-label="Clear search"
+                            title="Clear search">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            @* Only this region is replaced / appended to by AJAX *@
+            <div id="cpTableRegion"
+                 class="cp-table-region"
+                 data-page="@Model.PageNumber"
+                 data-total-pages="@Model.TotalPages"
+                 data-search="@Model.Search"
+                 data-status="@Model.Status">
+
+                <div class="cp-table-scroll" id="cpTableScroll">
+                    <table class="cp-table">
+                        <colgroup>
+                            <col class="col-representative" />
+                            <col class="col-regno" />
+                            <col class="col-academic" />
+                            <col class="col-intake" />
+                            <col class="col-session" />
+                            <col class="col-status" />
+                            <col class="col-actions" />
+                        </colgroup>
+
+                        <thead>
+                            <tr>
+                                <th>Representative</th>
+                                <th>Reg. No.</th>
+                                <th>Academic Info</th>
+                                <th>Intake</th>
+                                <th>Session</th>
+                                <th>Status</th>
+                                <th class="cp-action-column">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="cpTableBody">
+                            @if (Model.ClassRepresentatives.Count > 0)
+                            {
+                                @foreach (var representative in Model.ClassRepresentatives)
+                                {
+                                    <tr data-status="@(representative.IsActive ? "Active" : "Inactive")">
+
+                                        <td>
+                                            <div class="cp-representative">
+                                                <div class="cp-avatar">
+                                                    @if (!string.IsNullOrWhiteSpace(representative.FullName))
+                                                    {
+                                                        @representative.FullName.Substring(0, 1).ToUpperInvariant()
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="bi bi-person-fill"></i>
+                                                    }
+                                                </div>
+
+                                                <div class="cp-representative-info">
+                                                    <strong>@representative.FullName</strong>
+                                                    <span>@representative.Email</span>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <span class="cp-reg-no">@representative.RegNo</span>
+                                        </td>
+
+                                        <td>
+                                            <div class="cp-academic-info">
+                                                <strong>@representative.Department</strong>
+                                                <span>@representative.Faculty</span>
+                                                <small>@representative.Level</small>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <span class="cp-info-badge">
+                                                <i class="bi bi-calendar3"></i>
+                                                @representative.Intake
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="cp-session-badge">@representative.StudySession</span>
+                                        </td>
+
+                                        <td>
+                                            @if (representative.IsActive)
+                                            {
+                                                <span class="cp-status-badge cp-status-active">
+                                                    <span></span> Active
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="cp-status-badge cp-status-inactive">
+                                                    <span></span> Inactive
+                                                </span>
+                                            }
+                                        </td>
+
+                                        <td>
+                                            <div class="cp-actions">
+
+                                                <a asp-page="/Admin/ClassRepresentativeDetails"
+                                                   asp-route-id="@representative.Id"
+                                                   class="cp-action-button cp-action-view"
+                                                   title="View details"
+                                                   aria-label="View details">
+                                                    <i class="bi bi-eye-fill"></i>
+                                                </a>
+
+                                                <button type="button"
+                                                        class="cp-action-button cp-action-edit"
+                                                        title="Edit representative"
+                                                        aria-label="Edit representative"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editRepresentativeModal"
+                                                        data-id="@representative.Id"
+                                                        data-regno="@representative.RegNo"
+                                                        data-fullname="@representative.FullName"
+                                                        data-email="@representative.Email"
+                                                        data-phone="@representative.PhoneNumber"
+                                                        data-department="@representative.Department"
+                                                        data-intake="@representative.Intake"
+                                                        data-level="@representative.Level"
+                                                        data-session="@representative.StudySession"
+                                                        data-faculty="@representative.Faculty">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </button>
+
+                                                <form method="post"
+                                                      asp-page-handler="Delete"
+                                                      class="cp-delete-form">
+
+                                                    <input type="hidden" name="id" value="@representative.Id" />
+                                                    <input type="hidden" name="Search" value="@Model.Search" />
+                                                    <input type="hidden" name="Status" value="@Model.Status" />
+                                                    <input type="hidden" name="PageNumber" value="@Model.PageNumber" />
+
+                                                    <button type="submit"
+                                                            class="cp-action-button cp-action-delete"
+                                                            title="Delete representative"
+                                                            aria-label="Delete representative">
+                                                        <i class="bi bi-trash3-fill"></i>
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr class="cp-empty-row">
+                                    <td colspan="7">
+                                        <div class="cp-empty-state">
+                                            <div class="cp-empty-icon">
+                                                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                                                {
+                                                    <i class="bi bi-cloud-slash"></i>
+                                                }
+                                                else if (Model.IsFiltered)
+                                                {
+                                                    <i class="bi bi-search"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-person-badge"></i>
+                                                }
+                                            </div>
+
+                                            @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                                            {
+                                                <h3>Unable to load representatives</h3>
+                                                <p>Please refresh the page and try again.</p>
+                                            }
+                                            else if (Model.IsFiltered)
+                                            {
+                                                <h3>No representatives found</h3>
+                                                <p>Try a different search or status.</p>
+                                            }
+                                            else
+                                            {
+                                                <h3>No class representatives registered</h3>
+                                                <p>Register the first class representative to begin managing representatives.</p>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade"
+     id="editRepresentativeModal"
+     tabindex="-1"
+     aria-labelledby="editRepresentativeModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content cp-modal-content">
+
+            <div class="modal-header cp-modal-header">
+                <div class="cp-modal-heading">
+                    <div class="cp-modal-icon">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                    <div>
+                        <h2 class="modal-title" id="editRepresentativeModalLabel">
+                            Edit Representative
+                        </h2>
+                        <p>Update the representative's information.</p>
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <form method="post"
+                  asp-page-handler="Edit"
+                  id="editRepresentativeForm">
+
+                <div class="modal-body cp-modal-body">
+
+                    <input asp-for="Input.Id" type="hidden" id="editId" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="cp-modal-validation"></div>
+
+                    <div class="cp-edit-grid">
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.RegNo">Registration Number <span>*</span></label>
+                            <input asp-for="Input.RegNo" id="editRegNo" class="cp-form-input" maxlength="50" required />
+                            <span asp-validation-for="Input.RegNo" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.FullName">Full Name <span>*</span></label>
+                            <input asp-for="Input.FullName" id="editFullName" class="cp-form-input" maxlength="200" required />
+                            <span asp-validation-for="Input.FullName" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.Email">Email Address <span>*</span></label>
+                            <input asp-for="Input.Email" id="editEmail" type="email" class="cp-form-input" maxlength="256" required />
+                            <span asp-validation-for="Input.Email" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.PhoneNumber">Phone Number <span>*</span></label>
+                            <input asp-for="Input.PhoneNumber" id="editPhone" type="tel" class="cp-form-input" maxlength="20" required />
+                            <span asp-validation-for="Input.PhoneNumber" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.Department">Department <span>*</span></label>
+                            <select asp-for="Input.Department" id="editDepartment" class="cp-form-select" required>
+                                <option value="">Select department</option>
+                                @foreach (var department in Model.Departments)
+                                {
+                                    <option value="@department">@department</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.Department" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.Intake">Intake <span>*</span></label>
+                            <select asp-for="Input.Intake" id="editIntake" class="cp-form-select" required>
+                                <option value="">Select intake</option>
+                                @foreach (var intake in Model.Intakes)
+                                {
+                                    <option value="@intake">@intake</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.Intake" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.Level">Level <span>*</span></label>
+                            <select asp-for="Input.Level" id="editLevel" class="cp-form-select" required>
+                                <option value="">Select level</option>
+                                @foreach (var level in Model.Levels)
+                                {
+                                    <option value="@level">@level</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.Level" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field">
+                            <label asp-for="Input.StudySession">Study Session <span>*</span></label>
+                            <select asp-for="Input.StudySession" id="editSession" class="cp-form-select" required>
+                                @foreach (var session in Model.StudySessions)
+                                {
+                                    <option value="@session">@session</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.StudySession" class="cp-field-validation"></span>
+                        </div>
+
+                        <div class="cp-form-field cp-form-field-full">
+                            <label>Faculty</label>
+                            <input type="text" id="editFaculty" class="cp-form-input" readonly />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer cp-modal-footer">
+                    <button type="button"
+                            class="cp-modal-cancel"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="cp-modal-save"
+                            id="editSaveButton">
+                        <i class="bi bi-check-lg"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+    (function () {
+        "use strict";
+
+        /* -----------------------------------------------------------------
+         * Elements
+         * ---------------------------------------------------------------- */
+        const tableRegion  = document.getElementById("cpTableRegion");
+        const tableScroll  = document.getElementById("cpTableScroll");
+        const tableBody    = document.getElementById("cpTableBody");
+        const searchInput  = document.getElementById("cpSearch");
+        const clearSearch  = document.getElementById("cpClearSearch");
+        const recordCount  = document.getElementById("cpRecordCount");
+        const editModalEl  = document.getElementById("editRepresentativeModal");
+        const editForm     = document.getElementById("editRepresentativeForm");
+        const editSaveBtn  = document.getElementById("editSaveButton");
+
+        let searchTimer    = null;
+        let currentPage    = parseInt(tableRegion?.dataset.page || "1", 10);
+        let totalPages     = parseInt(tableRegion?.dataset.totalPages || "1", 10);
+        let isLoading      = false;
+
+        /* -----------------------------------------------------------------
+         * Utilities
+         * ---------------------------------------------------------------- */
+        function getRows() {
+            if (!tableBody) return [];
+            return Array.from(tableBody.querySelectorAll("tr"))
+                .filter(r => !r.classList.contains("cp-no-match-row")
+                          && !r.classList.contains("cp-loading-row")
+                          && !r.classList.contains("cp-empty-row"));
+        }
+
+        function updateRecordCount(visible, total) {
+            if (!recordCount) return;
+            recordCount.textContent = visible === total
+                ? `${total} record${total === 1 ? "" : "s"}`
+                : `${visible} of ${total} records`;
+        }
+
+        /* -----------------------------------------------------------------
+         * Client-side search (all visible column text via innerText)
+         * ---------------------------------------------------------------- */
+        function applyClientSearch() {
+            if (!tableBody) return;
+
+            const term = (searchInput?.value || "").trim().toLowerCase();
+            const rows = getRows();
+
+            let visible = 0;
+            rows.forEach(row => {
+                const text = (row.dataset.search || row.innerText || "").toLowerCase();
+                const match = !term || text.includes(term);
+                row.style.display = match ? "" : "none";
+                if (match) visible++;
+            });
+
+            if (clearSearch) {
+                clearSearch.style.display = term ? "flex" : "none";
+            }
+
+            updateRecordCount(visible, rows.length);
+
+            // "No match" placeholder row
+            let noMatch = tableBody.querySelector(".cp-no-match-row");
+            if (!noMatch) {
+                noMatch = document.createElement("tr");
+                noMatch.className = "cp-no-match-row";
+                noMatch.innerHTML = `
+                    <td colspan="7">
+                        <div class="cp-no-match-content">
+                            <i class="bi bi-search"></i>
+                            <strong>No representatives found</strong>
+                            <span>No records match your current search.</span>
+                        </div>
+                    </td>`;
+                tableBody.appendChild(noMatch);
+            }
+            noMatch.style.display = (rows.length > 0 && visible === 0) ? "" : "none";
+        }
+
+        /* -----------------------------------------------------------------
+         * Infinite scroll — append next page when near the bottom
+         * ---------------------------------------------------------------- */
+        async function loadNextPage() {
+            if (isLoading) return;
+            if (currentPage >= totalPages) return;
+            if (searchInput && searchInput.value.trim().length > 0) return; // don't paginate while searching
+
+            isLoading = true;
+
+            // Show loading row inside tbody
+            const loader = document.createElement("tr");
+            loader.className = "cp-loading-row";
+            loader.innerHTML = `
+                <td colspan="7">
+                    <span class="cp-loading-spinner"></span>
+                    Loading more representatives...
+                </td>`;
+            tableBody?.appendChild(loader);
+
+            try {
+                const nextPage = currentPage + 1;
+                const params = new URLSearchParams({
+                    PageNumber: nextPage,
+                    Search: tableRegion.dataset.search || "",
+                    Status: tableRegion.dataset.status || "All"
+                });
+
+                const url = `${window.location.pathname}?${params.toString()}`;
+
+                const res = await fetch(url, {
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                });
+
+                if (!res.ok) throw new Error("Failed to load next page");
+
+                const html = await res.text();
+                const doc = new DOMParser().parseFromString(html, "text/html");
+                const newBody = doc.querySelector("#cpTableBody");
+
+                if (newBody) {
+                    const newRows = Array.from(newBody.querySelectorAll("tr"))
+                        .filter(r => !r.classList.contains("cp-empty-row")
+                                  && !r.classList.contains("cp-loading-row")
+                                  && !r.classList.contains("cp-no-match-row"));
+
+                    newRows.forEach(r => tableBody.appendChild(r));
+                }
+
+                currentPage = nextPage;
+                tableRegion.dataset.page = String(currentPage);
+
+                applyClientSearch();
+
+            } catch (err) {
+                console.error(err);
+            } finally {
+                loader.remove();
+                isLoading = false;
+            }
+        }
+
+        /* Detect scroll near bottom */
+        tableScroll?.addEventListener("scroll", function () {
+            // Toggle sticky-header shadow
+            tableScroll.classList.toggle("is-scrolled", tableScroll.scrollTop > 4);
+
+            // Infinite scroll trigger
+            const nearBottom =
+                tableScroll.scrollTop + tableScroll.clientHeight >=
+                tableScroll.scrollHeight - 80;
+
+            if (nearBottom) loadNextPage();
+        });
+
+        /* -----------------------------------------------------------------
+         * Search events
+         * ---------------------------------------------------------------- */
+        searchInput?.addEventListener("input", function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(applyClientSearch, 120);
+        });
+
+        clearSearch?.addEventListener("click", function () {
+            if (searchInput) {
+                searchInput.value = "";
+                searchInput.focus();
+            }
+            applyClientSearch();
+        });
+
+        /* -----------------------------------------------------------------
+         * Table-only reload for edit / delete (replaces rows, keeps layout)
+         * ---------------------------------------------------------------- */
+        function extractNewRegion(html) {
+            const doc = new DOMParser().parseFromString(html, "text/html");
+            return doc.getElementById("cpTableRegion");
+        }
+
+        tableRegion?.addEventListener("submit", async function (event) {
+            const form = event.target.closest("form.cp-delete-form");
+            if (!form) return;
+
+            event.preventDefault();
+
+            const ok = window.confirm(
+                "Are you sure you want to delete this class representative? " +
+                "This action cannot be undone.");
+            if (!ok) return;
+
+            tableRegion.classList.add("cp-table-loading");
+
+            try {
+                const res = await fetch(form.action, {
+                    method: "POST",
+                    body: new FormData(form),
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                });
+                if (!res.ok) throw new Error("Delete failed");
+
+                const html = await res.text();
+                const region = extractNewRegion(html);
+                if (!region) throw new Error("Table region missing");
+
+                tableRegion.innerHTML = region.innerHTML;
+
+                // Re-bind page state from the fresh region
+                currentPage = parseInt(tableRegion.dataset.page || "1", 10);
+                totalPages  = parseInt(tableRegion.dataset.totalPages || "1", 10);
+
+                // Rebind scroll listener (it belongs to the replaced inner element)
+                bindScroll();
+
+                applyClientSearch();
+            } catch (err) {
+                console.error(err);
+                alert("Unable to delete this representative. Please try again.");
+            } finally {
+                tableRegion.classList.remove("cp-table-loading");
+            }
+        });
+
+        /* -----------------------------------------------------------------
+         * Edit modal — populate fields
+         * ---------------------------------------------------------------- */
+        editModalEl?.addEventListener("show.bs.modal", function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            const set = (id, attr) => {
+                const el = document.getElementById(id);
+                if (el) el.value = button.getAttribute(attr) || "";
+            };
+
+            set("editId", "data-id");
+            set("editRegNo", "data-regno");
+            set("editFullName", "data-fullname");
+            set("editEmail", "data-email");
+            set("editPhone", "data-phone");
+            set("editDepartment", "data-department");
+            set("editIntake", "data-intake");
+            set("editLevel", "data-level");
+            set("editSession", "data-session");
+            set("editFaculty", "data-faculty");
+        });
+
+        /* -----------------------------------------------------------------
+         * Edit modal — submit via AJAX, swap only the table region
+         * ---------------------------------------------------------------- */
+        editForm?.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            if (!editSaveBtn) return;
+
+            const original = editSaveBtn.innerHTML;
+            editSaveBtn.disabled = true;
+            editSaveBtn.innerHTML = `
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                Saving...`;
+
+            try {
+                const res = await fetch(editForm.action, {
+                    method: "POST",
+                    body: new FormData(editForm),
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                });
+
+                if (!res.ok) throw new Error("Update failed");
+
+                const html = await res.text();
+                const region = extractNewRegion(html);
+                if (!region) throw new Error("Table region missing");
+
+                tableRegion.innerHTML = region.innerHTML;
+
+                currentPage = parseInt(tableRegion.dataset.page || "1", 10);
+                totalPages  = parseInt(tableRegion.dataset.totalPages || "1", 10);
+
+                bindScroll();
+                applyClientSearch();
+
+                bootstrap.Modal.getInstance(editModalEl)?.hide();
+            } catch (err) {
+                console.error(err);
+                alert("Unable to update this representative. Please try again.");
+            } finally {
+                editSaveBtn.disabled = false;
+                editSaveBtn.innerHTML = original;
+            }
+        });
+
+        /* -----------------------------------------------------------------
+         * Re-bind scroll after AJAX replaces inner HTML
+         * ---------------------------------------------------------------- */
+        function bindScroll() {
+            const scroller = document.getElementById("cpTableScroll");
+            if (!scroller || scroller.dataset.bound === "1") return;
+
+            scroller.dataset.bound = "1";
+            scroller.addEventListener("scroll", function () {
+                scroller.classList.toggle("is-scrolled", scroller.scrollTop > 4);
+
+                const nearBottom =
+                    scroller.scrollTop + scroller.clientHeight >=
+                    scroller.scrollHeight - 80;
+
+                if (nearBottom) loadNextPage();
+            });
+        }
+
+        /* -----------------------------------------------------------------
+         * Init
+         * ---------------------------------------------------------------- */
+        applyClientSearch();
+        bindScroll();
+
+    })();
+</script>

@@ -1,0 +1,363 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.ClassRepresentativeDetailsModel
+
+@{
+ViewData["Title"] = "Class Representative Details";
+Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Admin/ClassRepresentativeDetails.css" />
+
+<div class="cp-details-page">
+
+
+<div class="cp-details-header">
+    <div>
+        <div class="cp-breadcrumb">
+            <a asp-page="/Admin/ClassRepresentatives">
+                <i class="bi bi-people"></i>
+                Class Representatives
+            </a>
+            <i class="bi bi-chevron-right"></i>
+            <span>Details</span>
+        </div>
+
+        <h1>Class Representative Details</h1>
+        <p>View the complete profile and academic information of this class representative.</p>
+    </div>
+
+    <div class="cp-header-actions">
+        <a asp-page="/Admin/ClassRepresentatives" class="cp-btn cp-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Back to Representatives
+        </a>
+
+        @if (Model.Representative != null)
+        {
+            <button type="button"
+                    class="cp-btn cp-btn-primary"
+                    id="editRepresentativeButton"
+                    data-id="@Model.Representative.Id"
+                    data-regno="@Model.Representative.RegNo"
+                    data-fullname="@Model.Representative.FullName"
+                    data-email="@Model.Representative.Email"
+                    data-phone="@Model.Representative.PhoneNumber"
+                    data-nationality="@Model.Representative.Nationality"
+                    data-department="@Model.Representative.Department"
+                    data-intake="@Model.Representative.Intake"
+                    data-level="@Model.Representative.Level"
+                    data-session="@Model.Representative.StudySession">
+                <i class="bi bi-pencil-square"></i>
+                Edit Representative
+            </button>
+        }
+    </div>
+</div>
+
+@if (Model.Representative != null)
+{
+    var initials = string.Join(
+        "",
+        Model.Representative.FullName
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Take(2)
+            .Select(x => x[0])
+    ).ToUpperInvariant();
+
+    <div class="cp-profile-card">
+
+        <div class="cp-profile-main">
+            <div class="cp-avatar">
+                @initials
+            </div>
+
+            <div class="cp-profile-identity">
+                <div class="cp-status-row">
+                    <span class="cp-status @(Model.Representative.IsActive ? "active" : "inactive")">
+                        <span class="cp-status-dot"></span>
+                        @(Model.Representative.IsActive ? "Active" : "Inactive")
+                    </span>
+
+                    <span class="cp-reg-badge">
+                        @Model.Representative.RegNo
+                    </span>
+                </div>
+
+                <h2>@Model.Representative.FullName</h2>
+
+                <p class="cp-role">
+                    <i class="bi bi-person-badge"></i>
+                    Class Representative
+                </p>
+            </div>
+        </div>
+
+        <div class="cp-profile-divider"></div>
+
+        <div class="cp-profile-summary">
+            <div class="cp-summary-item">
+                <span class="cp-summary-label">Department</span>
+                <strong>@Model.Representative.Department</strong>
+            </div>
+
+            <div class="cp-summary-item">
+                <span class="cp-summary-label">Level</span>
+                <strong>Level @Model.Representative.Level</strong>
+            </div>
+
+            <div class="cp-summary-item">
+                <span class="cp-summary-label">Intake</span>
+                <strong>@Model.Representative.Intake</strong>
+            </div>
+
+            <div class="cp-summary-item">
+                <span class="cp-summary-label">Study Session</span>
+                <strong>@Model.Representative.StudySession</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="cp-details-grid">
+
+        <section class="cp-info-card">
+            <div class="cp-card-heading">
+                <div class="cp-card-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div>
+                    <h3>Personal Information</h3>
+                    <p>Basic identity and contact information.</p>
+                </div>
+            </div>
+
+            <div class="cp-info-list">
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-person-vcard"></i>
+                        Registration Number
+                    </div>
+                    <div class="cp-info-value">
+                        @Model.Representative.RegNo
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-person"></i>
+                        Full Name
+                    </div>
+                    <div class="cp-info-value">
+                        @Model.Representative.FullName
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-envelope"></i>
+                        Email Address
+                    </div>
+                    <div class="cp-info-value">
+                        @if (!string.IsNullOrWhiteSpace(Model.Representative.Email))
+                        {
+                            <a href="mailto:@Model.Representative.Email">
+                                @Model.Representative.Email
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="cp-empty-value">Not provided</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-telephone"></i>
+                        Phone Number
+                    </div>
+                    <div class="cp-info-value">
+                        @if (!string.IsNullOrWhiteSpace(Model.Representative.PhoneNumber))
+                        {
+                            <a href="tel:@Model.Representative.PhoneNumber">
+                                @Model.Representative.PhoneNumber
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="cp-empty-value">Not provided</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-globe"></i>
+                        Nationality
+                    </div>
+                    <div class="cp-info-value">
+                        @(string.IsNullOrWhiteSpace(Model.Representative.Nationality)
+                            ? "Not provided"
+                            : Model.Representative.Nationality)
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="cp-info-card">
+            <div class="cp-card-heading">
+                <div class="cp-card-icon">
+                    <i class="bi bi-mortarboard"></i>
+                </div>
+                <div>
+                    <h3>Academic Information</h3>
+                    <p>Current academic placement and representation.</p>
+                </div>
+            </div>
+
+            <div class="cp-info-list">
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-building"></i>
+                        Faculty
+                    </div>
+                    <div class="cp-info-value">
+                        @Model.Representative.Faculty
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-diagram-3"></i>
+                        Department
+                    </div>
+                    <div class="cp-info-value">
+                        @Model.Representative.Department
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-bar-chart"></i>
+                        Academic Level
+                    </div>
+                    <div class="cp-info-value">
+                        Level @Model.Representative.Level
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-calendar3"></i>
+                        Intake
+                    </div>
+                    <div class="cp-info-value">
+                        @Model.Representative.Intake
+                    </div>
+                </div>
+
+                <div class="cp-info-row">
+                    <div class="cp-info-label">
+                        <i class="bi bi-clock"></i>
+                        Study Session
+                    </div>
+                    <div class="cp-info-value">
+                        @Model.Representative.StudySession
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="cp-info-card cp-account-card">
+            <div class="cp-card-heading">
+                <div class="cp-card-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <div>
+                    <h3>Account Information</h3>
+                    <p>Current representative account status.</p>
+                </div>
+            </div>
+
+            <div class="cp-account-status">
+                <div class="cp-account-status-icon @(Model.Representative.IsActive ? "active" : "inactive")">
+                    <i class="bi @(Model.Representative.IsActive ? "bi-check-lg" : "bi-x-lg")"></i>
+                </div>
+
+                <div>
+                    <span>Account Status</span>
+                    <strong>
+                        @(Model.Representative.IsActive ? "Active Account" : "Inactive Account")
+                    </strong>
+                </div>
+            </div>
+
+            <div class="cp-account-meta">
+                <div>
+                    <span>Assigned</span>
+                    <strong>
+                        @Model.Representative.AssignedAt.ToLocalTime().ToString("dd MMM yyyy")
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Time</span>
+                    <strong>
+                        @Model.Representative.AssignedAt.ToLocalTime().ToString("HH:mm")
+                    </strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="cp-info-card cp-signature-card">
+            <div class="cp-card-heading">
+                <div class="cp-card-icon">
+                    <i class="bi bi-pen"></i>
+                </div>
+                <div>
+                    <h3>Signature</h3>
+                    <p>Registered representative signature.</p>
+                </div>
+            </div>
+
+            <div class="cp-signature-area">
+                @if (!string.IsNullOrWhiteSpace(Model.Representative.SignatureImageData))
+                {
+                    <img src="@Model.Representative.SignatureImageData"
+                         alt="Signature of @Model.Representative.FullName"
+                         class="cp-signature-image" />
+                }
+                else
+                {
+                    <div class="cp-no-signature">
+                        <i class="bi bi-pen"></i>
+                        <span>No signature registered</span>
+                    </div>
+                }
+            </div>
+        </section>
+
+    </div>
+
+    <div class="cp-bottom-actions">
+        <a asp-page="/Admin/ClassRepresentatives" class="cp-btn cp-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Back to Directory
+        </a>
+
+        <a asp-page="/Admin/ClassRepresentatives"
+           asp-route-editId="@Model.Representative.Id"
+           class="cp-btn cp-btn-primary">
+            <i class="bi bi-pencil-square"></i>
+            Edit Representative
+        </a>
+    </div>
+}
+
+
+</div>
+
+<div class="cp-toast-container" id="cpToastContainer"></div>

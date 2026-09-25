@@ -1,0 +1,1445 @@
+/* ==========================================================================
+   Class Representatives — Clean Professional Admin Stylesheet
+   --------------------------------------------------------------------------
+   Layout contracts:
+     • Desktop: page fits the viewport; card fills remaining height.
+     • Table viewport = exactly 10 rows tall, never grows.
+     • Scrolling the table loads more rows (infinite scroll).
+     • Mobile: table gets horizontal + vertical scroll internally.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. Design Tokens
+   ========================================================================== */
+
+:root {
+    --cp-primary: #0b2545;
+    --cp-primary-dark: #061a33;
+    --cp-primary-light: #163b68;
+    --cp-accent: #2a7f5e;
+    --cp-background: #f4f6f9;
+    --cp-surface: #ffffff;
+    --cp-surface-soft: #f8fafc;
+    --cp-surface-muted: #f1f5f9;
+    --cp-border: #e5e9f0;
+    --cp-border-strong: #cbd5e1;
+    --cp-text: #0f172a;
+    --cp-text-muted: #64748b;
+    --cp-text-soft: #94a3b8;
+    --cp-danger: #dc2626;
+    --cp-danger-soft: #fef2f2;
+    --cp-danger-border: #fecaca;
+    --cp-success: #15803d;
+    --cp-success-soft: #f0fdf4;
+    --cp-success-border: #bbf7d0;
+    --cp-info: #1d4ed8;
+    --cp-info-soft: #eff6ff;
+    --cp-info-border: #bfdbfe;
+    --cp-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --cp-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+    --cp-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --cp-shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.18);
+    --cp-radius-sm: 8px;
+    --cp-radius: 12px;
+    --cp-transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Fixed row metrics → exactly 10 rows visible */
+    --cp-row-height: 64px;
+    --cp-thead-height: 42px;
+    --cp-rows-visible: 10;
+    --cp-table-viewport: calc( var(--cp-row-height) * var(--cp-rows-visible) + var(--cp-thead-height) );
+}
+
+
+/* ==========================================================================
+   2. Page Shell
+   ========================================================================== */
+
+.cp-page {
+    min-height: calc(100vh - 80px);
+    padding: 22px 26px;
+    background: var(--cp-background);
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--cp-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+    .cp-page *,
+    .cp-page *::before,
+    .cp-page *::after {
+        box-sizing: border-box;
+    }
+
+.cp-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+
+/* ==========================================================================
+   3. Page Header
+   ========================================================================== */
+
+.cp-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.cp-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--cp-text-muted);
+}
+
+    .cp-breadcrumb a {
+        color: var(--cp-text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color var(--cp-transition);
+    }
+
+        .cp-breadcrumb a:hover {
+            color: var(--cp-primary);
+        }
+
+    .cp-breadcrumb i {
+        font-size: 10px;
+        color: var(--cp-text-soft);
+    }
+
+    .cp-breadcrumb span {
+        color: var(--cp-primary);
+        font-weight: 600;
+    }
+
+.cp-page-title {
+    margin: 0;
+    color: var(--cp-primary);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    line-height: 1.15;
+}
+
+.cp-page-subtitle {
+    margin: 6px 0 0;
+    color: var(--cp-text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.cp-primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--cp-primary);
+    border-radius: var(--cp-radius-sm);
+    background: var(--cp-primary);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all var(--cp-transition);
+    flex-shrink: 0;
+    box-shadow: var(--cp-shadow-xs);
+}
+
+    .cp-primary-button i {
+        font-size: 14px;
+    }
+
+    .cp-primary-button:hover {
+        background: var(--cp-primary-dark);
+        border-color: var(--cp-primary-dark);
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(11, 37, 69, 0.2);
+    }
+
+    .cp-primary-button:active {
+        transform: translateY(0);
+    }
+
+
+/* ==========================================================================
+   4. Alerts
+   ========================================================================== */
+
+.cp-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    border-radius: var(--cp-radius-sm);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+    .cp-alert > i {
+        margin-top: 1px;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .cp-alert > div {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .cp-alert strong {
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .cp-alert span {
+        font-size: 12.5px;
+        opacity: 0.92;
+    }
+
+.cp-alert-danger {
+    border: 1px solid var(--cp-danger-border);
+    background: var(--cp-danger-soft);
+    color: #991b1b;
+}
+
+.cp-alert-success {
+    border: 1px solid var(--cp-success-border);
+    background: var(--cp-success-soft);
+    color: #166534;
+}
+
+
+/* ==========================================================================
+   5. Stat Grid — clean cards, no left accent bars
+   ========================================================================== */
+
+.cp-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.cp-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 82px;
+    padding: 14px 18px;
+    border: 1px solid var(--cp-border);
+    border-radius: var(--cp-radius);
+    background: var(--cp-surface);
+    box-shadow: var(--cp-shadow-sm);
+    transition: transform var(--cp-transition), box-shadow var(--cp-transition);
+}
+
+    .cp-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+    }
+
+.cp-stat-icon {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.cp-stat-icon-blue {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.cp-stat-icon-green {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.cp-stat-icon-orange {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.cp-stat-icon-purple {
+    background: #f5f3ff;
+    color: #6d28d9;
+}
+
+.cp-stat-content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+}
+
+.cp-stat-label {
+    color: var(--cp-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cp-stat-value {
+    color: var(--cp-text);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+}
+
+.cp-stat-description {
+    color: var(--cp-text-soft);
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ==========================================================================
+   6. Main Card
+   ========================================================================== */
+
+.cp-card {
+    border: 1px solid var(--cp-border);
+    border-radius: var(--cp-radius);
+    background: var(--cp-surface);
+    box-shadow: var(--cp-shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.cp-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--cp-border);
+    flex-wrap: wrap;
+}
+
+.cp-card-title {
+    margin: 0;
+    color: var(--cp-text);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.cp-card-description {
+    margin: 3px 0 0;
+    color: var(--cp-text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.cp-record-count {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 3px 12px;
+    border: 1px solid var(--cp-border);
+    border-radius: 20px;
+    background: var(--cp-surface-soft);
+    color: var(--cp-text-muted);
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+
+/* ==========================================================================
+   7. Search Toolbar — minimal pill input, no hint text
+   ========================================================================== */
+
+.cp-search-toolbar {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--cp-border);
+    background: var(--cp-surface);
+}
+
+.cp-search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+    .cp-search-wrapper > i {
+        position: absolute;
+        top: 50%;
+        left: 14px;
+        transform: translateY(-50%);
+        color: var(--cp-text-soft);
+        font-size: 14px;
+        pointer-events: none;
+        transition: color var(--cp-transition);
+    }
+
+    .cp-search-wrapper:focus-within > i {
+        color: var(--cp-primary-light);
+    }
+
+.cp-search-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 40px 0 38px;
+    border: 1px solid var(--cp-border-strong);
+    border-radius: 999px;
+    background: var(--cp-surface-soft);
+    color: var(--cp-text);
+    font-size: 13px;
+    outline: none;
+    transition: border-color var(--cp-transition), background var(--cp-transition), box-shadow var(--cp-transition);
+}
+
+    .cp-search-input::placeholder {
+        color: var(--cp-text-soft);
+    }
+
+    .cp-search-input:focus {
+        border-color: var(--cp-primary-light);
+        background: var(--cp-surface);
+        box-shadow: 0 0 0 4px rgba(11, 37, 69, 0.08);
+    }
+
+.cp-search-clear {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--cp-text-soft);
+    font-size: 11px;
+    cursor: pointer;
+    transition: background var(--cp-transition), color var(--cp-transition);
+}
+
+    .cp-search-clear:hover {
+        background: var(--cp-surface-muted);
+        color: var(--cp-text);
+    }
+
+
+/* ==========================================================================
+   8. Table Region — locked to 10 rows, infinite scroll inside
+   ========================================================================== */
+
+.cp-table-region {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.15s ease;
+}
+
+    .cp-table-region.cp-table-loading {
+        opacity: 0.55;
+        pointer-events: none;
+    }
+
+.cp-table-scroll {
+    width: 100%;
+    height: var(--cp-table-viewport);
+    max-height: var(--cp-table-viewport);
+    overflow-y: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    background: var(--cp-surface);
+    scrollbar-gutter: stable;
+    position: relative;
+}
+
+    .cp-table-scroll::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    .cp-table-scroll::-webkit-scrollbar-track {
+        background: var(--cp-surface-soft);
+    }
+
+    .cp-table-scroll::-webkit-scrollbar-thumb {
+        background: var(--cp-border-strong);
+        border-radius: 6px;
+        border: 2px solid var(--cp-surface-soft);
+        background-clip: padding-box;
+    }
+
+        .cp-table-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--cp-text-soft);
+            background-clip: padding-box;
+        }
+
+.cp-table-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--cp-border-strong) var(--cp-surface-soft);
+}
+
+
+/* ==========================================================================
+   9. Table
+   ========================================================================== */
+
+.cp-table {
+    width: 100%;
+    min-width: 960px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+    /* Column widths */
+    .cp-table col.col-representative {
+        width: 24%;
+    }
+
+    .cp-table col.col-regno {
+        width: 10%;
+    }
+
+    .cp-table col.col-academic {
+        width: 22%;
+    }
+
+    .cp-table col.col-intake {
+        width: 10%;
+    }
+
+    .cp-table col.col-session {
+        width: 10%;
+    }
+
+    .cp-table col.col-status {
+        width: 10%;
+    }
+
+    .cp-table col.col-actions {
+        width: 14%;
+    }
+
+    /* Sticky header — no clipping, thin */
+    .cp-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        height: var(--cp-thead-height);
+        padding: 0 16px;
+        border-bottom: 1px solid var(--cp-border);
+        background: var(--cp-surface-soft);
+        color: var(--cp-text-muted);
+        font-size: 10.5px;
+        font-weight: 700;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+        .cp-table thead th.cp-action-column {
+            text-align: right;
+        }
+
+.cp-table-scroll.is-scrolled .cp-table thead th {
+    box-shadow: 0 4px 10px -6px rgba(15, 23, 42, 0.15);
+}
+
+.cp-table tbody tr {
+    height: var(--cp-row-height);
+    transition: background var(--cp-transition);
+}
+
+.cp-table tbody td {
+    padding: 8px 16px;
+    border-bottom: 1px solid #eef2f6;
+    color: var(--cp-text);
+    font-size: 13px;
+    vertical-align: middle;
+    background: var(--cp-surface);
+    overflow: hidden;
+}
+
+.cp-table tbody tr:hover td {
+    background: #f8fbff;
+}
+
+.cp-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.cp-action-column {
+    text-align: right;
+    white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   10. Representative Cell
+   ========================================================================== */
+
+.cp-representative {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.cp-avatar {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #eaf4ef 0%, #d6ebe0 100%);
+    color: var(--cp-accent);
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.cp-representative-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+    .cp-representative-info strong {
+        color: var(--cp-text);
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cp-representative-info span {
+        color: var(--cp-text-muted);
+        font-size: 11.5px;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+/* ==========================================================================
+   11. Academic Info Cell
+   ========================================================================== */
+
+.cp-academic-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+    .cp-academic-info strong {
+        color: var(--cp-text);
+        font-size: 12.5px;
+        font-weight: 600;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cp-academic-info span {
+        color: var(--cp-text-muted);
+        font-size: 11px;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cp-academic-info small {
+        color: var(--cp-text-soft);
+        font-size: 10.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+
+/* ==========================================================================
+   12. Reg No & Badges
+   ========================================================================== */
+
+.cp-reg-no {
+    display: inline-block;
+    max-width: 100%;
+    padding: 3px 9px;
+    border-radius: 6px;
+    background: var(--cp-surface-soft);
+    border: 1px solid var(--cp-border);
+    color: var(--cp-text);
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cp-info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 24px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--cp-info-soft);
+    color: var(--cp-info);
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+    .cp-info-badge i {
+        font-size: 10.5px;
+    }
+
+.cp-session-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #f5f3ff;
+    color: #6d28d9;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   13. Status Badge
+   ========================================================================== */
+
+.cp-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 24px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+    .cp-status-badge > span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+.cp-status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+    .cp-status-active > span {
+        background: #16a34a;
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.18);
+    }
+
+.cp-status-inactive {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+    .cp-status-inactive > span {
+        background: #94a3b8;
+    }
+
+
+/* ==========================================================================
+   14. Action Buttons
+   ========================================================================== */
+
+.cp-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.cp-action-button {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--cp-border);
+    border-radius: 7px;
+    background: var(--cp-surface);
+    color: var(--cp-text-muted);
+    font-size: 12.5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--cp-transition);
+    flex-shrink: 0;
+}
+
+    .cp-action-button:hover {
+        border-color: var(--cp-border-strong);
+        background: var(--cp-surface-soft);
+        color: var(--cp-primary);
+        transform: translateY(-1px);
+    }
+
+    .cp-action-button:active {
+        transform: translateY(0);
+    }
+
+.cp-action-view:hover {
+    border-color: var(--cp-success-border);
+    background: var(--cp-success-soft);
+    color: var(--cp-success);
+}
+
+.cp-action-edit:hover {
+    border-color: var(--cp-info-border);
+    background: var(--cp-info-soft);
+    color: var(--cp-info);
+}
+
+.cp-action-delete:hover {
+    border-color: var(--cp-danger-border);
+    background: var(--cp-danger-soft);
+    color: var(--cp-danger);
+}
+
+.cp-delete-form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ==========================================================================
+   15. Empty / Loading States
+   ========================================================================== */
+
+.cp-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(var(--cp-table-viewport) - var(--cp-thead-height));
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.cp-empty-icon {
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    color: var(--cp-text-muted);
+    font-size: 22px;
+}
+
+.cp-empty-state h3 {
+    margin: 0 0 6px;
+    color: var(--cp-text);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.cp-empty-state p {
+    max-width: 400px;
+    margin: 0 auto 16px;
+    color: var(--cp-text-muted);
+    font-size: 12.5px;
+    line-height: 1.55;
+}
+
+.cp-empty-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 16px;
+    border: 1px solid var(--cp-primary);
+    border-radius: var(--cp-radius-sm);
+    background: var(--cp-primary);
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--cp-transition);
+}
+
+    .cp-empty-button:hover {
+        background: var(--cp-primary-dark);
+        border-color: var(--cp-primary-dark);
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+.cp-no-match-row td {
+    background: var(--cp-surface);
+    border-bottom: none;
+    padding: 0;
+}
+
+.cp-no-match-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 36px 16px;
+    color: var(--cp-text-muted);
+    text-align: center;
+}
+
+    .cp-no-match-content i {
+        font-size: 22px;
+        color: var(--cp-text-soft);
+        margin-bottom: 4px;
+    }
+
+    .cp-no-match-content strong {
+        color: var(--cp-text);
+        font-size: 13.5px;
+        font-weight: 600;
+    }
+
+    .cp-no-match-content span {
+        font-size: 12px;
+    }
+
+.cp-loading-row td {
+    background: var(--cp-surface);
+    border-bottom: none;
+    padding: 16px;
+    text-align: center;
+    color: var(--cp-text-muted);
+    font-size: 12.5px;
+}
+
+.cp-loading-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    border: 2px solid var(--cp-border-strong);
+    border-top-color: var(--cp-primary);
+    border-radius: 50%;
+    vertical-align: middle;
+    animation: cp-spin 0.7s linear infinite;
+}
+
+@keyframes cp-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ==========================================================================
+   16. Modal
+   ========================================================================== */
+
+.cp-modal-content {
+    border: none;
+    border-radius: var(--cp-radius);
+    box-shadow: var(--cp-shadow-lg);
+    overflow: hidden;
+}
+
+.cp-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--cp-border);
+    background: var(--cp-surface);
+}
+
+.cp-modal-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    min-width: 0;
+}
+
+.cp-modal-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--cp-info-soft);
+    color: var(--cp-info);
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.cp-modal-header .modal-title {
+    margin: 0;
+    color: var(--cp-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cp-modal-header p {
+    margin: 3px 0 0;
+    color: var(--cp-text-muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.cp-modal-header .btn-close {
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity var(--cp-transition);
+}
+
+    .cp-modal-header .btn-close:hover {
+        opacity: 1;
+    }
+
+.cp-modal-body {
+    padding: 22px;
+    max-height: calc(100vh - 260px);
+    overflow-y: auto;
+}
+
+    .cp-modal-body::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .cp-modal-body::-webkit-scrollbar-track {
+        background: var(--cp-surface-soft);
+    }
+
+    .cp-modal-body::-webkit-scrollbar-thumb {
+        background: var(--cp-border-strong);
+        border-radius: 4px;
+    }
+
+.cp-modal-validation {
+    margin-bottom: 16px;
+    color: #991b1b;
+    font-size: 12.5px;
+}
+
+    .cp-modal-validation ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+.cp-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.cp-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.cp-form-field-full {
+    grid-column: 1 / -1;
+}
+
+.cp-form-field label {
+    color: var(--cp-text);
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+    .cp-form-field label span {
+        color: var(--cp-danger);
+        margin-left: 2px;
+    }
+
+.cp-form-input,
+.cp-form-select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--cp-border-strong);
+    border-radius: 7px;
+    background: var(--cp-surface);
+    color: var(--cp-text);
+    font-size: 13px;
+    outline: none;
+    transition: border-color var(--cp-transition), box-shadow var(--cp-transition);
+}
+
+    .cp-form-input::placeholder {
+        color: var(--cp-text-soft);
+    }
+
+    .cp-form-input:focus,
+    .cp-form-select:focus {
+        border-color: var(--cp-primary-light);
+        box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
+    }
+
+    .cp-form-input[readonly] {
+        background: var(--cp-surface-soft);
+        color: var(--cp-text-muted);
+        cursor: not-allowed;
+    }
+
+.cp-form-select {
+    cursor: pointer;
+}
+
+.cp-field-validation {
+    color: var(--cp-danger);
+    font-size: 11.5px;
+    font-weight: 500;
+    min-height: 0;
+}
+
+    .cp-field-validation:empty {
+        display: none;
+    }
+
+.cp-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 22px;
+    border-top: 1px solid var(--cp-border);
+    background: var(--cp-surface-soft);
+}
+
+.cp-modal-cancel,
+.cp-modal-save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: var(--cp-radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--cp-transition);
+    white-space: nowrap;
+}
+
+.cp-modal-cancel {
+    border: 1px solid var(--cp-border-strong);
+    background: var(--cp-surface);
+    color: var(--cp-text-muted);
+}
+
+    .cp-modal-cancel:hover {
+        background: var(--cp-surface-soft);
+        color: var(--cp-text);
+    }
+
+.cp-modal-save {
+    border: 1px solid var(--cp-primary);
+    background: var(--cp-primary);
+    color: #ffffff;
+}
+
+    .cp-modal-save:hover {
+        background: var(--cp-primary-dark);
+        border-color: var(--cp-primary-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(11, 37, 69, 0.2);
+    }
+
+    .cp-modal-save:active {
+        transform: translateY(0);
+    }
+
+    .cp-modal-save:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+
+/* ==========================================================================
+   17. Responsive — Desktop: page fits viewport, only table scrolls
+   ========================================================================== */
+
+@media (min-width: 992px) {
+
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .cp-page {
+        height: 100vh;
+        min-height: 0;
+        padding: 20px 26px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .cp-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .cp-page-header,
+    .cp-stat-grid,
+    .cp-alert {
+        flex: 0 0 auto;
+    }
+
+    .cp-card {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .cp-card-header,
+    .cp-search-toolbar {
+        flex: 0 0 auto;
+    }
+
+    .cp-table-region {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .cp-table-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto;
+        max-height: none;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    .cp-empty-state {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+/* ==========================================================================
+   18. Responsive — Tablet / Mobile
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+    .cp-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 991.98px) {
+    .cp-page {
+        padding: 22px 18px;
+        overflow: visible;
+    }
+
+    .cp-table-scroll {
+        height: var(--cp-table-viewport);
+        max-height: 60vh;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 800px) {
+    .cp-page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cp-primary-button {
+        align-self: flex-start;
+    }
+
+    .cp-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cp-record-count {
+        align-self: flex-start;
+    }
+
+    .cp-edit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cp-form-field-full {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .cp-page {
+        padding: 16px 12px;
+    }
+
+    .cp-page-title {
+        font-size: 22px;
+    }
+
+    .cp-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cp-card-header,
+    .cp-search-toolbar {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .cp-modal-body {
+        padding: 16px;
+    }
+
+    .cp-modal-header,
+    .cp-modal-footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .cp-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .cp-modal-cancel,
+    .cp-modal-save {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .cp-page {
+        padding: 12px 8px;
+    }
+
+    .cp-page-title {
+        font-size: 20px;
+    }
+
+    .cp-primary-button,
+    .cp-empty-button {
+        width: 100%;
+    }
+
+    .cp-stat-card {
+        padding: 12px 14px;
+        min-height: 76px;
+    }
+
+    .cp-action-button {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+}
+
+
+/* ==========================================================================
+   19. Accessibility & Motion
+   ========================================================================== */
+
+.cp-primary-button:focus-visible,
+.cp-action-button:focus-visible,
+.cp-search-input:focus-visible,
+.cp-search-clear:focus-visible,
+.cp-empty-button:focus-visible,
+.cp-modal-cancel:focus-visible,
+.cp-modal-save:focus-visible,
+.cp-form-input:focus-visible,
+.cp-form-select:focus-visible {
+    outline: 2px solid var(--cp-primary-light);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cp-page *,
+    .cp-page *::before,
+    .cp-page *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}

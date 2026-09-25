@@ -144,10 +144,10 @@ namespace CourseScheduleSystem.Web.Pages.Account
                     LocalRedirect("/CP/Dashboard"),
 
                 "Lecturer" =>
-                    LocalRedirect("/Lecturer/Dashboard"),
+                    LocalRedirect("/Dashboard"),
 
                 "Student" =>
-                    LocalRedirect("/Student/Dashboard"),
+                    LocalRedirect("/Dashboard"),
 
                 _ =>
                     LocalRedirect("/")

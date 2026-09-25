@@ -1,0 +1,301 @@
+@page
+@model CourseScheduleSystem.Web.Pages.Admin.LecturersModel
+
+@{
+    ViewData["Title"] = "Lecturers";
+}
+
+<link rel="stylesheet" href="~/css/Admin/Lecturers.css" />
+
+<div class="admin-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="breadcrumb">
+                <span>Administration</span>
+                <i class="bi bi-chevron-right"></i>
+                <span>Lecturers</span>
+            </div>
+
+            <h1>Lecturer Management</h1>
+
+            <p>
+                View and monitor lecturers registered in the academic system.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+
+            <div>
+                <span>Total Lecturers</span>
+                <strong>@Model.TotalLecturers</strong>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-person-check-fill"></i>
+            </div>
+
+            <div>
+                <span>Active Lecturers</span>
+                <strong>@Model.ActiveLecturers</strong>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="bi bi-person-dash-fill"></i>
+            </div>
+
+            <div>
+                <span>Inactive Lecturers</span>
+                <strong>@Model.InactiveLecturers</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="content-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>Registered Lecturers</h2>
+
+                <p>
+                    Lecturers currently stored in the system.
+                </p>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input type="text"
+                       id="lecturerSearch"
+                       placeholder="Search lecturer..."
+                       aria-label="Search lecturers" />
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="admin-table"
+                   id="lecturerTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Lecturer</th>
+
+                        <th>Staff ID</th>
+
+                        <th>Email</th>
+
+                        <th>Department</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model.Lecturers.Any())
+                    {
+                        var number = 1;
+
+                        foreach (var lecturer in Model.Lecturers)
+                        {
+                            var displayName = string.IsNullOrWhiteSpace(lecturer.FullName)
+                                ? "Unnamed Lecturer"
+                                : lecturer.FullName;
+
+                            var avatarLetter = displayName
+                                .Substring(0, 1)
+                                .ToUpper();
+
+                            <tr>
+
+                                <td>
+                                    @number
+                                </td>
+
+
+                                <td>
+
+                                    <div class="person-cell">
+
+                                        <div class="avatar">
+                                            @avatarLetter
+                                        </div>
+
+                                        <div class="person-info">
+
+                                            <strong>
+                                                @displayName
+                                            </strong>
+
+                                            <span>
+                                                Lecturer
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="staff-id">
+                                        @lecturer.StaffId
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+                                    @lecturer.Email
+                                </td>
+
+
+                                <td>
+
+                                    <span class="department">
+                                        @lecturer.Department
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    @if (lecturer.IsActive)
+                                    {
+                                        <span class="status active">
+
+                                            <i class="bi bi-check-circle-fill"></i>
+
+                                            Active
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status inactive">
+
+                                            <i class="bi bi-x-circle-fill"></i>
+
+                                            Inactive
+
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                            number++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                class="empty-state">
+
+                                <i class="bi bi-person-x"></i>
+
+                                <strong>
+                                    No lecturers found
+                                </strong>
+
+                                <span>
+                                    No lecturer records are currently available.
+                                </span>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchBox = document.getElementById("lecturerSearch");
+
+        const rows = document.querySelectorAll(
+            "#lecturerTable tbody tr"
+        );
+
+        if (!searchBox) {
+            return;
+        }
+
+        searchBox.addEventListener("input", function () {
+
+            const value = this.value
+                .toLowerCase()
+                .trim();
+
+            rows.forEach(function (row) {
+
+                const text = row.innerText.toLowerCase();
+
+                row.style.display =
+                    text.includes(value)
+                        ? ""
+                        : "none";
+
+            });
+
+        });
+
+    });
+</script>

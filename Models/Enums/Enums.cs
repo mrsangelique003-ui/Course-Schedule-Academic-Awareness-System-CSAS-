@@ -27,3 +27,26 @@ public enum ScheduleStatus
     Cancelled,
     Rescheduled
 }
+
+public enum CPDepartment
+{
+    InformationSystemAndManagement,
+    InformationTechnology,
+    SoftwareEngineering,
+    Networking,
+    Multimedia
+}
+
+public enum CPIntake
+{
+    January,
+    March,
+    September
+}
+
+public enum CPLevel
+{
+    Year1,
+    Year2,
+    Year3
+}
