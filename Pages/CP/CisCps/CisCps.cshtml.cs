@@ -24,7 +24,7 @@ public class IndexModel : CourseScheduleSystem.Web.Pages.CP.CpPageModel
         Representatives = await _context.ClassRepresentatives
             .Where(cp =>
                 cp.IsActive &&
-                cp.Department == "CIS")
+                cp.Faculty.Contains("Computing"))
             .OrderBy(cp => cp.FullName)
             .ToListAsync();
 

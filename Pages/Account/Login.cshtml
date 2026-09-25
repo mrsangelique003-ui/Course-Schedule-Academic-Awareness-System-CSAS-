@@ -165,6 +165,14 @@
          ===================================================== -->
     <main class="login-main">
 
+        <!-- Slideshow background slides -->
+        <div class="login-bg-slide active"
+             style="background-image:url('/images/graduation.jpeg')"></div>
+        <div class="login-bg-slide"
+             style="background-image:url('/images/ZPC1.jpeg')"></div>
+        <div class="login-bg-slide"
+             style="background-image:url('/images/RULINDA1.jpeg')"></div>
+
         <div class="login-card">
 
             <!-- LOGO -->
@@ -336,6 +344,20 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+
+        /* =============================================
+           SLIDESHOW
+           ============================================= */
+
+        var slides = document.querySelectorAll(".login-bg-slide");
+        var current = 0;
+
+        setInterval(function () {
+            slides[current].classList.remove("active");
+            current = (current + 1) % slides.length;
+            slides[current].classList.add("active");
+        }, 2000);
+
 
         /* =============================================
            MOBILE MENU

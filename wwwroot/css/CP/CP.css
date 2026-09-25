@@ -1773,3 +1773,477 @@
     font-weight: 600;
     margin-left: auto;
 }
+
+
+/* =========================================================
+   MY PROFILE PAGE
+   ========================================================= */
+
+.cp-myprofile-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.cp-myprofile-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    padding: 32px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.cp-myprofile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.18);
+    border: 3px solid rgba(255,255,255,.35);
+    color: #fff;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.01em;
+}
+
+.cp-myprofile-active-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.cp-myprofile-active-badge i {
+    font-size: 7px;
+    color: #4ade80;
+}
+
+.cp-myprofile-identity {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border-light);
+    text-align: center;
+}
+
+.cp-myprofile-name {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+}
+
+/* ── Profile detail sections ── */
+.cp-myprofile-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.cp-myprofile-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 0.02em;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+
+.cp-myprofile-section-title i {
+    font-size: 15px;
+    color: var(--accent);
+}
+
+.cp-myprofile-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border-light);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+}
+
+.cp-myprofile-detail-item {
+    background: var(--surface);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.cp-myprofile-detail-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+}
+
+.cp-myprofile-detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* ── Represented courses ── */
+.cp-myprofile-courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cp-myprofile-course-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-soft);
+    border: 1px solid var(--border-light);
+    transition: background .18s ease, border-color .18s ease;
+}
+
+.cp-myprofile-course-item:hover {
+    background: var(--accent-light);
+    border-color: rgba(29,78,137,.15);
+}
+
+.cp-myprofile-course-code {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.cp-myprofile-course-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+@media (max-width: 768px) {
+    .cp-myprofile-details-grid { grid-template-columns: 1fr; }
+}
+
+
+/* =========================================================
+   CLASS GROUPS — LIST DESIGN
+   ========================================================= */
+
+.cg-list {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+/* Header row */
+.cg-list-header {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 1fr;
+    gap: 0;
+    padding: 12px 20px;
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--border);
+}
+
+.cg-list-header-col {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+}
+
+/* Data rows */
+.cg-list-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 1fr;
+    gap: 0;
+    padding: 16px 20px;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+    transition: background .18s ease;
+}
+
+.cg-list-row:last-child { border-bottom: none; }
+.cg-list-row:hover { background: var(--surface-soft); }
+
+/* Name column */
+.cg-col-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cg-row-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(20,184,166,.1);
+    color: #0f766e;
+    font-size: 16px;
+}
+
+.cg-row-name {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+}
+
+/* Course chip */
+.cg-course-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+/* Meta lines */
+.cg-col-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cg-meta-line {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.cg-meta-line i {
+    font-size: 12px;
+    color: var(--text-light);
+    flex-shrink: 0;
+}
+
+/* Date */
+.cg-date-text {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Open button */
+.cg-open-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 7px;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    transition: background .18s ease, color .18s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cg-open-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+}
+
+.cg-no-link {
+    font-size: 12px;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Responsive — stack on mobile */
+@media (max-width: 900px) {
+    .cg-list-header { display: none; }
+
+    .cg-list-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 16px;
+    }
+
+    .cg-col-name  { grid-column: 1; }
+    .cg-col-course{ grid-column: 1; }
+    .cg-col-meta  { grid-column: 1; flex-direction: row; flex-wrap: wrap; gap: 8px; }
+    .cg-col-status{ grid-column: 1; }
+    .cg-col-date  { grid-column: 1; }
+    .cg-col-action{ grid-column: 1; }
+}
+
+
+/* =========================================================
+   CIS CLASS REPS — LIST TABLE
+   ========================================================= */
+
+/* Column widths */
+.cp-lc-name   { flex: 2.5; min-width: 0; }
+.cp-lc-dept   { flex: 1.2; min-width: 0; }
+.cp-lc-intake { flex: 1.2; min-width: 0; }
+.cp-lc-level  { flex: 1;   min-width: 0; }
+.cp-lc-nat    { flex: 1.2; min-width: 0; }
+.cp-lc-phone  { flex: 1.5; min-width: 0; }
+
+/* Header row */
+.cp-list-header {
+    display: flex;
+    gap: 16px;
+    padding: 12px 20px;
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--border);
+}
+
+.cp-list-hcol {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+}
+
+/* Data rows */
+.cp-list-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-light);
+    transition: background .15s ease;
+}
+
+.cp-list-row:last-child { border-bottom: none; }
+.cp-list-row:hover      { background: var(--surface-soft); }
+
+/* Avatar */
+.cp-list-avatar {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+/* Name block */
+.cp-lc-name { display: flex; align-items: center; }
+
+.cp-list-name {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: var(--primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cp-list-regno {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* Generic text cell */
+.cp-list-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+/* Phone link */
+.cp-list-phone-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    transition: color .15s ease;
+    white-space: nowrap;
+}
+
+.cp-list-phone-link:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.cp-list-phone-link i { font-size: 12px; }
+
+/* Responsive — stack on small screens */
+@media (max-width: 900px) {
+    .cp-list-header { display: none; }
+
+    .cp-list-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 16px;
+    }
+
+    .cp-lc-name,
+    .cp-lc-dept,
+    .cp-lc-intake,
+    .cp-lc-level,
+    .cp-lc-nat,
+    .cp-lc-phone { flex: none; width: 100%; }
+
+    .cp-lc-dept::before   { content: "Department: ";  font-weight: 700; color: var(--text-light); font-size: 11px; }
+    .cp-lc-intake::before { content: "Intake: ";      font-weight: 700; color: var(--text-light); font-size: 11px; }
+    .cp-lc-level::before  { content: "Level: ";       font-weight: 700; color: var(--text-light); font-size: 11px; }
+    .cp-lc-nat::before    { content: "Nationality: "; font-weight: 700; color: var(--text-light); font-size: 11px; }
+    .cp-lc-phone::before  { content: "Phone: ";       font-weight: 700; color: var(--text-light); font-size: 11px; }
+}

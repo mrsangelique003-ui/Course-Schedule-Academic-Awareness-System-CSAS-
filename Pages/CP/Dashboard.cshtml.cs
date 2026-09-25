@@ -10,8 +10,7 @@ public class DashboardModel : PageModel
 {
     private readonly ApplicationDbContext _db;
 
-
-public DashboardModel(ApplicationDbContext db)
+    public DashboardModel(ApplicationDbContext db)
     {
         _db = db;
     }
@@ -26,14 +25,14 @@ public DashboardModel(ApplicationDbContext db)
 
     public int UnreadMessages { get; set; }
 
+    public List<ClassRepresentative> CisReps { get; set; } = new();
+
     public async Task OnGetAsync()
     {
         var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!int.TryParse(userIdClaim, out var cpId))
-        {
             return;
-        }
 
         CurrentCp = await _db.ClassRepresentatives
             .AsNoTracking()
@@ -41,16 +40,13 @@ public DashboardModel(ApplicationDbContext db)
             .FirstOrDefaultAsync(c => c.Id == cpId);
 
         if (CurrentCp == null)
-        {
             return;
-        }
 
         TotalCourses = CurrentCp.RepresentedCourses.Count;
 
         TotalGroups = await _db.ClassGroups
             .AsNoTracking()
-            .CountAsync(g =>
-                g.ClassRepresentativeId == cpId);
+            .CountAsync(g => g.ClassRepresentativeId == cpId);
 
         PendingCompletions = await _db.CourseCompletions
             .AsNoTracking()
@@ -63,7 +59,11 @@ public DashboardModel(ApplicationDbContext db)
             .CountAsync(m =>
                 m.ClassRepresentativeId == cpId &&
                 !m.IsRead);
+
+        CisReps = await _db.ClassRepresentatives
+            .AsNoTracking()
+            .Where(c => c.IsActive && c.Faculty.Contains("Computing"))
+            .OrderBy(c => c.FullName)
+            .ToListAsync();
     }
-
-
 }
